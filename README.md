@@ -1,11 +1,17 @@
 # SYNERAI
-Synthetic Example Realistic Data and AI (SYNERAI)
+**Synthetic Example Realistic Data and AI (SYNERAI)**
 
 © dr Kai Heitmann, [HL7 Europe](https://hl7europe.org) | [Privacy Policy](https://hl7europe.eu/privacy-policy-for-hl7-europe/) • LGPL-3.0 license
 
 Background Information on Visualize HL7 Example and Test Instances (vi7eti) follows.
 
-Powered by [Synthea](https://synthetichealth.github.io/synthea/) Copyright © 2024 The MITRE Corporation • MIT License Copyright (c) [OpenAI](https://openai.com/) • [ART-DECOR](https://art-decor.org/) Expert Group and ART-DECOR Open Tools GmbH
+## Powered by
+
+[Synthea](https://synthetichealth.github.io/synthea/) Copyright © 2024 The MITRE Corporation • MIT License
+
+Copyright © [OpenAI](https://openai.com/) 
+
+Copyright © [ART-DECOR](https://art-decor.org/) Expert Group and ART-DECOR Open Tools GmbH • LGPL-3.0 license
 
 ## Disclaimer
 
