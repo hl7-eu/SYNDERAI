@@ -1,5 +1,5 @@
-# SYNERAI
-**Synthetic Example Realistic Data and AI (SYNERAI)**
+# SYNERDAI
+**Synthetic Example Realistic Data and AI (SYNERDAI)**, pronounced **/ˈsɪn.ə.daɪ/**
 
 © dr Kai Heitmann, [HL7 Europe](https://hl7europe.org) | [Privacy Policy](https://hl7europe.eu/privacy-policy-for-hl7-europe/) • LGPL-3.0 license
 
