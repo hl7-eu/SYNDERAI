@@ -13,9 +13,9 @@ Granular facts for Synthetic Example Data are subject to real medical knowledge.
 
 HL7 Europe started this effort with a focus on Synthetic Example Data with a “real” medical background – as if from or for “real” care – but “invented” matching patient demographics. This is done using several sources of generated data, amalgamating it with additional localized data (for geolocation of the synthetic patients and providers, see figure 1) and statistical methods also used for clinical trials (stratification [[1](#_ftn1)] of subjects) as well as AI technologies to supplement data for the created strata and synthetic clinical story.
 
-| ![EUSY](image001-2529685.png) | *Figure 1: Geo-Localization of “patients” and  “providers” in the first wave of Synthetic Example Realistic Data. The  example data is a randomized amalgamation of synthetic sources, bringing  stratification and other statistical methods into play.* |
-| ----------------------------- | ------------------------------------------------------------ |
-|                               |                                                              |
+| ![EUSY](img/image001-2529685.png) | *Figure 1: Geo-Localization of “patients” and  “providers” in the first wave of Synthetic Example Realistic Data. The  example data is a randomized amalgamation of synthetic sources, bringing  stratification and other statistical methods into play.* |
+| --------------------------------- | ------------------------------------------------------------ |
+|                                   |                                                              |
 
 The **Synthetic Example Realistic Data and AI (SYNERDAI)** methodology emitted the first 200 HL7 Europe Laboratory Report (EU-Lab) in October 2024, based on the HL7 Europe Laboratory Report FHIR Implementation Guide [[2](#_ftn2)] which is the implementation specification of the eHN Laboratory Result Guidelines [[3](#_ftn3)]. The other areas of specification will be submitted as a follow-up covering the Hospital Discharge Report, the European Patient Summary and others. The instances are available publicly.
 
