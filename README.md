@@ -2,7 +2,7 @@
 
 **Synthetic Data: Examples – Realistic – using AI (SYNDERAI)**, pronounced **/ˈsɪndəraɪ/**
 
-© dr Kai Heitmann, [HL7 Europe](https://hl7europe.org) | [Privacy Policy](https://hl7europe.eu/privacy-policy-for-hl7-europe/) • LGPL-3.0 license
+© [HL7 Europe](https://hl7europe.org) | Main Contributor: Dr. Kai U. Heitmann | [Privacy Policy](https://hl7europe.eu/privacy-policy-for-hl7-europe/) • LGPL-3.0 license
 
 ## Disclaimer
 
