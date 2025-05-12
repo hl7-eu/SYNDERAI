@@ -9,3 +9,4 @@
 - 2025-04-24: sample set of International Patient Summary (IPS) example instances, also co-located on [vi7eti](https://vi7eti.net/?focus=ips)
 - 2025-05-01: start of creation of example instances for the HL7 European Hospital Discharge Letter (HDR)
 - 2025-05-06: submission of first two full HL7 European Hospital Discharge Letter (HDR) example instances for testing purposes (e.g. at the IHE Connecathon in June in Vienna) also co-located on [vi7eti](https://vi7eti.net/?focus=hdr)
+- 2025-05-11: during the HL7 International FHIR Connectahon in Madrid, a set of Hospital Discharge Reports (HDR) were created, checked and validated against the HDR specification 0.0.1 

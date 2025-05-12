@@ -19,14 +19,16 @@ HL7 Europe started this effort with a focus on Synthetic Example Data with a “
 
 The **Synthetic Example Realistic Data and AI (SYNERDAI)** methodology emitted the first 200 HL7 Europe Laboratory Report (EU-Lab) in October 2024, based on the HL7 Europe Laboratory Report FHIR Implementation Guide [[2](#_ftn2)] which is the implementation specification of the eHN Laboratory Result Guidelines [[3](#_ftn3)]. The other areas of specification will be submitted as a follow-up covering the Hospital Discharge Report, the European Patient Summary and others. The instances are available publicly.
 
-The generation of Synthetic Example Data was also combined with a reference implementation of **Visualization** of the Synthetic Example Instances. For more information on this activity, refer to the GitHub repository [[4](#_ftn4)].
+The generation of Synthetic Example Data was also combined with a reference implementation of **Visualization** of the Synthetic Example Instances. For more information on this activity, refer to vi7eti website [[4](#_ftn4)] and the GitHub repository [[5](#_ftn5)].
 
 ------
 
 [[1](#_ftnref1)] *Stratification* of clinical trials is the partitioning of subjects and results by a factor other than the treatment given. – see Wikipedia https://en.wikipedia.org/wiki/Stratification_(clinical_trials)
 
-[[2](#_ftnref2)] See https://build.fhir.org/ig/hl7-eu/laboratory/
+[[2](#_ftnref2)] See [https://build.fhir.org/ig/hl7-eu/laboratory/](https://build.fhir.org/ig/hl7-eu/laboratory/)
 
-[[3](#_ftnref3)] See https://health.ec.europa.eu/publications/ehn-laboratory-result-guidelines_en
+[[3](#_ftnref3)] See [https://health.ec.europa.eu/publications/ehn-laboratory-result-guidelines_en](https://health.ec.europa.eu/publications/ehn-laboratory-result-guidelines_en)
 
-[[4](#_ftnref4)] See https://github.com/hl7-eu/vi7eti
+[[4](#_ftnref4)] See [https://vi7eti.net](https://vi7eti.net)
+
+[[5](#_ftnref5)] See [https://github.com/hl7-eu/vi7eti](https://github.com/hl7-eu/vi7eti)
