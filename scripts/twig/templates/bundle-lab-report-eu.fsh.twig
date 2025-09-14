@@ -1,0 +1,96 @@
+{#
+  This is the TWIG file for the creation of an Bundle
+  It creates a FSH part including the HTML part in text.div from the |%%FSH%% tag on
+  The HTML part is created by amalgamating the HTML strings to the final one
+  It creates the HTML part as well and includes that below after the |%%HTML%% tag
+  The two tagged parts are post-processed by the SYNDERAI script
+
+  KH since 2025-09-14
+#}
+
+%%FSH%% {# tag required #}
+Instance: {{ setInstance("Instance-Bundle-" ~ bundle.instanceid) }}
+InstanceOf: BundleLabReportEu
+Title: "HL7 Europe Laboratory Report (LAB) Bundle"
+{% set patientdisplay = patient.name ~ " (" ~ patient.age ~ " y/o)" %}
+Description: "Complete HL7 Europe Laboratory Report (LAB) FHIR Bundle example for {{ patientdisplay }}"
+Usage: #example
+
+* id = "{{ bundle.instanceid }}"
+
+* identifier.system = "urn:oid:{{ HL7EUROPEEXAMPLESOID }}"
+* identifier.value = "{{ bundle.identifier }}"
+* identifier.assigner.display = "HL7 Europe"
+
+* type = #document
+
+* timestamp = "{{ composition.reportdate }}"
+
+* entry[composition].fullUrl = "urn:uuid:{{ composition.instanceid }}"
+* entry[composition].resource = Instance-Composition-{{ composition.instanceid }}
+
+* entry[diagnosticReport].fullUrl = "urn:uuid:{{ diagnosticreport.instanceid }}"
+* entry[diagnosticReport].resource = Instance-DiagnosticReport-{{ diagnosticreport.instanceid }}
+
+* entry[patient].fullUrl = "urn:uuid:{{ patient.instanceid }}"
+* entry[patient].resource = Instance-Patient-{{ patient.instanceid }}
+
+* entry[serviceRequest].fullUrl = "urn:uuid:{{ servicerequestinstanceid }}"
+* entry[serviceRequest].resource = Instance-ServiceRequest-{{ servicerequestinstanceid }}
+
+* entry[practitionerRole][+].fullUrl = "urn:uuid:{{ requesterrole }}"
+* entry[practitionerRole][=].resource = Instance-PractitionerRole-{{ requesterrole }}
+
+* entry[organization][+].fullUrl = "urn:uuid:{{ requesterorg }}"
+* entry[organization][=].resource = Instance-Organization-{{ requesterorg }}
+
+{% for s in specimenids %}
+* entry[specimen][+].fullUrl = "urn:uuid:{{ s }}"
+* entry[specimen][=].resource = Instance-Specimen-{{ s }}
+{% endfor %}
+
+{% for r in results %}
+* entry[observation][+].fullUrl = "urn:uuid:{{ r.instanceid }}"
+* entry[observation][=].resource = Instance-Observation-{{ r.instanceid }}
+{% endfor %}
+
+{# FAKE ADD ONS - the laboratory organization and provider = legal attester #}
+{% set practitionerRoleId = getUUID() %}
+* entry[practitionerRole][+].fullUrl = "urn:uuid:{{ practitionerRoleId }}"
+* entry[practitionerRole][=].resource = Instance-PractitionerRole-{{ practitionerRoleId }}
+{% set practitionerId = getUUID() %}
+* entry[practitioner][+].fullUrl = "urn:uuid:{{ practitionerId }}"
+* entry[practitioner][=].resource = Instance-Practitioner-{{ practitionerId }}
+{# FAKE ADD ONS #}
+
+
+{# FAKE ADD ONS - the laboratory organization and provider = legal attester #}
+Instance: Instance-PractitionerRole-{{ practitionerRoleId }}
+InstanceOf: PractitionerRoleEu
+Usage: #inline
+* id = "{{ practitionerRoleId }}"
+* practitioner = Reference(urn:uuid:{{ practitionerId }})
+
+
+Instance: Instance-Practitioner-{{ practitionerId }}
+InstanceOf: PractitionerEu
+Usage: #inline
+* id = "{{ practitionerId }}"
+* identifier.system = "urn:oid:{{ HL7EUROPEEXAMPLESOID }}"
+{% set practitioneridentifier = getUUID() %}
+* identifier.value = "{{ practitioneridentifier }}"
+* identifier.assigner.display = "HL7 Europe"
+* name.prefix = "dr"
+* name.given = "Ex"
+* name.family = "Ample"
+* address.line = "Laboratoire Central Européenne"
+* address.line = "Boulevard du Jardin Botanique 32"
+* address.city = "Brussels"
+{# FAKE ADD ONS #}
+
+
+%%HEAD%% {# tag required, content below maybe emtpy #}
+<!-- empty -->
+
+%%HTML%% {# tag required, content below maybe emtpy #}
+<!-- empty -->

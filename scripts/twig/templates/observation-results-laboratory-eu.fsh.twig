@@ -1,0 +1,109 @@
+{#
+  This is the TWIG file for the creation of an ObservationResultsLaboratoryEu
+  It creates a FSH part including the HTML part in text.div from the |%%FSH%% tag on
+  The HTML part is created by amalgamating the HTML strings to the final one
+  It creates the HTML part as well and includes that below after the |%%HTML%% tag
+  The two tagged parts are post-processed by the SYNDERAI script
+
+  KH since 2025-09-02
+#}
+
+%%FSH%% {# tag required #}
+{% set instance = "Instance-Observation-" ~ instanceid %}
+Instance: {{ instance }}
+InstanceOf: ObservationResultsLaboratoryEu
+Title: "Observation Results Laboratory"
+Description: "Observation Results Laboratory"
+Usage: #inline
+
+* id = "{{ instanceid }}"
+
+{# addign headers for HTML table #}
+{{ addHEAD_tr() }}
+{{ addHEAD_th("Test") }}
+{{ addHEAD_th(labresult.effective) }}
+{{ addHEAD_th("Reference Range") }}
+{{ addHEAD_th("Unit") }}
+{{ addHEAD_trend() -}}
+
+{{ addHTML_tr() }}
+
+* status = #final
+
+* performer[+].display = "The Central European Lab"
+{# * performer[=] = Reference(urn:uuid:e512e2e2-9600-4c69-a269-af3ab5421e09) #}
+
+* category[laboratory].coding = $observation-category#laboratory
+
+* code.coding[+] = ${{ labresult.code.system }}#{{ labresult.code.code}} "{{ labresult.code.display }}"
+* code.text = "{{ labresult.code.display }}"
+{{ addHTML_td(labresult.code.display) }}
+
+{# * method = $sct#70621000052105 "Spectrophotometric technique" #}
+
+* subject = Reference(urn:uuid:{{ labresult.subject }}) "{{ labresult.subjectname }}"
+
+* effectiveDateTime = "{{ labresult.effective }}"
+
+{% if labresult.value.type == "Quantity" %}
+
+* valueQuantity.value = {{ labresult.value.value }}
+* valueQuantity.unit = "{{ labresult.value.unit }}"
+* valueQuantity.code = ${{ labresult.value.system }}#{{ labresult.value.unit }}
+* valueQuantity.system = ${{ labresult.value.system }}
+
+{{ addHTML_td(labresult.value.value) }}
+
+{% if labresult.reference.low is not empty and labresult.reference.high is not empty %}
+
+* referenceRange[+].low = {{ labresult.reference.low }} ${{ labresult.reference.system }}#{{ labresult.reference.unit }}
+* referenceRange[+].high = {{ labresult.reference.high }} ${{ labresult.reference.system }}#{{ labresult.reference.unit }}
+
+{% if labresult.value.value < labresult.reference.low %}
+* interpretation = $v3-ObservationInterpretation#L "Low"
+{{ addHTML_td("L") }}
+{% elseif labresult.value.value > labresult.reference.high %}
+* interpretation = $v3-ObservationInterpretation#H "High"
+{{ addHTML_td("H") }}
+{% else %}
+{{ addHTML_td("") }}
+{% endif %}
+
+{% endif %} {# if lr.low or high #}
+
+{{ addHTML_td(labresult.value.unit) }}
+
+{% endif %} {# Quantity #}
+
+{% if lv.type == "CodeableConcept" %}
+
+* valueCodeableConcept = ${{ labresult.value.system }}#{{ labresult.value.code}} "{{ labresult.value.display }}"
+{{ addHTML_td(labresult.value.display) }}
+
+{% if labresult.reference.low is not empty and labresult.reference.high is not empty %}
+* referenceRange[+].low = "{{ labresult.reference.low }}"
+* referenceRange[+].high = "{{ labresult.reference.high }}"
+{% endif %}
+
+{% endif %} {# CodeableConcept #}
+
+{% if labresult.specimenid is not empty %}
+* specimen = Reference(urn:uuid:{{ labresult.specimenid }})
+{% endif %}
+
+{{ addHTML_trend() -}}
+
+{# populate .text #}
+* text.status = #generated
+* text.div = """
+<div xmlns="http://www.w3.org/1999/xhtml">
+<table class="hl7__eu__lab__report">{{ emitHEAD() | raw }}{{ emitHTML() | raw }}</table>
+</div>
+"""
+
+
+%%HEAD%% {# tag required, content below maybe emtpy #}
+<!-- empty, generated elsewhere -->
+
+%%HTML%% {# tag required, content below maybe emtpy #}
+{{ emitHTML() | raw }}

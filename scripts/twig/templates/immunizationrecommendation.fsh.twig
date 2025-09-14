@@ -1,0 +1,77 @@
+{#
+  This is the TWIG file for the creation of an ImmunRecommendationEPS
+  It creates a FSH part including the HTML part in text.div from the |%%FSH%% tag on
+  The HTML part is created by amalgamating the HTML strings to the final one
+  It creates the HTML part as well and includes that below after the |%%HTML%% tag
+  The two tagged parts are post-processed by the SYNDERAI script
+
+  KH since 2025-09-09
+#}
+
+%%FSH%% {# tag required #}
+Instance: {{ setInstance("Instance-ImmunRecommendation-" ~ instanceid) }}
+InstanceOf: ImmunizationRecommendation
+Title: "Immunization Recommendation"
+Description: "Immunization Recommendation"
+Usage: #inline
+
+* id = "{{ instanceid }}"
+
+* status = #active
+
+{# addign headers for HTML table #}
+{{ addHEAD_tr() }}
+{{ addHEAD_th("Immunization Recommendation") }}
+{{ addHEAD_th("Due Date") }}
+{{ addHEAD_th("Reason") }}
+{{ addHEAD_trend() -}}
+
+{{ addHTML_tr() }}
+
+* date = "{{ immunizationrecommendation.recommendationCreated }}"
+
+* subject = Reference(urn:uuid:{{ patient.instanceid }}) "{{ patient.name }}"
+
+* recommendation[0].vaccineCode = $sct#{{ immunizationrecommendation.vaccineCode }} "{{ immunizationrecommendation.vaccineCodeDisplay }}"
+{{ addHTML_td(immunizationrecommendation.vaccineCodeDisplay) }}
+
+{% if immunizationrecommendation.targetDisease is not empty %}
+* recommendation[0].recommendation = $sct#{{ immunizationrecommendation.targetDisease }} "{{ immunizationrecommendation.targetDiseaseDisplay }}"
+{% endif %}
+
+{% if immunizationrecommendation.dateDue is empty %}
+{{ addHTML_td("-") }}
+{% else %}
+* recommendation[0].dateCriterion[0].code = $loinc#30980-7 "Date vaccine due"
+* recommendation[0].dateCriterion[0].value = "{{ immunizationrecommendation.dateDue }}"
+{{ addHTML_tdnb(immunizationrecommendation.dateDue) }}
+{% endif %}
+
+{% if immunizationrecommendation.seriesText is empty %}
+{{ addHTML_td("-") }}
+{% else %}
+* recommendation[0].series = "{{ immunizationrecommendation.seriesText }}"
+{{ addHTML_td(immunizationrecommendation.seriesText) }}
+{% endif %}
+
+* recommendation[0].forecastStatus = http://terminology.hl7.org/CodeSystem/immunization-recommendation-status#due "Due"
+
+{% if immunizationrecommendation.supportingImmunization is not empty %}
+* recommendation[0].supportingImmunization[0] = Reference(urn:uuid:{{ immunizationrecommendation.supportingImmunization }})
+{% endif %}
+
+{{ addHTML_trend() -}}
+
+{# populate .text #}
+* text.status = #generated");
+* text.div ="""
+<div xmlns="http://www.w3.org/1999/xhtml"
+<table class="hl7__ips">{{ emitHTML() | raw }}</table>
+</div>
+"""
+
+%%HEAD%% {# tag required, content below maybe emtpy #}
+{{ emitHEAD() | raw }}
+
+%%HTML%% {# tag required, content below maybe emtpy #}
+{{ emitHTML() | raw }}

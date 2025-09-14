@@ -1,0 +1,49 @@
+{#
+  This is the TWIG file for the creation of an DiagnosticReport
+  It creates a FSH part including the HTML part in text.div from the |%%FSH%% tag on
+  The HTML part is created by amalgamating the HTML strings to the final one
+  It creates the HTML part as well and includes that below after the |%%HTML%% tag
+  The two tagged parts are post-processed by the SYNDERAI script
+
+  KH since 2025-09-14
+#}
+
+%%FSH%% {# tag required #}
+Instance: {{ setInstance("Instance-DiagnosticReport-" ~ diagnosticreport.instanceid) }}
+InstanceOf: DiagnosticReportLabEu
+Title: "Diagnostic Report"
+Description: "Diagnostic Report"
+Usage: #inline
+
+* id = "{{ diagnosticreport.instanceid }}"
+
+* identifier.system = "urn:oid:{{ HL7EUROPEEXAMPLESOID }}"
+* identifier.value = "{{ composition.identifier }}"
+* identifier.assigner.display = "HL7 Europe"
+
+* identifier.system = "urn:oid:{{ HL7EUROPEEXAMPLESOID }}"
+* identifier.value = "{{ diagnosticreport.identifier }}"
+* identifier.assigner.display = "HL7 Europe"
+
+* extension[DiagnosticReportCompositionR5].valueReference = Reference(urn:uuid:{{ composition.identifier }})
+  
+* status = #registered
+
+* category[studyType] = $loinc#26436-6 "Laboratory studies (set)"
+* code = $loinc#11502-2 "Laboratory report"
+
+* subject = Reference(urn:uuid:{{ patient.instanceid }}) "{{ patient.name }}"
+
+{% for s in specimenids %}
+* specimen[+] = Reference(urn:uuid:{{ s }})
+{% endfor %}
+
+{% for r in results %}
+* result[+] = Reference(urn:uuid:{{ r.instanceid }})
+{% endfor %}
+
+%%HEAD%% {# tag required, content below maybe emtpy #}
+<!-- empty -->
+
+%%HTML%% {# tag required, content below maybe emtpy #}
+<!-- empty -->

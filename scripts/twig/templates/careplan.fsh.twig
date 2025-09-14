@@ -1,0 +1,66 @@
+{#
+  This is the TWIG file for the creation of an CarePlan
+  It creates a FSH part including the HTML part in text.div from the |%%FSH%% tag on
+  The HTML part is created by amalgamating the HTML strings to the final one
+  It creates the HTML part as well and includes that below after the |%%HTML%% tag
+  The two tagged parts are post-processed by the SYNDERAI script
+
+  KH since 2025-09-10
+#}
+
+%%FSH%% {# tag required #}
+Instance: {{ setInstance("Instance-CarePlan-" ~ instanceid) }}
+InstanceOf: CarePlan
+Title: "CarePlan"
+Description: "CarePlan"
+Usage: #inline
+
+* id = "{{ instanceid }}"
+
+{# addign headers for HTML table #}
+{{ addHEAD_tr() }}
+{{ addHEAD_th("Active Planned Care") }}
+{{ addHEAD_th("Date") }}
+{{ addHEAD_th("Reason") }}
+{{ addHEAD_trend() -}}
+
+{{ addHTML_tr() }}
+
+* status = #active
+* intent = #plan
+
+* subject = Reference(urn:uuid:{{ patient.instanceid }}) "{{ patient.name }}"
+
+* category.coding = http://terminology.hl7.org/CodeSystem/care-plan-category#assess-plan "Assessment and Plan\"
+
+* activity.detail.kind = #appointment
+* activity.detail.status = #unknown
+* activity.detail.code.coding = $sct#"{{ careplan.snomed }} "{{ careplan.snomeddisplay }}"
+* activity.detail.description = "{{ careplan.preferredTerm }}"
+{{ addHTML_td(careplan.preferredTerm) }}
+
+* period.start = "{{ careplan.start }}"
+{{ addHTML_tdnb(careplan.start) }}
+
+{% if careplan.reason is empty %}
+{{ addHTML_td("-") }}
+{% else %}
+* activity.detail.reasonCode = $sct#"{{ careplan.reason }} "{{ careplan.reasondisplay }}"
+{{ addHTML_td(careplan.reasondisplay) }}
+{% endif %}
+
+{{ addHTML_trend() -}}
+
+{# populate .text #}
+* text.status = #generated
+* text.div ="""
+<div xmlns="http://www.w3.org/1999/xhtml"
+<table class="hl7__ips">{{ emitHTML() | raw }}</table>
+</div>
+"""
+
+%%HEAD%% {# tag required, content below maybe emtpy #}
+<!-- empty -->
+
+%%HTML%% {# tag required, content below maybe emtpy #}
+{{ emitHTML() | raw }}

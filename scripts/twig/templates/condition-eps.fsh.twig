@@ -1,0 +1,103 @@
+{#
+  This is the TWIG file for the creation of an ConditionEPS
+  It creates a FSH part including the HTML part in text.div from the |%%FSH%% tag on
+  The HTML part is created by amalgamating the HTML strings to the final one
+  It creates the HTML part as well and includes that below after the |%%HTML%% tag
+  The two tagged parts are post-processed by the SYNDERAI script
+
+  KH since 2025-09-02
+#}
+
+%%FSH%% {# tag required #}
+Instance: {{ setInstance("Instance-Observation-" ~ instanceid) }}
+InstanceOf: ConditionUvIps
+Title: "Condition (IPS)"
+Description: "Condition"
+Usage: #inline
+
+* id = "{{ instanceid }}"
+
+{{ addHTML_tr() }}
+
+{% if condition is null %}
+{# 
+  no known Condition data, emit it and we are done
+#}
+* code.coding[0] = $sct#160245001 "No current problems or disability (situation)"
+* subject = Reference({{ patient.id }}) "{{ patient.name }}"
+* onsetDateTime.extension.url = "http://hl7.org/fhir/StructureDefinition/data-absent-reason"
+* onsetDateTime.extension.valueCode = #unknown"
+{{ addHTML_td("No known problems or disabilities") }}  {# *** HTML td 1-n: add human text for no problems or disabilities #}    
+
+{% else %}
+{# 
+  emit data of the Condition
+#}
+{# precalculations #}
+{# condition inactive? #}
+{% set activeflag = condition.active | slice(0, 1) %} {# condition.active format is SYYYY-MM-DD with S status 1=active, 0=inactive #}
+{% set inactive = activeflag == 0 %}
+{# condition#s preferred term #}
+{% set preferred = condition.display %}
+{% if condition.preferredTerm is not empty %}
+{% if condition.display != condition.preferredTerm %}
+{% set preferred = condition.preferredTerm %}
+{% endif %}
+{% endif %}
+
+* category = $condition-category#problem-list-item "Problem List Item"
+* code.coding[0] = $sct#{{ condition.code }} "{{ condition.display }}"
+* code.text = "{{ preferred }}"
+
+{# *** HTML td 1: condition #}
+{% if inactive %}
+{{ addHTML_tdgray(preferred) }}
+{% else %}
+{{ addHTML_td(preferred) }}
+{% endif %}
+
+{# *** HTML td 2: onset date / period or unknown #}
+{% if condition.start is empty %}
+* onsetDateTime.extension.url = "http://hl7.org/fhir/StructureDefinition/data-absent-reason"
+* onsetDateTime.extension.valueCode = #unknown
+{{ addHTML_td("?") }}
+{% else %}
+* onsetDateTime = "{{ condition.start }}"
+{% set hperiod = condition.start %}
+{% if condition.end is not empty %}
+* abatementDateTime = "{{ condition.end }}"
+{% set hperiod = hperiod ~ " - " ~ condition.end %}
+{% endif %}
+{{ addHTML_tdnb(hperiod) -}}
+{% endif %}
+
+{# *** HTML td 3: status #}
+{% if inactive %}
+{{ addHTML_tdgray("inactive") -}}
+{% else %}
+{{ addHTML_td("active") }}
+{% endif %}
+
+* subject = Reference(urn:uuid:{{ patient.instanceid }}) "{{ patient.name }}"
+
+{% if asserter is not empty %}
+* asserter = Reference(urn:uuid:{{ asserter.instanceid }}) "{{ asserter.name }}"
+{% endif %}
+
+{% endif %}
+
+{{ addHTML_trend() -}}
+
+{# populate .text #}
+* text.status = #generated
+* text.div ="""
+<div xmlns="http://www.w3.org/1999/xhtml"
+<table class="hl7__ips">{{ emitHTML() | raw }}</table>
+</div>
+"""
+
+%%HEAD%% {# tag required, content below maybe emtpy #}
+<!-- empty -->
+
+%%HTML%% {# tag required, content below maybe emtpy #}
+{{ emitHTML() | raw }}

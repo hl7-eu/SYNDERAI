@@ -1,0 +1,65 @@
+{#
+  This is the TWIG file for the creation of an ProcedureEPS
+  It creates a FSH part including the HTML part in text.div from the |%%FSH%% tag on
+  The HTML part is created by amalgamating the HTML strings to the final one
+  It creates the HTML part as well and includes that below after the |%%HTML%% tag
+  The two tagged parts are post-processed by the SYNDERAI script
+
+  KH since 2025-09-02
+#}
+
+%%FSH%% {# tag required #}
+Instance: {{ setInstance("Instance-Procedure-" ~ instanceid) }}
+InstanceOf: ProcedureUvIps
+Title: "Procedure (IPS)"
+Description: "Procedure"
+Usage: #inline
+
+* id = "{{ instanceid }}"
+
+{{ addHTML_tr() }}
+
+* status = #completed
+
+{# *** HTML td 1: code #}
+{% if procedure.snomed %}
+* code.coding[0] = $sct#{{ prcoedue.snomed }} "{{ procedure.snmoeddisplay }}"
+* code.text = "{{ procedure.preferredTerm }}"
+{{ addHTML_td(procedure.preferredTerm) }}
+{% endif %}
+
+{# *** HTML td 2: date #}
+{% if procedure.date is empty %}
+* onsetDateTime.extension.url = "http://hl7.org/fhir/StructureDefinition/data-absent-reason"
+* onsetDateTime.extension.valueCode = #unknown
+{{ addHTML_td("?") }}
+{% else %}
+* performedDateTime = "{{ procedure.date }}"
+{{ addHTML_tdnb(procedure.date) }}
+{% endif %}
+
+{# *** HTML td 3: reason #}
+{% if procedure.reason is empty %}
+{{ addHTML_td("?") }}
+{% else %}
+* reasonCode.coding[0] = $sct#{{ prcoedue.reason }} "{{ procedure.reasondisplay }}"
+{{ addHTML_td(procedure.reasondisplay) }}
+{% endif %}
+
+* subject = Reference(urn:uuid:{{ patient.instanceid }}) "{{ patient.name }}"
+
+{{ addHTML_trend() -}}
+
+{# populate .text #}
+* text.status = #generated");
+* text.div ="""
+<div xmlns="http://www.w3.org/1999/xhtml"
+<table class="hl7__ips">{{ emitHTML() | raw }}</table>
+</div>
+"""
+
+%%HEAD%% {# tag required, content below maybe emtpy #}
+<!-- empty -->
+
+%%HTML%% {# tag required, content below maybe emtpy #}
+{{ emitHTML() | raw }}

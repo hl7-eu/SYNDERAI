@@ -1,0 +1,90 @@
+{#
+  This is the TWIG file for the creation of an ProviderAsPrimaryCarePhysicianEPS
+  It creates a FSH part including the HTML part in text.div from the |%%FSH%% tag on
+  The HTML part is created by amalgamating the HTML strings to the final one
+  It creates the HTML part as well and includes that below after the |%%HTML%% tag
+  The two tagged parts are post-processed by the SYNDERAI script
+
+  KH since 2025-09-07
+#}
+
+%%FSH%% {# tag required #}
+
+{# emit Practitioner Role #}
+{# ---------------------- #}
+Instance: {{ setInstance("Instance-PractitionerRole-" ~ provider.instancerole) }}
+InstanceOf: PractitionerRoleEu
+Title: "Practitioner Role (EPS) Provider"
+Description: "Practitioner Role Provider"
+Usage: #inline
+* id = "{{ provider.roleid }}"
+* practitioner = Reference(urn:uuid:{{ provider.identifier }})
+* organization = Reference(urn:uuid:{{ provider.instanceorg }})
+{# populate .text #}
+* text.status = #generated
+* text.div ="""
+<div xmlns="http://www.w3.org/1999/xhtml"
+<table class="hl7__ips">Provider Role Id {{ provider.instancerole }}</table>
+</div>
+"""
+
+{# emit Organization #}
+{# ----------------- #}
+Instance: Instance-Organization-{{ provider.instanceorg }}
+InstanceOf: OrganizationEu
+Title: "Organization Provider"
+Description: "Organization Provider"
+Usage: #inline
+* id = "{{ provider.instanceorg }}"
+
+* identifier.system = "urn:oid:{{ HL7EUROPEEXAMPLESOID }}"
+* identifier.value = "{{ provider.orgidentifier }}"
+* identifier.assigner.display = "HL7 Europe"
+
+* name = "{{ provider.orgname }}"
+
+{% if provider.address is not empty %}
+* address.line = "{{ provider.address }}"
+{% endif %}
+{% if provider.city is not empty %}
+* address.city = "{{ provider.city }}"
+{% endif %}
+{% if provider.postcode is not empty %}
+* address.postalCode = "{{ provider.postcode }}"
+{% endif %}
+{% if provider.country is not empty %}
+* address.country = "{{ provider.country }}"
+{% endif %}
+{# populate .text #}
+* text.status = #generated
+* text.div = """
+<div xmlns="http://www.w3.org/1999/xhtml">
+<table class="hl7__ips">{{ provider.providerorgname }}</table>
+</div>
+"""
+
+
+{# emit Practitioner #}
+{# ----------------- #}
+Instance: Instance-Practitioner
+InstanceOf: PractitionerEu
+Title: "Practitioner Provider"
+Description: "Practitioner Provider"
+Usage: #inline
+* id = "{{ provider.instanceprovider }}"
+* name.prefix = "{{ provider.providernameprefix }}"
+* name.given[+] ="{{ provider.providernamegiven }}"
+* name.family = "{{ provider.providernamefamily }}"
+{# populate .text #}
+* text.status = #generated
+* text.div = """
+<div xmlns="http://www.w3.org/1999/xhtml">
+<table class="hl7__ips">{{ provider.providernameprefix ~ " " ~ provider.providernamegiven ~ " " ~ provider.providernamefamily}}</table>
+</div>
+"""
+
+%%HEAD%% {# tag required, content below maybe emtpy #}
+<!-- empty -->
+
+%%HTML%% {# tag required, content below maybe emtpy #}
+<!-- empty -->

@@ -1,0 +1,60 @@
+{#
+  This is the TWIG file for the creation of an ObservationPregnancyStatusUvIps
+  It creates a FSH part including the HTML part in text.div from the |%%FSH%% tag on
+  The HTML part is created by amalgamating the HTML strings to the final one
+  It creates the HTML part as well and includes that below after the |%%HTML%% tag
+  The two tagged parts are post-processed by the SYNDERAI script
+
+  KH since 2025-09-13
+
+  Code	Display (data type is always count)
+  11636-8	[#] Births.live
+  11637-6	[#] Births.preterm
+  11638-4	[#] Births.still living
+  11639-2	[#] Births.term
+  11640-0	[#] Births total
+  11612-9	[#] Abortions
+  11613-7	[#] Abortions.induced
+  11614-5	[#] Abortions.spontaneous
+  33065-4	[#] Ectopic pregnancy
+#}
+
+%%FSH%% {# tag required #}
+{% set instance = "Instance-Observation-" ~ instanceid %}
+Instance: {{ instance }}
+InstanceOf: ObservationPregnancyOutcomeUvIps
+Title: "Observation Pregnancy - Outcome (IPS)"
+Description: "Observation Pregnancy - Outcome"
+Usage: #inline
+
+* id = "{{ instanceid }}"
+
+* status = #final
+
+* code = $loinc#{{ pregnancy.loinc }} "{{ pregnancy.display }}"
+{{- addTD(pregnancy.display) }}
+
+* effectiveDateTime = "{{ pregnancy.effective }}"
+
+* valueQuantity.value = {{ pregnancy.value }}
+* valueQuantity.unit = "count"
+* valueQuantity.system = $ucum
+* valueQuantity.code = #count
+{{- addTD(pregnancy.value) }}
+
+* subject = Reference(urn:uuid:{{ patient.instanceid }}) "{{ patient.name }}"
+
+{{ addHTML_trend() -}}
+
+* text.status = #generated
+* text.div = """
+<div xmlns="http://www.w3.org/1999/xhtml">
+<table class="hl7__ips">{{ emitHTML() | raw }}</table>
+</div>
+"""
+
+%%HEAD%% {# tag required, content below maybe emtpy #}
+<!-- empty -->
+
+%%HTML%% {# tag required, content below maybe emtpy #}
+{{ emitHTML() | raw }}

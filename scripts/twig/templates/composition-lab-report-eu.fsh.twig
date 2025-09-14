@@ -1,0 +1,185 @@
+{#
+  This is the TWIG file for the creation of an Composition
+  It creates a FSH part including the HTML part in text.div from the |%%FSH%% tag on
+  The HTML part is created by amalgamating the HTML strings to the final one
+  It creates the HTML part as well and includes that below after the |%%HTML%% tag
+  The two tagged parts are post-processed by the SYNDERAI script
+
+  KH since 2025-09-14
+#}
+
+%%FSH%% {# tag required #}
+Instance: {{ setInstance("Instance-Composition-" ~ composition.instanceid) }}
+InstanceOf: CompositionLabReportEu
+Title: "Composition Lab Report"
+Description: "Composition Lab Report"
+Usage: #inline
+
+* id = "{{ composition.instanceid }}"
+
+* identifier.system = "urn:oid:{{ HL7EUROPEEXAMPLESOID }}"
+* identifier.value = "{{ composition.identifier }}"
+* identifier.assigner.display = "HL7 Europe"
+
+* status = #final
+
+* author[+] = Reference(urn:uuid:{{ requester.instancerole }})
+
+* category[studyType] = $loinc#26436-6 "Laboratory studies (set)"
+
+* type.coding = $loinc#11502-2 "Laboratory report"
+* type.text = "Laboratory Report"
+
+* subject = Reference(urn:uuid:{{ patient.instanceid }}) "{{ patient.name }}"
+
+* date = "{{ composition.reportdate }}"
+
+{# Laboratory Report, $patgender patient, age $patage yr, " . count($results) . " results #}
+* title = "Laboratory Report"
+
+* confidentiality = #N
+
+{# main section (with subsections #}
+* section[lab-subsections]
+  * title = "Laboratory Report"
+  * code = $loinc#26436-6 "Laboratory studies (set)"
+  * code.text = "Laboratory studies"
+
+{# add all subsections per category #}
+{% set sectioncount = 0 %}
+{% for catkey, catvalue in categories %}
+
+{# pre count all lab results of this cat of this patient #}
+{% set lcatcount = 0 %}
+{% for r in results %}
+{% if (r.data.lnclass == catkey) %}
+{% set lcatcount = lcatcount + 1 %}
+{% endif %}
+{% endfor %}
+
+{% if (lcatcount > 0) %}
+
+{% set sectioncount = sectioncount + 1 %}
+
+  * section[+].title = "{{ catvalue[0] }}"
+  * section[=].code.coding[+] = $loinc#${{ catvalue[1] }} "{{ catvalue[2] }}"
+  * section[=].code.text = "{{ catvalue[0] }}"
+
+{#  Make section.text #}
+{% set sectiontext = "" %}
+{% set effective = "Result" %}
+{% for r in results %}
+
+{% if (r.data.lnclass == catkey) %}
+
+{% set lvalue = "" %}
+{% set lunit = "" %}
+{% set lreference = "" %}
+{% set cdisplay = r.data.code.display %}
+
+{% if r.data.value.type == "Quantity" %}
+
+{% if r.data.reference.low is not empty and r.data.reference.high is not empty %}
+
+{% set lreference = r.data.reference.low ~ " - " ~ r.data.reference.high %}
+
+{# correct display of value if out of range #}
+{% if r.data.value.value < r.data.reference.low %}
+{% set lvalue = "<strong>" ~ r.data.value.value ~ " L</strong>" %}
+{% elseif r.value.value > r.reference.high %}
+{% set lvalue = "<strong>" ~ r.data.value.value ~ " H</strong>" %}
+{% endif %} {# low high correction #}
+
+{% else %}  {# if r.reference.low and r.reference.high #}
+{% set lvalue = r.data.value.value %}
+{% endif %} {# if r.reference.low and r.reference.high #}
+
+{% set lunit = r.data.value.unit %}
+
+{% endif %} {# if Quantity #}
+
+{% if r.data.value.type == "CodeableConcept" %}
+{% set lvalue = r.data.value.display %}
+{% endif %} {# if CodeableConcept #}
+
+{% if (catkey == "SPEC") %}
+{# special row for specimen info #}
+{% set sectiontext = sectiontext ~ "<tr><td>" ~ cdisplay ~ "</td><td>" ~ lvalue ~ "</td><td>" ~ r.data.lnsystem ~ "</td><td>" ~ lunit ~ "</td></tr>" %}
+{% else %}
+{# normal row with lab value info #}
+{% set sectiontext = sectiontext ~ "<tr><td>" ~ cdisplay ~ "</td><td>" ~ lvalue ~ "</td><td>" ~ lreference ~ "</td><td>" ~ lunit ~ "</td></tr>" %}
+{% endif %} {# SPEC or normal #}
+
+  * section[=].entry[+] = Reference(urn:uuid:{{ r.instanceid }})
+
+{% if (effective == "Result") %}
+{% set effective = r.data.effective %}
+{% endif %}
+
+{% endif %} {# if catkey #}
+
+{% endfor %} {# for in results #}
+
+{# emit section.text, this section.text is generated! #}
+  * section[=].text.status = #generated
+{% if (catkey == "SPEC") %}
+{# heading for SPEC info #}
+{% set lastpartheading = "<th>Specimen</th><th> </th>" %}
+{% else %}
+{# heading for normal lab info #}
+{% set lastpartheading = "<th>Reference Range</th><th>Unit</th>" %}
+{% endif %} {# SPEC or normal #}
+
+{% set sectiontext = "<h3>" ~ catvalue[0] ~ "</h3><table class=\"hl7__eu__lab__report\"><thead><tr><th>Test</th><th>" ~ effective ~ "</th>" ~ lastpartheading ~  "</tr></thead><tbody>" ~ sectiontext ~ "</tbody></table>" %}
+
+
+{# populate .text #}
+  * section[=].text.div = """
+<div xmlns="http://www.w3.org/1999/xhtml">
+{{ sectiontext | raw }}
+</div>
+"""
+
+{% endif %} {# lcatcount > 0 #}
+{% endfor %}  {# for in categories #}
+
+{# add optional additional sections #}
+{% for slicename, section in additionalsections %}
+
+{% set sectioncount = sectioncount + 1 %}
+//
+// section, slice {{ slicename }}
+//
+* section[{{ slicename }}]
+  * title = "{{ section.title }}"
+  * code = {{ section.code }} "{{ section.display }}"
+  * text.status = #generated
+  * text.div = """
+<div xmlns="http://www.w3.org/1999/xhtml">
+{{ section.text | raw }}
+</div>
+"""
+
+{% for entry in section.entries %}
+
+{% if entry.sectionentryslicename is empty %}
+{% set sectionentryslicename = "" %}
+{% else %}
+{% set sectionentryslicename = entry.sectionentryslicename %}
+{% endif %}
+
+{% if entry.nosectionentry is empty %}
+  * entry[{{ sectionentryslicename }}][+] = Reference(urn:uuid:{{ entry.id }})
+{% elseif not entry.nosectionentry %}
+  * entry[{{ sectionentryslicename }}][+] = Reference(urn:uuid:{{ entry.id }})
+{% endif %}
+
+{% endfor %} {# section.entries #}
+
+{% endfor %}  {# for in additionalsections #}
+
+%%HEAD%% {# tag required, content below maybe emtpy #}
+<!-- empty -->
+
+%%HTML%% {# tag required, content below maybe emtpy #}
+<!-- empty -->

@@ -1,0 +1,69 @@
+{#
+  This is the TWIG file for the creation of an ServiceRequest
+  It creates a FSH part including the HTML part in text.div from the |%%FSH%% tag on
+  The HTML part is created by amalgamating the HTML strings to the final one
+  It creates the HTML part as well and includes that below after the |%%HTML%% tag
+  The two tagged parts are post-processed by the SYNDERAI script
+
+  KH since 2025-09-08
+#}
+
+%%FSH%% {# tag required #}
+Instance: {{ setInstance("Instance-ServiceRequest-" ~ instanceid) }}
+InstanceOf: ServiceRequestLabEu
+Title: "ServiceRequest"
+Description: "ServiceRequest"
+Usage: #inline
+* id = "{{ instanceid }}"
+
+* identifier.system = "http://example.org"
+* identifier.value = "{{ srvqidentifier }}"
+
+* status = #active
+
+* intent = #order
+
+{# always category "Laboratory procedure"#}
+* code = $sct#108252007 "Laboratory procedure"
+
+* subject = Reference(urn:uuid:{{ patient.instanceid }}) "{{ patient.name }}"
+
+{# requester #}
+{% if requester.id is not empty %}
+* requester = Reference(urn:uuid:{{ requester.id }}
+{% endif %}
+
+{#
+  add specimen references, note that the ids are associated by loinc system,
+  thus there maybe duplicate ids as two different loinc system may lead to the same specimen
+  parameter specimenids must contain only unique references
+#}
+{% for specimenid in specimenids %}
+* specimen[+] = Reference(urn:uuid:{{ specimenid }})
+{% endfor %}
+
+{#
+  add current conditions as reasons, if given
+#}
+{% for condition in conditions %}
+{% set activeflag = condition.active | slice(0, 1) %} {# condition.active format is SYYYY-MM-DD with S status 1=active, 0=inactive #}
+{% set active = activeflag == 1 %}
+{% if active %}
+{# condition#s preferred term #}
+{% set preferred = condition.display %}
+{% if condition.preferredTerm is not empty %}
+{% if condition.display != condition.preferredTerm %}
+{% set preferred = condition.preferredTerm %}
+{% endif %}
+{% endif %}
+
+* reasonCode[+] = $sct#{{ condition.snomed }} "{{ preferred }}"
+
+{% endif %}
+{% endfor %}
+
+%%HEAD%% {# tag required, content below maybe emtpy #}
+<!-- empty -->
+
+%%HTML%% {# tag required, content below maybe emtpy #}
+<!-- empty -->

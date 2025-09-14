@@ -1,0 +1,47 @@
+{#
+  This is the TWIG file for the creation of an Specimen
+  It creates a FSH part including the HTML part in text.div from the |%%FSH%% tag on
+  The HTML part is created by amalgamating the HTML strings to the final one
+  It creates the HTML part as well and includes that below after the |%%HTML%% tag
+  The two tagged parts are post-processed by the SYNDERAI script
+
+  KH since 2025-09-08
+#}
+
+%%FSH%% {# tag required #}
+Instance: {{ setInstance("Instance-Specimen-" ~ instanceid) }}
+InstanceOf: SpecimenEu
+Title: "Specimen"
+Description: "Specimen"
+Usage: #inline
+* id = "{{ instanceid }}"
+* type = $sct#{{ specimen.code}} "{{ specimen.display }}"
+* collection.collectedDateTime = "{{ specimen.date }}"
+
+{# add HTML #}
+{{ addHEAD_tr() }}
+{{ addHEAD_th("Specimen") }}
+{{ addHEAD_th("Collection Date") }}
+{{ addHEAD_trend() -}}
+
+{{ addHTML_tr() }}
+{{ addHTML_td(specimen.display) }}
+{{ addHTML_tdnb(specimen.date) }}
+{{ addHTML_trend() -}}
+
+{# populate .text #}
+* text.status = #generated
+* text.div = """
+<div xmlns="http://www.w3.org/1999/xhtml">
+<table class="hl7__eu__lab__report">
+{{ emitHEAD() | raw }}
+{{ emitHTML() | raw }}
+</table>
+</div>
+"""
+
+%%HEAD%% {# tag required, content below maybe emtpy #}
+{{ emitHEAD() | raw }}
+
+%%HTML%% {# tag required, content below maybe emtpy #}
+{{ emitHTML() | raw }}

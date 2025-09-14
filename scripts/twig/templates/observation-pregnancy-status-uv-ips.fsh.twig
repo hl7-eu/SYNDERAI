@@ -1,0 +1,53 @@
+{#
+  This is the TWIG file for the creation of an ObservationPregnancyStatusUvIps
+  It creates a FSH part including the HTML part in text.div from the |%%FSH%% tag on
+  The HTML part is created by amalgamating the HTML strings to the final one
+  It creates the HTML part as well and includes that below after the |%%HTML%% tag
+  The two tagged parts are post-processed by the SYNDERAI script
+
+  KH since 2025-09-02
+#}
+
+%%FSH%% {# tag required #}
+{% set instance = "Instance-Observation-" ~ instanceid %}
+Instance: {{ instance }}
+InstanceOf: ObservationPregnancyStatusUvIps
+Title: "Observation Pregnancy - Status (IPS)"
+Description: "Observation Pregnancy Status"
+Usage: #inline
+
+* id = "{{ instanceid }}"
+
+* status = #final
+
+* code = $loinc#82810-3 "Pregnancy status"
+
+{{- addTR() }}
+{{- addTD("Pregnancy status") }}
+
+* patient = Reference(urn:uuid:{{ patient.instanceid }}) "{{ patient.name }}"
+
+* effectiveDateTime = "{{ effective | slice(0, 10) }}"
+
+{% if pregnant == 1 %}
+* valueCodeableConcept = $sct#77386006 "Pregnant"
+{{- addTD("Pregnant") }}
+{% elseif pregnant == 0 %}
+* valueCodeableConcept = $sct#60001007 "Not pregnant"
+{{- addTD("Not pregnant") }}
+{% endif %}
+
+{{- addTRe() -}}
+
+* text.status = #generated
+* text.div = """
+<div xmlns="http://www.w3.org/1999/xhtml">
+<table class="hl7__ips">{{ emitHTML() | raw }}</table>
+</div>
+"""
+
+%%HEAD%% {# tag required, content below maybe emtpy #}
+<!-- empty -->
+
+%%HTML%% {# tag required, content below maybe emtpy #}
+{{ emitHTML() | raw }}
