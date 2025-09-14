@@ -29,6 +29,8 @@ Usage: #inline
 
 * status = #active {# always still active in our cases #}
 
+* patient = Reference(urn:uuid:{{ patient.instanceid }}) "{{ patient.name }}"
+
 * udiCarrier[0].id = "{{ device.uid }}"
 
 {% if device.snomed is not empty %}
@@ -62,7 +64,7 @@ Usage: #inline
 
 * device = Reference(urn:uuid:{{ deinstanceid }}) "{{ device.display }}"
 
-* subject = Reference(urn:uuid:{{ patient.id }}) "{{ patient.name }}"
+* subject = Reference(urn:uuid:{{ patient.instanceid }}) "{{ patient.name }}"
 
 {{ addHTML_trend() -}}
 

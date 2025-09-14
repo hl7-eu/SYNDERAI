@@ -55,39 +55,11 @@ Usage: #example
 {% endfor %}
 
 {# FAKE ADD ONS - the laboratory organization and provider = legal attester #}
-{% set practitionerRoleId = getUUID() %}
-* entry[practitionerRole][+].fullUrl = "urn:uuid:{{ practitionerRoleId }}"
-* entry[practitionerRole][=].resource = Instance-PractitionerRole-{{ practitionerRoleId }}
-{% set practitionerId = getUUID() %}
-* entry[practitioner][+].fullUrl = "urn:uuid:{{ practitionerId }}"
-* entry[practitioner][=].resource = Instance-Practitioner-{{ practitionerId }}
+* entry[practitionerRole][+].fullUrl = "urn:uuid:{{ laboratory.instancerole }}"
+* entry[practitionerRole][=].resource = Instance-PractitionerRole-{{ laboratory.instancerole }}
+* entry[practitioner][+].fullUrl = "urn:uuid:{{ laboratory.instancepractitioner }}"
+* entry[practitioner][=].resource = Instance-Practitioner-{{ laboratory.instancepractitioner }}
 {# FAKE ADD ONS #}
-
-
-{# FAKE ADD ONS - the laboratory organization and provider = legal attester #}
-Instance: Instance-PractitionerRole-{{ practitionerRoleId }}
-InstanceOf: PractitionerRoleEu
-Usage: #inline
-* id = "{{ practitionerRoleId }}"
-* practitioner = Reference(urn:uuid:{{ practitionerId }})
-
-
-Instance: Instance-Practitioner-{{ practitionerId }}
-InstanceOf: PractitionerEu
-Usage: #inline
-* id = "{{ practitionerId }}"
-* identifier.system = "urn:oid:{{ HL7EUROPEEXAMPLESOID }}"
-{% set practitioneridentifier = getUUID() %}
-* identifier.value = "{{ practitioneridentifier }}"
-* identifier.assigner.display = "HL7 Europe"
-* name.prefix = "dr"
-* name.given = "Ex"
-* name.family = "Ample"
-* address.line = "Laboratoire Central Européenne"
-* address.line = "Boulevard du Jardin Botanique 32"
-* address.city = "Brussels"
-{# FAKE ADD ONS #}
-
 
 %%HEAD%% {# tag required, content below maybe emtpy #}
 <!-- empty -->

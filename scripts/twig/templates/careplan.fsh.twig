@@ -31,11 +31,11 @@ Usage: #inline
 
 * subject = Reference(urn:uuid:{{ patient.instanceid }}) "{{ patient.name }}"
 
-* category.coding = http://terminology.hl7.org/CodeSystem/care-plan-category#assess-plan "Assessment and Plan\"
+* category.coding = http://terminology.hl7.org/CodeSystem/care-plan-category#assess-plan "Assessment and Plan"
 
 * activity.detail.kind = #appointment
 * activity.detail.status = #unknown
-* activity.detail.code.coding = $sct#"{{ careplan.snomed }} "{{ careplan.snomeddisplay }}"
+* activity.detail.code.coding = $sct#{{ careplan.snomed }} "{{ careplan.snomeddisplay }}"
 * activity.detail.description = "{{ careplan.preferredTerm }}"
 {{ addHTML_td(careplan.preferredTerm) }}
 
@@ -45,7 +45,7 @@ Usage: #inline
 {% if careplan.reason is empty %}
 {{ addHTML_td("-") }}
 {% else %}
-* activity.detail.reasonCode = $sct#"{{ careplan.reason }} "{{ careplan.reasondisplay }}"
+* activity.detail.reasonCode = $sct#{{ careplan.reason }} "{{ careplan.reasondisplay }}"
 {{ addHTML_td(careplan.reasondisplay) }}
 {% endif %}
 

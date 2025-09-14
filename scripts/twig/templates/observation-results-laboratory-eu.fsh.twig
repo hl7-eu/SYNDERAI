@@ -21,7 +21,7 @@ Usage: #inline
 {# addign headers for HTML table #}
 {{ addHEAD_tr() }}
 {{ addHEAD_th("Test") }}
-{{ addHEAD_th(labresult.effective) }}
+{{ addHEAD_th(labresult.report) }}
 {{ addHEAD_th("Reference Range") }}
 {{ addHEAD_th("Unit") }}
 {{ addHEAD_trend() -}}
@@ -56,8 +56,8 @@ Usage: #inline
 
 {% if labresult.reference.low is not empty and labresult.reference.high is not empty %}
 
-* referenceRange[+].low = {{ labresult.reference.low }} ${{ labresult.reference.system }}#{{ labresult.reference.unit }}
-* referenceRange[+].high = {{ labresult.reference.high }} ${{ labresult.reference.system }}#{{ labresult.reference.unit }}
+* referenceRange[+].low = {{ labresult.reference.low }} ${{ labresult.value.system }}#{{ labresult.reference.unit }}
+* referenceRange[+].high = {{ labresult.reference.high }} ${{ labresult.value.system }}#{{ labresult.reference.unit }}
 
 {% if labresult.value.value < labresult.reference.low %}
 * interpretation = $v3-ObservationInterpretation#L "Low"

@@ -24,7 +24,7 @@ Usage: #inline
   no known Condition data, emit it and we are done
 #}
 * code.coding[0] = $sct#160245001 "No current problems or disability (situation)"
-* subject = Reference({{ patient.id }}) "{{ patient.name }}"
+* subject = Reference({{ patient.instanceid }}) "{{ patient.name }}"
 * onsetDateTime.extension.url = "http://hl7.org/fhir/StructureDefinition/data-absent-reason"
 * onsetDateTime.extension.valueCode = #unknown"
 {{ addHTML_td("No known problems or disabilities") }}  {# *** HTML td 1-n: add human text for no problems or disabilities #}    

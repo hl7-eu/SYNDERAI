@@ -29,8 +29,8 @@ Usage: #inline
 * subject = Reference(urn:uuid:{{ patient.instanceid }}) "{{ patient.name }}"
 
 {# requester #}
-{% if requester.id is not empty %}
-* requester = Reference(urn:uuid:{{ requester.id }}
+{% if requester.instancerole is not empty %}
+* requester = Reference(urn:uuid:{{ requester.instancerole }})
 {% endif %}
 
 {#

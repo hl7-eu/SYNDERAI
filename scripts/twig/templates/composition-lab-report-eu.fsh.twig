@@ -23,7 +23,7 @@ Usage: #inline
 
 * status = #final
 
-* author[+] = Reference(urn:uuid:{{ requester.instancerole }})
+* author[+] = Reference(urn:uuid:{{ laboratory.instancerole }})
 
 * category[studyType] = $loinc#26436-6 "Laboratory studies (set)"
 
@@ -67,7 +67,7 @@ Usage: #inline
 
 {#  Make section.text #}
 {% set sectiontext = "" %}
-{% set effective = "Result" %}
+{% set reportdate = "Result" %}
 {% for r in results %}
 
 {% if (r.data.lnclass == catkey) %}
@@ -79,6 +79,8 @@ Usage: #inline
 
 {% if r.data.value.type == "Quantity" %}
 
+{% set lvalue = r.data.value.value %}
+
 {% if r.data.reference.low is not empty and r.data.reference.high is not empty %}
 
 {% set lreference = r.data.reference.low ~ " - " ~ r.data.reference.high %}
@@ -86,12 +88,10 @@ Usage: #inline
 {# correct display of value if out of range #}
 {% if r.data.value.value < r.data.reference.low %}
 {% set lvalue = "<strong>" ~ r.data.value.value ~ " L</strong>" %}
-{% elseif r.value.value > r.reference.high %}
+{% elseif r.data.value.value > r.data.reference.high %}
 {% set lvalue = "<strong>" ~ r.data.value.value ~ " H</strong>" %}
 {% endif %} {# low high correction #}
 
-{% else %}  {# if r.reference.low and r.reference.high #}
-{% set lvalue = r.data.value.value %}
 {% endif %} {# if r.reference.low and r.reference.high #}
 
 {% set lunit = r.data.value.unit %}
@@ -112,8 +112,8 @@ Usage: #inline
 
   * section[=].entry[+] = Reference(urn:uuid:{{ r.instanceid }})
 
-{% if (effective == "Result") %}
-{% set effective = r.data.effective %}
+{% if (reportdate == "Result") %}
+{% set reportdate = r.data.report %}
 {% endif %}
 
 {% endif %} {# if catkey #}
@@ -130,7 +130,7 @@ Usage: #inline
 {% set lastpartheading = "<th>Reference Range</th><th>Unit</th>" %}
 {% endif %} {# SPEC or normal #}
 
-{% set sectiontext = "<h3>" ~ catvalue[0] ~ "</h3><table class=\"hl7__eu__lab__report\"><thead><tr><th>Test</th><th>" ~ effective ~ "</th>" ~ lastpartheading ~  "</tr></thead><tbody>" ~ sectiontext ~ "</tbody></table>" %}
+{% set sectiontext = "<h3>" ~ catvalue[0] ~ "</h3><table class=\"hl7__eu__lab__report\"><thead><tr><th>Test</th><th>" ~ reportdate ~ "</th>" ~ lastpartheading ~  "</tr></thead><tbody>" ~ sectiontext ~ "</tbody></table>" %}
 
 
 {# populate .text #}

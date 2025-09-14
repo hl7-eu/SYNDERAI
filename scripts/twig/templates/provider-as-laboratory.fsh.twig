@@ -1,0 +1,42 @@
+{#
+  This is the TWIG file for the creation of an PractitionerRole
+  It creates a FSH part including the HTML part in text.div from the |%%FSH%% tag on
+  The HTML part is created by amalgamating the HTML strings to the final one
+  It creates the HTML part as well and includes that below after the |%%HTML%% tag
+  The two tagged parts are post-processed by the SYNDERAI script
+
+  KH since 2025-09-14
+#}
+
+%%FSH%% {# tag required #}
+{# FAKE ADD ONS - the laboratory organization and provider = legal attester #}
+Instance: Instance-PractitionerRole-{{ laboratory.instancerole }}
+InstanceOf: PractitionerRoleEu
+Usage: #inline
+* id = "{{ laboratory.instancerole }}"
+* practitioner = Reference(urn:uuid:{{ laboratory.instancepractitioner }})
+
+
+Instance: Instance-Practitioner-{{ laboratory.instancepractitioner }}
+InstanceOf: PractitionerEu
+Usage: #inline
+* id = "{{ laboratory.instancepractitioner }}"
+* identifier.system = "urn:oid:{{ HL7EUROPEEXAMPLESOID }}"
+{% set practitioneridentifier = getUUID() %}
+* identifier.value = "{{ practitioneridentifier }}"
+* identifier.assigner.display = "HL7 Europe"
+* name.prefix = "dr"
+* name.given = "Ex"
+* name.family = "Ample"
+* address.line[+] = "Laboratoire Central Européenne"
+* address.line[+] = "Boulevard du Jardin Botanique 32"
+* address.postalCode = "1000"
+* address.city = "Brussels"
+* address.country = "Belgium"
+{# FAKE ADD ONS #}
+
+%%HEAD%% {# tag required, content below maybe emtpy #}
+<!-- empty -->
+
+%%HTML%% {# tag required, content below maybe emtpy #}
+<!-- empty -->
