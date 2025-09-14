@@ -46,7 +46,7 @@ Usage: #inline
 * vaccineCode.text = "{{ immunization.preferredTerm }}"
 {{ addHTML_td(immunization.preferredTerm) }}
 
-* subject = Reference(urn:uuid:{{ patient.instanceid }}) "{{ patient.name }}"
+* patient = Reference(urn:uuid:{{ patient.instanceid }}) "{{ patient.name }}"
 
 {% if immunization.date is empty %}
 {{ addHTML_td("?") }}
@@ -59,14 +59,14 @@ Usage: #inline
 * lotNumber = "{{ immunization.lotNumber }}"
 {% endif %}
 {% if immunization.expires is not empty %}
-* expirationDate = "{{ immunization.expirationDate }}"
+* expirationDate = "{{ immunization.expires }}"
 {% endif %}
 {% if immunization.site is not empty %}
-* site.coding = $sct#{{ immunzation.site }} "{{ immunization.sitedisplay }}"
+* site.coding = $sct#{{ immunization.site }} "{{ immunization.sitedisplay }}"
 * site.text =  "{{ immunization.sitedisplay }}"
 {% endif %}
 {% if immunization.route is not empty %}
-* route.coding[0] = $sct#{{ immunzation.route }} "{{ immunization.routedisplay }}"
+* route.coding[0] = $sct#{{ immunization.route }} "{{ immunization.routedisplay }}"
 * route.text =  "{{ immunization.routedisplay }}"
 {% endif %}
 

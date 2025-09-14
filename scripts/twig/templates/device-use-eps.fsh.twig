@@ -37,9 +37,6 @@ Usage: #inline
 * type = $sct#{{ device.snomed }} "{{ device.display }}"
 {% endif %}
 
-* subject = Reference(urn:uuid:{{ patient.instanceid }}) "{{ patient.name }}"
-
-
 {# now the device use statement #}
 Instance: {{ setInstance("Instance-DeviceUse-" ~ duinstanceid) }}
 InstanceOf: DeviceUseStatementEuEps

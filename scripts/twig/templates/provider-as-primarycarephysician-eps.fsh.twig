@@ -17,31 +17,31 @@ InstanceOf: PractitionerRoleEu
 Title: "Practitioner Role (EPS) Provider"
 Description: "Practitioner Role Provider"
 Usage: #inline
-* id = "{{ provider.roleid }}"
-* practitioner = Reference(urn:uuid:{{ provider.identifier }})
-* organization = Reference(urn:uuid:{{ provider.instanceorg }})
+* id = "{{ provider.instancerole }}"
+* practitioner = Reference(urn:uuid:{{ provider.instanceprovider }})
+* organization = Reference(urn:uuid:{{ provider.instanceroleorg }})
 {# populate .text #}
 * text.status = #generated
-* text.div ="""
-<div xmlns="http://www.w3.org/1999/xhtml"
+* text.div = """
+<div xmlns="http://www.w3.org/1999/xhtml">
 <table class="hl7__ips">Provider Role Id {{ provider.instancerole }}</table>
 </div>
 """
 
 {# emit Organization #}
 {# ----------------- #}
-Instance: Instance-Organization-{{ provider.instanceorg }}
+Instance: Instance-Organization-{{ provider.instanceroleorg }}
 InstanceOf: OrganizationEu
 Title: "Organization Provider"
 Description: "Organization Provider"
 Usage: #inline
-* id = "{{ provider.instanceorg }}"
+* id = "{{ provider.instanceroleorg }}"
 
 * identifier.system = "urn:oid:{{ HL7EUROPEEXAMPLESOID }}"
 * identifier.value = "{{ provider.orgidentifier }}"
 * identifier.assigner.display = "HL7 Europe"
 
-* name = "{{ provider.orgname }}"
+* name = "{{ provider.providerorgname }}"
 
 {% if provider.address is not empty %}
 * address.line = "{{ provider.address }}"
@@ -66,14 +66,14 @@ Usage: #inline
 
 {# emit Practitioner #}
 {# ----------------- #}
-Instance: Instance-Practitioner
+Instance: Instance-Practitioner-{{ provider.instanceprovider }}
 InstanceOf: PractitionerEu
 Title: "Practitioner Provider"
 Description: "Practitioner Provider"
 Usage: #inline
 * id = "{{ provider.instanceprovider }}"
 * name.prefix = "{{ provider.providernameprefix }}"
-* name.given[+] ="{{ provider.providernamegiven }}"
+* name.given[+] = "{{ provider.providernamegiven }}"
 * name.family = "{{ provider.providernamefamily }}"
 {# populate .text #}
 * text.status = #generated

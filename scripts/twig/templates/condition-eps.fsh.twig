@@ -9,7 +9,7 @@
 #}
 
 %%FSH%% {# tag required #}
-Instance: {{ setInstance("Instance-Observation-" ~ instanceid) }}
+Instance: {{ setInstance("Instance-Condition-" ~ instanceid) }}
 InstanceOf: ConditionUvIps
 Title: "Condition (IPS)"
 Description: "Condition"
@@ -46,7 +46,7 @@ Usage: #inline
 {% endif %}
 
 * category = $condition-category#problem-list-item "Problem List Item"
-* code.coding[0] = $sct#{{ condition.code }} "{{ condition.display }}"
+* code.coding[0] = $sct#{{ condition.snomed }} "{{ condition.display }}"
 * code.text = "{{ preferred }}"
 
 {# *** HTML td 1: condition #}
@@ -97,7 +97,6 @@ Usage: #inline
 """
 
 %%HEAD%% {# tag required, content below maybe emtpy #}
-<!-- empty -->
 
 %%HTML%% {# tag required, content below maybe emtpy #}
 {{ emitHTML() | raw }}

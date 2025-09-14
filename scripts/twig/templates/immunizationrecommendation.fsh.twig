@@ -17,8 +17,6 @@ Usage: #inline
 
 * id = "{{ instanceid }}"
 
-* status = #active
-
 {# addign headers for HTML table #}
 {{ addHEAD_tr() }}
 {{ addHEAD_th("Immunization Recommendation") }}
@@ -30,13 +28,13 @@ Usage: #inline
 
 * date = "{{ immunizationrecommendation.recommendationCreated }}"
 
-* subject = Reference(urn:uuid:{{ patient.instanceid }}) "{{ patient.name }}"
+* patient = Reference(urn:uuid:{{ patient.instanceid }}) "{{ patient.name }}"
 
 * recommendation[0].vaccineCode = $sct#{{ immunizationrecommendation.vaccineCode }} "{{ immunizationrecommendation.vaccineCodeDisplay }}"
 {{ addHTML_td(immunizationrecommendation.vaccineCodeDisplay) }}
 
 {% if immunizationrecommendation.targetDisease is not empty %}
-* recommendation[0].recommendation = $sct#{{ immunizationrecommendation.targetDisease }} "{{ immunizationrecommendation.targetDiseaseDisplay }}"
+* recommendation[0].targetDisease = $sct#{{ immunizationrecommendation.targetDisease }} "{{ immunizationrecommendation.targetDiseaseDisplay }}"
 {% endif %}
 
 {% if immunizationrecommendation.dateDue is empty %}
