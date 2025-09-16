@@ -1,9 +1,13 @@
 {#
-  This is the TWIG file for the creation of an ProcedureEPS
-  It creates a FSH part including the HTML part in text.div from the |%%FSH%% tag on
-  The HTML part is created by amalgamating the HTML strings to the final one
-  It creates the HTML part as well and includes that below after the |%%HTML%% tag
-  The two tagged parts are post-processed by the SYNDERAI script
+  This is the TWIG file for the creation of a Procedure
+
+  It creates a FSH part from the |%%FSH%% tag on using the twig language
+  It includes the HTML part to be used in for text.div after the |%%HTML%% tag
+  and optional there is also a table header to be defined that appears after
+  the |%%HEAD%% tag, creation can be done using internal functions like addHTML_tr etc.
+  The HTML part is created by amalgamating the HTML strings to the final one.
+
+  The tagged parts are post-processed by the SYNDERAI mstwiggy script
 
   KH since 2025-09-02
 #}
@@ -16,6 +20,13 @@ Description: "Procedure"
 Usage: #inline
 
 * id = "{{ instanceid }}"
+
+{# addign headers for HTML table #}
+{{ addHEAD_tr() }}
+{{ addHEAD_th("Procedure") }}
+{{ addHEAD_th("Date") }}
+{{ addHEAD_th("Reason") }}
+{{ addHEAD_trend() -}}
 
 {{ addHTML_tr() }}
 
@@ -51,7 +62,7 @@ Usage: #inline
 {{ addHTML_trend() -}}
 
 {# populate .text #}
-* text.status = #generated");
+* text.status = #generated
 * text.div = """
 <div xmlns="http://www.w3.org/1999/xhtml">
 <table class="hl7__ips">{{ emitHTML() | raw }}</table>
@@ -59,7 +70,7 @@ Usage: #inline
 """
 
 %%HEAD%% {# tag required, content below maybe emtpy #}
-<!-- empty -->
+{{ emitHEAD() | raw }}
 
 %%HTML%% {# tag required, content below maybe emtpy #}
 {{ emitHTML() | raw }}

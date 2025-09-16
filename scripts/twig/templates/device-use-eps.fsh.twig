@@ -9,15 +9,6 @@
 #}
 
 %%FSH%% {# tag required #}
-
-{# addign headers for HTML table #}
-{{ addHEAD_tr() }}
-{{ addHEAD_th("Device") }}
-{{ addHEAD_th("Date (since)") }}
-{{ addHEAD_trend() -}}
-
-{{ addHTML_tr() }}
-
 {# first emit the device #}
 Instance: {{ setInstance("Instance-Device-" ~ deinstanceid) }}
 InstanceOf: DeviceEuEps
@@ -46,10 +37,20 @@ Usage: #inline
 
 * id = "{{ duinstanceid }}"
 
+{# addign headers for HTML table #}
+{{ addHEAD_tr() }}
+{{ addHEAD_th("Device") }}
+{{ addHEAD_th("Date (since)") }}
+{{ addHEAD_trend() -}}
+
+{{ addHTML_tr() }}
+
 * status = #active {# always still active in our cases #}
 
+{# *** HTML td 1: device #}
 {{ addHTML_td(device.display) }}
 
+{# *** HTML td 2: date since #}
 {% if device.start is empty %}
 * timing.extension.url = "http://hl7.org/fhir/StructureDefinition/data-absent-reason"
 * timing.extension.valueCode = #unknown

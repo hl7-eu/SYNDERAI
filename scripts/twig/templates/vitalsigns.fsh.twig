@@ -1,0 +1,71 @@
+{#
+  This is the TWIG file for the creation of a Vital Sign Observation
+
+  It creates a FSH part from the |%%FSH%% tag on using the twig language
+  It includes the HTML part to be used in for text.div after the |%%HTML%% tag
+  and optional there is also a table header to be defined that appears after
+  the |%%HEAD%% tag, creation can be done using internal functions like addHTML_tr etc.
+  The HTML part is created by amalgamating the HTML strings to the final one.
+
+  The tagged parts are post-processed by the SYNDERAI mstwiggy script
+
+  KH since 2025-09-02
+#}
+
+%%FSH%% {# tag required #}
+Instance: {{ setInstance("Instance-Observation-" ~ instanceid) }}
+InstanceOf: http://hl7.org/fhir/StructureDefinition/vitalsigns
+Title: "Vital Signs"
+Description: "Vital Signs"
+Usage: #inline
+
+* id = "{{ instanceid }}"
+
+{# addign headers for HTML table #}
+{{ addHEAD_tr() }}
+{{ addHEAD_th("Vital Sign") }}
+{{ addHEAD_th("Date") }}
+{{ addHEAD_th("Measurement") }}
+{{ addHEAD_trend() -}}
+
+* status = #final
+
+* category[VSCat].coding[0] = http://terminology.hl7.org/CodeSystem/observation-category#vital-signs "Vital Signs"
+
+{{ addHTML_tr() }}
+
+{# *** HTML td 1: code #}
+* code = $loinc#${{ vital.loinc }} "{{ vital.loincdisplay }}"
+{{ addHTML_td(vital.loincdisplay) }}
+
+* subject = Reference(urn:uuid:{{ patient.instanceid }}) "{{ patient.name }}"
+
+{# *** HTML td 2: date #}
+* effectiveDateTime = "{{ vital.date }}"
+{{ addHTML_tdnb(vital.date) }}
+
+{# *** HTML td 3: measurement #}
+{% if vital.scale == "numeric" %}
+* valueQuantity.value = "{{ vital.value }}"
+* valueQuantity.code = $ucum#{{ vital.unit }}
+* valueQuantity.unit = "{{ vital.unit }}"
+{{ addHTML_td(vital.value ~ " " ~ vital.unit) }}
+{% else %}
+{{ addHTML_td("-") }}
+{% endif %}
+
+{{ addHTML_trend() -}}
+
+{# populate .text #}
+* text.status = #generated
+* text.div = """
+<div xmlns="http://www.w3.org/1999/xhtml">
+<table class="hl7__ips">{{ emitHTML() | raw }}</table>
+</div>
+"""
+
+%%HEAD%% {# tag required, content below maybe emtpy #}
+{{ emitHEAD() | raw }}
+
+%%HTML%% {# tag required, content below maybe emtpy #}
+{{ emitHTML() | raw }}
