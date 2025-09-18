@@ -46,7 +46,7 @@ Usage: #inline
 {{ addHTML_td("?") }}
 {% else %}
 * performedDateTime = "{{ procedure.date }}"
-{{ addHTML_tdnb(procedure.date) }}
+{{ addHTML_tdnb(procedure.date|date('d-M-Y')) }}
 {% endif %}
 
 {# *** HTML td 3: reason #}

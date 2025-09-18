@@ -44,7 +44,7 @@ Usage: #inline
 
 {# *** HTML td 3: birthdate #}
 * birthDate = "{{patient.birthdate }}"
-{{ addHTML_td(patient.birthdate) }}
+{{ addHTML_td(patient.birthdate|date('d-M-Y')) }}
 
 * address[+].use = #home
 * address[=].type = #physical
@@ -55,6 +55,13 @@ Usage: #inline
 
 * telecom[+].system = #phone
 * telecom[=].value = "{{ patient.phone }}"
+
+{#
+  if country is specifed use nationality as extension;
+  use 2-char nameset for that coded in ISO 3166 Part 1 Country Codes
+#}
+* extension[+].url = "http://hl7.org/fhir/StructureDefinition/patient-nationality"
+* extension[=].valueCodeableConcept = http://hl7.org/fhir/ValueSet/country#{{ patient.nameset|upper }}
 
 {{ addHTML_trend() -}}
 

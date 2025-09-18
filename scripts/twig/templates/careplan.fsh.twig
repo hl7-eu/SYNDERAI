@@ -19,7 +19,7 @@ Usage: #inline
 
 {# addign headers for HTML table #}
 {{ addHEAD_tr() }}
-{{ addHEAD_th("Active Planned Care") }}
+{{ addHEAD_th("Active Planned Care / Goals") }}
 {{ addHEAD_th("Date") }}
 {{ addHEAD_th("Reason") }}
 {{ addHEAD_trend() -}}
@@ -40,7 +40,7 @@ Usage: #inline
 {{ addHTML_td(careplan.preferredTerm) }}
 
 * period.start = "{{ careplan.start }}"
-{{ addHTML_tdnb(careplan.start) }}
+{{ addHTML_tdnb(careplan.start|date('d-M-Y')) }}
 
 {% if careplan.reason is empty %}
 {{ addHTML_td("-") }}
@@ -51,16 +51,48 @@ Usage: #inline
 
 {{ addHTML_trend() -}}
 
+{# second row with optional goals #}
+{% set got = "" %}
+{% for g in goals %}
+* goal[+] = Reference(urn:uuid:{{ g.instanceid }})
+{# add also the HTML rendition of the goals #}
+{% set got = got ~ "<li>" ~ g.description ~ "</li>" %}
+{% endfor %}
+
+{% if got is not empty %}
+{# add the second row with goals #}
+{{ addHTML_tr() }}
+{{ addHTML_td("<ul>" ~ got | escape ~ "</ul>") }}
+{{ addHTML_td("") }}
+{{ addHTML_td("") }}
+{{ addHTML_trend() -}}
+{% endif %}
+
 {# populate .text #}
 * text.status = #generated
 * text.div = """
 <div xmlns="http://www.w3.org/1999/xhtml">
-<table class="hl7__ips">{{ emitHTML() | raw }}</table>
+<table class="hl7__ips">{{ emitHEAD() | raw }}{{ emitHTML() | raw }}</table>
 </div>
 """
 
+{# emit all goals as part of the FSH for care plans #}
+{% for g in goals %}
+Instance: Instance-Goal-{{ g.instanceid }}
+InstanceOf: Goal
+Title: "{{ g.title }}"
+Description: "{{ g.description}}"
+Usage: #inline
+* id = "{{ g.instanceid }}"
+* lifecycleStatus = #active
+* description.text = "{{ g.description}}"
+* subject = Reference(urn:uuid:{{ patient.instanceid }}) "{{ patient.name }}"
+
+{{ g.fsh | raw }}
+
+{% endfor %}
+
 %%HEAD%% {# tag required, content below maybe emtpy #}
-<!-- empty -->
 
 %%HTML%% {# tag required, content below maybe emtpy #}
 {{ emitHTML() | raw }}

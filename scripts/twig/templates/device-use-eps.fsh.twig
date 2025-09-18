@@ -57,7 +57,7 @@ Usage: #inline
 {{ addHTML_td("?") }}
 {% else %}
 * timingPeriod.start = "{{ device.start }}"
-{{ addHTML_tdnb(device.start) -}}
+{{ addHTML_tdnb(device.start|date('d-M-Y')) -}}
 {% endif %}
 
 * device = Reference(urn:uuid:{{ deinstanceid }}) "{{ device.display }}"

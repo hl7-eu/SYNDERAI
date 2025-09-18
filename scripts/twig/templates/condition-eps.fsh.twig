@@ -63,10 +63,10 @@ Usage: #inline
 {{ addHTML_td("?") }}
 {% else %}
 * onsetDateTime = "{{ condition.start }}"
-{% set hperiod = condition.start %}
+{% set hperiod = condition.start|date('d-M-Y') %}
 {% if condition.end is not empty %}
 * abatementDateTime = "{{ condition.end }}"
-{% set hperiod = hperiod ~ " - " ~ condition.end %}
+{% set hperiod = hperiod ~ " - " ~ condition.end|date('d-M-Y') %}
 {% endif %}
 {{ addHTML_tdnb(hperiod) -}}
 {% endif %}

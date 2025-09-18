@@ -35,13 +35,13 @@ Usage: #inline
 
 {# add snomed if available #}
 {% if immunization.snomed is not empty %}
-* vaccineCode.coding[0] = $sct#{{ immunization.snomed }} "{{ immunization.snomeddisplay }}"
+* vaccineCode.coding[+] = $sct#{{ immunization.snomed }} "{{ immunization.snomeddisplay }}"
 {% endif %}
 {% if immunization.atc is not empty %}
-* vaccineCode.coding[0] = $atc#{{ immunization.atc }} "{{ immunization.atcdisplay }}"
+* vaccineCode.coding[+] = $atc#{{ immunization.atc }} "{{ immunization.atcdisplay }}"
 {% endif %}
 {% if immunization.cvx is not empty %}
-* vaccineCode.coding[0] = $cvx#{{ immunization.cvx }} "{{ immunization.cvxdisplay }}"
+* vaccineCode.coding[+] = $cvx#{{ immunization.cvx }} "{{ immunization.cvxdisplay }}"
 {% endif %}
 * vaccineCode.text = "{{ immunization.preferredTerm }}"
 {{ addHTML_td(immunization.preferredTerm) }}
@@ -52,7 +52,7 @@ Usage: #inline
 {{ addHTML_td("?") }}
 {% else %}
 * occurrenceDateTime = "{{ immunization.date }}"
-{{ addHTML_tdnb(immunization.date) -}}
+{{ addHTML_tdnb(immunization.date|date('d-M-Y')) -}}
 {% endif %}
 
 {% if immunization.lotNumber is not empty %}

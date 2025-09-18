@@ -42,11 +42,11 @@ Usage: #inline
 
 {# *** HTML td 2: date #}
 * effectiveDateTime = "{{ vital.date }}"
-{{ addHTML_tdnb(vital.date) }}
+{{ addHTML_td(vital.date|date('d-M-Y')) }}
 
 {# *** HTML td 3: measurement #}
 {% if vital.scale == "numeric" %}
-* valueQuantity.value = "{{ vital.value }}"
+* valueQuantity.value = {{ vital.value }}
 * valueQuantity.code = $ucum#{{ vital.unit }}
 * valueQuantity.unit = "{{ vital.unit }}"
 {{ addHTML_td(vital.value ~ " " ~ vital.unit) }}
@@ -60,12 +60,11 @@ Usage: #inline
 * text.status = #generated
 * text.div = """
 <div xmlns="http://www.w3.org/1999/xhtml">
-<table class="hl7__ips">{{ emitHTML() | raw }}</table>
+<table class="hl7__ips">{{ emitHEAD() | raw }}{{ emitHTML() | raw }}</table>
 </div>
 """
 
 %%HEAD%% {# tag required, content below maybe emtpy #}
-{{ emitHEAD() | raw }}
 
 %%HTML%% {# tag required, content below maybe emtpy #}
 {{ emitHTML() | raw }}

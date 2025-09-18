@@ -42,7 +42,7 @@ Usage: #inline
 {% else %}
 * recommendation[0].dateCriterion[0].code = $loinc#30980-7 "Date vaccine due"
 * recommendation[0].dateCriterion[0].value = "{{ immunizationrecommendation.dateDue }}"
-{{ addHTML_tdnb(immunizationrecommendation.dateDue) }}
+{{ addHTML_tdnb(immunizationrecommendation.dateDue|date('d-M-Y')) }}
 {% endif %}
 
 {% if immunizationrecommendation.seriesText is empty %}
