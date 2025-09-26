@@ -1,13 +1,6 @@
 {#
-  This is the TWIG file for the creation of a Procedure
-
-  It creates a FSH part from the |%%FSH%% tag on using the twig language
-  It includes the HTML part to be used in for text.div after the |%%HTML%% tag
-  and optional there is also a table header to be defined that appears after
-  the |%%HEAD%% tag, creation can be done using internal functions like addHTML_tr etc.
-  The HTML part is created by amalgamating the HTML strings to the final one.
-
-  The tagged parts are post-processed by the SYNDERAI mstwiggy script
+  This is the TWIG file for the creation of an FSH instance including the HTML parts.
+  see README.md
 
   KH since 2025-09-02
 #}
@@ -32,11 +25,18 @@ Usage: #inline
 
 * status = #completed
 
-{# *** HTML td 1: code #}
-{% if procedure.snomed %}
-* code.coding[0] = $sct#{{ prcoedue.snomed }} "{{ procedure.snmoeddisplay }}"
-* code.text = "{{ procedure.preferredTerm }}"
-{{ addHTML_td(procedure.preferredTerm) }}
+{# *** HTML td 1: code/display #}
+{% if procedure.code %}
+
+* code.coding[0] = {{ procedure.code.system }}#{{ procedure.code.code }} "{{ procedure.code.display }}"
+
+{% if procedure.code.preferredTerm is empty %}
+{{ addHTML_td(procedure.code.display) }}
+{% else %}
+* code.text = "{{ procedure.code.preferredTerm }}"
+{{ addHTML_td(procedure.code.preferredTerm) }}
+{% endif %}
+
 {% endif %}
 
 {# *** HTML td 2: date #}
@@ -51,10 +51,10 @@ Usage: #inline
 
 {# *** HTML td 3: reason #}
 {% if procedure.reason is empty %}
-{{ addHTML_td("?") }}
+{{ addHTML_td("-") }}
 {% else %}
-* reasonCode.coding[0] = $sct#{{ prcoedue.reason }} "{{ procedure.reasondisplay }}"
-{{ addHTML_td(procedure.reasondisplay) }}
+* reasonCode.coding[0] = {{ procedure.reason.system }}#{{ procedure.reason.code }} "{{ procedure.reason.display }}"
+{{ addHTML_td(procedure.reason.display) }}
 {% endif %}
 
 * subject = Reference(urn:uuid:{{ patient.instanceid }}) "{{ patient.name }}"

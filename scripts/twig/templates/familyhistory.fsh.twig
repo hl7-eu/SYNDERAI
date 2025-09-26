@@ -1,0 +1,49 @@
+{#
+  This is the TWIG file for the creation of an FSH instance including the HTML parts.
+  see README.md
+
+  KH since 2025-09-10
+#}
+
+%%FSH%% {# tag required #}
+Instance: {{ setInstance("Instance-FamilyMemberHistory-" ~ instanceid) }}
+InstanceOf: FamilyMemberHistoryEuHdr
+Title: "Family Member History"
+Description: "Family Member History"
+Usage: #inline
+
+* id = "{{ instanceid }}"
+
+{# addign headers for HTML table #}
+{{ addHEAD_tr() }}
+{{ addHEAD_th("Family Member") }}
+{{ addHEAD_th("Condition") }}
+{{ addHEAD_trend() -}}
+
+{{ addHTML_tr() }}
+
+* status = #completed
+
+* subject = Reference(urn:uuid:{{ patient.instanceid }}) "{{ patient.name }}"
+
+* relationship = {{ familyhistory.relationship.system }}#{{ familyhistory.relationship.code }} "{{ familyhistory.relationship.display }}"
+{{ addHTML_td(familyhistory.relationship.display) }}
+
+* condition[0].code = {{ familyhistory.condition.system }}#{{ familyhistory.condition.code }} "{{ familyhistory.condition.display }}"
+{{ addHTML_td(familyhistory.condition.display) }}
+
+{{ addHTML_trend() -}}
+
+{# populate .text #}
+* text.status = #generated
+* text.div = """
+<div xmlns="http://www.w3.org/1999/xhtml">
+<table class="hl7__ips">{{ emitHEAD() | raw }}{{ emitHTML() | raw }}</table>
+</div>
+"""
+
+%%HEAD%% {# tag required, content below maybe emtpy #}
+{{ emitHEAD() | raw }}
+
+%%HTML%% {# tag required, content below maybe emtpy #}
+{{ emitHTML() | raw }}

@@ -1,0 +1,88 @@
+{#
+  This is the TWIG file for the creation of an FSH instance including the HTML parts.
+  see README.md
+
+  KH since 2025-09-14
+#}
+
+%%FSH%% {# tag required #}
+
+{# hospital as practitioner role #}
+Instance: Instance-PractitionerRole-{{ hospital.instancerole }}
+InstanceOf: PractitionerRoleEu
+Usage: #inline
+* id = "{{ hospital.instancerole }}"
+* practitioner = Reference(urn:uuid:{{ hospital.instancepractitioner }})
+* organization = Reference(urn:uuid:{{ hospital.instanceorganization }})
+{# populate .text #}
+* text.status = #generated
+* text.div = """
+<div xmlns="http://www.w3.org/1999/xhtml">
+Hospital Role Id: {{ hospital.instancerole }}
+</div>
+"""
+
+{# practitioner in hospital #}
+Instance: Instance-Practitioner-{{ hospital.instancepractitioner }}
+InstanceOf: PractitionerEu
+Usage: #inline
+* id = "{{ hospital.instancepractitioner }}"
+* identifier.system = "urn:oid:{{ HL7EUROPEEXAMPLESOID }}"
+{% set practitioneridentifier = getUUID() %}
+* identifier.value = "{{ practitioneridentifier }}"
+* identifier.assigner.display = "HL7 Europe"
+* name.prefix = "{{ hospital.practitioner.prefix }}"
+* name.given = "{{ hospital.practitioner.given }}"
+* name.family = "{{ hospital.practitioner.family }}"
+{% if hospital.practitioner.email is not empty %}
+* telecom.system = #email
+* telecom.value = "{{ hospital.practitioner.email }}"
+{% endif %}
+{% if hospital.practitioner.phone is not empty %}
+* telecom.system = #phone
+* telecom.value = "{{ hospital.practitioner.phone }}"
+{% endif %}
+{# populate .text #}
+* text.status = #generated
+* text.div = """
+<div xmlns="http://www.w3.org/1999/xhtml">
+Practitioner in Hospital: {{ hospital.practitioner.prefix ~ " " ~ hospital.practitioner.given ~ " " ~ hospital.practitioner.family }}
+</div>
+"""
+
+{# hospital as organization #}
+Instance: Instance-Organization-{{ hospital.instanceorganization }}
+InstanceOf: Organization
+Usage: #inline
+* id = "{{ hospital.instanceorganization }}"
+* name = "{{ hospital.name }}"
+
+{% if hospital.street is not empty %}
+* address.line = "{{ hospital.street }}"
+{% endif %}
+{% if hospital.address is not empty %}
+* address.line = "{{ hospital.address }}"
+{% endif %}
+{% if hospital.city is not empty %}
+* address.city = "{{ hospital.city }}"
+{% endif %}
+{% if hospital.postcode is not empty %}
+* address.postalCode = "{{ hospital.postcode }}"
+{% endif %}
+{% if hospital.countryname is not empty %}
+* address.country = "{{ hospital.countryname }}"
+{% endif %}
+{% if hospital.country is not empty %}
+* address.country = "{{ hospital.country }}"
+{% endif %}
+{# populate .text #}
+* text.status = #generated
+* text.div = """
+<div xmlns="http://www.w3.org/1999/xhtml">
+Hospital: {{ hospital.name }}, {{ hospital.postcode }} {{ hospital.city }}, {{ hospital.country }}
+</div>
+"""
+
+%%HEAD%% {# tag required, content below maybe emtpy #}
+
+%%HTML%% {# tag required, content below maybe emtpy #}

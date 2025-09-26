@@ -1,10 +1,7 @@
 {#
-  This is the TWIG file for the creation of an ObservationResultsLaboratoryEu
-  It creates a FSH part including the HTML part in text.div from the |%%FSH%% tag on
-  The HTML part is created by amalgamating the HTML strings to the final one
-  It creates the HTML part as well and includes that below after the |%%HTML%% tag
-  The two tagged parts are post-processed by the SYNDERAI script
-
+  This is the TWIG file for the creation of an FSH instance including the HTML parts.
+  see README.md
+  
   KH since 2025-09-02
 #}
 
@@ -35,7 +32,7 @@ Usage: #inline
 
 * category[laboratory].coding = $observation-category#laboratory
 
-* code.coding[+] = ${{ labresult.code.system }}#{{ labresult.code.code}} "{{ labresult.code.display }}"
+* code.coding[+] = ${{ labresult.code.system }}#{{ labresult.code.code }} "{{ labresult.code.display }}"
 * code.text = "{{ labresult.code.display }}"
 {{ addHTML_td(labresult.code.display) }}
 

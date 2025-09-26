@@ -1,9 +1,6 @@
 {#
-  This is the TWIG file for the creation of an PatientEPS
-  It creates a FSH part including the HTML part in text.div from the |%%FSH%% tag on
-  The HTML part is created by amalgamating the HTML strings to the final one
-  It creates the HTML part as well and includes that below after the |%%HTML%% tag
-  The two tagged parts are post-processed by the SYNDERAI script
+  This is the TWIG file for the creation of an FSH instance including the HTML parts.
+  see README.md
 
   KH since 2025-09-07
 #}
@@ -19,18 +16,24 @@ Usage: #inline
 
 {{ addHTML_tr() }}
 
-
 {# 
   emit data of the identifiers
 #}
 
-* identifier[+].type = $v2-0203#JHN
+* identifier[+].type = $v2-0203#PT
 * identifier[=].system = "http://ec.europa.eu/identifier/eci"
 * identifier[=].value = "{{ patient.eci }}"
 
-* identifier[+].type = $v2-0203#JHN
+{% if patient.match is not empty %}
+* identifier[+].type = $v2-0203#MR
 * identifier[=].system = "http://local.setting.eu/identifier"
 * identifier[=].value = "{{ patient.match }}"
+{% endif %}
+{% if patient.localid is not empty %}
+* identifier[+].type = $v2-0203#MR
+* identifier[=].system = "http://local.setting.eu/identifier"
+* identifier[=].value = "{{ patient.localid }}"
+{% endif %}
 
 {# *** HTML td 1: name #}
 * name[+].family = "{{ patient.family }}"

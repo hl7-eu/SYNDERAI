@@ -1,10 +1,7 @@
 {#
-  This is the TWIG file for the creation of an ObservationPregnancyStatusUvIps
-  It creates a FSH part including the HTML part in text.div from the |%%FSH%% tag on
-  The HTML part is created by amalgamating the HTML strings to the final one
-  It creates the HTML part as well and includes that below after the |%%HTML%% tag
-  The two tagged parts are post-processed by the SYNDERAI script
-
+  This is the TWIG file for the creation of an FSH instance including the HTML parts.
+  see README.md
+  
   KH since 2025-09-02
 #}
 
@@ -29,6 +26,7 @@ Usage: #inline
 
 * effectiveDateTime = "{{ effective | slice(0, 10) }}"
 
+{# fixed things for pregnancy status #}
 {% if pregnant == 1 %}
 * valueCodeableConcept = $sct#77386006 "Pregnant"
 {{- addTD("Pregnant") }}

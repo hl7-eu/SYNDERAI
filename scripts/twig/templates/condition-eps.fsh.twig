@@ -1,9 +1,6 @@
 {#
-  This is the TWIG file for the creation of an ConditionEPS
-  It creates a FSH part including the HTML part in text.div from the |%%FSH%% tag on
-  The HTML part is created by amalgamating the HTML strings to the final one
-  It creates the HTML part as well and includes that below after the |%%HTML%% tag
-  The two tagged parts are post-processed by the SYNDERAI script
+  This is the TWIG file for the creation of an FSH instance including the HTML parts.
+  see README.md
 
   KH since 2025-09-02
 #}
@@ -38,15 +35,15 @@ Usage: #inline
 {% set activeflag = condition.active | slice(0, 1) %} {# condition.active format is SYYYY-MM-DD with S status 1=active, 0=inactive #}
 {% set inactive = activeflag == 0 %}
 {# condition#s preferred term #}
-{% set preferred = condition.display %}
-{% if condition.preferredTerm is not empty %}
-{% if condition.display != condition.preferredTerm %}
-{% set preferred = condition.preferredTerm %}
+{% set preferred = condition.code.display %}
+{% if condition.code.preferredTerm is not empty %}
+{% if condition.code.display != condition.code.preferredTerm %}
+{% set preferred = condition.code.preferredTerm %}
 {% endif %}
 {% endif %}
 
 * category = $condition-category#problem-list-item "Problem List Item"
-* code.coding[0] = $sct#{{ condition.snomed }} "{{ condition.display }}"
+* code.coding[0] = {{ condition.code.system }}#{{ condition.code.code }} "{{ condition.code.display }}"
 * code.text = "{{ preferred }}"
 
 {# *** HTML td 1: condition #}

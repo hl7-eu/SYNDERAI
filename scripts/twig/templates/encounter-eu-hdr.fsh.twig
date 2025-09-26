@@ -1,0 +1,83 @@
+{#
+  This is the TWIG file for the creation of an FSH instance including the HTML parts.
+  see README.md
+
+  KH since 2025-09-07
+#}
+
+%%FSH%% {# tag required #}
+Instance: {{ setInstance("Instance-Encounter-" ~ encounter.instanceid) }}
+InstanceOf: EncounterEuHdr
+Title: "Encounter (HDR)"
+Description: "Encounter"
+Usage: #inline
+
+* id = "{{ encounter.instanceid }}"
+
+{# addign headers for HTML table #}
+{{ addHEAD_tr() }}
+{{ addHEAD_th("Location") }}
+{{ addHEAD_th("Period") }}
+{{ addHEAD_th("Reason(s)") }}
+{{ addHEAD_trend() -}}
+
+{{ addHTML_tr() }}
+
+* status = #finished
+* class = $v3-ActCode#IMP
+
+{% if hospital.instanceorganization is not empty %}
+{# serviceProvider shall be an organization = hospital #}
+* serviceProvider = Reference(urn:uuid:{{ hospital.instanceorganization }})
+{% endif %}
+{{ addHTML_td(hospital.name ~ ", " ~ hospital.city ~ ", " ~ hospital.country) }}
+
+{% if hospital.instanceid is not empty %}
+{# primary performer is a participant individual = practitioner role in that hospital #}
+* participant[0].type = $v3-ParticipationType#PPRF "primary performer"
+{% if encounter.end is not empty %}
+* participant[0].period.end = "{{ encounter.end }}"
+{% endif %}
+* participant[0].individual = Reference(urn:uuid:{{ hospital.instanceid }})
+{% endif %}
+
+{% if encounter.start is not empty %}
+* period.start = "{{ encounter.start }}"
+{% endif %}
+{% if encounter.end is not empty %}
+* period.start = "{{ encounter.end }}"
+{% endif %}
+{{ addHTML_td( encounter.start|date('d-m-Y') ~ " - " ~ encounter.end|date('d-m-Y') ) }}
+
+* subject = Reference({{ patient.instanceid }}) "{{ patient.name }}"
+
+{# reason for encounter #}
+{% set rea = "<ul>" %}
+{% for r in encounter.reason %}
+* reasonCode[+] = {{ r.system }}#{{ r.code }} "{{ r.display }}"
+{# add also the HTML rendition of the reason #}
+{% set rea = rea ~ "<li>" ~ r.display ~ "</li>" %}
+{% endfor %}
+{% set rea = rea ~ "</ul>" %}
+{{ addHTML_td(rea) }}
+
+{# service type for encounter #}
+{% for s in encounter.service %}
+* serviceType[+] = {{ s.system }}#{{ s.code }} "{{ s.display }}"
+{% endfor %}
+
+{{ addHTML_trend() -}}
+
+{# populate .text #}
+* text.status = #generated
+* text.div = """
+<div xmlns="http://www.w3.org/1999/xhtml">
+<table class="hl7__ips">{{ emitHTML() | raw }}</table>
+</div>
+"""
+
+%%HEAD%% {# tag required, content below maybe emtpy #}
+{{ emitHEAD() | raw }}
+
+%%HTML%% {# tag required, content below maybe emtpy #}
+{{ emitHTML() | raw }}

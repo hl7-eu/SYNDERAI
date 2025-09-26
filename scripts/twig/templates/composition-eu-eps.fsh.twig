@@ -6,13 +6,39 @@
 #}
 
 %%FSH%% {# tag required #}
-Instance: {{ setInstance("Instance-Observation-" ~ instanceid) }}
-InstanceOf: http://hl7.org/fhir/StructureDefinition/vitalsigns
-Title: "Vital Signs"
-Description: "Vital Signs"
+Instance: {{ setInstance("Instance-Composition-" ~ instanceid) }}
+InstanceOf: CompositionEuEps
 Usage: #inline
 
 * id = "{{ instanceid }}"
+
+* identifier.system = "urn:oid:{{ HL7EUROPEEXAMPLESOID }}"
+* identifier.value = "{{ composition.identifier }}"
+* identifier.assigner.display = "HL7 Europe"
+
+* title = "European Patient Summary"
+
+* status = #final
+
+* type = $loinc#60591-5 "Patient summary Document"
+* type.text = "Patient summary Document"
+
+* subject = Reference(urn:uuid:{{ patient.instanceid }}) "{{ patient.name }}"
+
+* author[+] = Reference(urn:uuid:{{ provider.instancerole }})
+
+* custodian[+] = Reference(urn:uuid:{{ provider.instanceroleorg }})
+
+* date = "{{ composition.date|date('Y-m-d\TH:i:s\Z') }}
+
+* confidentiality = #N
+
+
+
+
+
+
+
 
 {# addign headers for HTML table #}
 {{ addHEAD_tr() }}
@@ -21,7 +47,6 @@ Usage: #inline
 {{ addHEAD_th("Measurement") }}
 {{ addHEAD_trend() -}}
 
-* status = #final
 
 * category[VSCat].coding[0] = http://terminology.hl7.org/CodeSystem/observation-category#vital-signs "Vital Signs"
 

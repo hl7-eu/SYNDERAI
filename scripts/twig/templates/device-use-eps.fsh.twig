@@ -1,14 +1,12 @@
 {#
-  This is the TWIG file for the creation of a Device and DeviceUse
-  It creates a FSH part including the HTML part in text.div from the |%%FSH%% tag on
-  The HTML part is created by amalgamating the HTML strings to the final one
-  It creates the HTML part as well and includes that below after the |%%HTML%% tag
-  The two tagged parts are post-processed by the SYNDERAI script
+  This is the TWIG file for the creation of an FSH instance including the HTML parts.
+  see README.md
 
   KH since 2025-09-12
 #}
 
 %%FSH%% {# tag required #}
+
 {# first emit the device #}
 Instance: {{ setInstance("Instance-Device-" ~ deinstanceid) }}
 InstanceOf: DeviceEuEps
@@ -24,8 +22,8 @@ Usage: #inline
 
 * udiCarrier[0].id = "{{ device.uid }}"
 
-{% if device.snomed is not empty %}
-* type = $sct#{{ device.snomed }} "{{ device.display }}"
+{% if device.code is not empty %}
+* type = {{ device.system }}#{{ device.code }} "{{ device.display }}"
 {% endif %}
 
 {# now the device use statement #}

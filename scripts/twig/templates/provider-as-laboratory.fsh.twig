@@ -1,9 +1,6 @@
 {#
-  This is the TWIG file for the creation of an PractitionerRole
-  It creates a FSH part including the HTML part in text.div from the |%%FSH%% tag on
-  The HTML part is created by amalgamating the HTML strings to the final one
-  It creates the HTML part as well and includes that below after the |%%HTML%% tag
-  The two tagged parts are post-processed by the SYNDERAI script
+  This is the TWIG file for the creation of an FSH instance including the HTML parts.
+  see README.md
 
   KH since 2025-09-14
 #}
@@ -15,7 +12,13 @@ InstanceOf: PractitionerRoleEu
 Usage: #inline
 * id = "{{ laboratory.instancerole }}"
 * practitioner = Reference(urn:uuid:{{ laboratory.instancepractitioner }})
-
+{# populate .text #}
+* text.status = #generated
+* text.div = """
+<div xmlns="http://www.w3.org/1999/xhtml">
+Laboratory Role Id: {{ laboratory.instancerole }}
+</div>
+"""
 
 Instance: Instance-Practitioner-{{ laboratory.instancepractitioner }}
 InstanceOf: PractitionerEu
@@ -33,6 +36,13 @@ Usage: #inline
 * address.postalCode = "1000"
 * address.city = "Brussels"
 * address.country = "Belgium"
+{# populate .text #}
+* text.status = #generated
+* text.div = """
+<div xmlns="http://www.w3.org/1999/xhtml">
+Laboratory: Laboratoire Central Européenne, 1000 Brussels, Belgium
+</div>
+"""
 {# FAKE ADD ONS #}
 
 %%HEAD%% {# tag required, content below maybe emtpy #}

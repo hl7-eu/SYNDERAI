@@ -1,9 +1,6 @@
 {#
-  This is the TWIG file for the creation of an PractitionerRole and Organization
-  It creates a FSH part including the HTML part in text.div from the |%%FSH%% tag on
-  The HTML part is created by amalgamating the HTML strings to the final one
-  It creates the HTML part as well and includes that below after the |%%HTML%% tag
-  The two tagged parts are post-processed by the SYNDERAI script
+  This is the TWIG file for the creation of an FSH instance including the HTML parts.
+  see README.md
 
   KH since 2025-09-07
 #}
@@ -23,7 +20,7 @@ Usage: #inline
 * text.status = #generated
 * text.div = """
 <div xmlns="http://www.w3.org/1999/xhtml">
-<table class="hl7__ips">Provider Role Id {{ requester.instancerole }}</table>
+Provider Role Id: {{ requester.instancerole }}
 </div>
 """
 
@@ -54,11 +51,12 @@ Usage: #inline
 {% if provider.country is not empty %}
 * address.country = "{{ provider.country }}"
 {% endif %}
+
 {# populate .text #}
 * text.status = #generated
 * text.div = """
 <div xmlns="http://www.w3.org/1999/xhtml">
-<table class="hl7__ips">{{ provider.providerorgname }}</table>
+Provider Organization: {{ requester.orgname }}
 </div>
 """
 

@@ -1,9 +1,6 @@
 {#
-  This is the TWIG file for the creation of an CarePlan
-  It creates a FSH part including the HTML part in text.div from the |%%FSH%% tag on
-  The HTML part is created by amalgamating the HTML strings to the final one
-  It creates the HTML part as well and includes that below after the |%%HTML%% tag
-  The two tagged parts are post-processed by the SYNDERAI script
+  This is the TWIG file for the creation of an FSH instance including the HTML parts.
+  see README.md
 
   KH since 2025-09-10
 #}
@@ -33,11 +30,26 @@ Usage: #inline
 
 * category.coding = http://terminology.hl7.org/CodeSystem/care-plan-category#assess-plan "Assessment and Plan"
 
+{% if careplan.kind is empty %}
 * activity.detail.kind = #appointment
+{% else %}
+* activity.detail.kind = {{ careplan.kind }}
+{% endif %}
+
+{% if careplan.status is empty %}
 * activity.detail.status = #unknown
-* activity.detail.code.coding = $sct#{{ careplan.snomed }} "{{ careplan.snomeddisplay }}"
-* activity.detail.description = "{{ careplan.preferredTerm }}"
-{{ addHTML_td(careplan.preferredTerm) }}
+{% else %}
+* activity.detail.status = {{ careplan.status }}
+{% endif %}
+
+* activity.detail.code.coding = {{ careplan.activity.system }}#{{ careplan.activity.code }} "{{ careplan.activity.display }}"
+
+{% if careplan.activity.preferredTerm is not empty %}
+* activity.detail.description = "{{ careplan.activity.preferredTerm }}"
+{{ addHTML_td(careplan.activity.preferredTerm) }}
+{% else %}
+{{ addHTML_td(careplan.activity.display) }}
+{% endif %}
 
 * period.start = "{{ careplan.start }}"
 {{ addHTML_tdnb(careplan.start|date('d-M-Y')) }}
@@ -45,8 +57,8 @@ Usage: #inline
 {% if careplan.reason is empty %}
 {{ addHTML_td("-") }}
 {% else %}
-* activity.detail.reasonCode = $sct#{{ careplan.reason }} "{{ careplan.reasondisplay }}"
-{{ addHTML_td(careplan.reasondisplay) }}
+* activity.detail.reasonCode = {{ careplan.reason.system }}#{{ careplan.reason.code }} "{{ careplan.reasond.isplay }}"
+{{ addHTML_td(careplan.reason.display) }}
 {% endif %}
 
 {{ addHTML_trend() -}}
