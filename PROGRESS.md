@@ -12,3 +12,11 @@
 - 2025-05-11: during the HL7 International FHIR Connectahon in Madrid, a set of Hospital Discharge Reports (HDR) were created, checked and validated against the HDR specification 0.0.1
 - 2025-05-13: Lab Report Examples are validated against the lastest build of the HL7 European Laboratory Report
 - 2025-06-17: 19 European Patient Summary Examples
+- 2025-07-24: Added Care Plans and Immunization Recommendations to European Patient Summary
+- 2025-07-29: Added Vital Signs with two measurements and Pregnancy information to European Patient Summary
+- 2025-08-24: Introduction of Device Use Statements for European Patient Summary
+- 2025-08-31: Combined generating algorithms for European Patient Summary and Lab Reports
+- 2025-09-01: Multiple Lab Reports per patient (time sequence)
+- 2025-09-02: Introduction of TWIG templates for the final generation of FHIR FSH artifacts
+- 2025-09-17: Finalized Care Plans with goals for European Patient Summary
+- 2025-09-29: New set of synthetic demographic data, matched with clinical data
