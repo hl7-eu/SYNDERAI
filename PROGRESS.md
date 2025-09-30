@@ -19,4 +19,5 @@
 - 2025-09-01: Multiple Lab Reports per patient (time sequence)
 - 2025-09-02: Introduction of TWIG templates for the final generation of FHIR FSH artifacts
 - 2025-09-17: Finalized Care Plans with goals for European Patient Summary
+- 2025-09-18: Published 37 HL7 FHIR example instances of the European European Patient Summary (EPS), 106 HL7 FHIR example instances of the European Laboratory Report (LAB), 3 HL7 FHIR example instances of the European Hospital Discharge Report (HDR)
 - 2025-09-29: New set of synthetic demographic data, matched with clinical data

@@ -13,7 +13,7 @@ Granular facts for Synthetic Example Data are subject to real medical knowledge.
 
 HL7 Europe started this effort with a focus on Synthetic Example Data with a “real” medical background – as if from or for “real” care – but “invented” matching patient demographics. This is done using several sources of generated data, amalgamating it with additional localized data (for geo location of the synthetic patients and providers, see figure 1) and statistical methods also used for clinical trials (stratification [[1](#_ftn1)] of subjects) as well as AI technologies to supplement data for the created strata and synthetic clinical story.
 
-| ![EUSY](img/europe_marked_points_styled-cropped.png)         |
+| <img src="img/europe_marked_points_styled-cropped.png" alt="EUSY" style="zoom:15%;" /> |
 | ------------------------------------------------------------ |
 | *Figure 1: Geo-Localization of “patients” and  “providers” of Synthetic Example Realistic Data. The  example data is a randomized amalgamation of synthetic sources, bringing  stratification and other statistical methods into play.* |
 

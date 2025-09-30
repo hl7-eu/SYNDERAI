@@ -45,7 +45,7 @@ Following the design, a couple of achievements were made: European patient cohor
 
 Large collections of synthetic human names residing in Europe with gender, language, birthdate and age, nationality, home address and geo coordinates were created using a couple of generators such as Faker, GeoPandas, Pycountry and Natural Earth Data. Please look at [Credits, Courtesy and Contributors](CCC.md) for details. 
 
-| ![EUSY](../../art-decor-tooling/Next%20Generation%20Publications/art-decor-technical-documentation/docs/img/europe_marked_points_styled-cropped.png) |
+| <img src="img/europe_marked_points_styled-cropped.png" alt="EUSY" style="zoom:15%;" /> |
 | ------------------------------------------------------------ |
 | *Figure 1: Geo-Localization of “patients” and  “providers” of Synthetic Example Realistic Data. The  example data is a randomized amalgamation of synthetic sources, bringing  stratification and other statistical methods into play.* |
 
@@ -65,11 +65,12 @@ For SYNDERAI the approach was chosen to use the Synthea clinical data, and assoc
 
 For thast purpose, statistical methods also used for clinical trials (stratification [[1](#_ftn1)] of subjects) as well as AI technologies were applied to the two data sets. As stratification factors, gender and (almost same) age were chosen. 
 
-| **nl** | **Assen**     | **female** | **79** |
-| ------ | ------------- | ---------- | ------ |
-| **nl** | van de Kreeke | female     | 55     |
-| **dk** | Møller        | male       | 81     |
-| **nl** | Goorhuis      | male       | 82     |
+| Nationality | Name          | Gender     | Age    |
+| ----------- | ------------- | ---------- | ------ |
+| **nl**      | **Assen**     | **female** | **79** |
+| **nl**      | van de Kreeke | female     | 55     |
+| **dk**      | Møller        | male       | 81     |
+| **nl**      | Goorhuis      | male       | 82     |
 
 *Example data for the startification strategy to combine different data sets to the SYNDERAI complete synthetic clinical stories*
 
