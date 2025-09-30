@@ -43,17 +43,27 @@ Following the design, a couple of achievements were made: European patient cohor
 
 #### Demographics
 
-Large collections of human names in Europe with gender and age, mix newly to create use case bound personas
+Large collections of synthetic human names residing in Europe with gender, language, birthdate and age, nationality, home address and geo coordinates were created using a couple of generators such as Faker, GeoPandas, Pycountry and Natural Earth Data. Please look at [Credits, Courtesy and Contributors](CCC.md) for details. 
 
-**25tipster** initiative 25.000 IPS sythetic data.
+| ![EUSY](../../art-decor-tooling/Next%20Generation%20Publications/art-decor-technical-documentation/docs/img/europe_marked_points_styled-cropped.png) |
+| ------------------------------------------------------------ |
+| *Figure 1: Geo-Localization of “patients” and  “providers” of Synthetic Example Realistic Data. The  example data is a randomized amalgamation of synthetic sources, bringing  stratification and other statistical methods into play.* |
 
-| **Number** | **Gender** | **NameSet** | **Title** | **GivenName** | **MiddleInitial** | **Surname**   | **StreetAddress**   | **City**    | **State** | **StateFull**    | **ZipCode** | **Country** | **CountryFull** | **EmailAddress**                                             | **TelephoneNumber** | **TelephoneCountryCode** | **MothersMaiden** | **Birthday** | **Age** | **TropicalZodiac** | **CCType** | **CCNumber**     | **CVV2** | **CCExpires** | **NationalID** | **UPS**                  | **WesternUnionMTCN** | **MoneyGramMTCN** | **Color** | **Occupation**                        | **Company**  | **Vehicle**                  | **Domain**                                  | **BloodType** | **Pounds** | **Kilograms** | **FeetInches** | **Centimeters** | **GUID**                             | **Latitude** | **Longitude** |
-| ---------- | ---------- | ----------- | --------- | ------------- | ----------------- | ------------- | ------------------- | ----------- | --------- | ---------------- | ----------- | ----------- | --------------- | ------------------------------------------------------------ | ------------------- | ------------------------ | ----------------- | ------------ | ------- | ------------------ | ---------- | ---------------- | -------- | ------------- | -------------- | ------------------------ | -------------------- | ----------------- | --------- | ------------------------------------- | ------------ | ---------------------------- | ------------------------------------------- | ------------- | ---------- | ------------- | -------------- | --------------- | ------------------------------------ | ------------ | ------------- |
-| **1**      | female     | Dutch       | Ms.       | Ida           | B                 | Assen         | Mollstrasse 41      | Weiterstadt | HE        | Hessen           | 64331       | DE          | Germany         | [IdaAssen@teleworm.us](mailto:IdaAssen@teleworm.us)          | 06150 35 05 43      | 49                       | Petersen          | 4/15/1944    | 79      | Aries              | MasterCard | 5187624373445239 | 854      | 9/2028        |                | 1Z 552 830 53 4721 517 5 | 1523092882           | 13691055          | Black     | Floor sander                          | System Star  | 2009 Aston Martin V8 Vantage | [VIPinterview.de](http://VIPinterview.de)   | A+            | 115.7      | 52.6          | 4' 11"         | 150             | ba53775a-a052-4020-bcb0-441e07ed7fab | 49.989312    | 8.504845      |
-| **2**      | female     | Dutch       | Mrs.      | Eliane        | R                 | van de Kreeke | Akonmäentie 90      | IISALMI     | NS        | Northern Savonia | 74100       | FI          | Finland         | [ElianevandeKreeke@superrito.com](mailto:ElianevandeKreeke@superrito.com) | 046 030 3712        | 358                      | Elst              | 2/18/1969    | 55      | Aquarius           | Visa       | 4916644089442222 | 218      | 9/2025        | 180269-4983    | 1Z 709 631 86 4461 518 4 | 4342501321           | 35137143          | Green     | Teletype operator                     | Elek-Tek     | 1998 Seat Marbella           | [SoftballGroup.fi](http://SoftballGroup.fi) | AB+           | 134.9      | 61.3          | 5' 5"          | 164             | 27ed9343-58d4-4e9a-a973-2c06e9895fbc | 63.626351    | 27.233851     |
-| **3**      | male       | Danish      | Mr.       | Bent          | A                 | Møller        | Achter de Hoven 157 | Maasbree    | LI        | Limburg          | 5993 CR     | NL          | Netherlands     | [BentAMoller@teleworm.us](mailto:BentAMoller@teleworm.us)    | 06-82923705         | 31                       | Christensen       | 9/5/1942     | 81      | Virgo              | Visa       | 4716842722061035 | 737      | 5/2028        |                | 1Z 288 7W1 91 0634 428 7 | 8372278393           | 70988556          | Orange    | Cementing and gluing machine operator | Funtown toys | 2010 Jaguar XF               | [SeekFashions.nl](http://SeekFashions.nl)   | B+            | 176.7      | 80.3          | 5' 5"          | 164             | c105f9a0-e158-4e1c-bf29-2c68ba484fd1 | 51.335932    | 6.088348      |
+The original idea was born with the **25tipster** initiative from 2020 where a start was made to generate 25.000 International Patient Summary (IPS) synthetic data sets. For SYNDERAI a set of more than 30.000 example demographic data sets were compiled. See the table below for an example snapshot of the data.
 
-xxx
+![syntable](img/syntable.png)
+
+*Figure 2: Snapshot of the SYNDERAI generated synthetic demographic data set*
+
+#### Synthea
+
+[Synthea](https://synthetichealth.github.io/synthea/) from the MITRE Corporation is a well-known and mature synthetic data generator tool. It produces diagnoses, laboratory values, vital signs, immunizations and many more coded data in context. Patients are also included but they are typically US-centric. It also offers a set of international provider data such as hospitals or primary care providers.
+
+For SYNDERAI the approach was chosen to use the Synthea clinical data, and associate the European demographic data with the US-data.
+
+#### Stratification
+
+For thast purpose, statistical methods also used for clinical trials (stratification [[1](#_ftn1)] of subjects) as well as AI technologies were applied to the two data sets. As stratification factors, gender and (almost same) age were chosen. 
 
 | **nl** | **Assen**     | **female** | **79** |
 | ------ | ------------- | ---------- | ------ |
@@ -61,49 +71,43 @@ xxx
 | **dk** | Møller        | male       | 81     |
 | **nl** | Goorhuis      | male       | 82     |
 
-| **nl** | **Ida** | **female** | **79** |
-| ------ | ------- | ---------- | ------ |
-| **nl** | Eliane  | female     | 55     |
-| **dk** | Bent    | male       | 81     |
-| **nl** | Reijer  | male       | 82     |
+*Example data for the startification strategy to combine different data sets to the SYNDERAI complete synthetic clinical stories*
 
-strato-proximity-match: nationality gender almost-same-age
+Matching the Synthea clinical part with the European demographic data finally formed the "synthetic foundation" to draw a complete synthetic clinical story for all example artifactcs and for selected personas. With that, multiple cohesive laboratory report sequences, European Patient Summaries and more artifacts could be created.
 
-=> source for personas step 1
+#### Providers and Proximity
 
-#### Stratification
+Synthea also offers a set of international provider data such as hospitals or primary care providers, including their "fake" addresses and geo locations. For matching the EU patients described above with at least a close-by provider, geo-proximity methods were applied to find hospitals or primary care physicians.
 
-d [[1](#_ftn1)] b
+#### Personas
 
-#### Providers
-
-#### Proximity
-
-### Clinical relationship
+Finally a smaller set of personas were invented based on the described synthetic foundation. In selected cases, stories were defined for Hospital Discharge Reports that were completed by matching data. 
 
 ![image-20250514085415926](img/threegens.png)
 
 *Depositphotos.com © Yevhen Shkolenko*
 
-### Synthea
+#### Mappings of Coded Concepts
 
-Gives diagnoses lab values vital signs and immunizations in context., assoc patients are not used but bound tongue stratified personas 
-
-=> source for personas step 2
-
-#### Personas
-
-Invent personas based on granular facts. 
+A certain effort was put into mapping coded concepts in the US-centric Synthea data set to coded concepts used in Europe. The mapping was documented in the ART-DECOR® tool and provided as concept maps for the example compiling algorithms. 
 
 ### AI in SYNDERAI
 
-The use of **Artificial Intelligence** is applied to just fragments and parts of the complete "story", SYNDERAI tells, not to invent whole stories. For example, the Lab Report is based on realistic lab values and projected on European citzizen/patients all over Europe, stratified [[1](#_ftn1)] by demographic and clinical factors to reach close clinical coverage. Only the normal lab value ranges based on the strata used is provided by concise calls to the AI API.
+The use of **Artificial Intelligence** is applied to just fragments and parts of the complete "story", SYNDERAI tells, not to invent whole stories. 
 
-for fragments and parts, lab data normal range based on age and gender 
+For example, the compilation of the EU demographic data set uses AI to better locate and match pure demographic data with geo locations such as addresses etc.
+
+The Laboratory Report is based on realistic lab values and projected on European citzizen/patients all over Europe, stratified [[1](#_ftn1)] by demographic and clinical factors to reach close clinical coverage. Only the normal lab value ranges based on the strata used is provided by concise calls to the AI API. A conclusion is drawn using AI per lab report, based on all prior synthetic lab reports for the respective patient.
+
+Another example is the medication part where an appropriate dosage for a specific medication is proposed by AI. Also the existing Care Plans were complemented by human readable goals based on the coded activities that were generated for many synthetic clinical stories.
 
 ### The Human Text
 
-invent human text for typical HDR sections based on granular synthetic but realistic facts such a medication. Lab results, diagnoses. 
+Human reable text was also invented, partially with AI assistance, especially for the Hopsital Discharge Reports (HDR). In reality, HDR sections typically contain text along with granular data such as codes or measurements for medication, results, diagnoses, etc. 
+
+For consistency in the example generating algorithms, a **Instance Short Hand** (ISH) notation was added to the tooling to allow concise description of instance contents while the actual generation of FHIR examples including identifiers and references used the same mechanisms as for the other artifacts.
+
+<img src="img/ishexample.png" alt="image-20250930103806919" style="zoom:45%;" />
 
 ## The xShare Yellow Button Story
 
