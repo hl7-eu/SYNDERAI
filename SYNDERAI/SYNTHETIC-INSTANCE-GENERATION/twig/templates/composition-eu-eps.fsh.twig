@@ -1,0 +1,74 @@
+{#
+  This is the TWIG file for the creation of an FSH instance including the HTML parts.
+  see README.md
+  
+  KH since 2025-09-02
+#}
+
+%%FSH%% {# tag required #}
+Instance: {{ setInstance("Instance-Composition-" ~ composition.instanceid) }}
+InstanceOf: CompositionEuEps
+Usage: #inline
+
+* id = "{{ composition.instanceid }}"
+
+* identifier.system = "urn:oid:{{ HL7EUROPEEXAMPLESOID }}"
+* identifier.value = "{{ composition.identifier }}"
+* identifier.assigner.display = "HL7 Europe"
+
+* title = "European Patient Summary"
+
+* status = #final
+
+* type = $loinc#60591-5 "Patient summary Document"
+* type.text = "Patient summary Document"
+
+* subject = Reference(urn:uuid:{{ patient.instanceid }}) "{{ patient.name }}"
+
+* author[+] = Reference(urn:uuid:{{ provider.instancerole }})
+
+* custodian[+] = Reference(urn:uuid:{{ provider.instanceroleorg }})
+
+* date = "{{ composition.date|date('Y-m-d') }}"
+
+* confidentiality = #N
+
+{% set sectioncount = 0 %}
+
+{% for slicename, section in sections %}
+
+{% set sectioncount = sectioncount + 1 %}
+//
+// section, slice {{ slicename }}
+//
+* section[{{ slicename }}]
+  * title = "{{ section.title }}"
+  * code = {{ section.code }} "{{ section.display }}"
+{# populate .text #}
+  * text.status = #generated
+  * text.div = """
+<div xmlns="http://www.w3.org/1999/xhtml">
+{{ section.text | raw }}
+</div>
+"""
+{% for entry in section.entries %}
+
+{% if entry.sectionentryslicename is empty %}
+{% set sectionentryslicename = "" %}
+{% else %}
+{% set sectionentryslicename = "[" ~ entry.sectionentryslicename ~ "]" %}
+{% endif %}
+
+{% if entry.nosectionentry is empty or entry.nosectionentry != "TRUE" %}
+ * entry{{ sectionentryslicename }}[+] = Reference(urn:uuid:{{ entry.id }})
+ {% endif %}
+
+{% endfor %} {# entries #}
+
+{% endfor %} {# sections #}
+
+
+%%HEAD%% {# tag required, content below maybe emtpy #}
+
+%%HTML%% {# tag required, content below maybe emtpy #}
+{{ emitHTML() | raw }}

@@ -68,7 +68,7 @@ The following shorthand functions are defined to create HTML table rows. They ar
 
 | Function call                | Definition                                                   |
 | ---------------------------- | ------------------------------------------------------------ |
-| setInstance(*instance-name*) | Sets the INSTANCE bag to *instance-name*, this is also part of the returned value, <br />Example: "Instance-DeviceUse-*uuid*" |
+| setInstance(*instance-name*) | Sets the INSTANCE bag to *instance-name*, this is also part of the returned value |
 | getUUID()                    | Emits a UUID                                                 |
 
 ### Global data for rendition

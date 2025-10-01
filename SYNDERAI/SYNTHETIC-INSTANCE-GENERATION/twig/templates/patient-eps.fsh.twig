@@ -7,8 +7,8 @@
 
 %%FSH%% {# tag required #}
 Instance: {{ setInstance("Instance-Patient-" ~ patient.instanceid) }}
-InstanceOf: PatientEuCore
-Title: "Patient (EU Core)"
+InstanceOf: PatientEuEps
+Title: "Patient (EPS)"
 Description: "Patient"
 Usage: #inline
 
@@ -51,7 +51,15 @@ Usage: #inline
 
 * address[+].use = #home
 * address[=].type = #physical
-* address[=].line[+] = "{{ patient.street }}"
+{% if patient.street1 is not empty %}
+* address[=].line[+] = "{{ patient.street1 }}"
+{% endif %}
+{% if patient.street2 is not empty %}
+* address[=].line[+] = "{{ patient.street2 }}"
+{% endif %}
+{% if patient.street3 is not empty %}
+* address[=].line[+] = "{{ patient.street3 }}"
+{% endif %}
 * address[=].city = "{{ patient.city }}"
 * address[=].postalCode = "{{ patient.postcode }}"
 * address[=].country = "{{ patient.countryname }}"
@@ -64,7 +72,7 @@ Usage: #inline
   use 2-char nameset for that coded in ISO 3166 Part 1 Country Codes
 #}
 * extension[+].url = "http://hl7.org/fhir/StructureDefinition/patient-nationality"
-* extension[=].valueCodeableConcept = http://hl7.org/fhir/ValueSet/country#{{ patient.nameset|upper }}
+* extension[=].valueCodeableConcept = http://hl7.org/fhir/ValueSet/country#{{ patient.countrycode|upper }}
 
 {{ addHTML_trend() -}}
 
