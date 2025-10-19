@@ -6,8 +6,7 @@
 #}
 
 %%FSH%% {# tag required #}
-{% set instance = "Instance-Observation-" ~ instanceid %}
-Instance: {{ instance }}
+Instance: {{ setInstance("Instance-Observation-" ~ instanceid) }}
 InstanceOf: ObservationResultsLaboratoryEu
 Title: "Observation Results Laboratory"
 Description: "Observation Results Laboratory"
@@ -56,6 +55,8 @@ Usage: #inline
 * referenceRange[+].low = {{ labresult.reference.low }} ${{ labresult.value.system }}#{{ labresult.reference.unit }}
 * referenceRange[+].high = {{ labresult.reference.high }} ${{ labresult.value.system }}#{{ labresult.reference.unit }}
 
+{{ addHTML_td(labresult.reference.low ~ " - " ~ labresult.reference.high) }}
+
 {% if labresult.value.value < labresult.reference.low %}
 * interpretation = $v3-ObservationInterpretation#L "Low"
 {{ addHTML_td("L") }}
@@ -100,7 +101,6 @@ Usage: #inline
 
 
 %%HEAD%% {# tag required, content below maybe emtpy #}
-<!-- empty, generated elsewhere -->
 
 %%HTML%% {# tag required, content below maybe emtpy #}
 {{ emitHTML() | raw }}
