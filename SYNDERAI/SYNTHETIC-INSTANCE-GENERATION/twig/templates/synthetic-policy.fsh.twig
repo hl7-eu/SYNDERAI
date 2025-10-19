@@ -1,0 +1,116 @@
+{#
+  This is the TWIG file for the creation of an FSH instance including the HTML parts.
+  see README.md
+
+  KH since 2025-09-10
+#}
+
+%%FSH%% {# tag required #}
+
+// ========================
+// Example Patient flagged as synthetic, conforming to the profile above
+Instance: Patient-example-synth
+InstanceOf: Patient
+Title: "Synthetic Patient Example"
+Usage: #example
+* meta.profile = "http://hl7.org/fhir/StructureDefinition/Patient" // normal Patient
+* meta.security[+].system = $ActReason
+* meta.security[=].code = #HTEST
+* meta.security[+].system = $ActReason
+* meta.security[=].code = #TRAIN
+* meta.tag[+].system = "https://synderai.net/fhir/CodeSystem/tags"
+* meta.tag[=].code = #synthetic
+* meta.tag[=].display = "Synthetic data"
+* id = "example-synth"
+* active = true
+* name[0].family = "Robot"
+* name[0].given[0] = "Ava"
+* gender = #female
+* birthDate = "1988-02-29"
+
+// ========================
+// Example Device that generated the data (referenced by Provenance.agent.who)
+Instance: Device-simulator-1
+InstanceOf: Device
+Title: "SYNDERAI Generator Device"
+Usage: #example
+* id = "simulator-1"
+* status = #active
+* distinctIdentifier = "synderai-gen-001"
+* deviceName[0].name = "SYNDERAI Synthetic Generator"
+* deviceName[0].type = #manufacturer-name
+* manufacturer = "SYNDERAI Project"
+* version[0].value = "1.2.0"
+
+// ========================
+// DocumentReference publishing the Synthetic Data Policy (URL points to your site)
+Instance: DocRef-Synthetic-Data-Policy
+InstanceOf: DocumentReference
+Title: "Synthetic Data Policy (DocumentReference)"
+Usage: #example
+* id = "synthetic-data-policy"
+* status = #current
+* docStatus = #final
+* type.text = "Policy"
+* category[0].text = "Data Governance Policy"
+* date = "2025-10-01T00:00:00Z"
+* description = "Policy describing generation, reuse, privacy status, and limitations of synthetic data."
+* content[0].attachment.contentType = #text/markdown
+* content[0].attachment.url = "https://synderai.net/policy/synthetic-data-policy"
+* content[0].attachment.title = "Synthetic Data Generation and Use Policy v1.2 (2025-10-01)"
+* securityLabel[0].coding[0].system = $ActReason
+* securityLabel[0].coding[0].code = #HTEST
+* securityLabel[+].coding[0].system = $ActReason
+* securityLabel[=].coding[0].code = #TRAIN
+* meta.tag[0].system = "https://synderai.net/fhir/CodeSystem/tags"
+* meta.tag[0].code = #synthetic
+
+// ========================
+// Provenance linking the synthetic Patient to the policy and the generator Device
+Instance: Provenance-example-synth
+InstanceOf: Provenance
+Title: "Provenance for Synthetic Patient"
+Usage: #example
+* target[0] = Reference(Patient-example-synth)
+* recorded = "2025-10-15T12:00:00Z"
+* activity.text = "Synthetic patient simulation"
+* policy[0] = "https://synderai.net/policy/synthetic-data-policy"
+* agent[0].type.text = "author"
+* agent[0].who = Reference(Device-simulator-1)
+* reason[0].text = "Interoperability testing and training (non-clinical use)"
+* entity[0].role = #source
+* entity[0].what = Reference(DocRef-Synthetic-Data-Policy)
+
+// ========================
+// OPTIONAL: Mark the example Patient as conforming to the synthetic profile
+Instance: Patient-example-synth-profiled
+InstanceOf: SYNDERAI-SyntheticResource
+Title: "Patient flagged by Synthetic Profile (metamodel check)"
+Usage: #example
+* id = "example-synth-profiled"
+* meta.security[0].system = $ActReason
+* meta.security[0].code = #HTEST
+* meta.tag[0].system = "https://synderai.net/fhir/CodeSystem/tags"
+* meta.tag[0].code = #synthetic
+
+// ========================
+// Bundle tying it together
+Instance: Bundle-synthetic-showcase
+InstanceOf: Bundle
+Title: "SYNDERAI Synthetic Showcase Bundle"
+Usage: #example
+* type = #collection
+* entry[0].fullUrl = "Patient/example-synth"
+* entry[0].resource = Patient-example-synth
+* entry[1].fullUrl = "Device/simulator-1"
+* entry[1].resource = Device-simulator-1
+* entry[2].fullUrl = "DocumentReference/synthetic-data-policy"
+* entry[2].resource = DocRef-Synthetic-Data-Policy
+* entry[3].fullUrl = "Provenance/example-synth"
+* entry[3].resource = Provenance-example-synth
+
+
+%%HEAD%% {# tag required, content below maybe emtpy #}
+
+%%HTML%% {# tag required, content below maybe emtpy #}
+{{ emitHTML() | raw }}

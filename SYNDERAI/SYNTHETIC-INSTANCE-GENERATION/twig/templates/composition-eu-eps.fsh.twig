@@ -8,7 +8,13 @@
 %%FSH%% {# tag required #}
 Instance: {{ setInstance("Instance-Composition-" ~ composition.instanceid) }}
 InstanceOf: CompositionEuEps
+Title: "HL7 Europe Patient Summary (EPS) Composition"
+{% set patientdisplay = patient.name ~ " (" ~ patient.age ~ " y/o) - synthetic data" %}
+Description: "Complete HL7 Europe Patient Summary (EPS) FHIR Composition example for {{ patientdisplay }}"
 Usage: #inline
+
+{# include synthetic data policy meta #}
+{{ syntheticDataPolicyMeta() | raw }}
 
 * id = "{{ composition.instanceid }}"
 
@@ -60,13 +66,12 @@ Usage: #inline
 {% endif %}
 
 {% if entry.nosectionentry is empty or entry.nosectionentry != "TRUE" %}
- * entry{{ sectionentryslicename }}[+] = Reference(urn:uuid:{{ entry.id }})
- {% endif %}
+  * entry{{ sectionentryslicename }}[+] = Reference(urn:uuid:{{ entry.id }})
+{% endif %}
 
 {% endfor %} {# entries #}
 
 {% endfor %} {# sections #}
-
 
 %%HEAD%% {# tag required, content below maybe emtpy #}
 

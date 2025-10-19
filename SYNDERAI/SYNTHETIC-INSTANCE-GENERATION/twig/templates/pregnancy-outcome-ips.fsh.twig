@@ -17,8 +17,7 @@
 #}
 
 %%FSH%% {# tag required #}
-{% set instance = "Instance-Observation-" ~ instanceid %}
-Instance: {{ instance }}
+Instance: {{ setInstance("Instance-Immunization-" ~ instanceid) }}
 InstanceOf: ObservationPregnancyOutcomeUvIps
 Title: "Observation Pregnancy - Outcome (IPS)"
 Description: "Observation Pregnancy - Outcome"
@@ -28,8 +27,10 @@ Usage: #inline
 
 * status = #final
 
+{{ addHTML_tr() }}
+
 * code = {{ pregnancy.system }}#{{ pregnancy.code }} "{{ pregnancy.display }}"
-{{- addTD(pregnancy.display) }}
+{{- addHTML_td(pregnancy.display) }}
 
 * effectiveDateTime = "{{ pregnancy.effective }}"
 
@@ -37,7 +38,7 @@ Usage: #inline
 * valueQuantity.unit = "count"
 * valueQuantity.system = $ucum
 * valueQuantity.code = #count
-{{- addTD(pregnancy.value) }}
+{{- addHTML_td(pregnancy.value) }}
 
 * subject = Reference(urn:uuid:{{ patient.instanceid }}) "{{ patient.name }}"
 

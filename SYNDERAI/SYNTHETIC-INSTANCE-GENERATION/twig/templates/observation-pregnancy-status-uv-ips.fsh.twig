@@ -6,8 +6,7 @@
 #}
 
 %%FSH%% {# tag required #}
-{% set instance = "Instance-Observation-" ~ instanceid %}
-Instance: {{ instance }}
+Instance: {{ setInstance("Instance-Immunization-" ~ instanceid) }}
 InstanceOf: ObservationPregnancyStatusUvIps
 Title: "Observation Pregnancy - Status (IPS)"
 Description: "Observation Pregnancy Status"
@@ -19,8 +18,9 @@ Usage: #inline
 
 * code = $loinc#82810-3 "Pregnancy status"
 
-{{- addTR() }}
-{{- addTD("Pregnancy status") }}
+{{ addHTML_tr() }}
+
+{{- addHTML_td("Pregnancy status") }}
 
 * patient = Reference(urn:uuid:{{ patient.instanceid }}) "{{ patient.name }}"
 
@@ -29,10 +29,10 @@ Usage: #inline
 {# fixed things for pregnancy status #}
 {% if pregnant == 1 %}
 * valueCodeableConcept = $sct#77386006 "Pregnant"
-{{- addTD("Pregnant") }}
+{{- addHTML_td("Pregnant") }}
 {% elseif pregnant == 0 %}
 * valueCodeableConcept = $sct#60001007 "Not pregnant"
-{{- addTD("Not pregnant") }}
+{{- addHTML_td("Not pregnant") }}
 {% endif %}
 
 {{- addTRe() -}}
@@ -45,6 +45,7 @@ Usage: #inline
 """
 
 %%HEAD%% {# tag required, content below maybe emtpy #}
+{{ emitHEAD() | raw }}
 
 %%HTML%% {# tag required, content below maybe emtpy #}
 {{ emitHTML() | raw }}

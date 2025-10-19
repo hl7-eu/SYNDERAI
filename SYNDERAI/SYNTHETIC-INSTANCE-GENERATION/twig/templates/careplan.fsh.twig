@@ -30,12 +30,6 @@ Usage: #inline
 
 * category.coding = http://terminology.hl7.org/CodeSystem/care-plan-category#assess-plan "Assessment and Plan"
 
-{% if careplan.kind is empty %}
-* activity.detail.kind = #appointment
-{% else %}
-* activity.detail.kind = {{ careplan.kind }}
-{% endif %}
-
 {% if careplan.status is empty %}
 * activity.detail.status = #unknown
 {% else %}
@@ -51,14 +45,26 @@ Usage: #inline
 {{ addHTML_td(careplan.activity.display) }}
 {% endif %}
 
+{% if careplan.kind is empty %}
+* activity.detail.kind = #Appointment
+{% else %}
+* activity.detail.kind = {{ careplan.kind }}
+{% endif %}
+
+{% if careplan.activity.doNotPerform is not empty %}
+* activity.detail.doNotPerform = true
+{% else %}
+
 * period.start = "{{ careplan.start }}"
 {{ addHTML_tdnb(careplan.start|date('d-M-Y')) }}
 
-{% if careplan.reason is empty %}
+{% if careplan.reason.code is empty %}
 {{ addHTML_td("-") }}
 {% else %}
-* activity.detail.reasonCode = {{ careplan.reason.system }}#{{ careplan.reason.code }} "{{ careplan.reasond.isplay }}"
+* activity.detail.reasonCode = {{ careplan.reason.system }}#{{ careplan.reason.code }} "{{ careplan.reason.display }}"
 {{ addHTML_td(careplan.reason.display) }}
+{% endif %}
+
 {% endif %}
 
 {{ addHTML_trend() -}}
@@ -68,13 +74,13 @@ Usage: #inline
 {% for g in goals %}
 * goal[+] = Reference(urn:uuid:{{ g.instanceid }})
 {# add also the HTML rendition of the goals #}
-{% set got = got ~ "<li>" ~ g.description ~ "</li>" %}
+{% set got = got ~ "<li>" ~ g.description | escape ~ "</li>" %}
 {% endfor %}
 
 {% if got is not empty %}
 {# add the second row with goals #}
 {{ addHTML_tr() }}
-{{ addHTML_td("<ul>" ~ got | escape ~ "</ul>") }}
+{{ addHTML_td("<ul>" ~ got | raw ~ "</ul>") }}
 {{ addHTML_td("") }}
 {{ addHTML_td("") }}
 {{ addHTML_trend() -}}

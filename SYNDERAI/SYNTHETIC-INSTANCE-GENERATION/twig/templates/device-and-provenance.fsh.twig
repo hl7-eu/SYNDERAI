@@ -1,0 +1,62 @@
+{#
+  This is the TWIG file for the creation of an FSH instance including the HTML parts.
+  see README.md
+
+  KH since 2025-10-17
+#}
+
+%%FSH%% {# tag required #}
+Instance: {{ setInstance("Instance-Device-" ~ provenance.deviceid) }}
+InstanceOf: Device
+Title: "SYNDERAI Synthetic Generator Device"
+Description: "Device that generated the data (referenced by each distint Provenance.agent.who)"
+Usage: #inline
+
+* id = "{{ provenance.deviceid }}"
+
+* status = #active"
+* distinctIdentifier = "synderai-generator-50"
+* deviceName[0].name = "SYNDERAI Synthetic Generator"
+* deviceName[0].type = #manufacturer-name
+* manufacturer = "SYNDERAI Project"
+* version[0].value = "5.0"
+
+{# populate .text #}
+* text.status = #generated
+* text.div = """
+<div xmlns="http://www.w3.org/1999/xhtml">
+SYNDERAI Synthetic Generator v5.0
+</div>
+"""
+
+Instance: {{ setInstance("Instance-Provenance-" ~ provenance.provenanceid) }}
+InstanceOf: Provenance
+Title: "Provenance for SYNDERAI Synthetic Example Data Resource"
+Description: "Provenance linking the synthetic example data resource to the policy and the generator Device"
+Usage: #inline
+
+* id = "{{ provenance.provenanceid }}"
+
+{# add all target references #}
+{% for t in provenance.targets %}
+* target[+] = Reference({{ t }})
+{% endfor %}
+
+* recorded = "{{ provenance.date }}"
+* activity.text = "Synthetic Example Data Generation"
+* policy[0] = "https://synderai.net/synderai-synthetic-data-policy"
+* agent[0].type.text = "author"
+* agent[0].who = Reference({{ provenance.deviceid }})
+* reason[0].text = "Interoperability Testing and Training (non-clinical use)"
+
+{# populate .text #}
+* text.status = #generated
+* text.div = """
+<div xmlns="http://www.w3.org/1999/xhtml">
+Provenance for SYNDERAI Synthetic Example Data Resource
+</div>
+"""
+
+%%HEAD%% {# tag required, content below maybe emtpy #}
+
+%%HTML%% {# tag required, content below maybe emtpy #}

@@ -26,23 +26,32 @@ Usage: #inline
 * status = #completed
 
 {# *** HTML td 1: code/display #}
-{% if procedure.code %}
+{% if procedure.code is not empty %}
 
 * code.coding[0] = {{ procedure.code.system }}#{{ procedure.code.code }} "{{ procedure.code.display }}"
 
+{# make html with display and possible site #}
 {% if procedure.code.preferredTerm is empty %}
-{{ addHTML_td(procedure.code.display) }}
+{% set dp = procedure.code.display %}
 {% else %}
 * code.text = "{{ procedure.code.preferredTerm }}"
-{{ addHTML_td(procedure.code.preferredTerm) }}
+{% set dp = procedure.code.preferredTerm %}
 {% endif %}
 
+{% if procedure.site.code is not empty %}
+{% set dp = dp ~ "<br/>" ~ procedure.site.display %}
+{% endif %}
+
+{{ addHTML_td(dp) }}
+
+{% else %}
+{{ addHTML_td("-") }}
 {% endif %}
 
 {# *** HTML td 2: date #}
 {% if procedure.date is empty %}
-* onsetDateTime.extension.url = "http://hl7.org/fhir/StructureDefinition/data-absent-reason"
-* onsetDateTime.extension.valueCode = #unknown
+* performedDateTime.extension.url = "http://hl7.org/fhir/StructureDefinition/data-absent-reason"
+* performedDateTime.extension.valueCode = #unknown
 {{ addHTML_td("?") }}
 {% else %}
 * performedDateTime = "{{ procedure.date }}"
@@ -50,11 +59,15 @@ Usage: #inline
 {% endif %}
 
 {# *** HTML td 3: reason #}
-{% if procedure.reason is empty %}
+{% if procedure.reason.code is empty %}
 {{ addHTML_td("-") }}
 {% else %}
 * reasonCode.coding[0] = {{ procedure.reason.system }}#{{ procedure.reason.code }} "{{ procedure.reason.display }}"
 {{ addHTML_td(procedure.reason.display) }}
+{% endif %}
+
+{% if procedure.site.code is not empty %}
+* site.coding[0] = {{ procedure.site.system }}#{{ procedure.site.code }} "{{ procedure.site.display }}"
 {% endif %}
 
 * subject = Reference(urn:uuid:{{ patient.instanceid }}) "{{ patient.name }}"

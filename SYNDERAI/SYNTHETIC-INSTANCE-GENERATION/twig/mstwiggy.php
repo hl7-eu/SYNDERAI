@@ -2,6 +2,9 @@
 
 require __DIR__ . '/autoload.php';
 
+/* INCLUDES */
+include_once("../CONSTANTS/constants.php");
+
 // Twig is a modern template engine for PHP
 
 function twigit ($data, $with) {
@@ -17,7 +20,7 @@ function twigit ($data, $with) {
     $bag = new ArrayObject();         // new per request!
     $twig->addGlobal('bag', $bag);    // register global twig html bag
     $bag['html'] = "";                // init html bag
-    $bag['instance'] = array();       // init instance(s) bag
+    $bag['instance'] = array();       // init instance(s) bag, array of strings
     $bag['heading'] = "";             // init heading bag
 
     /*********
@@ -84,6 +87,14 @@ function twigit ($data, $with) {
         return uuid();
     }));
 
+    /*********
+     * synthetic data policy and provenance parts
+     */
+    $twig->addFunction(new \Twig\TwigFunction('syntheticDataPolicyMeta', function () use ($bag) {
+        return implode("\n", SYNDERAI_SYNTHETIC_DATA_POLICY_META);
+    }));
+    
+
 
     // add some global data for rendition
     $data["HL7EUROPEEXAMPLESOID"] = HL7EUROPEEXAMPLESOID;
@@ -113,8 +124,12 @@ function twigit ($data, $with) {
     $retval[] = $fsh;
     $retval[] = $html;
     $retval[] = $head;
-    foreach ($bag['instance'] as $i)
+    if (count($bag['instance']) === 0) {
+        $retval[] = NULL;  // one default NULL instance
+    } else foreach ($bag['instance'] as $i)
         $retval[] = $i;
+
+    // if ($with === "pregnancy-outcome-ips") var_dump($retval);
     
     return $retval;  // return the list of variables
 

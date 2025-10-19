@@ -9,7 +9,7 @@
 Instance: {{ setInstance("Instance-Bundle-" ~ bundle.instanceid) }}
 InstanceOf: BundleLabReportEu
 Title: "HL7 Europe Laboratory Report (LAB) Bundle"
-{% set patientdisplay = patient.name ~ " (" ~ patient.age ~ " y/o)" %}
+{% set patientdisplay = patient.name ~ " (" ~ patient.age ~ " y/o) - synthetic data" %}
 Description: "Complete HL7 Europe Laboratory Report (LAB) FHIR Bundle example for {{ patientdisplay }}"
 Usage: #example
 
@@ -50,6 +50,12 @@ Usage: #example
 * entry[observation][+].fullUrl = "urn:uuid:{{ r.instanceid }}"
 * entry[observation][=].resource = Instance-Observation-{{ r.instanceid }}
 {% endfor %}
+
+{# add procenance and device #}
+* entry[+].fullUrl = "urn:uuid:{{ provenance.deviceid }}"
+* entry[=].resource = Instance-Device-{{ provenance.deviceid }}
+* entry[+].fullUrl = "urn:uuid:{{ provenance.provenanceid }}"
+* entry[=].resource = Instance-Provenance-{{ provenance.provenanceid }}
 
 {# FAKE ADD ONS - the laboratory organization and provider = legal attester #}
 * entry[practitionerRole][+].fullUrl = "urn:uuid:{{ laboratory.instancerole }}"

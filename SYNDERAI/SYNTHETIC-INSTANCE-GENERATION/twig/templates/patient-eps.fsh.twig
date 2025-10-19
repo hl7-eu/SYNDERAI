@@ -9,8 +9,11 @@
 Instance: {{ setInstance("Instance-Patient-" ~ patient.instanceid) }}
 InstanceOf: PatientEuEps
 Title: "Patient (EPS)"
-Description: "Patient"
+Description: "Patient {{ patient.given ~ " " ~ patient.family }} (Synthetic Data)"
 Usage: #inline
+
+{# include synthetic data policy meta #}
+{{ syntheticDataPolicyMeta() | raw }}
 
 * id = "{{ patient.instanceid }}"
 
@@ -60,8 +63,8 @@ Usage: #inline
 {% if patient.street3 is not empty %}
 * address[=].line[+] = "{{ patient.street3 }}"
 {% endif %}
-* address[=].city = "{{ patient.city }}"
 * address[=].postalCode = "{{ patient.postcode }}"
+* address[=].city = "{{ patient.city }}"
 * address[=].country = "{{ patient.countryname }}"
 
 * telecom[+].system = #phone
@@ -85,7 +88,6 @@ Usage: #inline
 """
 
 %%HEAD%% {# tag required, content below maybe emtpy #}
-<!-- empty -->
 
 %%HTML%% {# tag required, content below maybe emtpy #}
 {{ emitHTML() | raw }}

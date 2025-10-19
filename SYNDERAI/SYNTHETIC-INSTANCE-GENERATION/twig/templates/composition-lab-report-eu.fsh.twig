@@ -8,8 +8,9 @@
 %%FSH%% {# tag required #}
 Instance: {{ setInstance("Instance-Composition-" ~ composition.instanceid) }}
 InstanceOf: CompositionLabReportEu
-Title: "Composition Lab Report"
-Description: "Composition Lab Report"
+Title: "HL7 Europe Laboratory Report (LAB) Composition"
+{% set patientdisplay = patient.name ~ " (" ~ patient.age ~ " y/o) - synthetic data" %}
+Description: "Complete HL7 Europe Laboratory Report (LAB) FHIR Composition example for {{ patientdisplay }}"
 Usage: #inline
 
 * id = "{{ composition.instanceid }}"
@@ -29,7 +30,7 @@ Usage: #inline
 
 * subject = Reference(urn:uuid:{{ patient.instanceid }}) "{{ patient.name }}"
 
-* date = "{{ composition.reportdate }}"
+* date = "{{ composition.date }}"
 
 {# Laboratory Report, $patgender patient, age $patage yr, " . count($results) . " results #}
 * title = "Laboratory Report"
