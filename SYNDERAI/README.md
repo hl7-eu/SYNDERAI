@@ -34,6 +34,10 @@ This directory contains mapping files and concept maps used by the core process.
 
 This directory contains settings and global constants.
 
+### RECENT-RESULTS
+
+This directory contains subdirectories per artifact where the recently created JSON and XML Bundles reside.
+
 ### TESTBEDS
 
 This directory has some testing scripts and testing materials.
@@ -42,7 +46,7 @@ This directory has some testing scripts and testing materials.
 
 SYNDERAI provides realistic, privacy-preserving synthetic European healthcare data, including the first EU-Lab FHIR synthetic datasets. Explore reusable examples supported by AI for interoperability and secondary use in healthcare systems. And meet our Personas with their health story.
 
-The main purpose of the SYNDERAI methodology is to create 25.000+ records of **synthetic example instances** in FHIR based on the base of the European EHRxF specifications
+The main purpose of the SYNDERAI methodology is to create between 1,000 and 25,000+ records of **synthetic example instances** in FHIR based on the base of the European EHRxF specifications.
 
 ## Usage
 
