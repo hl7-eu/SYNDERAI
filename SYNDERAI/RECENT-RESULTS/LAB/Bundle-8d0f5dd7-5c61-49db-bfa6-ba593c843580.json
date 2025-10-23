@@ -1,0 +1,651 @@
+{
+  "resourceType": "Bundle",
+  "id": "8d0f5dd7-5c61-49db-bfa6-ba593c843580",
+  "meta": {
+    "profile": [
+      "http://hl7.eu/fhir/laboratory/StructureDefinition/Bundle-eu-lab"
+    ]
+  },
+  "identifier": {
+    "assigner": {
+      "display": "HL7 Europe"
+    },
+    "system": "urn:oid:2.16.840.1.113883.2.51.999",
+    "value": "78029d75-2568-447e-9a01-9c74940a2934"
+  },
+  "entry": [
+    {
+      "fullUrl": "urn:uuid:d453bf59-9a87-40bb-b118-a70895de1d76",
+      "resource": {
+        "resourceType": "Composition",
+        "id": "d453bf59-9a87-40bb-b118-a70895de1d76",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Composition-eu-lab"
+          ]
+        },
+        "identifier": {
+          "assigner": {
+            "display": "HL7 Europe"
+          },
+          "system": "urn:oid:2.16.840.1.113883.2.51.999",
+          "value": "04eda820-97df-4a9a-914e-3abe15882fdc"
+        },
+        "author": [
+          {
+            "reference": "urn:uuid:35c615c9-9598-48da-b4ca-ca6723dc6dc0"
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "type": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ],
+          "text": "Laboratory Report"
+        },
+        "section": [
+          {
+            "code": {
+              "coding": [
+                {
+                  "code": "26436-6",
+                  "system": "http://loinc.org",
+                  "display": "Laboratory studies (set)"
+                }
+              ],
+              "text": "Laboratory studies"
+            },
+            "section": [
+              {
+                "code": {
+                  "coding": [
+                    {
+                      "code": "$18719-5",
+                      "system": "http://loinc.org",
+                      "display": "Chemistry studies (set)"
+                    }
+                  ],
+                  "text": "Chemistry"
+                },
+                "entry": [
+                  {
+                    "reference": "urn:uuid:e625d978-87c5-494e-91c2-cee0db5e5682"
+                  }
+                ],
+                "text": {
+                  "status": "generated",
+                  "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>Chemistry</h3><table class=\"hl7__eu__lab__report\"><thead><tr><th>Test</th><th>10-DEC-2020</th><th>Reference&#xA0;Range</th><th>Unit</th></tr></thead><tbody><tr><td>Oxygen saturation in Arterial blood</td><td><strong>79.5 L</strong></td><td>95 - 100</td><td>%</td></tr></tbody></table></div>"
+                },
+                "title": "Chemistry"
+              }
+            ],
+            "title": "Laboratory Report"
+          },
+          {
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>Annotation</h3><table class=\"hl7__eu__lab__report\"><tr><th>Conclusion and Recommendations based on this report and previous findings known to us</th></tr><tr><td>The patient shows significantly reduced arterial oxygen saturation (79.5%, reference 95-100%), indicating hypoxemia. This finding warrants urgent clinical evaluation to identify and address underlying causes such as respiratory or cardiac dysfunction. Immediate medical attention is recommended.</td></tr></table></div>"
+            },
+            "code": {
+              "coding": [
+                {
+                  "system": "http://loinc.org",
+                  "code": "48767-8",
+                  "display": "Annotation comment"
+                }
+              ]
+            },
+            "title": "Annotation comment"
+          }
+        ],
+        "status": "final",
+        "subject": {
+          "reference": "urn:uuid:9e4676d3-e941-40a0-85d3-e83aa394131c",
+          "display": "Elias Höfig"
+        },
+        "date": "2020-12-10T10:47:46Z",
+        "title": "Laboratory Report",
+        "confidentiality": "N"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:0c36b6ce-140a-4d68-98d2-94ccbc8ce616",
+      "resource": {
+        "resourceType": "DiagnosticReport",
+        "id": "0c36b6ce-140a-4d68-98d2-94ccbc8ce616",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/DiagnosticReport-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "eba2485c-502f-4169-bf38-102565d41086"
+          }
+        ],
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-DiagnosticReport.composition",
+            "valueReference": {
+              "reference": "urn:uuid:04eda820-97df-4a9a-914e-3abe15882fdc"
+            }
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:15ea1763-e4c7-4f50-95d7-e0785f02e6e0"
+          }
+        ],
+        "result": [
+          {
+            "reference": "urn:uuid:e625d978-87c5-494e-91c2-cee0db5e5682"
+          }
+        ],
+        "status": "registered",
+        "code": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:9e4676d3-e941-40a0-85d3-e83aa394131c",
+          "display": "Elias Höfig"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:9e4676d3-e941-40a0-85d3-e83aa394131c",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "9e4676d3-e941-40a0-85d3-e83aa394131c",
+        "meta": {
+          "security": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "HTEST"
+            },
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "TRAIN"
+            }
+          ],
+          "tag": [
+            {
+              "system": "https://synderai.net/fhir/CodeSystem/tags",
+              "code": "synthetic",
+              "display": "SYNDERAI Synthetic data"
+            }
+          ],
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/patient-eu-core"
+          ]
+        },
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "PT",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://ec.europa.eu/identifier/eci",
+            "value": "7833-401919-3"
+          },
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "MR",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://local.setting.eu/identifier",
+            "value": "55b3d71c-a283-2178-4db6-d251ed0e1404"
+          }
+        ],
+        "name": [
+          {
+            "family": "Höfig"
+          },
+          {
+            "given": [
+              "Elias"
+            ]
+          },
+          {
+            "text": "Elias Höfig"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Pauline-Schwital-Allee 6-2"
+            ],
+            "use": "home",
+            "type": "physical",
+            "postalCode": "39326",
+            "city": "Wolmirstedt",
+            "country": "Germany"
+          }
+        ],
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "+49 (0) 4602 154908"
+          }
+        ],
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/StructureDefinition/patient-nationality",
+            "valueCodeableConcept": {
+              "coding": [
+                {
+                  "code": "DE",
+                  "system": "http://hl7.org/fhir/ValueSet/country"
+                }
+              ]
+            }
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__ips\"><tr><td>Elias Höfig</td><td>male</td><td>19-May-1974</td></tr></table></div>"
+        },
+        "gender": "male",
+        "birthDate": "1974-05-19"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:31f10725-5621-459a-99b0-7e2289be6ddb",
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "31f10725-5621-459a-99b0-7e2289be6ddb",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/ServiceRequest-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "system": "http://example.org",
+            "value": "51c18ca8-4868-44df-ad0b-3ced145c8247"
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:15ea1763-e4c7-4f50-95d7-e0785f02e6e0"
+          }
+        ],
+        "status": "active",
+        "intent": "order",
+        "code": {
+          "coding": [
+            {
+              "code": "108252007",
+              "system": "http://snomed.info/sct",
+              "display": "Laboratory procedure"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:9e4676d3-e941-40a0-85d3-e83aa394131c",
+          "display": "Elias Höfig"
+        },
+        "requester": {
+          "reference": "urn:uuid:fcc1cbe5-99f5-4cee-b923-16d53e5a9cf9"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:fcc1cbe5-99f5-4cee-b923-16d53e5a9cf9",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "fcc1cbe5-99f5-4cee-b923-16d53e5a9cf9",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Role Id: fcc1cbe5-99f5-4cee-b923-16d53e5a9cf9</div>"
+        },
+        "organization": {
+          "reference": "urn:uuid:754b566b-8ef2-4bf4-bfed-198a2fda1785"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:754b566b-8ef2-4bf4-bfed-198a2fda1785",
+      "resource": {
+        "resourceType": "Organization",
+        "id": "754b566b-8ef2-4bf4-bfed-198a2fda1785",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/organization-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "8637ab4d-4d75-43bb-a86d-acfbc8cd6ff2"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Birkenallee 34"
+            ],
+            "city": "Magdeburg",
+            "postalCode": "39130",
+            "country": "Germany"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Organization: Klinikum Magdeburg</div>"
+        },
+        "name": "Klinikum Magdeburg"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:15ea1763-e4c7-4f50-95d7-e0785f02e6e0",
+      "resource": {
+        "resourceType": "Specimen",
+        "id": "15ea1763-e4c7-4f50-95d7-e0785f02e6e0",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Specimen-eu-lab"
+          ]
+        },
+        "collection": {
+          "collectedDateTime": "2020-12-10"
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Specimen</th><th>Collection Date</th></tr><tr><td>Arterial blood specimen</td><td><span class=\"nb\">10-Dec-2020</span></td></tr></table></div>"
+        },
+        "type": {
+          "coding": [
+            {
+              "code": "122552005",
+              "system": "http://snomed.info/sct",
+              "display": "Arterial blood specimen"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:e625d978-87c5-494e-91c2-cee0db5e5682",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "e625d978-87c5-494e-91c2-cee0db5e5682",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Observation-resultslab-eu-lab"
+          ]
+        },
+        "performer": [
+          {
+            "display": "The Central European Lab"
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                "code": "laboratory"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "code": "2708-6",
+              "system": "http://loinc.org",
+              "display": "Oxygen saturation in Arterial blood"
+            }
+          ],
+          "text": "Oxygen saturation in Arterial blood"
+        },
+        "valueQuantity": {
+          "system": "http://unitsofmeasure.org",
+          "value": 79.5,
+          "unit": "%",
+          "code": "%"
+        },
+        "referenceRange": [
+          {
+            "low": {
+              "value": 95,
+              "code": "%",
+              "system": "http://unitsofmeasure.org"
+            }
+          },
+          {
+            "high": {
+              "value": 100,
+              "code": "%",
+              "system": "http://unitsofmeasure.org"
+            }
+          }
+        ],
+        "interpretation": [
+          {
+            "coding": [
+              {
+                "code": "L",
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                "display": "Low"
+              }
+            ]
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Test</th><th>10-Dec-2020</th><th>Reference&#xA0;Range</th><th>Unit</th></tr><tr><td>Oxygen saturation in Arterial blood</td><td>79.5</td><td>95 - 100</td><td>L</td><td>%</td></tr></table></div>"
+        },
+        "status": "final",
+        "subject": {
+          "reference": "urn:uuid:9e4676d3-e941-40a0-85d3-e83aa394131c",
+          "display": "Elias Höfig"
+        },
+        "effectiveDateTime": "2020-12-10T09:47:46Z",
+        "specimen": {
+          "reference": "urn:uuid:15ea1763-e4c7-4f50-95d7-e0785f02e6e0"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:ee5d5b0e-3ab8-4e6e-9491-85e13c6fe661",
+      "resource": {
+        "resourceType": "Device",
+        "id": "ee5d5b0e-3ab8-4e6e-9491-85e13c6fe661",
+        "deviceName": [
+          {
+            "name": "SYNDERAI Synthetic Generator",
+            "type": "manufacturer-name"
+          }
+        ],
+        "version": [
+          {
+            "value": "5.0"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">SYNDERAI Synthetic Generator v5.0</div>"
+        },
+        "status": "active\"",
+        "distinctIdentifier": "synderai-generator-50",
+        "manufacturer": "SYNDERAI Project"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:dd98dec6-7f19-4a6e-a8aa-81d7aa319187",
+      "resource": {
+        "resourceType": "Provenance",
+        "id": "dd98dec6-7f19-4a6e-a8aa-81d7aa319187",
+        "target": [
+          {
+            "reference": "Patient/9e4676d3-e941-40a0-85d3-e83aa394131c"
+          },
+          {
+            "reference": "Bundle/8d0f5dd7-5c61-49db-bfa6-ba593c843580"
+          },
+          {
+            "reference": "Composition/d453bf59-9a87-40bb-b118-a70895de1d76"
+          },
+          {
+            "reference": "PractitionerRole/35c615c9-9598-48da-b4ca-ca6723dc6dc0"
+          },
+          {
+            "reference": "Practitioner/25ac4df1-bc53-48b0-9662-f9862aca7fd6"
+          },
+          {
+            "reference": "PractitionerRole/fcc1cbe5-99f5-4cee-b923-16d53e5a9cf9"
+          },
+          {
+            "reference": "Organization/754b566b-8ef2-4bf4-bfed-198a2fda1785"
+          }
+        ],
+        "activity": {
+          "text": "Synthetic Example Data Generation"
+        },
+        "policy": [
+          "https://synderai.net/synderai-synthetic-data-policy"
+        ],
+        "agent": [
+          {
+            "type": {
+              "text": "author"
+            },
+            "who": {
+              "reference": "Device/ee5d5b0e-3ab8-4e6e-9491-85e13c6fe661"
+            }
+          }
+        ],
+        "reason": [
+          {
+            "text": "Interoperability Testing and Training (non-clinical use)"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provenance for SYNDERAI Synthetic Example Data Resource</div>"
+        },
+        "recorded": "2020-12-10T10:47:46Z"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:35c615c9-9598-48da-b4ca-ca6723dc6dc0",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "35c615c9-9598-48da-b4ca-ca6723dc6dc0",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory Role Id: 35c615c9-9598-48da-b4ca-ca6723dc6dc0</div>"
+        },
+        "practitioner": {
+          "reference": "urn:uuid:25ac4df1-bc53-48b0-9662-f9862aca7fd6"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:25ac4df1-bc53-48b0-9662-f9862aca7fd6",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "25ac4df1-bc53-48b0-9662-f9862aca7fd6",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitioner-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "4bba63d2-0601-4bc4-9f6d-caf603c7528a"
+          }
+        ],
+        "name": [
+          {
+            "prefix": [
+              "dr"
+            ],
+            "given": [
+              "Ex"
+            ],
+            "family": "Ample"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Laboratoire Central Européenne",
+              "Boulevard du Jardin Botanique 32"
+            ],
+            "postalCode": "1000",
+            "city": "Brussels",
+            "country": "Belgium"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory: Laboratoire Central Européenne, 1000 Brussels, Belgium</div>"
+        }
+      }
+    }
+  ],
+  "type": "document",
+  "timestamp": "2020-12-10T10:47:46Z"
+}

@@ -1,0 +1,648 @@
+{
+  "resourceType": "Bundle",
+  "id": "bc1a1f04-d247-48b1-953e-4c31cddfc2fa",
+  "meta": {
+    "profile": [
+      "http://hl7.eu/fhir/laboratory/StructureDefinition/Bundle-eu-lab"
+    ]
+  },
+  "identifier": {
+    "assigner": {
+      "display": "HL7 Europe"
+    },
+    "system": "urn:oid:2.16.840.1.113883.2.51.999",
+    "value": "a78d7154-19a7-4bb0-a833-0387c2975ec8"
+  },
+  "entry": [
+    {
+      "fullUrl": "urn:uuid:1d8bb03d-0a39-49e7-b57b-16009047f9b7",
+      "resource": {
+        "resourceType": "Composition",
+        "id": "1d8bb03d-0a39-49e7-b57b-16009047f9b7",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Composition-eu-lab"
+          ]
+        },
+        "identifier": {
+          "assigner": {
+            "display": "HL7 Europe"
+          },
+          "system": "urn:oid:2.16.840.1.113883.2.51.999",
+          "value": "34c43a5b-ded6-48cd-81cb-e0928d32c1f3"
+        },
+        "author": [
+          {
+            "reference": "urn:uuid:871729a6-7161-4f91-b331-778ce76c84d5"
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "type": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ],
+          "text": "Laboratory Report"
+        },
+        "section": [
+          {
+            "code": {
+              "coding": [
+                {
+                  "code": "26436-6",
+                  "system": "http://loinc.org",
+                  "display": "Laboratory studies (set)"
+                }
+              ],
+              "text": "Laboratory studies"
+            },
+            "section": [
+              {
+                "code": {
+                  "coding": [
+                    {
+                      "code": "$18719-5",
+                      "system": "http://loinc.org",
+                      "display": "Chemistry studies (set)"
+                    }
+                  ],
+                  "text": "Chemistry"
+                },
+                "entry": [
+                  {
+                    "reference": "urn:uuid:7686c153-ac7b-486f-ad18-e5f85e045a9d"
+                  }
+                ],
+                "text": {
+                  "status": "generated",
+                  "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>Chemistry</h3><table class=\"hl7__eu__lab__report\"><thead><tr><th>Test</th><th>17-JUL-2020</th><th>Reference&#xA0;Range</th><th>Unit</th></tr></thead><tbody><tr><td>Oxygen saturation in Arterial blood</td><td><strong>84.8 L</strong></td><td>95 - 100</td><td>%</td></tr></tbody></table></div>"
+                },
+                "title": "Chemistry"
+              }
+            ],
+            "title": "Laboratory Report"
+          },
+          {
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>Annotation</h3><table class=\"hl7__eu__lab__report\"><tr><th>Conclusion and Recommendations based on this report and previous findings known to us</th></tr><tr><td>The patient shows significantly decreased arterial oxygen saturation (84.8%, below the normal range of 95-100%), indicating hypoxemia. This finding warrants urgent clinical evaluation to identify and address potential respiratory or cardiovascular causes. Immediate medical attention is recommended.</td></tr></table></div>"
+            },
+            "code": {
+              "coding": [
+                {
+                  "system": "http://loinc.org",
+                  "code": "48767-8",
+                  "display": "Annotation comment"
+                }
+              ]
+            },
+            "title": "Annotation comment"
+          }
+        ],
+        "status": "final",
+        "subject": {
+          "reference": "urn:uuid:13ec20fd-0339-4bf8-9c15-4bd2d8e63dc8",
+          "display": "Hynek Kubíčková"
+        },
+        "date": "2020-07-17T14:02:45Z",
+        "title": "Laboratory Report",
+        "confidentiality": "N"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:e4b99daa-ffed-4add-9329-88369d92f094",
+      "resource": {
+        "resourceType": "DiagnosticReport",
+        "id": "e4b99daa-ffed-4add-9329-88369d92f094",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/DiagnosticReport-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "2233512b-49a3-42d2-b98f-a1e2b3d7e6c1"
+          }
+        ],
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-DiagnosticReport.composition",
+            "valueReference": {
+              "reference": "urn:uuid:34c43a5b-ded6-48cd-81cb-e0928d32c1f3"
+            }
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:e5b59dd4-1d4f-4bba-bc58-a8a7369db3c8"
+          }
+        ],
+        "result": [
+          {
+            "reference": "urn:uuid:7686c153-ac7b-486f-ad18-e5f85e045a9d"
+          }
+        ],
+        "status": "registered",
+        "code": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:13ec20fd-0339-4bf8-9c15-4bd2d8e63dc8",
+          "display": "Hynek Kubíčková"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:13ec20fd-0339-4bf8-9c15-4bd2d8e63dc8",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "13ec20fd-0339-4bf8-9c15-4bd2d8e63dc8",
+        "meta": {
+          "security": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "HTEST"
+            },
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "TRAIN"
+            }
+          ],
+          "tag": [
+            {
+              "system": "https://synderai.net/fhir/CodeSystem/tags",
+              "code": "synthetic",
+              "display": "SYNDERAI Synthetic data"
+            }
+          ],
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/patient-eu-core"
+          ]
+        },
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "PT",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://ec.europa.eu/identifier/eci",
+            "value": "9771-756399-9"
+          },
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "MR",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://local.setting.eu/identifier",
+            "value": "0a9c3ea6-b526-4dcc-cde1-545cdfca14b2"
+          }
+        ],
+        "name": [
+          {
+            "family": "Kubíčková"
+          },
+          {
+            "given": [
+              "Hynek"
+            ]
+          },
+          {
+            "text": "Hynek Kubíčková"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Vraňanská 9"
+            ],
+            "use": "home",
+            "type": "physical",
+            "postalCode": "739 11",
+            "city": "Frýdlant nad Ostravicí",
+            "country": "Czechia"
+          }
+        ],
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "+420 605 458 784"
+          }
+        ],
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/StructureDefinition/patient-nationality",
+            "valueCodeableConcept": {
+              "coding": [
+                {
+                  "code": "CZ",
+                  "system": "http://hl7.org/fhir/ValueSet/country"
+                }
+              ]
+            }
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__ips\"><tr><td>Hynek Kubíčková</td><td>male</td><td>24-Jun-2005</td></tr></table></div>"
+        },
+        "gender": "male",
+        "birthDate": "2005-06-24"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:f0822895-5ad3-4698-a69e-14dee7906caf",
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "f0822895-5ad3-4698-a69e-14dee7906caf",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/ServiceRequest-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "system": "http://example.org",
+            "value": "ee06cc8b-8ac0-4d9f-98a7-7a2cdc831405"
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:e5b59dd4-1d4f-4bba-bc58-a8a7369db3c8"
+          }
+        ],
+        "status": "active",
+        "intent": "order",
+        "code": {
+          "coding": [
+            {
+              "code": "108252007",
+              "system": "http://snomed.info/sct",
+              "display": "Laboratory procedure"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:13ec20fd-0339-4bf8-9c15-4bd2d8e63dc8",
+          "display": "Hynek Kubíčková"
+        },
+        "requester": {
+          "reference": "urn:uuid:b689468f-e1aa-47eb-a67c-8605cc3c05be"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:b689468f-e1aa-47eb-a67c-8605cc3c05be",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "b689468f-e1aa-47eb-a67c-8605cc3c05be",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Role Id: b689468f-e1aa-47eb-a67c-8605cc3c05be</div>"
+        },
+        "organization": {
+          "reference": "urn:uuid:ec526d88-f051-4299-873f-ff8c17def553"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:ec526d88-f051-4299-873f-ff8c17def553",
+      "resource": {
+        "resourceType": "Organization",
+        "id": "ec526d88-f051-4299-873f-ff8c17def553",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/organization-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "1527e723-e397-40ea-9ca3-fbb79938ddf5"
+          }
+        ],
+        "address": [
+          {
+            "city": "Čeladná",
+            "postalCode": "739 12",
+            "country": "Czechia"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Organization: Beskydské rehabilitační centrum</div>"
+        },
+        "name": "Beskydské rehabilitační centrum"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:e5b59dd4-1d4f-4bba-bc58-a8a7369db3c8",
+      "resource": {
+        "resourceType": "Specimen",
+        "id": "e5b59dd4-1d4f-4bba-bc58-a8a7369db3c8",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Specimen-eu-lab"
+          ]
+        },
+        "collection": {
+          "collectedDateTime": "2020-07-17"
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Specimen</th><th>Collection Date</th></tr><tr><td>Arterial blood specimen</td><td><span class=\"nb\">17-Jul-2020</span></td></tr></table></div>"
+        },
+        "type": {
+          "coding": [
+            {
+              "code": "122552005",
+              "system": "http://snomed.info/sct",
+              "display": "Arterial blood specimen"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:7686c153-ac7b-486f-ad18-e5f85e045a9d",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "7686c153-ac7b-486f-ad18-e5f85e045a9d",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Observation-resultslab-eu-lab"
+          ]
+        },
+        "performer": [
+          {
+            "display": "The Central European Lab"
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                "code": "laboratory"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "code": "2708-6",
+              "system": "http://loinc.org",
+              "display": "Oxygen saturation in Arterial blood"
+            }
+          ],
+          "text": "Oxygen saturation in Arterial blood"
+        },
+        "valueQuantity": {
+          "system": "http://unitsofmeasure.org",
+          "value": 84.8,
+          "unit": "%",
+          "code": "%"
+        },
+        "referenceRange": [
+          {
+            "low": {
+              "value": 95,
+              "code": "%",
+              "system": "http://unitsofmeasure.org"
+            }
+          },
+          {
+            "high": {
+              "value": 100,
+              "code": "%",
+              "system": "http://unitsofmeasure.org"
+            }
+          }
+        ],
+        "interpretation": [
+          {
+            "coding": [
+              {
+                "code": "L",
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                "display": "Low"
+              }
+            ]
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Test</th><th>17-Jul-2020</th><th>Reference&#xA0;Range</th><th>Unit</th></tr><tr><td>Oxygen saturation in Arterial blood</td><td>84.8</td><td>95 - 100</td><td>L</td><td>%</td></tr></table></div>"
+        },
+        "status": "final",
+        "subject": {
+          "reference": "urn:uuid:13ec20fd-0339-4bf8-9c15-4bd2d8e63dc8",
+          "display": "Hynek Kubíčková"
+        },
+        "effectiveDateTime": "2020-07-17T12:02:45Z",
+        "specimen": {
+          "reference": "urn:uuid:e5b59dd4-1d4f-4bba-bc58-a8a7369db3c8"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:514d97d0-a4ff-487b-839d-04f3fa33f16f",
+      "resource": {
+        "resourceType": "Device",
+        "id": "514d97d0-a4ff-487b-839d-04f3fa33f16f",
+        "deviceName": [
+          {
+            "name": "SYNDERAI Synthetic Generator",
+            "type": "manufacturer-name"
+          }
+        ],
+        "version": [
+          {
+            "value": "5.0"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">SYNDERAI Synthetic Generator v5.0</div>"
+        },
+        "status": "active\"",
+        "distinctIdentifier": "synderai-generator-50",
+        "manufacturer": "SYNDERAI Project"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:41f43a78-f583-421d-9782-1d5291c5448a",
+      "resource": {
+        "resourceType": "Provenance",
+        "id": "41f43a78-f583-421d-9782-1d5291c5448a",
+        "target": [
+          {
+            "reference": "Patient/13ec20fd-0339-4bf8-9c15-4bd2d8e63dc8"
+          },
+          {
+            "reference": "Bundle/bc1a1f04-d247-48b1-953e-4c31cddfc2fa"
+          },
+          {
+            "reference": "Composition/1d8bb03d-0a39-49e7-b57b-16009047f9b7"
+          },
+          {
+            "reference": "PractitionerRole/871729a6-7161-4f91-b331-778ce76c84d5"
+          },
+          {
+            "reference": "Practitioner/64b3fadb-de2f-4dc6-bb31-0860258f9699"
+          },
+          {
+            "reference": "PractitionerRole/b689468f-e1aa-47eb-a67c-8605cc3c05be"
+          },
+          {
+            "reference": "Organization/ec526d88-f051-4299-873f-ff8c17def553"
+          }
+        ],
+        "activity": {
+          "text": "Synthetic Example Data Generation"
+        },
+        "policy": [
+          "https://synderai.net/synderai-synthetic-data-policy"
+        ],
+        "agent": [
+          {
+            "type": {
+              "text": "author"
+            },
+            "who": {
+              "reference": "Device/514d97d0-a4ff-487b-839d-04f3fa33f16f"
+            }
+          }
+        ],
+        "reason": [
+          {
+            "text": "Interoperability Testing and Training (non-clinical use)"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provenance for SYNDERAI Synthetic Example Data Resource</div>"
+        },
+        "recorded": "2020-07-17T14:02:45Z"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:871729a6-7161-4f91-b331-778ce76c84d5",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "871729a6-7161-4f91-b331-778ce76c84d5",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory Role Id: 871729a6-7161-4f91-b331-778ce76c84d5</div>"
+        },
+        "practitioner": {
+          "reference": "urn:uuid:64b3fadb-de2f-4dc6-bb31-0860258f9699"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:64b3fadb-de2f-4dc6-bb31-0860258f9699",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "64b3fadb-de2f-4dc6-bb31-0860258f9699",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitioner-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "c9e16dfb-7705-4a55-8d95-2c2a6fa308ee"
+          }
+        ],
+        "name": [
+          {
+            "prefix": [
+              "dr"
+            ],
+            "given": [
+              "Ex"
+            ],
+            "family": "Ample"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Laboratoire Central Européenne",
+              "Boulevard du Jardin Botanique 32"
+            ],
+            "postalCode": "1000",
+            "city": "Brussels",
+            "country": "Belgium"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory: Laboratoire Central Européenne, 1000 Brussels, Belgium</div>"
+        }
+      }
+    }
+  ],
+  "type": "document",
+  "timestamp": "2020-07-17T14:02:45Z"
+}

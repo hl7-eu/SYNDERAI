@@ -1,0 +1,678 @@
+{
+  "resourceType": "Bundle",
+  "id": "40256d09-731d-4b2e-a069-e08e2307510d",
+  "meta": {
+    "profile": [
+      "http://hl7.eu/fhir/laboratory/StructureDefinition/Bundle-eu-lab"
+    ]
+  },
+  "identifier": {
+    "assigner": {
+      "display": "HL7 Europe"
+    },
+    "system": "urn:oid:2.16.840.1.113883.2.51.999",
+    "value": "bf5de77a-79d6-4bf0-b0c3-aea2ae84734a"
+  },
+  "entry": [
+    {
+      "fullUrl": "urn:uuid:86b3d2a2-0896-410f-929e-7964aa064f07",
+      "resource": {
+        "resourceType": "Composition",
+        "id": "86b3d2a2-0896-410f-929e-7964aa064f07",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Composition-eu-lab"
+          ]
+        },
+        "identifier": {
+          "assigner": {
+            "display": "HL7 Europe"
+          },
+          "system": "urn:oid:2.16.840.1.113883.2.51.999",
+          "value": "5ecc7664-2344-4f53-a5c2-bda1e45da27e"
+        },
+        "author": [
+          {
+            "reference": "urn:uuid:084d8f80-8931-4921-ae2b-661e4f06b2ab"
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "type": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ],
+          "text": "Laboratory Report"
+        },
+        "section": [
+          {
+            "code": {
+              "coding": [
+                {
+                  "code": "26436-6",
+                  "system": "http://loinc.org",
+                  "display": "Laboratory studies (set)"
+                }
+              ],
+              "text": "Laboratory studies"
+            },
+            "section": [
+              {
+                "code": {
+                  "coding": [
+                    {
+                      "code": "$18719-5",
+                      "system": "http://loinc.org",
+                      "display": "Chemistry studies (set)"
+                    }
+                  ],
+                  "text": "Chemistry"
+                },
+                "entry": [
+                  {
+                    "reference": "urn:uuid:5fb289f5-23f3-44bd-bd7d-e4f6d55e6126"
+                  }
+                ],
+                "text": {
+                  "status": "generated",
+                  "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>Chemistry</h3><table class=\"hl7__eu__lab__report\"><thead><tr><th>Test</th><th>23-MAR-2019</th><th>Reference&#xA0;Range</th><th>Unit</th></tr></thead><tbody><tr><td>Hemoglobin A1c/Hemoglobin.total in Blood</td><td>6.2</td><td>4.3 - 6.4</td><td>%</td></tr></tbody></table></div>"
+                },
+                "title": "Chemistry"
+              }
+            ],
+            "title": "Laboratory Report"
+          },
+          {
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>Annotation</h3><table class=\"hl7__eu__lab__report\"><tr><th>Conclusion and Recommendations based on this report and previous findings known to us</th></tr><tr><td>Hemoglobin A1c is at the upper end of the normal range, suggesting borderline glycemic control. Continued monitoring and lifestyle modifications are recommended to prevent progression to diabetes. No other abnormalities detected.</td></tr></table></div>"
+            },
+            "code": {
+              "coding": [
+                {
+                  "system": "http://loinc.org",
+                  "code": "48767-8",
+                  "display": "Annotation comment"
+                }
+              ]
+            },
+            "title": "Annotation comment"
+          }
+        ],
+        "status": "final",
+        "subject": {
+          "reference": "urn:uuid:a3b3f3e4-c49a-482c-9dd3-613d1b036925",
+          "display": "Andrzej Frydrychowicz"
+        },
+        "date": "2019-03-23T22:33:04Z",
+        "title": "Laboratory Report",
+        "confidentiality": "N"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:5f77031f-3ca6-44ce-94dd-f55cf365b357",
+      "resource": {
+        "resourceType": "DiagnosticReport",
+        "id": "5f77031f-3ca6-44ce-94dd-f55cf365b357",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/DiagnosticReport-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "d87e124a-0192-4b2a-80ad-79805f1ec6dc"
+          }
+        ],
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-DiagnosticReport.composition",
+            "valueReference": {
+              "reference": "urn:uuid:5ecc7664-2344-4f53-a5c2-bda1e45da27e"
+            }
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:6869b33c-42ee-445a-91e4-e89ec58ddcbc"
+          }
+        ],
+        "result": [
+          {
+            "reference": "urn:uuid:5fb289f5-23f3-44bd-bd7d-e4f6d55e6126"
+          }
+        ],
+        "status": "registered",
+        "code": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:a3b3f3e4-c49a-482c-9dd3-613d1b036925",
+          "display": "Andrzej Frydrychowicz"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:a3b3f3e4-c49a-482c-9dd3-613d1b036925",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "a3b3f3e4-c49a-482c-9dd3-613d1b036925",
+        "meta": {
+          "security": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "HTEST"
+            },
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "TRAIN"
+            }
+          ],
+          "tag": [
+            {
+              "system": "https://synderai.net/fhir/CodeSystem/tags",
+              "code": "synthetic",
+              "display": "SYNDERAI Synthetic data"
+            }
+          ],
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/patient-eu-core"
+          ]
+        },
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "PT",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://ec.europa.eu/identifier/eci",
+            "value": "7036-931598-4"
+          },
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "MR",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://local.setting.eu/identifier",
+            "value": "c84bd820-cdcf-9bc1-d9ba-aa083a5eb400"
+          }
+        ],
+        "name": [
+          {
+            "family": "Frydrychowicz"
+          },
+          {
+            "given": [
+              "Andrzej"
+            ]
+          },
+          {
+            "text": "Andrzej Frydrychowicz"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "aleja Tulipanowa 94"
+            ],
+            "use": "home",
+            "type": "physical",
+            "postalCode": "21-040",
+            "city": "Świdnik",
+            "country": "Poland"
+          }
+        ],
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "516 092 560"
+          }
+        ],
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/StructureDefinition/patient-nationality",
+            "valueCodeableConcept": {
+              "coding": [
+                {
+                  "code": "PL",
+                  "system": "http://hl7.org/fhir/ValueSet/country"
+                }
+              ]
+            }
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__ips\"><tr><td>Andrzej Frydrychowicz</td><td>male</td><td>12-Apr-1974</td></tr></table></div>"
+        },
+        "gender": "male",
+        "birthDate": "1974-04-12"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:e346f579-857a-450d-a05f-0eede4613159",
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "e346f579-857a-450d-a05f-0eede4613159",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/ServiceRequest-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "system": "http://example.org",
+            "value": "1bfd7c85-4794-4b96-beb4-f491d62f6527"
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:6869b33c-42ee-445a-91e4-e89ec58ddcbc"
+          }
+        ],
+        "reasonCode": [
+          {
+            "coding": [
+              {
+                "code": "414545008",
+                "system": "http://snomed.info/sct",
+                "display": "Ischemic heart disease"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "239873007",
+                "system": "http://snomed.info/sct",
+                "display": "Osteoarthritis of knee"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "15777000",
+                "system": "http://snomed.info/sct",
+                "display": "Prediabetes"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "271737000",
+                "system": "http://snomed.info/sct",
+                "display": "Anemia"
+              }
+            ]
+          }
+        ],
+        "status": "active",
+        "intent": "order",
+        "code": {
+          "coding": [
+            {
+              "code": "108252007",
+              "system": "http://snomed.info/sct",
+              "display": "Laboratory procedure"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:a3b3f3e4-c49a-482c-9dd3-613d1b036925",
+          "display": "Andrzej Frydrychowicz"
+        },
+        "requester": {
+          "reference": "urn:uuid:53c9a362-ad6a-4f51-9afb-88ea78fd725e"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:53c9a362-ad6a-4f51-9afb-88ea78fd725e",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "53c9a362-ad6a-4f51-9afb-88ea78fd725e",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Role Id: 53c9a362-ad6a-4f51-9afb-88ea78fd725e</div>"
+        },
+        "organization": {
+          "reference": "urn:uuid:bde4cf78-30ab-4562-9ee4-8d23bdd7b852"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:bde4cf78-30ab-4562-9ee4-8d23bdd7b852",
+      "resource": {
+        "resourceType": "Organization",
+        "id": "bde4cf78-30ab-4562-9ee4-8d23bdd7b852",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/organization-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "b00c3775-f2c2-4de1-ad26-87207e7aa3d7"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Aleja Lotników Polskich 82"
+            ],
+            "city": "Świdnik",
+            "postalCode": "21-040",
+            "country": "Poland"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Organization: Lubelskie Centrum Diagnostyczne</div>"
+        },
+        "name": "Lubelskie Centrum Diagnostyczne"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:6869b33c-42ee-445a-91e4-e89ec58ddcbc",
+      "resource": {
+        "resourceType": "Specimen",
+        "id": "6869b33c-42ee-445a-91e4-e89ec58ddcbc",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Specimen-eu-lab"
+          ]
+        },
+        "collection": {
+          "collectedDateTime": "2019-03-23"
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Specimen</th><th>Collection Date</th></tr><tr><td>Whole blood specimen (specimen)</td><td><span class=\"nb\">23-Mar-2019</span></td></tr></table></div>"
+        },
+        "type": {
+          "coding": [
+            {
+              "code": "258580003",
+              "system": "http://snomed.info/sct",
+              "display": "Whole blood specimen (specimen)"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:5fb289f5-23f3-44bd-bd7d-e4f6d55e6126",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "5fb289f5-23f3-44bd-bd7d-e4f6d55e6126",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Observation-resultslab-eu-lab"
+          ]
+        },
+        "performer": [
+          {
+            "display": "The Central European Lab"
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                "code": "laboratory"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "code": "4548-4",
+              "system": "http://loinc.org",
+              "display": "Hemoglobin A1c/Hemoglobin.total in Blood"
+            }
+          ],
+          "text": "Hemoglobin A1c/Hemoglobin.total in Blood"
+        },
+        "valueQuantity": {
+          "system": "http://unitsofmeasure.org",
+          "value": 6.2,
+          "unit": "%",
+          "code": "%"
+        },
+        "referenceRange": [
+          {
+            "low": {
+              "value": 4.3,
+              "code": "%",
+              "system": "http://unitsofmeasure.org"
+            }
+          },
+          {
+            "high": {
+              "value": 6.4,
+              "code": "%",
+              "system": "http://unitsofmeasure.org"
+            }
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Test</th><th>23-Mar-2019</th><th>Reference&#xA0;Range</th><th>Unit</th></tr><tr><td>Hemoglobin A1c/Hemoglobin.total in Blood</td><td>6.2</td><td>4.3 - 6.4</td><td></td><td>%</td></tr></table></div>"
+        },
+        "status": "final",
+        "subject": {
+          "reference": "urn:uuid:a3b3f3e4-c49a-482c-9dd3-613d1b036925",
+          "display": "Andrzej Frydrychowicz"
+        },
+        "effectiveDateTime": "2019-03-23T21:33:04Z",
+        "specimen": {
+          "reference": "urn:uuid:6869b33c-42ee-445a-91e4-e89ec58ddcbc"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:aafd19f5-e8ce-4e0a-b7af-917c8ac4484d",
+      "resource": {
+        "resourceType": "Device",
+        "id": "aafd19f5-e8ce-4e0a-b7af-917c8ac4484d",
+        "deviceName": [
+          {
+            "name": "SYNDERAI Synthetic Generator",
+            "type": "manufacturer-name"
+          }
+        ],
+        "version": [
+          {
+            "value": "5.0"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">SYNDERAI Synthetic Generator v5.0</div>"
+        },
+        "status": "active\"",
+        "distinctIdentifier": "synderai-generator-50",
+        "manufacturer": "SYNDERAI Project"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:b678d607-c284-4c96-ae8f-a2c423a0e42e",
+      "resource": {
+        "resourceType": "Provenance",
+        "id": "b678d607-c284-4c96-ae8f-a2c423a0e42e",
+        "target": [
+          {
+            "reference": "Patient/a3b3f3e4-c49a-482c-9dd3-613d1b036925"
+          },
+          {
+            "reference": "Bundle/40256d09-731d-4b2e-a069-e08e2307510d"
+          },
+          {
+            "reference": "Composition/86b3d2a2-0896-410f-929e-7964aa064f07"
+          },
+          {
+            "reference": "PractitionerRole/084d8f80-8931-4921-ae2b-661e4f06b2ab"
+          },
+          {
+            "reference": "Practitioner/28076904-59b4-4136-94a3-e6a4c13e0482"
+          },
+          {
+            "reference": "PractitionerRole/53c9a362-ad6a-4f51-9afb-88ea78fd725e"
+          },
+          {
+            "reference": "Organization/bde4cf78-30ab-4562-9ee4-8d23bdd7b852"
+          }
+        ],
+        "activity": {
+          "text": "Synthetic Example Data Generation"
+        },
+        "policy": [
+          "https://synderai.net/synderai-synthetic-data-policy"
+        ],
+        "agent": [
+          {
+            "type": {
+              "text": "author"
+            },
+            "who": {
+              "reference": "Device/aafd19f5-e8ce-4e0a-b7af-917c8ac4484d"
+            }
+          }
+        ],
+        "reason": [
+          {
+            "text": "Interoperability Testing and Training (non-clinical use)"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provenance for SYNDERAI Synthetic Example Data Resource</div>"
+        },
+        "recorded": "2019-03-23T22:33:04Z"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:084d8f80-8931-4921-ae2b-661e4f06b2ab",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "084d8f80-8931-4921-ae2b-661e4f06b2ab",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory Role Id: 084d8f80-8931-4921-ae2b-661e4f06b2ab</div>"
+        },
+        "practitioner": {
+          "reference": "urn:uuid:28076904-59b4-4136-94a3-e6a4c13e0482"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:28076904-59b4-4136-94a3-e6a4c13e0482",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "28076904-59b4-4136-94a3-e6a4c13e0482",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitioner-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "9daa9c41-f434-42a5-9e76-24ce6b4e76b2"
+          }
+        ],
+        "name": [
+          {
+            "prefix": [
+              "dr"
+            ],
+            "given": [
+              "Ex"
+            ],
+            "family": "Ample"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Laboratoire Central Européenne",
+              "Boulevard du Jardin Botanique 32"
+            ],
+            "postalCode": "1000",
+            "city": "Brussels",
+            "country": "Belgium"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory: Laboratoire Central Européenne, 1000 Brussels, Belgium</div>"
+        }
+      }
+    }
+  ],
+  "type": "document",
+  "timestamp": "2019-03-23T22:33:04Z"
+}

@@ -1,0 +1,691 @@
+{
+  "resourceType": "Bundle",
+  "id": "75416bfb-9c31-4480-95de-7bf93d8314e2",
+  "meta": {
+    "profile": [
+      "http://hl7.eu/fhir/laboratory/StructureDefinition/Bundle-eu-lab"
+    ]
+  },
+  "identifier": {
+    "assigner": {
+      "display": "HL7 Europe"
+    },
+    "system": "urn:oid:2.16.840.1.113883.2.51.999",
+    "value": "516ed583-05f3-4f07-add7-ec3d00903336"
+  },
+  "entry": [
+    {
+      "fullUrl": "urn:uuid:cf1f5a8a-1f7a-4da7-a1f9-341390e1f870",
+      "resource": {
+        "resourceType": "Composition",
+        "id": "cf1f5a8a-1f7a-4da7-a1f9-341390e1f870",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Composition-eu-lab"
+          ]
+        },
+        "identifier": {
+          "assigner": {
+            "display": "HL7 Europe"
+          },
+          "system": "urn:oid:2.16.840.1.113883.2.51.999",
+          "value": "95519236-b3c9-4202-ab22-8dbe93c0d976"
+        },
+        "author": [
+          {
+            "reference": "urn:uuid:9d95dcfa-2b6f-4f27-9425-8325d6f034be"
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "type": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ],
+          "text": "Laboratory Report"
+        },
+        "section": [
+          {
+            "code": {
+              "coding": [
+                {
+                  "code": "26436-6",
+                  "system": "http://loinc.org",
+                  "display": "Laboratory studies (set)"
+                }
+              ],
+              "text": "Laboratory studies"
+            },
+            "section": [
+              {
+                "code": {
+                  "coding": [
+                    {
+                      "code": "$18719-5",
+                      "system": "http://loinc.org",
+                      "display": "Chemistry studies (set)"
+                    }
+                  ],
+                  "text": "Chemistry"
+                },
+                "entry": [
+                  {
+                    "reference": "urn:uuid:c3f5b69b-5862-444a-bc29-7b4217e6cc7b"
+                  }
+                ],
+                "text": {
+                  "status": "generated",
+                  "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>Chemistry</h3><table class=\"hl7__eu__lab__report\"><thead><tr><th>Test</th><th>14-MAR-2024</th><th>Reference&#xA0;Range</th><th>Unit</th></tr></thead><tbody><tr><td>Hemoglobin A1c/Hemoglobin.total in Blood</td><td>5.9</td><td>4 - 6</td><td>%</td></tr></tbody></table></div>"
+                },
+                "title": "Chemistry"
+              }
+            ],
+            "title": "Laboratory Report"
+          },
+          {
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>Annotation</h3><table class=\"hl7__eu__lab__report\"><tr><th>Conclusion and Recommendations based on this report and previous findings known to us</th></tr><tr><td>Hemoglobin A1c is at the upper end of the normal range, suggesting good glycemic control but close monitoring is recommended to prevent progression to prediabetes or diabetes. No immediate laboratory concerns.</td></tr></table></div>"
+            },
+            "code": {
+              "coding": [
+                {
+                  "system": "http://loinc.org",
+                  "code": "48767-8",
+                  "display": "Annotation comment"
+                }
+              ]
+            },
+            "title": "Annotation comment"
+          }
+        ],
+        "status": "final",
+        "subject": {
+          "reference": "urn:uuid:d1892150-f97d-4f85-8488-c95904c233e4",
+          "display": "Vincenza Porzio"
+        },
+        "date": "2024-03-14T19:51:27Z",
+        "title": "Laboratory Report",
+        "confidentiality": "N"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:e02d9f54-1aae-4323-8255-3cfa13d2932f",
+      "resource": {
+        "resourceType": "DiagnosticReport",
+        "id": "e02d9f54-1aae-4323-8255-3cfa13d2932f",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/DiagnosticReport-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "0e426108-040b-488d-8f97-838975773f26"
+          }
+        ],
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-DiagnosticReport.composition",
+            "valueReference": {
+              "reference": "urn:uuid:95519236-b3c9-4202-ab22-8dbe93c0d976"
+            }
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:117d1fc6-4e3c-40f9-8cf7-4d1640e6c9ef"
+          }
+        ],
+        "result": [
+          {
+            "reference": "urn:uuid:c3f5b69b-5862-444a-bc29-7b4217e6cc7b"
+          }
+        ],
+        "status": "registered",
+        "code": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:d1892150-f97d-4f85-8488-c95904c233e4",
+          "display": "Vincenza Porzio"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:d1892150-f97d-4f85-8488-c95904c233e4",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "d1892150-f97d-4f85-8488-c95904c233e4",
+        "meta": {
+          "security": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "HTEST"
+            },
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "TRAIN"
+            }
+          ],
+          "tag": [
+            {
+              "system": "https://synderai.net/fhir/CodeSystem/tags",
+              "code": "synthetic",
+              "display": "SYNDERAI Synthetic data"
+            }
+          ],
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/patient-eu-core"
+          ]
+        },
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "PT",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://ec.europa.eu/identifier/eci",
+            "value": "9988-341158-1"
+          },
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "MR",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://local.setting.eu/identifier",
+            "value": "559a1acd-87c3-5b56-0345-4eaff6c5aa0a"
+          }
+        ],
+        "name": [
+          {
+            "family": "Porzio"
+          },
+          {
+            "given": [
+              "Vincenza"
+            ]
+          },
+          {
+            "text": "Vincenza Porzio"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Piazza Allegra, 720"
+            ],
+            "use": "home",
+            "type": "physical",
+            "postalCode": "36040",
+            "city": "Grumolo Pedemonte",
+            "country": "Italy"
+          }
+        ],
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "041007473"
+          }
+        ],
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/StructureDefinition/patient-nationality",
+            "valueCodeableConcept": {
+              "coding": [
+                {
+                  "code": "IT",
+                  "system": "http://hl7.org/fhir/ValueSet/country"
+                }
+              ]
+            }
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__ips\"><tr><td>Vincenza Porzio</td><td>female</td><td>13-Sep-1965</td></tr></table></div>"
+        },
+        "gender": "female",
+        "birthDate": "1965-09-13"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:c8c9c5f5-d211-421b-89e7-4a55b1aedc41",
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "c8c9c5f5-d211-421b-89e7-4a55b1aedc41",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/ServiceRequest-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "system": "http://example.org",
+            "value": "96fac4f3-aa22-45fb-b91e-64836a461e58"
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:117d1fc6-4e3c-40f9-8cf7-4d1640e6c9ef"
+          }
+        ],
+        "reasonCode": [
+          {
+            "coding": [
+              {
+                "code": "40055000",
+                "system": "http://snomed.info/sct",
+                "display": "Chronic sinusitis"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "15777000",
+                "system": "http://snomed.info/sct",
+                "display": "Prediabetes"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "239873007",
+                "system": "http://snomed.info/sct",
+                "display": "Osteoarthritis of knee"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "6525002",
+                "system": "http://snomed.info/sct",
+                "display": "Dependent drug abuse"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "196416002",
+                "system": "http://snomed.info/sct",
+                "display": "Impacted molars"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "124171000119105",
+                "system": "http://snomed.info/sct",
+                "display": "Chronic intractable migraine without aura"
+              }
+            ]
+          }
+        ],
+        "status": "active",
+        "intent": "order",
+        "code": {
+          "coding": [
+            {
+              "code": "108252007",
+              "system": "http://snomed.info/sct",
+              "display": "Laboratory procedure"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:d1892150-f97d-4f85-8488-c95904c233e4",
+          "display": "Vincenza Porzio"
+        },
+        "requester": {
+          "reference": "urn:uuid:24d4cb7a-f391-488a-b3fb-fc956000e5bc"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:24d4cb7a-f391-488a-b3fb-fc956000e5bc",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "24d4cb7a-f391-488a-b3fb-fc956000e5bc",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Role Id: 24d4cb7a-f391-488a-b3fb-fc956000e5bc</div>"
+        },
+        "organization": {
+          "reference": "urn:uuid:e975016e-4bd8-4c9b-a62d-6912008ac3e6"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:e975016e-4bd8-4c9b-a62d-6912008ac3e6",
+      "resource": {
+        "resourceType": "Organization",
+        "id": "e975016e-4bd8-4c9b-a62d-6912008ac3e6",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/organization-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "f2ad7a62-1926-48d4-b4f2-3b77d3665e13"
+          }
+        ],
+        "address": [
+          {
+            "country": "Italy"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Organization: Villa Margherita</div>"
+        },
+        "name": "Villa Margherita"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:117d1fc6-4e3c-40f9-8cf7-4d1640e6c9ef",
+      "resource": {
+        "resourceType": "Specimen",
+        "id": "117d1fc6-4e3c-40f9-8cf7-4d1640e6c9ef",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Specimen-eu-lab"
+          ]
+        },
+        "collection": {
+          "collectedDateTime": "2024-03-14"
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Specimen</th><th>Collection Date</th></tr><tr><td>Whole blood specimen (specimen)</td><td><span class=\"nb\">14-Mar-2024</span></td></tr></table></div>"
+        },
+        "type": {
+          "coding": [
+            {
+              "code": "258580003",
+              "system": "http://snomed.info/sct",
+              "display": "Whole blood specimen (specimen)"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:c3f5b69b-5862-444a-bc29-7b4217e6cc7b",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "c3f5b69b-5862-444a-bc29-7b4217e6cc7b",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Observation-resultslab-eu-lab"
+          ]
+        },
+        "performer": [
+          {
+            "display": "The Central European Lab"
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                "code": "laboratory"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "code": "4548-4",
+              "system": "http://loinc.org",
+              "display": "Hemoglobin A1c/Hemoglobin.total in Blood"
+            }
+          ],
+          "text": "Hemoglobin A1c/Hemoglobin.total in Blood"
+        },
+        "valueQuantity": {
+          "system": "http://unitsofmeasure.org",
+          "value": 5.9,
+          "unit": "%",
+          "code": "%"
+        },
+        "referenceRange": [
+          {
+            "low": {
+              "value": 4,
+              "code": "%",
+              "system": "http://unitsofmeasure.org"
+            }
+          },
+          {
+            "high": {
+              "value": 6,
+              "code": "%",
+              "system": "http://unitsofmeasure.org"
+            }
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Test</th><th>14-Mar-2024</th><th>Reference&#xA0;Range</th><th>Unit</th></tr><tr><td>Hemoglobin A1c/Hemoglobin.total in Blood</td><td>5.9</td><td>4 - 6</td><td></td><td>%</td></tr></table></div>"
+        },
+        "status": "final",
+        "subject": {
+          "reference": "urn:uuid:d1892150-f97d-4f85-8488-c95904c233e4",
+          "display": "Vincenza Porzio"
+        },
+        "effectiveDateTime": "2024-03-14T18:51:27Z",
+        "specimen": {
+          "reference": "urn:uuid:117d1fc6-4e3c-40f9-8cf7-4d1640e6c9ef"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:1bc771be-3bcd-4f3c-aaa5-f67d236c92e2",
+      "resource": {
+        "resourceType": "Device",
+        "id": "1bc771be-3bcd-4f3c-aaa5-f67d236c92e2",
+        "deviceName": [
+          {
+            "name": "SYNDERAI Synthetic Generator",
+            "type": "manufacturer-name"
+          }
+        ],
+        "version": [
+          {
+            "value": "5.0"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">SYNDERAI Synthetic Generator v5.0</div>"
+        },
+        "status": "active\"",
+        "distinctIdentifier": "synderai-generator-50",
+        "manufacturer": "SYNDERAI Project"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:c8647d9b-253a-4022-b9a3-fb40f7328e3c",
+      "resource": {
+        "resourceType": "Provenance",
+        "id": "c8647d9b-253a-4022-b9a3-fb40f7328e3c",
+        "target": [
+          {
+            "reference": "Patient/d1892150-f97d-4f85-8488-c95904c233e4"
+          },
+          {
+            "reference": "Bundle/75416bfb-9c31-4480-95de-7bf93d8314e2"
+          },
+          {
+            "reference": "Composition/cf1f5a8a-1f7a-4da7-a1f9-341390e1f870"
+          },
+          {
+            "reference": "PractitionerRole/9d95dcfa-2b6f-4f27-9425-8325d6f034be"
+          },
+          {
+            "reference": "Practitioner/58acd898-f3e1-4128-b41f-a80919ce3ec2"
+          },
+          {
+            "reference": "PractitionerRole/24d4cb7a-f391-488a-b3fb-fc956000e5bc"
+          },
+          {
+            "reference": "Organization/e975016e-4bd8-4c9b-a62d-6912008ac3e6"
+          }
+        ],
+        "activity": {
+          "text": "Synthetic Example Data Generation"
+        },
+        "policy": [
+          "https://synderai.net/synderai-synthetic-data-policy"
+        ],
+        "agent": [
+          {
+            "type": {
+              "text": "author"
+            },
+            "who": {
+              "reference": "Device/1bc771be-3bcd-4f3c-aaa5-f67d236c92e2"
+            }
+          }
+        ],
+        "reason": [
+          {
+            "text": "Interoperability Testing and Training (non-clinical use)"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provenance for SYNDERAI Synthetic Example Data Resource</div>"
+        },
+        "recorded": "2024-03-14T19:51:27Z"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:9d95dcfa-2b6f-4f27-9425-8325d6f034be",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "9d95dcfa-2b6f-4f27-9425-8325d6f034be",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory Role Id: 9d95dcfa-2b6f-4f27-9425-8325d6f034be</div>"
+        },
+        "practitioner": {
+          "reference": "urn:uuid:58acd898-f3e1-4128-b41f-a80919ce3ec2"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:58acd898-f3e1-4128-b41f-a80919ce3ec2",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "58acd898-f3e1-4128-b41f-a80919ce3ec2",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitioner-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "f5a6b675-d56b-45b4-9920-15a22a43c455"
+          }
+        ],
+        "name": [
+          {
+            "prefix": [
+              "dr"
+            ],
+            "given": [
+              "Ex"
+            ],
+            "family": "Ample"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Laboratoire Central Européenne",
+              "Boulevard du Jardin Botanique 32"
+            ],
+            "postalCode": "1000",
+            "city": "Brussels",
+            "country": "Belgium"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory: Laboratoire Central Européenne, 1000 Brussels, Belgium</div>"
+        }
+      }
+    }
+  ],
+  "type": "document",
+  "timestamp": "2024-03-14T19:51:27Z"
+}

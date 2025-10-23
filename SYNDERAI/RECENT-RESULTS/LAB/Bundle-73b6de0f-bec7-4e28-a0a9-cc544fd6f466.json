@@ -1,0 +1,666 @@
+{
+  "resourceType": "Bundle",
+  "id": "73b6de0f-bec7-4e28-a0a9-cc544fd6f466",
+  "meta": {
+    "profile": [
+      "http://hl7.eu/fhir/laboratory/StructureDefinition/Bundle-eu-lab"
+    ]
+  },
+  "identifier": {
+    "assigner": {
+      "display": "HL7 Europe"
+    },
+    "system": "urn:oid:2.16.840.1.113883.2.51.999",
+    "value": "e18b7269-0f76-47d2-ad76-13fdc08e8207"
+  },
+  "entry": [
+    {
+      "fullUrl": "urn:uuid:da8e3813-3662-41ea-9cdc-6492078cdf22",
+      "resource": {
+        "resourceType": "Composition",
+        "id": "da8e3813-3662-41ea-9cdc-6492078cdf22",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Composition-eu-lab"
+          ]
+        },
+        "identifier": {
+          "assigner": {
+            "display": "HL7 Europe"
+          },
+          "system": "urn:oid:2.16.840.1.113883.2.51.999",
+          "value": "a0cb3722-ea1b-48f1-a5a3-11213540e099"
+        },
+        "author": [
+          {
+            "reference": "urn:uuid:2fec2003-6ede-4637-b09b-33604f27b8f2"
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "type": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ],
+          "text": "Laboratory Report"
+        },
+        "section": [
+          {
+            "code": {
+              "coding": [
+                {
+                  "code": "26436-6",
+                  "system": "http://loinc.org",
+                  "display": "Laboratory studies (set)"
+                }
+              ],
+              "text": "Laboratory studies"
+            },
+            "section": [
+              {
+                "code": {
+                  "coding": [
+                    {
+                      "code": "$18719-5",
+                      "system": "http://loinc.org",
+                      "display": "Chemistry studies (set)"
+                    }
+                  ],
+                  "text": "Chemistry"
+                },
+                "entry": [
+                  {
+                    "reference": "urn:uuid:5e05e38e-abea-49f2-86b5-db3e9ed0a4e0"
+                  }
+                ],
+                "text": {
+                  "status": "generated",
+                  "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>Chemistry</h3><table class=\"hl7__eu__lab__report\"><thead><tr><th>Test</th><th>26-DEC-2017</th><th>Reference&#xA0;Range</th><th>Unit</th></tr></thead><tbody><tr><td>Oxygen saturation in Arterial blood</td><td>99.4</td><td>95 - 100</td><td>%</td></tr></tbody></table></div>"
+                },
+                "title": "Chemistry"
+              }
+            ],
+            "title": "Laboratory Report"
+          },
+          {
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>Annotation</h3><table class=\"hl7__eu__lab__report\"><tr><th>Conclusion and Recommendations based on this report and previous findings known to us</th></tr><tr><td>Oxygen saturation is within the normal range, indicating adequate arterial oxygenation. No laboratory abnormalities detected in this result.</td></tr></table></div>"
+            },
+            "code": {
+              "coding": [
+                {
+                  "system": "http://loinc.org",
+                  "code": "48767-8",
+                  "display": "Annotation comment"
+                }
+              ]
+            },
+            "title": "Annotation comment"
+          }
+        ],
+        "status": "final",
+        "subject": {
+          "reference": "urn:uuid:14197e55-4779-4b6c-a65c-48ae49cb3496",
+          "display": "Alessio Fanucci"
+        },
+        "date": "2017-12-26T09:25:18Z",
+        "title": "Laboratory Report",
+        "confidentiality": "N"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:73e1a80e-fcb9-4e08-a3cd-e842427a1d6b",
+      "resource": {
+        "resourceType": "DiagnosticReport",
+        "id": "73e1a80e-fcb9-4e08-a3cd-e842427a1d6b",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/DiagnosticReport-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "a4db3357-46b2-4bf3-ae00-6fee66534cb4"
+          }
+        ],
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-DiagnosticReport.composition",
+            "valueReference": {
+              "reference": "urn:uuid:a0cb3722-ea1b-48f1-a5a3-11213540e099"
+            }
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:e7ece531-0024-4692-8aca-466c5b0e2013"
+          }
+        ],
+        "result": [
+          {
+            "reference": "urn:uuid:5e05e38e-abea-49f2-86b5-db3e9ed0a4e0"
+          }
+        ],
+        "status": "registered",
+        "code": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:14197e55-4779-4b6c-a65c-48ae49cb3496",
+          "display": "Alessio Fanucci"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:14197e55-4779-4b6c-a65c-48ae49cb3496",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "14197e55-4779-4b6c-a65c-48ae49cb3496",
+        "meta": {
+          "security": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "HTEST"
+            },
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "TRAIN"
+            }
+          ],
+          "tag": [
+            {
+              "system": "https://synderai.net/fhir/CodeSystem/tags",
+              "code": "synthetic",
+              "display": "SYNDERAI Synthetic data"
+            }
+          ],
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/patient-eu-core"
+          ]
+        },
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "PT",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://ec.europa.eu/identifier/eci",
+            "value": "4754-874768-3"
+          },
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "MR",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://local.setting.eu/identifier",
+            "value": "4b888823-bdd8-59a3-b785-e7ba28e6a7b5"
+          }
+        ],
+        "name": [
+          {
+            "family": "Fanucci"
+          },
+          {
+            "given": [
+              "Alessio"
+            ]
+          },
+          {
+            "text": "Alessio Fanucci"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Incrocio Combi, 822"
+            ],
+            "use": "home",
+            "type": "physical",
+            "postalCode": "33015",
+            "city": "Moggio Udinese",
+            "country": "Italy"
+          }
+        ],
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "0125684636"
+          }
+        ],
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/StructureDefinition/patient-nationality",
+            "valueCodeableConcept": {
+              "coding": [
+                {
+                  "code": "IT",
+                  "system": "http://hl7.org/fhir/ValueSet/country"
+                }
+              ]
+            }
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__ips\"><tr><td>Alessio Fanucci</td><td>male</td><td>12-Sep-1964</td></tr></table></div>"
+        },
+        "gender": "male",
+        "birthDate": "1964-09-12"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:ad9fb7e6-9954-4d7d-a608-2f1cde532382",
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "ad9fb7e6-9954-4d7d-a608-2f1cde532382",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/ServiceRequest-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "system": "http://example.org",
+            "value": "d11be93b-3756-45b5-87ec-b18f27aadc7c"
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:e7ece531-0024-4692-8aca-466c5b0e2013"
+          }
+        ],
+        "reasonCode": [
+          {
+            "coding": [
+              {
+                "code": "15777000",
+                "system": "http://snomed.info/sct",
+                "display": "Prediabetes"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "271737000",
+                "system": "http://snomed.info/sct",
+                "display": "Anemia"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "40055000",
+                "system": "http://snomed.info/sct",
+                "display": "Chronic sinusitis"
+              }
+            ]
+          }
+        ],
+        "status": "active",
+        "intent": "order",
+        "code": {
+          "coding": [
+            {
+              "code": "108252007",
+              "system": "http://snomed.info/sct",
+              "display": "Laboratory procedure"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:14197e55-4779-4b6c-a65c-48ae49cb3496",
+          "display": "Alessio Fanucci"
+        },
+        "requester": {
+          "reference": "urn:uuid:4c7017cc-aa6a-4206-9178-25cb7f6d9ffa"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:4c7017cc-aa6a-4206-9178-25cb7f6d9ffa",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "4c7017cc-aa6a-4206-9178-25cb7f6d9ffa",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Role Id: 4c7017cc-aa6a-4206-9178-25cb7f6d9ffa</div>"
+        },
+        "organization": {
+          "reference": "urn:uuid:19efeb80-1bdd-4ea9-9f06-eaa699575ed1"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:19efeb80-1bdd-4ea9-9f06-eaa699575ed1",
+      "resource": {
+        "resourceType": "Organization",
+        "id": "19efeb80-1bdd-4ea9-9f06-eaa699575ed1",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/organization-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "8cd554ce-b2d2-4fdb-a545-554ff81f58d9"
+          }
+        ],
+        "address": [
+          {
+            "city": "Artegna",
+            "postalCode": "33011",
+            "country": "Italy"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Organization: Ambulatori</div>"
+        },
+        "name": "Ambulatori"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:e7ece531-0024-4692-8aca-466c5b0e2013",
+      "resource": {
+        "resourceType": "Specimen",
+        "id": "e7ece531-0024-4692-8aca-466c5b0e2013",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Specimen-eu-lab"
+          ]
+        },
+        "collection": {
+          "collectedDateTime": "2017-12-26"
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Specimen</th><th>Collection Date</th></tr><tr><td>Arterial blood specimen</td><td><span class=\"nb\">26-Dec-2017</span></td></tr></table></div>"
+        },
+        "type": {
+          "coding": [
+            {
+              "code": "122552005",
+              "system": "http://snomed.info/sct",
+              "display": "Arterial blood specimen"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:5e05e38e-abea-49f2-86b5-db3e9ed0a4e0",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "5e05e38e-abea-49f2-86b5-db3e9ed0a4e0",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Observation-resultslab-eu-lab"
+          ]
+        },
+        "performer": [
+          {
+            "display": "The Central European Lab"
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                "code": "laboratory"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "code": "2708-6",
+              "system": "http://loinc.org",
+              "display": "Oxygen saturation in Arterial blood"
+            }
+          ],
+          "text": "Oxygen saturation in Arterial blood"
+        },
+        "valueQuantity": {
+          "system": "http://unitsofmeasure.org",
+          "value": 99.4,
+          "unit": "%",
+          "code": "%"
+        },
+        "referenceRange": [
+          {
+            "low": {
+              "value": 95,
+              "code": "%",
+              "system": "http://unitsofmeasure.org"
+            }
+          },
+          {
+            "high": {
+              "value": 100,
+              "code": "%",
+              "system": "http://unitsofmeasure.org"
+            }
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Test</th><th>26-Dec-2017</th><th>Reference&#xA0;Range</th><th>Unit</th></tr><tr><td>Oxygen saturation in Arterial blood</td><td>99.4</td><td>95 - 100</td><td></td><td>%</td></tr></table></div>"
+        },
+        "status": "final",
+        "subject": {
+          "reference": "urn:uuid:14197e55-4779-4b6c-a65c-48ae49cb3496",
+          "display": "Alessio Fanucci"
+        },
+        "effectiveDateTime": "2017-12-26T08:25:18Z",
+        "specimen": {
+          "reference": "urn:uuid:e7ece531-0024-4692-8aca-466c5b0e2013"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:98e26900-15f0-45ac-a658-5a6052cfa398",
+      "resource": {
+        "resourceType": "Device",
+        "id": "98e26900-15f0-45ac-a658-5a6052cfa398",
+        "deviceName": [
+          {
+            "name": "SYNDERAI Synthetic Generator",
+            "type": "manufacturer-name"
+          }
+        ],
+        "version": [
+          {
+            "value": "5.0"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">SYNDERAI Synthetic Generator v5.0</div>"
+        },
+        "status": "active\"",
+        "distinctIdentifier": "synderai-generator-50",
+        "manufacturer": "SYNDERAI Project"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:a89ca655-eb45-4680-8c97-21c67f930925",
+      "resource": {
+        "resourceType": "Provenance",
+        "id": "a89ca655-eb45-4680-8c97-21c67f930925",
+        "target": [
+          {
+            "reference": "Patient/14197e55-4779-4b6c-a65c-48ae49cb3496"
+          },
+          {
+            "reference": "Bundle/73b6de0f-bec7-4e28-a0a9-cc544fd6f466"
+          },
+          {
+            "reference": "Composition/da8e3813-3662-41ea-9cdc-6492078cdf22"
+          },
+          {
+            "reference": "PractitionerRole/2fec2003-6ede-4637-b09b-33604f27b8f2"
+          },
+          {
+            "reference": "Practitioner/d573c0f2-de29-40bc-8671-549e9fb56d60"
+          },
+          {
+            "reference": "PractitionerRole/4c7017cc-aa6a-4206-9178-25cb7f6d9ffa"
+          },
+          {
+            "reference": "Organization/19efeb80-1bdd-4ea9-9f06-eaa699575ed1"
+          }
+        ],
+        "activity": {
+          "text": "Synthetic Example Data Generation"
+        },
+        "policy": [
+          "https://synderai.net/synderai-synthetic-data-policy"
+        ],
+        "agent": [
+          {
+            "type": {
+              "text": "author"
+            },
+            "who": {
+              "reference": "Device/98e26900-15f0-45ac-a658-5a6052cfa398"
+            }
+          }
+        ],
+        "reason": [
+          {
+            "text": "Interoperability Testing and Training (non-clinical use)"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provenance for SYNDERAI Synthetic Example Data Resource</div>"
+        },
+        "recorded": "2017-12-26T09:25:18Z"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:2fec2003-6ede-4637-b09b-33604f27b8f2",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "2fec2003-6ede-4637-b09b-33604f27b8f2",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory Role Id: 2fec2003-6ede-4637-b09b-33604f27b8f2</div>"
+        },
+        "practitioner": {
+          "reference": "urn:uuid:d573c0f2-de29-40bc-8671-549e9fb56d60"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:d573c0f2-de29-40bc-8671-549e9fb56d60",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "d573c0f2-de29-40bc-8671-549e9fb56d60",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitioner-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "bf5db157-11bc-4615-bfcf-3038ee3e233e"
+          }
+        ],
+        "name": [
+          {
+            "prefix": [
+              "dr"
+            ],
+            "given": [
+              "Ex"
+            ],
+            "family": "Ample"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Laboratoire Central Européenne",
+              "Boulevard du Jardin Botanique 32"
+            ],
+            "postalCode": "1000",
+            "city": "Brussels",
+            "country": "Belgium"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory: Laboratoire Central Européenne, 1000 Brussels, Belgium</div>"
+        }
+      }
+    }
+  ],
+  "type": "document",
+  "timestamp": "2017-12-26T09:25:18Z"
+}
