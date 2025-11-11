@@ -8,12 +8,14 @@
 
 This repository and its content is not intended to be used as a source of information for real patient care, medicines etc.
 
-## Table of Contents
+## SYNDERAI Synthetic Example Data
 
-[SYNDERAI – the Story](STORY.md)
+The xSHARE toolbox (D3.3) arranges tools that support proper implementation of the European EHRxF. 
 
-[Principles](PRINCIPLES.md)
+For this set of deliverables, Synthetic Example Data is created on the base of the EHRxF specifications. The purpose of Synthetic Example Data is seen in testing and validation (e.g. industry proofs, connect-a-thons etc.) as well as in education and further implementation support for vendors.
 
-[Credits, Courtesy and Contributors](CCC.md)
+## Overview
 
-[Progress](PROGRESS.md)
+The SYNDERAI methodology, functions and artifacts are described in [README](SYNDERAI/README.md) and located in the  `SYNDERAI` directory
+
+The content of the SYNDERAI website at https://synderai.net is defined in the `website` directory.
