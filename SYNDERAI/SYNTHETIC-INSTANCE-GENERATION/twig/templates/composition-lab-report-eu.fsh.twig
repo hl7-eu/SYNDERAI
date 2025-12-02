@@ -60,7 +60,7 @@ Usage: #inline
 {% set sectioncount = sectioncount + 1 %}
 
   * section[+].title = "{{ catvalue[0] }}"
-  * section[=].code.coding[+] = $loinc#${{ catvalue[1] }} "{{ catvalue[2] }}"
+  * section[=].code.coding[+] = $loinc#{{ catvalue[1] }} "{{ catvalue[2] }}"
   * section[=].code.text = "{{ catvalue[0] }}"
 
 {#  Make section.text #}
@@ -125,7 +125,7 @@ Usage: #inline
 {% set lastpartheading = "<th>Specimen</th><th> </th>" %}
 {% else %}
 {# heading for normal lab info #}
-{% set lastpartheading = "<th>Reference Range</th><th>Unit</th>" %}
+{% set lastpartheading = "<th>Reference&#xA0;Range</th><th>Unit</th>" %}
 {% endif %} {# SPEC or normal #}
 
 {% set sectiontext = "<h3>" ~ catvalue[0] ~ "</h3><table class=\"hl7__eu__lab__report\"><thead><tr><th>Test</th><th>" ~ reportdate ~ "</th>" ~ lastpartheading ~  "</tr></thead><tbody>" ~ sectiontext ~ "</tbody></table>" %}

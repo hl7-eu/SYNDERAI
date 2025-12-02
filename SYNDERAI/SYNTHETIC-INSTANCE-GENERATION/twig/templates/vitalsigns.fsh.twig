@@ -28,7 +28,7 @@ Usage: #inline
 {{ addHTML_tr() }}
 
 {# *** HTML td 1: code #}
-* code = {{ vital.code.system }}#${{ vital.code.code }} "{{ vital.code.display }}"
+* code = {{ vital.code.system }}${{ vital.code.code }} "{{ vital.code.display }}"
 {{ addHTML_td(vital.code.display) }}
 
 * subject = Reference(urn:uuid:{{ patient.instanceid }}) "{{ patient.name }}"
@@ -40,7 +40,7 @@ Usage: #inline
 {# *** HTML td 3: measurement, either single or components #}
 {% if vital.scale == "numeric" and vital.value is not empty %}
 * valueQuantity.value = {{ vital.value }}
-* valueQuantity.code = $ucum#{{ vital.unit }}
+* valueQuantity.code = http://unitsofmeasure.org#{{ vital.unit }}
 * valueQuantity.unit = "{{ vital.unit }}"
 {{ addHTML_td(vital.value ~ " " ~ vital.unit) }}
 {% elseif vital.component %}
@@ -48,7 +48,7 @@ Usage: #inline
 // component
 * component[+].code = {{ c.code.system }}#{{ c.code.code}} "{{ c.code.display }}"
 * component[=].valueQuantity.value = {{ c.value }}
-* component[=].valueQuantity.code = $ucum#{{ c.unit }}
+* component[=].valueQuantity.code = http://unitsofmeasure.org#{{ c.unit }}
 * component[=].valueQuantity.unit = "{{ c.unit }}"
 {% endfor %}
 {{ addHTML_td(vital.value ~ " " ~ vital.unit) }}
