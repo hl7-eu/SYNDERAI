@@ -31,9 +31,15 @@ Usage: #inline
 {% set practitioneridentifier = getUUID() %}
 * identifier.value = "{{ practitioneridentifier }}"
 * identifier.assigner.display = "HL7 Europe"
+{% if hospital.practitioner.prefix is not empty %}
 * name.prefix = "{{ hospital.practitioner.prefix }}"
+{% endif %}
+{% if hospital.practitioner.given is not empty %}
 * name.given = "{{ hospital.practitioner.given }}"
+{% endif %}
+{% if hospital.practitioner.family is not empty %}
 * name.family = "{{ hospital.practitioner.family }}"
+{% endif %}
 {% if hospital.practitioner.email is not empty %}
 * telecom.system = #email
 * telecom.value = "{{ hospital.practitioner.email }}"

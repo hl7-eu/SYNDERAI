@@ -1,0 +1,133 @@
+{#
+  This is the TWIG file for the creation of an FSH instance including the HTML parts.
+  see README.md
+  
+  KH since 2025-10-22
+#}
+
+%%FSH%% {# tag required #}
+Instance: {{ setInstance("Instance-AllergyIntolerance-" ~ instanceid) }}
+InstanceOf: AllergyIntoleranceEuCore
+Title: "AllergyIntolerance"
+Description: "AllergyIntolerance"
+Usage: #inline
+
+* id = "{{ instanceid }}"
+
+{% if allergyintolerance is empty %}
+
+{# no known Allergy/Intolerance data, emit it and we are done #}
+
+* code.coding[0] = $sct#716186003 "No known allergy (situation)"
+* patient = Reference(urn:uuid:{{ patient.instanceid }}) "{{ patient.name }}"
+* onsetDateTime.extension.url = "http://hl7.org/fhir/StructureDefinition/data-absent-reason"
+* onsetDateTime.extension.valueCode = #unknown
+* clinicalStatus.coding = $allergyintolerance-clinical#active
+* verificationStatus = $allergyintolerance-verification#confirmed
+{{ addHTML_tr() }}
+{{ addHTML_td("No known allergies or intolerances") }}
+{{ addHTML_trend() -}}
+
+{% else %}
+
+{# emit the known Allergy/Intolerance #}
+
+{# addign headers for HTML table #}
+{{ addHEAD_tr() }}
+{{ addHEAD_th("Allergy/Intolerance") }}
+{{ addHEAD_th("Onset Date") }}
+{{ addHEAD_th("Status") }}
+{{ addHEAD_th("Type") }}
+{{ addHEAD_th("Reaction") }}
+{{ addHEAD_trend() -}}
+
+{{ addHTML_tr() }}
+
+{# add snomed #}
+{% if allergyintolerance.snomed.code is not empty %}
+* code.coding[+] = $sct#{{ allergyintolerance.snomed.code }} "{{ allergyintolerance.snomed.display }}"
+{% endif %}
+
+{% if allergyintolerance.preferredTerm is not empty %}
+* code.text = "{{ allergyintolerance.preferredTerm }}"
+{# HTML td 1: add human text for allergy/intolerance name #}
+{{ addHTML_td(allergyintolerance.preferredTerm) }}
+{% else %}
+* code.text = "{{ allergyintolerance.snomed.display }}"
+{{ addHTML_td(allergyintolerance.snomed.display) }}
+{% endif %}
+
+{% if allergyintolerance.start is not empty %}
+* onsetDateTime = "{{ allergyintolerance.start }}"
+{# HTML td 2: add human text for the start date #}
+{{ addHTML_tdnb(allergyintolerance.start) }}
+{% else %}
+* onsetDateTime.extension.url = "http://hl7.org/fhir/StructureDefinition/data-absent-reason"
+* onsetDateTime.extension.valueCode = #unknown
+{{ addHTML_td("?") }}
+{% endif %}
+
+{% if allergyintolerance.end is empty %}
+* clinicalStatus.coding = $allergyintolerance-clinical#active
+{# HTML td 3: add human text for active/inactive #}
+{{ addHTML_td("active") }}
+{% else %}
+* clinicalStatus.coding = $allergyintolerance-clinical#inactive
+{{ addHTML_td("inactive") }}
+{% endif %}
+
+* verificationStatus.coding = $allergyintolerance-verification#confirmed
+
+{# add type #}
+{% if allergyintolerance.type is not empty %}
+* type = #{{ allergyintolerance.type }}
+{% endif %}
+
+{# add category #}
+{% if allergyintolerance.category is not empty %}
+* category = #{{ allergyintolerance.category }}
+{# HTML td 4: add human text for category/type #}
+{{ addHTML_td(allergyintolerance.category) }}
+{% else %}
+{{ addHTML_td("?") }}
+{% endif %}
+
+{# add reaction 1 + 2 (optionals) #}
+{% set humantextreactions = "" %}
+{% if allergyintolerance.reaction1.code is not empty %}
+* reaction[+].manifestation.coding[0] = $sct#{{ allergyintolerance.reaction1.code }} "{{ allergyintolerance.reaction1.display }}"
+{% if allergyintolerance.reaction1.severity is not empty %}
+* reaction[=].severity = #{{ allergyintolerance.reaction1.severity | lower }}
+{% endif %}
+{# HTML td 5: add human text for reaction 1 #}
+{% set humantextreactions = allergyintolerance.reaction1.display %}
+{% endif %}
+{% if allergyintolerance.reaction2.code is not empty %}
+* reaction[+].manifestation.coding[0] = $sct#{{ allergyintolerance.reaction2.code }} "{{ allergyintolerance.reaction2.display }}"
+{% if allergyintolerance.reaction2.severity is not empty %}
+* reaction[=].severity = #{{ allergyintolerance.reaction2.severity | lower }}
+{% endif %}
+{# HTML td 5: add human text for reaction 2 #}
+{% set humantextreactions = humantextreactions ~ "&lt;br> &lt;/br>" ~ allergyintolerance.reaction2.display %}
+{% endif %}
+{{ addHTML_td(humantextreactions) }}
+
+* patient = Reference(urn:uuid:{{ patient.instanceid }}) "{{ patient.name }}"
+
+{{ addHTML_trend() -}}
+
+{# populate .text #}
+* text.status = #generated
+* text.div = """
+<div xmlns="http://www.w3.org/1999/xhtml">
+<table class="hl7__ips">{{ emitHEAD() | raw }} {{ emitHTML() | raw }}</table>
+</div>
+"""
+
+{% endif %}
+
+%%HEAD%% {# tag required, content below maybe emtpy #}
+{{ emitHEAD() | raw }}
+
+%%HTML%% {# tag required, content below maybe emtpy #}
+{{ emitHTML() | raw }}

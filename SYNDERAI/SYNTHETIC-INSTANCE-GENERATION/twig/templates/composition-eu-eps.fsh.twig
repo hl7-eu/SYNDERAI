@@ -39,6 +39,8 @@ Usage: #inline
 
 * confidentiality = #N
 
+{# emit sections #}
+
 {% set sectioncount = 0 %}
 
 {% for slicename, section in sections %}
@@ -57,6 +59,13 @@ Usage: #inline
 {{ section.text | raw }}
 </div>
 """
+
+{# if we have an "empty list" indication, emit it "  * emptyReason = \$list-empty-reason#nilknown" #}
+{% if section.indicateEmptyListReason is not empty and section.indicateEmptyListReason == "TRUE" %}
+  * emptyReason = $list-empty-reason#nilknown
+{% endif %}
+
+{# emit entries within this section #}
 {% for entry in section.entries %}
 
 {% if entry.sectionentryslicename is empty %}

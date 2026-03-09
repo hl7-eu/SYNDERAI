@@ -23,7 +23,7 @@ Usage: #inline
   emit data of the identifiers
 #}
 
-* identifier[+].type = $v2-0203#PT
+* identifier[+].type = $v2-0203#JHN
 * identifier[=].system = "http://ec.europa.eu/identifier/eci"
 * identifier[=].value = "{{ patient.eci }}"
 
@@ -75,7 +75,8 @@ Usage: #inline
   use 2-char nameset for that coded in ISO 3166 Part 1 Country Codes
 #}
 * extension[+].url = "http://hl7.org/fhir/StructureDefinition/patient-nationality"
-* extension[=].valueCodeableConcept = http://hl7.org/fhir/ValueSet/country#{{ patient.countrycode|upper }}
+* extension[=].extension[+].url = "code" 
+* extension[=].extension[=].valueCodeableConcept = urn:iso:std:iso:3166#{{ patient.countrycode|upper }}
 
 {{ addHTML_trend() -}}
 
