@@ -17,7 +17,7 @@ Usage: #inline
 {# addign headers for HTML table #}
 {{ addHEAD_tr() }}
 {{ addHEAD_th("Active Planned Care / Goals") }}
-{{ addHEAD_th("Date") }}
+{{ addHEAD_th("Start Date") }}
 {{ addHEAD_th("Reason") }}
 {{ addHEAD_trend() -}}
 
@@ -28,7 +28,8 @@ Usage: #inline
 
 * subject = Reference(urn:uuid:{{ patient.instanceid }}) "{{ patient.name }}"
 
-* category.coding = http://terminology.hl7.org/CodeSystem/care-plan-category#assess-plan "Assessment and Plan"
+{# wrong: http://terminology.hl7.org/CodeSystem/care-plan-category#assess-plan "Assessment and Plan" #}
+* category.coding = $sct#734163000 "Care plan (record artifact)"
 
 {% if careplan.status is empty %}
 * activity.detail.status = #unknown
@@ -90,7 +91,7 @@ Usage: #inline
 * text.status = #generated
 * text.div = """
 <div xmlns="http://www.w3.org/1999/xhtml">
-<table class="hl7__ips">{{ emitHEAD() | raw }}{{ emitHTML() | raw }}</table>
+<table class="hl7__ips first25">{{ emitHEAD() | raw }}{{ emitHTML() | raw }}</table>
 </div>
 """
 
@@ -111,6 +112,7 @@ Usage: #inline
 {% endfor %}
 
 %%HEAD%% {# tag required, content below maybe emtpy #}
+{{ emitHEAD() | raw }}
 
 %%HTML%% {# tag required, content below maybe emtpy #}
 {{ emitHTML() | raw }}

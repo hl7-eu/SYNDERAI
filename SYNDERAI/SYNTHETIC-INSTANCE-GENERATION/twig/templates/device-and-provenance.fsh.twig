@@ -14,7 +14,7 @@ Usage: #inline
 
 * id = "{{ provenance.deviceid }}"
 
-* status = #active"
+* status = #active
 * distinctIdentifier = "synderai-generator-50"
 * deviceName[0].name = "SYNDERAI Synthetic Generator"
 * deviceName[0].type = #manufacturer-name
@@ -39,14 +39,17 @@ Usage: #inline
 
 {# add all target references #}
 {% for t in provenance.targets %}
-* target[+] = Reference({{ t }})
+* target[+] = Reference(urn:uuid:{{ t }})
 {% endfor %}
 
 * recorded = "{{ provenance.date }}"
+* activity.coding = http://terminology.hl7.org/CodeSystem/v3-DataOperation#CREATE "create"
 * activity.text = "Synthetic Example Data Generation"
 * policy[0] = "https://synderai.net/synderai-synthetic-data-policy"
+* agent[0].type.coding = http://terminology.hl7.org/CodeSystem/provenance-participant-type#author "Author"
 * agent[0].type.text = "author"
-* agent[0].who = Reference({{ provenance.deviceid }})
+* agent[0].who = Reference(urn:uuid:{{ provenance.deviceid }})
+* reason[0].coding = http://terminology.hl7.org/CodeSystem/v3-ActReason#TRAIN "training"
 * reason[0].text = "Interoperability Testing and Training (non-clinical use)"
 
 {# populate .text #}

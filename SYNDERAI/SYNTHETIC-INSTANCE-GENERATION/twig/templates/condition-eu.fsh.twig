@@ -2,37 +2,24 @@
   This is the TWIG file for the creation of an FSH instance including the HTML parts.
   see README.md
 
-  KH since 2025-09-02
+  KH since 2026-03-06
 #}
 
 %%FSH%% {# tag required #}
 Instance: {{ setInstance("Instance-Condition-" ~ instanceid) }}
-InstanceOf: ConditionOblEuEps
-Title: "Condition Obligations (EPS)"
+InstanceOf: ConditionEuCore
+Title: "Condition (EU core)"
 Description: "Condition"
 Usage: #inline
 
 * id = "{{ instanceid }}"
 
-{% if condition is null %}
-{# 
-  no known Condition data, emit it and we are done
-#}
-* code.coding[0] = $sct#160245001 "No current problems or disability (situation)"
-* subject = Reference(urn:uuid:{{ patient.instanceid }}) "{{ patient.name }}"
-* onsetDateTime.extension.url = "http://hl7.org/fhir/StructureDefinition/data-absent-reason"
-* onsetDateTime.extension.valueCode = #unknown
 {{ addHTML_tr() }}
-{{ addHTML_td("No known problems or disabilities") }}  {# *** HTML td 1-n: add human text for no problems or disabilities #}    
-{{ addHTML_trend() -}}
 
-{% else %}
+{% if condition is not null %}
 {# 
   emit data of the Condition
 #}
-
-{{ addHTML_tr() }}
-
 {# precalculations #}
 {# condition inactive? #}
 {% set activeflag = condition.active | slice(0, 1) %} {# condition.active format is SYYYY-MM-DD with S status 1=active, 0=inactive #}
@@ -46,16 +33,16 @@ Usage: #inline
 {% endif %}
 
 * category = $condition-category#problem-list-item "Problem List Item"
+* category = $condition-category#encounter-diagnosis "Encounter Diagnosis"
+
 * code.coding[0] = {{ condition.code.system }}#{{ condition.code.code }} "{{ condition.code.display }}"
 * code.text = "{{ preferred }}"
 
 {# *** HTML td 1: condition #}
 {% if inactive %}
 {{ addHTML_tdgray(preferred) }}
-* clinicalStatus = $condition-clinical#inactive
 {% else %}
 {{ addHTML_td(preferred) }}
-* clinicalStatus = $condition-clinical#active
 {% endif %}
 
 {# *** HTML td 2: onset date / period or unknown #}
@@ -66,7 +53,7 @@ Usage: #inline
 {% else %}
 * onsetDateTime = "{{ condition.start }}"
 {% set hperiod = condition.start|date('d-M-Y') %}
-{% if condition.end is not empty and inactive %}
+{% if condition.end is not empty %}
 * abatementDateTime = "{{ condition.end }}"
 {% set hperiod = hperiod ~ " - " ~ condition.end|date('d-M-Y') %}
 {% endif %}
@@ -86,9 +73,9 @@ Usage: #inline
 * asserter = Reference(urn:uuid:{{ asserter.instancerole }}) "{{ asserter.name }}"
 {% endif %}
 
-{{ addHTML_trend() -}}
-
 {% endif %}
+
+{{ addHTML_trend() -}}
 
 {# populate .text #}
 * text.status = #generated

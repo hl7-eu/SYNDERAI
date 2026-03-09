@@ -26,6 +26,14 @@ Usage: #inline
 * type = {{ device.system }}#{{ device.code }} "{{ device.display }}"
 {% endif %}
 
+{# populate .text #}
+* text.status = #generated
+* text.div = """
+<div xmlns="http://www.w3.org/1999/xhtml">
+{{ device.display }} ({{ device.uid }})
+</div>
+"""
+
 {# now the device use statement #}
 Instance: {{ setInstance("Instance-DeviceUse-" ~ duinstanceid) }}
 InstanceOf: DeviceUseStatementEuEps

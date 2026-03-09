@@ -21,7 +21,7 @@ Usage: #inline
 * text.status = #generated
 * text.div = """
 <div xmlns="http://www.w3.org/1999/xhtml">
-<table class="hl7__ips">Provider Role Id {{ provider.instancerole }}</table>
+<table class="hl7__ips"><tr><td>Provider Role Id {{ provider.instancerole }}</td></tr></table>
 </div>
 """
 
@@ -56,7 +56,7 @@ Usage: #inline
 * text.status = #generated
 * text.div = """
 <div xmlns="http://www.w3.org/1999/xhtml">
-<table class="hl7__ips">{{ provider.providerorgname }}</table>
+<table class="hl7__ips"><tr><td>{{ provider.providerorgname }}</td></tr></table>
 </div>
 """
 
@@ -69,14 +69,20 @@ Title: "Practitioner Provider"
 Description: "Practitioner Provider"
 Usage: #inline
 * id = "{{ provider.instanceprovider }}"
+{% if provider.providernameprefix is not empty %}
 * name.prefix = "{{ provider.providernameprefix }}"
+{% endif %}
+{% if provider.providernamegiven is not empty %}
 * name.given[+] = "{{ provider.providernamegiven }}"
+{% endif %}
+{% if provider.providernamefamily is not empty %}
 * name.family = "{{ provider.providernamefamily }}"
+{% endif %}
 {# populate .text #}
 * text.status = #generated
 * text.div = """
 <div xmlns="http://www.w3.org/1999/xhtml">
-<table class="hl7__ips">{{ provider.providernameprefix ~ " " ~ provider.providernamegiven ~ " " ~ provider.providernamefamily}}</table>
+<table class="hl7__ips"><tr><td>{{ provider.providernameprefix ~ " " ~ provider.providernamegiven ~ " " ~ provider.providernamefamily}}</td></tr></table>
 </div>
 """
 

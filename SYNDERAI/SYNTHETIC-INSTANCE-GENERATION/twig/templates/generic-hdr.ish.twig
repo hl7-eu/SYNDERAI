@@ -1,0 +1,164 @@
+{#
+  This is the TWIG file for the creation of generic HDR in ISH format
+
+  KH since 2025-12-08
+#}
+
+%%ISH%%
+# HDR in ISH format for {{ patient.name }}
+
+# patient
+patient
+  birthdate {{ patient.birthdate }}
+  given {{ patient.given }}
+  family {{ patient.family }}
+  gender {{ patient.gender }}
+  postcode {{ patient.postcode }}
+  city {{ patient.city }}
+  street {{ patient.street1 }}
+  country {{ patient.countrycode }}
+  phone {{ patient.phone }}
+  nameset {{ patient.language }}
+  latitude {{ patient.latitude }}
+  longitude {{ patient.longitude }}
+# closest hospital will be dectected by SYNDERAI
+# the provider person in the hopital as primary contact person will be dectected by SYNDERAI
+
+# encounter
+encounter
+  start {{ encounter.episodestart }}
+  end {{ encounter.episodeend }}
+  reason* {{ reason.system }}#{{ reason.code }} {{ reason.display }}
+
+# hospital
+hospital
+  name {{ hospital.name }}
+  street {{ hospital.street }}
+  city {{ hospital.city }} 
+  postcode {{ hospital.postcode }}
+  country {{ hospital.country }}
+{% if hospital.practitioner.given is not empty %}
+  practitioner
+    given {{ hospital.practitioner.given }}
+    family {{ hospital.practitioner.family }}
+    gender {{ hospital.practitioner.gender }}
+{% endif %}
+
+{#
+# admission evaluation
+# section*
+#   type admissionevaluation
+#   code $loinc#67852-4 Hospital Admission evaluation note
+#   title Admission evaluation
+#   text """TEXT"""
+#}
+
+{% if discharge.text is not empty %}
+# Synthesis
+# short discharge summary text of this encounter episode
+# synthesis
+section*
+  type synthesis
+  code $loinc#67781-5 Summarization of encounter note
+  title Synthesis
+  text """{{ discharge.text }}"""
+{% endif %}
+
+# Hospital Course
+section*
+  type hospitalcourse
+  code $loinc#8648-8 Hospital Course
+  text """{{ encounter.hospitalCourse.text }}"""
+
+{% if medication is not empty %}
+# medications associated with this encounter episode
+section*
+  type medication
+  code $loinc#87232-5 Medication administration.brief
+  title Medications
+{% for m in medication %}
+  entry*
+    type medication
+    start 2025-04-03
+{% if m.start is not empty %}
+    start {{ m.start }}
+{% endif %}
+{# add snomed #}
+{% if m.snomed.code is not empty %}
+    code $sct#{{ m.snomed.code }} {{ m.snomed.display }}
+{% else %}
+{# rxnorm only if no snomed #}
+{% if m.rxnorm.code is not empty %}
+    code $rxnorm#{{ medmication.rxnorm.code }} {{ m.rxnorm.display }}
+{% endif %}
+{% endif %}
+    text {{ m.snomed.preferredTerm }}
+{% endfor %} {# medication loop #}
+{% endif %}  {# if medications at all #}
+
+{% if discharge is not empty %}
+# discharge diagnoses of this encounter episode
+section*
+  type dischargediagnosis
+  code $loinc#11535-2 Hospital discharge Dx Narrative
+  title Diagnosis at Discharge
+  entry*
+    type dischargediagnosis
+    start {{ encounter.episodeend }}
+    code* $icd10#{{ discharge.code }} {{ discharge.display }}
+{% endif %}
+
+{% if procedure is not empty %}
+# significant procedures
+section*
+  type significantProcedures
+  code $loinc#10185-7 Hospital discharge procedure note
+  title Significant procedures
+{% if encounter.procedure is not empty %}
+# emit main procedure
+  entry*
+    type significantProcedures
+    date {{ encounter.episodeend }}
+    code* {{ encounter.procedure.system }}#{{ encounter.procedure.code }} {{ encounter.procedure.display }}
+{% endif %}
+{% for p in procedure %}
+  entry*
+    type significantProcedures
+{% if p.date is not empty %}
+{% set pdate = p.date|date('d-M-Y') %}
+    date {{ pdate }}
+{% endif %}
+    code* {{ p.code.system }}#{{ p.code.code }} "{{ p.code.display }}"
+{% endfor %} {# procedure loop #}
+{% endif %}  {# if procedures at all #}
+
+
+
+{% if conditionNOTYETUSED is not empty %}
+# diagnostic summary
+section*
+  type diagnosticSummary
+  code $loinc#11535-2 Hospital discharge Dx Narrative
+  title Diagnosis at Discharge
+{% for c in condition %}
+{# precalculations #}
+{# condition inactive? #}
+{% set activeflag = c.active | slice(0, 1) %} {# condition.active format is SYYYY-MM-DD with S status 1=active, 0=inactive #}
+{% set inactive = activeflag == 0 %}
+{# condition#s preferred term #}
+{% set preferred = c.code.display %}
+{% if c.code.preferredTerm is not empty %}
+{% if c.code.display != c.code.preferredTerm %}
+{% set preferred = c.code.preferredTerm %}
+{% endif %}
+{% endif %}
+  entry*
+    type dischargediagnosis
+{% if c.start is not empty %}
+{% set hperiod = c.start|date('d-M-Y') %}
+    date {{ hperiod }}
+{% endif %}
+    status $condition-clinical#active
+    code* {{ c.code.system }}#{{ c.code.code }} {{ c.code.display }}
+{% endfor %} {# condition loop #}
+{% endif %}  {# if conditions at all #}

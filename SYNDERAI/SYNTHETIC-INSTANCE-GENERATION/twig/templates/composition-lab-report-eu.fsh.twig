@@ -13,6 +13,8 @@ Title: "HL7 Europe Laboratory Report (LAB) Composition"
 Description: "Complete HL7 Europe Laboratory Report (LAB) FHIR Composition example for {{ patientdisplay }}"
 Usage: #inline
 
+* extension[diagnosticReport-reference].valueReference = Reference(urn:uuid:{{ diagnosticreport.instanceid }})
+
 * id = "{{ composition.instanceid }}"
 
 * identifier.system = "urn:oid:{{ HL7EUROPEEXAMPLESOID }}"

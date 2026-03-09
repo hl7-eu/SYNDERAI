@@ -32,22 +32,34 @@ Usage: #inline
 {% endif %}
 {{ addHTML_td(hospital.name ~ ", " ~ hospital.city ~ ", " ~ hospital.country) }}
 
-{% if hospital.instanceid is not empty %}
+{% if hospital.instancepractitioner is not empty %}
 {# primary performer is a participant individual = practitioner role in that hospital #}
 * participant[0].type = $v3-ParticipationType#PPRF "primary performer"
 {% if encounter.end is not empty %}
 * participant[0].period.end = "{{ encounter.end }}"
 {% endif %}
-* participant[0].individual = Reference(urn:uuid:{{ hospital.instanceid }})
+* participant[0].individual = Reference(urn:uuid:{{ hospital.instancepractitioner }})
 {% endif %}
 
-{% if encounter.start is not empty %}
-* period.start = "{{ encounter.start }}"
+{# start and end dates with "start" and "end" or with "episodestart" and "episodeend" #}
+{% set theStart = encounter.start ?? encounter.episodestart ?? null %}
+{% set theEnd = encounter.end ?? encounter.episodeend ?? null %}
+{% if theStart is not empty %}
+* period.start = "{{ encounter.start }}{{ encounter.episodestart }}"
 {% endif %}
-{% if encounter.end is not empty %}
-* period.start = "{{ encounter.end }}"
+{% if theEnd is not empty %}
+* period.start = "{{ encounter.end }}{{ encounter.episodeend }}"
 {% endif %}
-{{ addHTML_td( encounter.start|date('d-m-Y') ~ " - " ~ encounter.end|date('d-m-Y') ) }}
+{# html gen #}
+{% if theStart is not empty or theEnd is not empty %}
+{% if theStart == theEnd %}
+{{ addHTML_td( theEnd|date('d-m-Y') ) }}
+{% else %}
+{{ addHTML_td( theStart|date('d-m-Y') ~ " - " ~ theEnd|date('d-m-Y') ) }}
+{% endif %}
+{% else %}
+{{ addHTML_td( " ? ") }}
+{% endif %}
 
 * subject = Reference({{ patient.instanceid }}) "{{ patient.name }}"
 

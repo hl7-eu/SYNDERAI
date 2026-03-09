@@ -7,7 +7,7 @@
 
 %%FSH%% {# tag required #}
 Instance: {{ setInstance("Instance-Observation-" ~ instanceid) }}
-InstanceOf: ObservationResultsLaboratoryEu
+InstanceOf: MedicalTestResultEuCore
 Title: "Observation Results Laboratory"
 Description: "Observation Results Laboratory"
 Usage: #inline
@@ -18,7 +18,7 @@ Usage: #inline
 {{ addHEAD_tr() }}
 {{ addHEAD_th("Test") }}
 {{ addHEAD_th(labresult.report|date('d-M-Y')) }}
-{{ addHEAD_th("Reference Range") }}
+{{ addHEAD_th("Reference&#xA0;Range") }}
 {{ addHEAD_th("Unit") }}
 {{ addHEAD_trend() -}}
 
@@ -29,7 +29,7 @@ Usage: #inline
 * performer[+].display = "The Central European Lab"
 {# * performer[=] = Reference(urn:uuid:e512e2e2-9600-4c69-a269-af3ab5421e09) #}
 
-* category[laboratory].coding = $observation-category#laboratory
+* category.coding = $observation-category#laboratory
 
 * code.coding[+] = ${{ labresult.code.system }}#{{ labresult.code.code }} "{{ labresult.code.display }}"
 * code.text = "{{ labresult.code.display }}"
@@ -45,7 +45,7 @@ Usage: #inline
 
 * valueQuantity.value = {{ labresult.value.value }}
 * valueQuantity.unit = "{{ labresult.value.unit }}"
-* valueQuantity.code = ${{ labresult.value.system }}#{{ labresult.value.unit }}
+* valueQuantity.code = #{{ labresult.value.unit }}
 * valueQuantity.system = ${{ labresult.value.system }}
 
 {{ addHTML_td(labresult.value.value) }}
@@ -53,7 +53,7 @@ Usage: #inline
 {% if labresult.reference.low is not empty and labresult.reference.high is not empty %}
 
 * referenceRange[+].low = {{ labresult.reference.low }} ${{ labresult.value.system }}#{{ labresult.reference.unit }}
-* referenceRange[+].high = {{ labresult.reference.high }} ${{ labresult.value.system }}#{{ labresult.reference.unit }}
+* referenceRange[=].high = {{ labresult.reference.high }} ${{ labresult.value.system }}#{{ labresult.reference.unit }}
 
 {{ addHTML_td(labresult.reference.low ~ " - " ~ labresult.reference.high) }}
 
@@ -80,7 +80,7 @@ Usage: #inline
 
 {% if labresult.reference.low is not empty and labresult.reference.high is not empty %}
 * referenceRange[+].low = "{{ labresult.reference.low }}"
-* referenceRange[+].high = "{{ labresult.reference.high }}"
+* referenceRange[=].high = "{{ labresult.reference.high }}"
 {% endif %}
 
 {% endif %} {# CodeableConcept #}

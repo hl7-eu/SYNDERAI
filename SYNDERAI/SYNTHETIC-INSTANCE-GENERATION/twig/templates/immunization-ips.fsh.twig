@@ -7,7 +7,7 @@
 
 %%FSH%% {# tag required #}
 Instance: {{ setInstance("Instance-Immunization-" ~ instanceid) }}
-InstanceOf: ImmunizationUvIps
+InstanceOf: ImmunizationEuCore
 Title: "Immunization"
 Description: "Immunization"
 Usage: #inline
@@ -37,9 +37,11 @@ Usage: #inline
 {% if immunization.atc is not empty %}
 * vaccineCode.coding[+] = $atc#{{ immunization.atc.code }} "{{ immunization.atc.display }}"
 {% endif %}
+{# do not emit cvx codes anymore
 {% if immunization.cvx is not empty %}
 * vaccineCode.coding[+] = $cvx#{{ immunization.cvx.code }} "{{ immunization.cvx.display }}"
 {% endif %}
+#}
 * vaccineCode.text = "{{ immunization.snomed.preferredTerm }}"
 {{ addHTML_td(immunization.snomed.preferredTerm) }}
 

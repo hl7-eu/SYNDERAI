@@ -28,7 +28,7 @@ Usage: #inline
 {{ addHTML_tr() }}
 
 {# *** HTML td 1: code #}
-* code = {{ vital.code.system }}${{ vital.code.code }} "{{ vital.code.display }}"
+* code = {{ vital.code.system }}#{{ vital.code.code }} "{{ vital.code.display }}"
 {{ addHTML_td(vital.code.display) }}
 
 * subject = Reference(urn:uuid:{{ patient.instanceid }}) "{{ patient.name }}"
@@ -37,21 +37,31 @@ Usage: #inline
 * effectiveDateTime = "{{ vital.date }}"
 {{ addHTML_td(vital.date|date('d-M-Y')) }}
 
+{# should have: * performer = Reference(urn:uuid:{practitionerrole-uuid}) "{practitioner-name}" #}
+
 {# *** HTML td 3: measurement, either single or components #}
 {% if vital.scale == "numeric" and vital.value is not empty %}
 * valueQuantity.value = {{ vital.value }}
-* valueQuantity.code = http://unitsofmeasure.org#{{ vital.unit }}
+* valueQuantity.code = #{{ vital.unitcode }}
+* valueQuantity.system = "http://unitsofmeasure.org"
 * valueQuantity.unit = "{{ vital.unit }}"
 {{ addHTML_td(vital.value ~ " " ~ vital.unit) }}
 {% elseif vital.component %}
+{% set valueunit = "-" %}
 {% for c in vital.component %}
-// component
-* component[+].code = {{ c.code.system }}#{{ c.code.code}} "{{ c.code.display }}"
+{# component with a slice? #}
+{% if c.slice is not empty %}
+* component[{{c.slice}}].code = {{ c.code.system }}#{{ c.code.code }} "{{ c.code.display }}"
+{% else %}
+* component[+].code = {{ c.code.system }}#{{ c.code.code }} "{{ c.code.display }}"
+{% endif %}
 * component[=].valueQuantity.value = {{ c.value }}
-* component[=].valueQuantity.code = http://unitsofmeasure.org#{{ c.unit }}
+* component[=].valueQuantity.code = #{{ c.unitcode }}
+* component[=].valueQuantity.system = "http://unitsofmeasure.org"
 * component[=].valueQuantity.unit = "{{ c.unit }}"
+{% set valueunit = c.value ~ " " ~ c.unit %}
 {% endfor %}
-{{ addHTML_td(vital.value ~ " " ~ vital.unit) }}
+{{ addHTML_td(valueunit) }}
 {% else %}
 {{ addHTML_td("-") }}
 {% endif %}
