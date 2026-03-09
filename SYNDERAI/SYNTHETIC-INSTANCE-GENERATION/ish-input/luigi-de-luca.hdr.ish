@@ -1,0 +1,209 @@
+# HDR for Luigi De Luca
+patient
+  birthdate 1966-09-30
+  given Luigi
+  family De Luca
+  localid 8121c77e7bf9
+  gender male
+  postcode 38057
+  city Serso
+  street Via Zannoni 29
+  country IT
+  phone +39 0334 8920354
+  nameset it
+  latitude 46.0591
+  longitude 11.2637
+  preselected
+    diagnosis* 15777000
+    diagnosis* 44054006
+    medication* metformin
+# closest hospital will be dectected by SYNDERAI
+encounter
+  start 2025-04-01T08:45:00Z
+  end 2025-04-10T11:00:00Z
+  reason* $sct#714628002 Prediabetes (finding)
+  service* $sct#171183004 Diabetes mellitus screening (procedure)
+# the provider person in the hopital as primary contact persone there
+provider
+  prefix dr
+  given Augusto
+  family Zucchero-Combattente
+  email augusto@diafight.it
+  phone +39 0461 1295787347
+section*
+  type admissionevaluation
+  code $loinc#67852-4 Hospital Admission evaluation note
+  title Admission evaluation
+  text """Mr. Luigi De Luca, a 57-year-old male, was admitted on 1st April following a pre-diabetic episode characterized by episodes of fatigue, polyuria, and increased thirst. Recent routine blood tests showed elevated fasting blood glucose and HbA1c levels that required further investigation.<p/>When Mr De Luca arrived in the morning we recorded a fasting blood glucose level at 180 mg/dL. His HbA1c level was 7.8%. He seemed to be dehydrated, so that he immediately was sent to the ward for a full breakfast and fluid substitution."""
+section*
+  type familyhistory
+  code $loinc#10157-6 History of family member diseases Narrative
+  title Family History
+  text """Mr. Luigi has a family history of diabetes (type 2, mother and maternal grandmother)."""
+  entry*
+    type familyhistory 
+    relationship $v3-RoleCode#MTH mother
+    condition $sct#430679000 Family history of diabetes mellitus type 2 (situation)
+  entry*
+    type familyhistory 
+    relationship $v3-RoleCode#MGRMTH maternal grandmother
+    condition $sct#430679000 Family history of diabetes mellitus type 2 (situation)
+section*
+  type vitalsign
+  code $loinc#8716-3 Vital signs
+  entry*
+    type vitalsign
+    date 2025-04-01
+    category $observation-category#vital-signs Vital Signs
+    code $loinc#29463-7 Body weight
+    valueQuantity 109 #kg
+  entry*
+    type vitalsign
+    date 2025-04-19
+    category $observation-category#vital-signs Vital Signs
+    code $loinc#29463-7 Body weight
+    valueQuantity 108 #kg
+  entry*
+    type vitalsign
+    date 2025-04-01
+    category $observation-category#vital-signs Vital Signs
+    code $loinc#8302-2 Body height
+    valueQuantity 177 #cm
+  entry*
+    type vitalsign
+    date 2025-04-01
+    category $observation-category#vital-signs Vital Signs
+    code $loinc#85354-9 Blood pressure panel with all children optional
+    component*
+      code $loinc#8480-6 Systolic blood pressure
+      valueQuantity 155 #mm[Hg]
+    component*
+      code $loinc#8462-4 Diastolic blood pressure
+      valueQuantity 95 #mm[Hg]
+  entry*
+    type vitalsign
+    date 2025-04-10
+    category $observation-category#vital-signs Vital Signs
+    code $loinc#85354-9 Blood pressure panel with all children optional
+    component*
+      code $loinc#8480-6 Systolic blood pressure
+      valueQuantity 150 #mm[Hg]
+    component*
+      code $loinc#8462-4 Diastolic blood pressure
+      valueQuantity 90 #mm[Hg]
+section*
+  type socialhistory
+  code $loinc#11367-0 History of Tobacco use
+  category $observation-category#social-history Social History
+  text """Patient says he smokes a two to three cigarettes a day only."""
+  entry*
+    type socialhistory
+    date 2025-04-01
+    category #social-history Social History
+    code $loinc#11367-0 History of Tobacco use
+    valueCodeableConcept $sct#77176002 Current smoker
+    note Patient says he smokes a two to three cigarettes a day only.
+section*
+  type hospitalcourse
+  code $loinc#8648-8 Hospital Course
+  text """During the hospital stay from 1 to 10 April, Mr. De Luca underwent a series of diagnostic tests, consultations and initial treatment. <p/>Throughout his hospital stay, Mr. De Luca was monitored closely. His blood sugar levels improved modestly with the introduction of Metformin, and no acute complications were observed."""
+section*
+  type results
+  code $loinc#30954-2 Relevant diagnostic tests/laboratory data Narrative
+  title Significant Observation Results
+  entry*
+    type results
+    date 2025-04-01
+    code $loinc#76629-5 Fasting glucose [Moles/volume] in Blood
+    valueQuantity 180 #mg/dL
+  entry*
+    type results
+    date 2025-04-02
+    code $loinc#76629-5 Fasting glucose [Moles/volume] in Blood
+    valueQuantity 140 #mg/dL
+  entry*
+    type results
+    date 2025-04-03
+    code $loinc#76629-5 Fasting glucose [Moles/volume] in Blood
+    valueQuantity 150 #mg/dL
+  entry*
+    type results
+    date 2025-04-05
+    code $loinc#76629-5 Fasting glucose [Moles/volume] in Blood
+    valueQuantity 140 #mg/dL
+  entry*
+    type results
+    date 2025-04-01
+    code $loinc#59261-8 Hemoglobin A1c [Mass/volume] in Blood
+    valueQuantity 7.2 #%
+  entry*
+    type results
+    date 2025-04-02
+    code $loinc#20438-8 Glucose [Mass/volume] in Serum or Plasma --1 hour post dose glucose
+    valueQuantity 180 #mg/dL
+section*
+  type procedure
+  code $loinc#10185-7 Hospital discharge procedures Narrative
+  title Significant procedures
+  text """Lifestyle Consultation: Mr. De Luca met with a dietitian to discuss necessary changes in his diet, focusing on a low glycemic index diet and the need to monitor carbohydrate intake. He was also advised to engage in regular physical activity.<p> </p>Diabetes Education: Mr. De Luca attended educational sessions on diabetes management, including the importance of regular blood sugar monitoring, recognizing hypoglycemia and hyperglycemia symptoms, and foot care.<p> </p>Starting Pharmacotherapy with Metformin."""
+  entry*
+    type procedure
+    date 2025-04-04
+    code $sct#313204009 Lifestyle education (procedure)
+    status #completed
+  entry*
+    type procedure
+    date 2025-04-05
+    code $sct#6143009 Diabetic education (procedure)
+    status #in-progress
+  entry*
+    type procedure
+    date 2025-04-04
+    code $sct#6143009 Metformin therapy (procedure)
+    status #in-progress
+section*
+  type medication
+  code $loinc#87232-5 Medication administration.brief
+  title Medications
+  entry*
+    type medication
+    start 2025-04-03
+    code $sct#765507008 Product containing precisely metformin hydrochloride 500 milligram/1 each prolonged-release oral tablet (clinical drug)
+    route $sct#26643006 Oral route
+    text """Metformin 500 mg twice daily was started as the first-line treatment to help control blood glucose levels."""
+section*
+  type careplan
+  code $loinc#10185-7 Plan of care note
+  title Follow-up
+  text = """<ul><li>Endocrinology Clinic: Follow-up appointment in 2 weeks to assess response to treatment</li><li>Dietitian Consultation: Appointment in 1 month for further dietary planning</li><li>Routine Blood tests<: Repeat HbA1c in 3 months</li></ul>"""
+  entry*
+    type careplan
+    start 2025-04-04
+    status = #planned
+    kind = #Appointment
+    category $sct#736284000 Diabetes clinical management plan
+    activity $sct#306118006 Referral to endocrinology service (procedure)
+  entry*
+    type careplan
+    start 2025-04-04
+    status = #planned
+    kind = #Appointment
+    category $sct#736284000 Diabetes clinical management plan
+    activity $sct#103699006 Referral to dietitian (procedure)
+  entry*
+    type careplan
+    start 2025-04-04
+    status = #planned
+    kind = #ServiceRequest
+    category $sct#736284000 Diabetes clinical management plan
+    activity $sct#43396009 Hemoglobin A1c measurement (procedure)
+section*
+  type dischargediagnosis
+  code $loinc#11535-2 Hospital discharge Dx Narrative
+  title Diagnosis at Discharge
+  entry*
+    type dischargediagnosis
+    date 2025-04-04
+    status $condition-clinical#active
+    code* $icd10#E11 Type 2 diabetes mellitus
+    code* $sct#44054006 Diabetes mellitus type 2 (disorder)

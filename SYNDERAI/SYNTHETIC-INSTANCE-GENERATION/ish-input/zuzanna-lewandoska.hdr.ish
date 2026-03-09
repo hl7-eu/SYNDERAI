@@ -1,0 +1,133 @@
+patient
+  birthdate 1980-06-15
+  given Zuzanna
+  family Lewandowska
+  localid c7b2e91f3a04
+  gender F
+  postal 00-001
+  city Warszawa
+  street ul. Marszalkowska 72
+  country PL
+  phone +48 601 234 567
+  language pl
+  lat 52.2297
+  long 21.0122
+encounter
+  start 2026-03-01T14:30:00Z
+  end 2026-03-03T10:00:00Z
+  reason* $sct#414285001 Allergy to peanuts (finding)
+  reason* $sct#473460002 Allergic gastrointestinal disorder (disorder)
+  service* $sct#773568002 Emergency medicine (qualifier value)
+section*
+  code $loinc#67852-4 Hospital Admission evaluation note
+  title Admission evaluation
+  text """Ms. Zuzanna Lewandowska, a 45-year-old Polish female, presented to the emergency department while on vacation in France, approximately two hours after eating at a buffet. She reported acute nausea, abdominal cramping, and vomiting. The initial working diagnosis was suspected food poisoning.<p/>On admission, vital signs were stable. The patient appeared mildly dehydrated but was haemodynamically stable with no signs of anaphylaxis or airway involvement. Gastric lavage was performed and gastric contents were submitted for toxicological and microbiological analysis. Intravenous fluid therapy was commenced for rehydration and supportive care."""
+section*
+  type allergy
+  code $loinc#48765-2 Allergies and adverse reactions Document
+  title Allergies and Intolerances
+  text """Ms. Lewandowska has a known allergy to peanuts, confirmed during detailed anamnesis on day 2 of admission. The allergy had not been initially disclosed. Accidental ingestion of peanut cream contained in a regional French pastry is identified as the cause of this admission."""
+  entry*
+    type allergy
+    code $sct#256349002 Peanut (substance)
+    criticality high
+    status active
+    reaction $sct#473460002 Allergic gastrointestinal disorder (disorder)
+    severity moderate
+section*
+  type hospitalcourse
+  code $loinc#8648-8 Hospital Course
+  text = """Following admission, Ms. Lewandowska received intravenous fluid therapy for rehydration and supportive monitoring. Gastric content analysis and 24-hour observation yielded no evidence of bacterial or toxic foodborne illness, effectively ruling out food poisoning.<p/>A detailed anamnesis on the following day revealed that the patient had unknowingly consumed a local French pastry containing peanut cream. She confirmed a pre-existing peanut allergy during this interview. The clinical presentation was re-evaluated as an acute non-anaphylactic gastrointestinal allergic reaction to accidental peanut ingestion.<p/>The patient remained haemodynamically stable throughout her stay with no signs of anaphylaxis, urticaria, or respiratory involvement. Symptoms resolved progressively with supportive care. No pharmacological treatment was required beyond the initial hydration. The patient was discharged after 48 hours in good condition."""
+section*
+  type problems
+  code $loinc#11450-4 Problem list - Reported
+  title Discharge Diagnoses
+  entry*
+    type condition
+    date 2026-03-01
+    code $sct#473460002 Allergic gastrointestinal disorder (disorder)
+    text """Acute gastrointestinal allergic reaction to accidental peanut ingestion via regional pastry containing peanut cream."""
+    status resolved
+  entry*
+    type condition
+    date 2026-03-01
+    code $sct#11840006 Dehydration (disorder)
+    text """Mild dehydration secondary to vomiting. Resolved with intravenous fluid therapy."""
+    status resolved
+  entry*
+    type condition
+    date 2026-03-01
+    code $sct#75694006 Food poisoning (disorder)
+    text """Initially suspected food poisoning - ruled out by gastric content analysis and observation."""
+    status refuted
+section*
+  type results
+  code $loinc#30954-2 Relevant diagnostic tests/laboratory data Narrative
+  title Significant Observation Results
+  text """Laboratory and toxicological investigations performed during admission."""
+  entry*
+    type results
+    date 2026-03-01
+    code $loinc#26881-3 Bacteria identified in Stomach contents by Culture
+    valueCodeableConcept no growth
+    interpretation normal
+    performer Hopital de vacances FR
+  entry*
+    type results
+    date 2026-03-01
+    code $loinc#2823-3 Potassium [Moles/volume] in Serum or Plasma
+    valueCodeableConcept normal
+    interpretation normal
+    performer Hopital de vacances FR
+  entry*
+    type results
+    date 2026-03-01
+    code $loinc#2951-2 Sodium [Moles/volume] in Serum or Plasma
+    valueCodeableConcept normal
+    interpretation normal
+    performer Hopital de vacances FR
+  entry*
+    type results
+    date 2026-03-01
+    code $loinc#1988-5 C reactive protein [Mass/volume] in Serum or Plasma
+    valueCodeableConcept normal
+    interpretation normal
+    performer Hopital de vacances FR
+section*
+  type procedure
+  code $loinc#10185-7 Hospital discharge procedures Narrative
+  title Significant Procedures
+  text """Gastric lavage was performed on admission to remove ingested gastric contents, which were subsequently analysed for toxicological and microbiological pathogens. Intravenous hydration was maintained over the 48-hour admission. Discharge education was provided regarding peanut allergy awareness, recognition of hidden allergens in local and regional foods, and recommended emergency preparedness measures."""
+  entry*
+    type procedure
+    date 2026-03-01
+    code $sct#274025005 Gastric lavage (procedure)
+    status completed
+  entry*
+    type procedure
+    date 2026-03-01
+    code $sct#47545007 Continuous intravenous infusion therapy (procedure)
+    status completed
+  entry*
+    type procedure
+    date 2026-03-02
+    code $sct#409073007 Allergy education (procedure)
+    status completed
+section*
+  type medication
+  code $loinc#87232-5 Medication administration.brief
+  title Medications
+  text """No pharmacological treatment was required at discharge. Supportive IV fluid therapy was administered during admission only. Patient education was provided as the primary intervention."""
+section*
+  type careplan
+  code $loinc#18776-5 Plan of care note
+  title Follow-up and Care Plan
+  text = """<ul><li>Allergy Management: Strict avoidance of all peanut-containing foods, including hidden sources in local and regional specialities</li><li>Emergency Preparedness: Recommendation to carry emergency antihistamines and/or an epinephrine auto-injector (EpiPen) at all times, especially when travelling abroad</li><li>Primary Care Follow-up: Appointment with GP or allergist upon return to Poland to review allergy management plan and consider formal allergy testing if not previously performed</li><li>Patient Education: Awareness of ingredient labelling, communication of allergy in restaurants (in local language if abroad), and recognition of early allergic symptoms</li><li>Dietary Caution: Particular vigilance with regional and traditional foods where allergens such as peanuts may not be visibly declared</li></ul>"""
+  entry*
+    type careplan
+    date 2026-03-03
+    category $sct#414285001 Allergy to peanuts (finding)
+    code $sct#306206005 Referral to allergy service (procedure)
+    activity* $sct#306206005 Referral to allergist on return home #not-started
+    activity* $sct#182836005 Review of allergy management plan #not-started
+    activity* $sct#409073007 Allergy education reinforcement #not-started

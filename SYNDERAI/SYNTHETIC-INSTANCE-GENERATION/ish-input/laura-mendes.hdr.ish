@@ -1,0 +1,168 @@
+# HDR for Laura Mendes
+patient
+  birthdate 1981-03-12
+  given Laura
+  family Mendes
+  localid a3f9d02c4e71
+  gender F
+  postal 1000-001
+  city Lisboa
+  street Rua das Flores 14
+  country PT
+  phone +351 912 345 678
+  language pt
+  lat 38.7169
+  long -9.1395
+encounter
+  start 2026-03-03T09:00:00Z
+  reason* $sct#721938000 Invasive ductal carcinoma of breast (disorder)
+  reason* $sct#385786002 Chemotherapy (procedure)
+  service* $sct#394593009 Medical oncology (qualifier value)
+section*
+  code $loinc#67852-4 Hospital Admission evaluation note
+  title Admission evaluation
+  text """Ms. Laura Mendes, a 45-year-old female, is currently under active oncological treatment for invasive ductal carcinoma of the left breast (ER+/HER2-), Stage IIb. She has completed cycle 2 of 6 of the TC chemotherapy regimen (Docetaxel + Cyclophosphamide).<p/>Recent laboratory results from Provider A show neutropenia (0.9 x10^9/L), mild anaemia (Hb 10.4 g/dL), and a mild ALT elevation, consistent with chemotherapy-related toxicity. Renal function is preserved (creatinine normal). Filgrastim is used on a PRN basis depending on neutrophil count.<p/>A known allergy to iodine contrast media (moderate reaction) is documented and must be flagged for any planned imaging."""
+section*
+  type allergy
+  code $loinc#48765-2 Allergies and adverse reactions Document
+  title Allergies and Intolerances
+  text """Ms. Mendes has a documented moderate allergic reaction to iodine contrast media. This must be considered before any contrast-enhanced imaging."""
+  entry*
+    type allergy
+    code $sct#372912004 Iodinated contrast media (substance)
+    criticality high
+    status active
+    reaction $sct#702809001 Drug hypersensitivity reaction (disorder)
+    severity moderate
+section*
+  type problems
+  code $loinc#11450-4 Problem list - Reported
+  title Active Problems
+  entry*
+    type condition
+    date 2025-10-01
+    code $sct#413448000 Invasive ductal carcinoma of female breast (disorder)
+    text """Invasive ductal carcinoma of the left breast, ER+/HER2-, Stage IIb"""
+    status active
+    bodySite $sct#80248007 Left breast structure (body structure)
+    stage $sct#261614003 Stage IIb
+  entry*
+    type condition
+    date 2026-03-03
+    code $sct#165517008 Neutropenia (disorder)
+    text """Chemotherapy-induced neutropenia. Neutrophils 0.9 x10^9/L (low)."""
+    status active
+  entry*
+    type condition
+    date 2026-03-03
+    code $sct#271737000 Anaemia (disorder)
+    text """Mild anaemia. Hb 10.4 g/dL. Likely chemotherapy-related."""
+    status active
+  entry*
+    type condition
+    date 2026-03-03
+    code $sct#735274001 Hepatocellular injury with mild elevation of serum enzymes (disorder)
+    text """Mild ALT elevation. Chemotherapy-related hepatotoxicity cannot be excluded."""
+    status active
+section*
+  type medication
+  code $loinc#87232-5 Medication administration.brief
+  title Medications
+  entry*
+    type medication
+    start 2025-12-01
+    code $sct#372993008 Docetaxel (substance)
+    route $sct#47625008 Intravenous route
+    text """Docetaxel - part of TC chemotherapy regimen (Docetaxel + Cyclophosphamide). Cycle 2 of 6 completed."""
+  entry*
+    type medication
+    start 2025-12-01
+    code $sct#387420009 Cyclophosphamide (substance)
+    route $sct#47625008 Intravenous route
+    text """Cyclophosphamide - part of TC chemotherapy regimen. Cycle 2 of 6 completed."""
+  entry*
+    type medication
+    start 2025-12-01
+    code $sct#372487007 Ondansetron (substance)
+    route $sct#26643006 Oral route
+    text """Ondansetron - antiemetic, supportive medication during chemotherapy."""
+  entry*
+    type medication
+    start 2025-12-01
+    code $sct#372584003 Dexamethasone (substance)
+    route $sct#26643006 Oral route
+    text """Dexamethasone - supportive therapy, antiemetic and anti-inflammatory during chemotherapy."""
+  entry*
+    type medication
+    start 2025-12-01
+    code $sct#372861008 Pantoprazole (substance)
+    route $sct#26643006 Oral route
+    text """Pantoprazole - gastroprotection during chemotherapy."""
+  entry*
+    type medication
+    start 2025-12-01
+    code $sct#386947003 Filgrastim (substance)
+    route $sct#34206005 Subcutaneous route
+    text """Filgrastim (G-CSF) - administered PRN based on neutrophil count to manage chemotherapy-induced neutropenia."""
+section*
+  type results
+  code $loinc#30954-2 Relevant diagnostic tests/laboratory data Narrative
+  title Significant Observation Results
+  text """Laboratory results from Provider A, collected 2026-03-03."""
+  entry*
+    type results
+    date 2026-03-03
+    code $loinc#26499-4 Neutrophils [#/volume] in Blood
+    valueQuantity 0.9 #10*9/L
+    interpretation low
+    performer Provider A
+  entry*
+    type results
+    date 2026-03-03
+    code $loinc#6690-2 Leukocytes [#/volume] in Blood by Automated count
+    valueQuantity 3.2 #10*9/L
+    performer Provider A
+  entry*
+    type results
+    date 2026-03-03
+    code $loinc#718-7 Hemoglobin [Mass/volume] in Blood
+    valueQuantity 10.4 #g/dL
+    performer Provider A
+  entry*
+    type results
+    date 2026-03-03
+    code $loinc#1742-6 Alanine aminotransferase [Enzymatic activity/volume] in Serum or Plasma
+    valueCodeableConcept mild elevation
+    interpretation high
+    performer Provider A
+  entry*
+    type results
+    date 2026-03-03
+    code $loinc#2160-0 Creatinine [Mass/volume] in Serum or Plasma
+    valueCodeableConcept normal
+    interpretation normal
+    performer Provider A
+section*
+  type procedure
+  code $loinc#47519-4 History of Procedures Document
+  title Significant Procedures
+  text """Ms. Mendes is currently receiving TC chemotherapy (Docetaxel + Cyclophosphamide) for invasive ductal carcinoma of the left breast, Stage IIb. Cycle 2 of 6 has been completed."""
+  entry*
+    type procedure
+    date 2025-12-01
+    code $sct#385786002 Chemotherapy (procedure)
+    text """TC regimen - Docetaxel + Cyclophosphamide. Cycle 2 of 6 completed."""
+    status in-progress
+section*
+  type careplan
+  code $loinc#18776-5 Plan of care note
+  title Follow-up and Care Plan
+  text = """<ul><li>Medical Oncology: Continue TC chemotherapy regimen, cycles 3-6 to be administered per protocol</li><li>Haematology monitoring: Repeat FBC before each cycle; Filgrastim PRN if neutrophils below threshold</li><li>Hepatic monitoring: Repeat ALT prior to next cycle to assess for chemotherapy-induced hepatotoxicity</li><li>Imaging: Avoid iodine contrast media - allergy documented (moderate reaction)</li><li>Supportive care: Continue Ondansetron, Dexamethasone, Pantoprazole throughout treatment</li></ul>"""
+  entry*
+    type careplan
+    date 2026-03-03
+    category $sct#363346000 Malignant neoplastic disease (disorder)
+    code $sct#385786002 Chemotherapy (procedure)
+    activity* $sct#385786002 Chemotherapy cycles 3-6 #in-progress
+    activity* $sct#396109005 Full blood count #not-started
+    activity* $sct#166312007 Blood chemistry tests #not-started
