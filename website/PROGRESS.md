@@ -23,3 +23,5 @@
 - 2025-09-29: New set of synthetic demographic data, matched with clinical data
 - 2025-10-19: Published new examples for EPS and LAB based on the new synthetic demographic data set
 - 2025-10-23: Published 50 synthetic patients / 50 HL7 FHIR example instance of the European European Patient Summary (EPS), 50 synthetic patients / 890 HL7 FHIR example instances of the European Laboratory Report (LAB), introduced [SYNDERAI Synthetic Data Generation and Use Policy](https://synderai.net/index.php?menu=policy) with corresponding markers in all instances of Bundles that the data is synthetic
+- 2025-12-07: recreated 50 synthetic patients / 50 HL7 FHIR example instance of the European European Patient Summary (EPS)
+- 2025-03-01: starting the big validation "marathon" to process all synthetic examples by the HAPI validator aiming on passing (virtually) all examples with no errors
