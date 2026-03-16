@@ -26,7 +26,7 @@ Usage: #inline
 
 * status = #final
 
-* type = $loinc#60591-5 "Patient summary Document"
+* type.coding = $loinc#60591-5 "Patient summary Document"
 * type.text = "Patient summary Document"
 
 * subject = Reference(urn:uuid:{{ patient.instanceid }}) "{{ patient.name }}"
@@ -35,7 +35,7 @@ Usage: #inline
 
 * custodian[+] = Reference(urn:uuid:{{ provider.instanceroleorg }})
 
-* date = "{{ composition.date|date('Y-m-d') }}"
+* date = "{{ composition.date|date('Y-m-d\\TH:i:s\\Z') }}"
 
 * confidentiality = #N
 
@@ -62,10 +62,12 @@ Usage: #inline
 
 {# if we have an "empty list" indication, emit it "  * emptyReason = \$list-empty-reason#nilknown" #}
 {% if section.indicateEmptyListReason is not empty and section.indicateEmptyListReason == "TRUE" %}
+  
   * emptyReason = $list-empty-reason#nilknown
-{% endif %}
 
-{# emit entries within this section #}
+{% else %}
+
+{# emit entries within this section, no entries (for now) if emptyReason is present #}
 {% for entry in section.entries %}
 
 {% if entry.sectionentryslicename is empty %}
@@ -80,7 +82,13 @@ Usage: #inline
 
 {% endfor %} {# entries #}
 
+{% endif %} {# empty reason #}
+
 {% endfor %} {# sections #}
+
+{# declare text as empty, it is not here #}
+* text.status = #empty
+* text.div = "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
 
 %%HEAD%% {# tag required, content below maybe emtpy #}
 

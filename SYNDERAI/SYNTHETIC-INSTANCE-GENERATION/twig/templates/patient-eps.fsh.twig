@@ -77,6 +77,7 @@ Usage: #inline
 * extension[+].url = "http://hl7.org/fhir/StructureDefinition/patient-nationality"
 * extension[=].extension[+].url = "code" 
 * extension[=].extension[=].valueCodeableConcept = urn:iso:std:iso:3166#{{ patient.countrycode|upper }}
+* extension[=].extension[=].valueCodeableConcept.text = "{{ patient.countryname }}"
 
 {{ addHTML_trend() -}}
 

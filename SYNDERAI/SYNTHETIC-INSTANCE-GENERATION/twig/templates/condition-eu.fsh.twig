@@ -24,18 +24,24 @@ Usage: #inline
 {# condition inactive? #}
 {% set activeflag = condition.active | slice(0, 1) %} {# condition.active format is SYYYY-MM-DD with S status 1=active, 0=inactive #}
 {% set inactive = activeflag == 0 %}
-{# condition#s preferred term #}
-{% set preferred = condition.code.display %}
-{% if condition.code.preferredTerm is not empty %}
-{% if condition.code.display != condition.code.preferredTerm %}
-{% set preferred = condition.code.preferredTerm %}
-{% endif %}
-{% endif %}
 
 * category = $condition-category#problem-list-item "Problem List Item"
 * category = $condition-category#encounter-diagnosis "Encounter Diagnosis"
 
-* code.coding[0] = {{ condition.code.system }}#{{ condition.code.code }} "{{ condition.code.display }}"
+{# condition.code can be an array (from ISH) or a single element, simplify! #}
+{% if condition.code[0] is not empty %}
+{% set thisconditioncode = condition.code[0] %}
+{% else %}
+{% set thisconditioncode = condition.code %}
+{% endif %}
+
+{# condition's preferred term #}
+{% set preferred = thisconditioncode.display %}
+{% if thisconditioncode.preferredTerm is not empty %}
+{% set preferred = thisconditioncode.preferredTerm %}
+{% endif %}
+
+* code.coding[0] = {{ thisconditioncode.system }}#{{ thisconditioncode.code }} "{{ thisconditioncode.display }}"
 * code.text = "{{ preferred }}"
 
 {# *** HTML td 1: condition #}

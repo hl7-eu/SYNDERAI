@@ -7,24 +7,27 @@
 
 case "$1" in
     LAB)
-        OUT=validation-LAB.html
+        ARTIFACT=LAB
+        OUT=_validation-LAB.html
         SDIR=../RECENT-RESULTS/LAB
         FILES=Bundle-*.json
         IG='hl7.fhir.eu.laboratory#current'
         PROFILE=http://hl7.eu/fhir/laboratory/StructureDefinition/Bundle-eu-lab	
         ;;
     EPS)
-        OUT=validation-EPS.html
+    ARTIFACT=EPS
+        OUT=_validation-EPS.html
         SDIR=../RECENT-RESULTS/EPS
         FILES=Bundle-*.json
         IG='hl7.fhir.eu.eps#current'
         PROFILE=http://hl7.eu/fhir/eps/StructureDefinition/bundle-eu-eps
         ;;
     HDR)
-        OUT=validation-HDR.html
+        ARTIFACT=HDR
+        OUT=_validation-HDR.html
         SDIR=../RECENT-RESULTS/HDR
         FILES=Bundle-*.json
-        IG='hl7.fhir.eu.hdr#current'
+        IG='hl7.fhir.eu.hdr#1.0.0-alpha'
         PROFILE=http://hl7.eu/fhir/hdr/StructureDefinition/bundle-eu-hdr
         ;;
 esac
@@ -33,6 +36,10 @@ then
    echo "Must specify spec to validate LAB, EPS or HDR";
    exit;
 fi
+
+# if TX is set to "-tx n/a" no external terminology validation takes place, otherwise set it to ""
+TX="-tx n/a"
+TX=""
 
 # store HOME directory
 HOME=`pwd`
@@ -53,13 +60,17 @@ NC='\033[m'        # No Color
 # now go to the source folder
 cd $SDIR
 
-echo "${WHITE}${BLUEBG}VALIDATING INSTANCES OF IG $IG$NC"
+echo "${WHITE}${BLUEBG}VALIDATING ${ARTIFACT} INSTANCES OF IG $IG$NC ($TX)"
 echo "---------------------------$BLUE"
 ls $FILES
 echo "$NC---------------------------"
-java -jar $VALIDATOR -version 4.0.1 -locale en-US $FILES -ig $IG -profile $PROFILE -html-output $HOME/$OUT
+java -jar $VALIDATOR -version 4.0.1 -locale en-US $FILES -ig $IG $TX -allow-example-urls -tx http://tx.fhir.org/r4 -display-issues-are-warnings  -profile $PROFILE -html-output $HOME/$OUT
 if [ $? -eq 0 ]; then
     echo ${WHITE}${GREENBG}VALIDATION SUCCEEDED $NC
 else
     echo ${WHITE}${REDBG}VALIDATION FAILED $NC
 fi
+
+cd $HOME
+# rename your own log file to _validate_${ARTIFACT}_done.txt as a semphore
+mv _validate_${ARTIFACT}_log.txt _validate_${ARTIFACT}_done.txt

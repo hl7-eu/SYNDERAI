@@ -7,8 +7,8 @@
 
 %%FSH%% {# tag required #}
 Instance: {{ setInstance("Instance-Procedure-" ~ instanceid) }}
-InstanceOf: ProcedureUvIps
-Title: "Procedure (IPS)"
+InstanceOf: ProcedureEuCore
+Title: "Procedure (EU Core)"
 Description: "Procedure"
 Usage: #inline
 
@@ -25,25 +25,35 @@ Usage: #inline
 
 * status = #completed
 
-{# *** HTML td 1: code/display #}
-{% if procedure.code is not empty %}
-
-* code.coding[0] = {{ procedure.code.system }}#{{ procedure.code.code }} "{{ procedure.code.display }}"
-
-{# make html with display and possible site #}
-{% if procedure.code.preferredTerm is empty %}
-{% set dp = procedure.code.display %}
+{# procedure.code can be an array (from ISH) or a single element, simplify! #}
+{% if procedure.code.code is not empty %}
+{% set thisprocedurecode = procedure.code %}
 {% else %}
-* code.text = "{{ procedure.code.preferredTerm }}"
-{% set dp = procedure.code.preferredTerm %}
+{% set thisprocedurecode = procedure.code[0] %}
 {% endif %}
 
+{# procedure's preferred term #}
+{% set preferred = thisprocedurecode.display %}
+{# dp: make html with display and possible site #}
+{% set dp = thisprocedurecode.display %}
+{# refinements #}
+{% if procedure.text.text is not empty %}
+{% set dp = procedure.text %}
+{% else %}
+{% set dp = procedure.text[0] %}
+{% endif %}
+{% if thisprocedurecode.preferredTerm is not empty %}
+{% set preferred = thisprocedurecode.preferredTerm %}
+{% set dp = thisprocedurecode.preferredTerm %}
+{% endif %}
+
+{# *** HTML td 1: code/display #}
+{% if thisprocedurecode is not empty %}
+* code.coding[0] = {{ thisprocedurecode.system }}#{{ thisprocedurecode.code }} "{{ thisprocedurecode.display }}"
 {% if procedure.site.code is not empty %}
 {% set dp = dp ~ "<br> </br>" ~ procedure.site.display %}
 {% endif %}
-
 {{ addHTML_td(dp) }}
-
 {% else %}
 {{ addHTML_td("-") }}
 {% endif %}

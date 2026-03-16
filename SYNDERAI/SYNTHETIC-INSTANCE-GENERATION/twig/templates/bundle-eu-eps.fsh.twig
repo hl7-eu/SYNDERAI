@@ -20,7 +20,7 @@ Usage: #example
 
 * type = #document
 
-* timestamp = "{{ composition.date }}"
+* timestamp = "{{ composition.date|date('Y-m-d\\TH:i:s\\Z') }}"
 
 * entry[composition].fullUrl = "urn:uuid:{{ composition.instanceid }}"
 * entry[composition].resource = Instance-Composition-{{ composition.instanceid }}

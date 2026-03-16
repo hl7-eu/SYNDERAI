@@ -9,7 +9,7 @@
 
 {# hospital as practitioner role #}
 Instance: Instance-PractitionerRole-{{ hospital.instancerole }}
-InstanceOf: PractitionerRoleEu
+InstanceOf: PractitionerRoleEuCore
 Usage: #inline
 * id = "{{ hospital.instancerole }}"
 * practitioner = Reference(urn:uuid:{{ hospital.instancepractitioner }})
@@ -24,7 +24,7 @@ Hospital Role Id: {{ hospital.instancerole }}
 
 {# practitioner in hospital #}
 Instance: Instance-Practitioner-{{ hospital.instancepractitioner }}
-InstanceOf: PractitionerEu
+InstanceOf: PractitionerEuCore
 Usage: #inline
 * id = "{{ hospital.instancepractitioner }}"
 * identifier.system = "urn:oid:{{ HL7EUROPEEXAMPLESOID }}"
@@ -58,7 +58,7 @@ Practitioner in Hospital: {{ hospital.practitioner.prefix ~ " " ~ hospital.pract
 
 {# hospital as organization #}
 Instance: Instance-Organization-{{ hospital.instanceorganization }}
-InstanceOf: Organization
+InstanceOf: OrganizationEuCore
 Usage: #inline
 * id = "{{ hospital.instanceorganization }}"
 * name = "{{ hospital.name }}"

@@ -1,0 +1,22 @@
+{#
+  This is the TWIG file for the creation of an FSH instance including the HTML parts.
+  see README.md
+  
+  KH since 2025-09-02
+#}
+
+%%FSH%% {# tag required #}
+Instance: {{ setInstance("Instance-Observation-" ~ instanceid) }}
+InstanceOf: ObservationResultsLaboratoryEu
+Title: "Observation Results Laboratory"
+Description: "Observation Results Laboratory"
+Usage: #inline
+
+{# special handling of category.coding, see also https://github.com/hl7-eu/SYNDERAI/issues/100 #}
+{% if isVitaLSignCode %}
+* category[VSCat].coding = $observation-category#vital-signs
+{% else %}
+* category.coding = $observation-category#laboratory
+{% endif %}
+
+{% include 'observation-medical-test-body.fsh.twig' %}

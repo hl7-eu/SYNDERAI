@@ -42,7 +42,7 @@ For a complete documentation of pure v3 TWIG see [here](https://twig.symfony.com
 
 ## TWIG Extensions and Variables
 
-### HTML table body row adding and emiting functions
+### HTML table body row adding and emitting functions
 
 The following shorthand functions are defined to create HTML table rows. They are all added to the so-called HTML bag, a storage that can be emited later anywhere in the TWIG template. Together with the SYNDERAI and vi7eti stylesheets the expected outcome is also demostrated.
 
@@ -55,7 +55,7 @@ The following shorthand functions are defined to create HTML table rows. They ar
 | addHTML_tdnb(*text*)   | Adds a `<tr>` tag to the HTML bag with a non-breaking gray pill with text |
 | emitHTML()             | Emits the entire HTML bag, usually used with TWIG's `| raw` filter |
 
-### HTML table head row adding and emiting functions
+### HTML table head row adding and emitting functions
 
 | Function call      | Definition                                                   |
 | ------------------ | ------------------------------------------------------------ |
@@ -163,7 +163,7 @@ You can express loops over array variables with the typical *for* instruction.
 {% endfor %}
 ```
 
-#### Emiting HTML text in the FSH part
+#### emitting HTML text in the FSH part
 
 You can emit all so-far created HTML in appropriate FSH parts, like in `text.div`. using the `emitHTML()` instruction. Use TWIG's `|raw` filter to emit HTML unescaped.
 
@@ -213,7 +213,7 @@ It creates the HTML part as well and includes that below after the |%%HTML%% tag
 Hospital: {{ hospital.name }}, {{ hospital.postcode }} {{ hospital.city }}, {{ hospital.country }}
 ```
 
-### Emiting HTML and HEAD parts
+### emitting HTML and HEAD parts
 
 ```
 %%HEAD%% {# tag required, content below maybe emtpy #}
@@ -222,6 +222,73 @@ Hospital: {{ hospital.name }}, {{ hospital.postcode }} {{ hospital.city }}, {{ h
 %%HTML%% {# tag required, content below maybe emtpy #}
 {{ emitHTML() | raw }}
 ```
+
+### Using Includes
+
+Twig has several ways to include other templates:
+
+#### 1. `include` — simplest way
+
+```twig
+{# Renders another template inline #}
+{% include 'partials/header.html.twig' %}
+
+{# Pass extra variables #}
+{% include 'partials/patient.html.twig' with { 'patient': patient } %}
+
+{# Isolate variables (only passed vars are available) #}
+{% include 'partials/patient.html.twig' with { 'patient': patient } only %}
+```
+
+#### 2. `extends` + `block` — template inheritance
+
+```twig
+{# base.html.twig #}
+<html>
+  <body>
+    {% block content %}{% endblock %}
+  </body>
+</html>
+
+{# child.html.twig #}
+{% extends 'base.html.twig' %}
+{% block content %}
+  <p>My content here</p>
+{% endblock %}
+```
+
+#### 3. `embed` — include + override blocks
+
+A combination of `include` and `extends`:
+
+```twig
+{% embed 'partials/panel.html.twig' %}
+  {% block title %}Patient Info{% endblock %}
+  {% block body %}{{ patient.name }}{% endblock %}
+{% endembed %}
+```
+
+#### 4. `macro` — reusable snippets (like functions)
+
+```twig
+{# Define in same or separate file #}
+{% macro renderName(patient) %}
+  <span>{{ patient.firstName }} {{ patient.lastName }}</span>
+{% endmacro %}
+
+{# Import from another file #}
+{% import 'macros/patient.html.twig' as patientMacros %}
+{{ patientMacros.renderName(patient) }}
+```
+
+**Quick decision guide:**
+
+| Use case                        | Directive           |
+| ------------------------------- | ------------------- |
+| Simple reusable partial         | `include`           |
+| Page layout / inheritance       | `extends` + `block` |
+| Include with overridable blocks | `embed`             |
+| Reusable snippet / helper       | `macro`             |
 
 ## Complete Example
 

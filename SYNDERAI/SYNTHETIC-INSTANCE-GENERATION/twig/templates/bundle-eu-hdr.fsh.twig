@@ -1,0 +1,76 @@
+{#
+  This is the TWIG file for the creation of an FSH instance including the HTML parts.
+  see README.md
+
+  KH since 2026-03-01
+#}
+%%FSH%%
+Instance: {{ setInstance("Instance-Bundle-" ~ bundle.instanceid) }}
+InstanceOf: BundleEuHdr
+Title: "HL7 Europe Hospital Discharge Summary (HDR) Bundle"
+{% set patientdisplay = patient.name ~ " (" ~ patient.age ~ " y/o) - synthetic data" %}
+Description: "Complete HL7 Hospital Discharge Summary (HDR) FHIR Bundle example for {{ patientdisplay }}"
+Usage: #example
+
+* id = "{{ bundle.instanceid }}"
+
+* identifier.system = "urn:oid:{{ HL7EUROPEEXAMPLESOID }}"
+* identifier.value = "{{ bundle.identifier }}"
+* identifier.assigner.display = "HL7 Europe"
+
+* type = #document
+
+* timestamp = "{{ composition.date|date('Y-m-d\\TH:i:s\\Z') }}"
+
+* entry[composition].fullUrl = "urn:uuid:{{ composition.instanceid }}"
+* entry[composition].resource = Instance-Composition-{{ composition.instanceid }}
+
+* entry[patient].fullUrl = "urn:uuid:{{ patient.instanceid }}"
+* entry[patient].resource = Instance-Patient-{{ patient.instanceid }}
+
+* entry[encounter].fullUrl = "urn:uuid:{{ patient.instanceid }}"
+* entry[encounter].resource = Instance-Patient-{{ patient.instanceid }}
+
+* entry[+].fullUrl = "urn:uuid:{{ hospital.instancerole }}"
+* entry[=].resource = Instance-PractitionerRole-{{ hospital.instancerole }}
+
+* entry[+].fullUrl = "urn:uuid:{{ hospital.instanceorganization }}"
+* entry[=].resource = Instance-Organization-{{ hospital.instanceorganization }}
+
+* entry[+].fullUrl = "urn:uuid:{{ hospital.instancepractitioner }}"
+* entry[=].resource = Instance-Practitioner-{{ hospital.instancepractitioner }}
+
+{# add: * entry[location][+] #}
+
+{% set sectioncount = 0 %}
+
+{% for slicename, section in sections %}
+
+{% set sectioncount = sectioncount + 1 %}
+
+{% for entry in section.entries %}
+
+{% if entry.bundleentryslicename is empty %}
+{% set bundleentryslicename = "" %}
+{% else %}
+{% set bundleentryslicename = "[" ~ entry.bundleentryslicename ~ "]" %}
+{% endif %}
+
+* entry{{ bundleentryslicename }}[+].fullUrl = "urn:uuid:{{ entry.id }}"
+* entry{{ bundleentryslicename }}[=].resource = {{ entry.instance }}
+
+{% endfor %} {# entries #}
+
+{% endfor %} {# sections #}
+
+{# add procenance and device #}
+* entry[+].fullUrl = "urn:uuid:{{ provenance.deviceid }}"
+* entry[=].resource = Instance-Device-{{ provenance.deviceid }}
+* entry[+].fullUrl = "urn:uuid:{{ provenance.provenanceid }}"
+* entry[=].resource = Instance-Provenance-{{ provenance.provenanceid }}
+
+%%HEAD%% {# tag required, content below maybe emtpy #}
+<!-- empty -->
+
+%%HTML%% {# tag required, content below maybe emtpy #}
+<!-- empty -->

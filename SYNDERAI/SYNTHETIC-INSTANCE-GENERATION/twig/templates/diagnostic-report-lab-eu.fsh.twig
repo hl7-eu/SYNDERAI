@@ -14,15 +14,15 @@ Usage: #inline
 
 * id = "{{ diagnosticreport.instanceid }}"
 
-* identifier.system = "urn:oid:{{ HL7EUROPEEXAMPLESOID }}"
-* identifier.value = "{{ composition.identifier }}"
-* identifier.assigner.display = "HL7 Europe"
+* identifier[+].system = "urn:oid:{{ HL7EUROPEEXAMPLESOID }}"
+* identifier[=].value = "{{ composition.identifier }}"
+* identifier[=].assigner.display = "HL7 Europe"
 
-* identifier.system = "urn:oid:{{ HL7EUROPEEXAMPLESOID }}"
-* identifier.value = "{{ diagnosticreport.identifier }}"
-* identifier.assigner.display = "HL7 Europe"
+* identifier[+].system = "urn:oid:{{ HL7EUROPEEXAMPLESOID }}"
+* identifier[=].value = "{{ diagnosticreport.identifier }}"
+* identifier[=].assigner.display = "HL7 Europe"
 
-* extension[DiagnosticReportCompositionR5].valueReference = Reference(urn:uuid:{{ composition.identifier }})
+* extension[DiagnosticReportCompositionR5].valueReference = Reference(urn:uuid:{{ composition.instanceid }})
   
 * status = #registered
 
@@ -38,6 +38,10 @@ Usage: #inline
 {% for r in results %}
 * result[+] = Reference(urn:uuid:{{ r.instanceid }})
 {% endfor %}
+
+{# declare text as empty, it is not here #}
+* text.status = #empty
+* text.div = "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
 
 %%HEAD%% {# tag required, content below maybe emtpy #}
 <!-- empty -->

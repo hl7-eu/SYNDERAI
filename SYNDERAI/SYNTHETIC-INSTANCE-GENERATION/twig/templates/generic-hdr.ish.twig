@@ -37,8 +37,9 @@ hospital
   city {{ hospital.city }} 
   postcode {{ hospital.postcode }}
   country {{ hospital.country }}
-{% if hospital.practitioner.given is not empty %}
+{% if hospital.practitioner.family is not empty %}
   practitioner
+    prefix {{ hospital.practitioner.prefix }}
     given {{ hospital.practitioner.given }}
     family {{ hospital.practitioner.family }}
     gender {{ hospital.practitioner.gender }}
@@ -58,7 +59,7 @@ hospital
 # short discharge summary text of this encounter episode
 # synthesis
 section*
-  type synthesis
+  type sectionSynthesis
   code $loinc#67781-5 Summarization of encounter note
   title Synthesis
   text """{{ discharge.text }}"""
@@ -66,19 +67,19 @@ section*
 
 # Hospital Course
 section*
-  type hospitalcourse
+  type sectionHospitalCourse
   code $loinc#8648-8 Hospital Course
-  text """{{ encounter.hospitalCourse.text }}"""
+  text """{{ encounter.hospitalCourse }}"""
 
 {% if medication is not empty %}
 # medications associated with this encounter episode
 section*
-  type medication
+  type sectionPharmacotherapy
   code $loinc#87232-5 Medication administration.brief
   title Medications
 {% for m in medication %}
   entry*
-    type medication
+    type pharmacotherapy
     start 2025-04-03
 {% if m.start is not empty %}
     start {{ m.start }}
@@ -99,7 +100,7 @@ section*
 {% if discharge is not empty %}
 # discharge diagnoses of this encounter episode
 section*
-  type dischargediagnosis
+  type sectionDiagnosticSummary
   code $loinc#11535-2 Hospital discharge Dx Narrative
   title Diagnosis at Discharge
   entry*
@@ -109,29 +110,24 @@ section*
 {% endif %}
 
 {% if procedure is not empty %}
-# significant procedures
+# significant sectionSignificantProcedures
 section*
-  type significantProcedures
+  type sectionSignificantProcedures
   code $loinc#10185-7 Hospital discharge procedure note
   title Significant procedures
-{% if encounter.procedure is not empty %}
-# emit main procedure
-  entry*
-    type significantProcedures
-    date {{ encounter.episodeend }}
-    code* {{ encounter.procedure.system }}#{{ encounter.procedure.code }} {{ encounter.procedure.display }}
-{% endif %}
 {% for p in procedure %}
   entry*
-    type significantProcedures
+    type procedure
 {% if p.date is not empty %}
-{% set pdate = p.date|date('d-M-Y') %}
+{% set pdate = p.date|date('Y-m-d') %}
     date {{ pdate }}
 {% endif %}
-    code* {{ p.code.system }}#{{ p.code.code }} "{{ p.code.display }}"
+    code* {{ p.code.system }}#{{ p.code.code }} {{ p.code.preferredTerm }}
+{% if p.code.display is not empty %}
+    text* {{ p.code.display }}
+{% endif %}
 {% endfor %} {# procedure loop #}
 {% endif %}  {# if procedures at all #}
-
 
 
 {% if conditionNOTYETUSED is not empty %}
