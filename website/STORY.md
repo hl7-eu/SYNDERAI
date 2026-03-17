@@ -21,6 +21,14 @@ The **Synthetic Example Realistic Data and AI (SYNERDAI)** methodology emitted t
 
 The generation of Synthetic Example Data was also combined with a reference implementation of **Visualization** of the Synthetic Example Instances. For more information on this activity, refer to vi7eti website [[4](#_ftn4)] and the GitHub repository [[5](#_ftn5)].
 
+## The xShare Yellow Button Story
+
+SYNDERAI plays a critical role in enabling safe, reusable, and standards-aligned testing of the Yellow Button components. It supports transparency, traceability, and validation across the xShare toolbox — and provides a solid foundation for future testbeds, certification frameworks, and developer onboarding efforts in support of the EHDS.
+
+Compared to the earlier xShare D3.3 deliverable, the SYNDERAI component has evolved significantly. What was previously described as a conceptual asset is now implemented and actively integrated into xShare workflows. The sets of example/test data is openly available, continuously expanded, and aligned with HL7 FHIR Implementation Guides such as IPS, EU Laboratory Report, and Hospital Discharge Summary.
+
+It is now validated through real-world use in [visualization rendering via vi7eti](https://vi7eti.net), Smart Health Link generation, and IHE Connectathon/Plugathon test case development. These advancements make SYNDERAI a critical enabler for privacy-preserving, standards-compliant, and repeatable validation processes across the toolbox.
+
 ------
 
 [[1](#_ftnref1)] *Stratification* of clinical trials is the partitioning of subjects and results by a factor other than the treatment given. – see Wikipedia https://en.wikipedia.org/wiki/Stratification_(clinical_trials)

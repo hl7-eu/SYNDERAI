@@ -118,7 +118,7 @@ For consistency in the example generating algorithms, a **Instance Short Hand** 
 
 The following figure illustrates the architecture of the SYNDERAI example instance generation kernel, a data processing pipeline that takes two synthetic data sources as input and produces FHIR Shorthand (FSH) output through a series of sequential processing steps.
 
-<img src="img/principles1.png" alt="principles1" style="zoom:77%;" />
+<img src="img/principles1.png" alt="principles1" style="zoom:50%;" />
 
 *Figure 4: Schematic overview of SYNDERAI input datasets and the internal pipline to generate synthetic example instances in FSH format.*
 
@@ -135,7 +135,7 @@ The numbered labels (1–7) along the left margin indicate the sequential flow o
 
 The following figure illustrates the downstream processing pipeline that follows the SYNDERAI example instance generation kernel, depicting how FSH output is compiled into FHIR JSON and validated.
 
-<img src="img/principles2.png" alt="principles1" style="zoom:77%;" />
+<img src="img/principles2.png" alt="principles1" style="zoom:50%;" />
 
 *Figure 5: Schematic overview of SYNDERAI's post-processing piplines, including validation (see following chapter).*
 
@@ -148,7 +148,7 @@ The validation output (4) is submitted to **AI analyzing the validation logs** c
 
 Finally, both parallel tracks (3 and 4 in the following figure) converge at a **synchronization point** — **waiting for semaphore processes to finish** (5) — which ensures both forked processes complete before proceeding. Once complete, results are **published** to **SYNDERAI and vi7eti** (Stage 9).
 
-<img src="img/principles3.png" alt="principles1" style="zoom:77%;" />
+<img src="img/principles3.png" alt="principles1" style="zoom:50%;" />
 
 *Figure 6: Schematic overview of SYNDERAI's final steps until publication.*
 
@@ -166,13 +166,9 @@ The resulting validation report is not only inspected "manually" but also an AI 
 
 It can be assumed that without the help of LLMs this task would have taken much more hours and days (and weeks) than it actually did. The effort was finalized right before the EHDS Plugathon during the IHE Connectathon week in Brussels end of March 2026.
 
-## The xShare Yellow Button Story
+## Synthetic Data FHIR Packages
 
-SYNDERAI plays a critical role in enabling safe, reusable, and standards-aligned testing of the Yellow Button components. It supports transparency, traceability, and validation across the xShare toolbox — and provides a solid foundation for future testbeds, certification frameworks, and developer onboarding efforts in support of the EHDS.
-
-Compared to the earlier xShare D3.3 deliverable, the SYNDERAI component has evolved significantly. What was previously described as a conceptual asset is now implemented and actively integrated into xShare workflows. The sets of example/test data is openly available, continuously expanded, and aligned with HL7 FHIR Implementation Guides such as IPS, EU Laboratory Report, and Hospital Discharge Summary.
-
-It is now validated through real-world use in [visualization rendering via vi7eti](https://vi7eti.net), Smart Health Link generation, and IHE Connectathon/Plugathon test case development. These advancements make SYNDERAI a critical enabler for privacy-preserving, standards-compliant, and repeatable validation processes across the toolbox.
+SYNDERAI will soon publish Synthetic Data FHIR Packages to be downloadable from usual sources.
 
 ------
 
