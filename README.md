@@ -21,3 +21,5 @@ For this set of deliverables, Synthetic Example Data is created on the base of t
 The SYNDERAI methodology, functions and artifacts are described in [README](SYNDERAI/README.md) and located in the  `SYNDERAI` directory
 
 The content of the SYNDERAI website at https://synderai.net is defined in the `website` directory.
+
+Some design materials can be found in the `material` directory.
