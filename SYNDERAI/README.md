@@ -6,13 +6,13 @@
 
 ## Directory Structure
 
-### SYNTHETIC-DATA-GENERATION
+### SYNTHETIC-DATA-GENERATION (content only partially present in GitHub)
 
-This directory contains all scripts and data used for the synthetic data generation.
+This directory contains all scripts and data used for the synthetic data generation. It is **not entirely part** of this GitHub repository, especially regarding the generated data, just the scripts and parameters are present.
 
-### SYNTHETIC-DATA
+### SYNTHETIC-DATA (no content present in GitHub)
 
-This directory contains all generated synthetic data as result of the synthetic data generation process.
+This directory contains all generated synthetic data as result of the synthetic data generation process.  It is **not part** of this GitHub repository due to size limitations. Generate your own synthetic data using the scripts in SYNTHETIC-DATA-GENERATION or ask the authors/contributors.
 
 ### SYNTHETIC-INSTANCE-GENERATION
 
@@ -37,6 +37,12 @@ This directory contains settings and global constants.
 ### RECENT-RESULTS
 
 This directory contains subdirectories per artifact where the recently created JSON and XML Bundles reside.
+
+### PUBLICATIONS
+
+This directory contains subdirectories per publishing date (organized in "waves") an within subdirectories per artifact where the published JSON and XML Bundles reside. The published subfolders typically are named like  `6.5.0+20251024`.
+
+The content of this folder is identical with the website's `PUBLICATIONS` folder.
 
 ### TESTBEDS
 
