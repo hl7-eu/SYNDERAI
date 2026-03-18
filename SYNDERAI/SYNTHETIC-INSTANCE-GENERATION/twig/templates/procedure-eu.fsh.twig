@@ -26,10 +26,10 @@ Usage: #inline
 * status = #completed
 
 {# procedure.code can be an array (from ISH) or a single element, simplify! #}
-{% if procedure.code.code is not empty %}
-{% set thisprocedurecode = procedure.code %}
-{% else %}
+{% if procedure.code is iterable %}
 {% set thisprocedurecode = procedure.code[0] %}
+{% else %}
+{% set thisprocedurecode = procedure.code %}
 {% endif %}
 
 {# procedure's preferred term #}
@@ -37,10 +37,10 @@ Usage: #inline
 {# dp: make html with display and possible site #}
 {% set dp = thisprocedurecode.display %}
 {# refinements #}
-{% if procedure.text.text is not empty %}
-{% set dp = procedure.text %}
-{% else %}
+{% if procedure.text is iterable %}
 {% set dp = procedure.text[0] %}
+{% else %}
+{% set dp = procedure.text %}
 {% endif %}
 {% if thisprocedurecode.preferredTerm is not empty %}
 {% set preferred = thisprocedurecode.preferredTerm %}

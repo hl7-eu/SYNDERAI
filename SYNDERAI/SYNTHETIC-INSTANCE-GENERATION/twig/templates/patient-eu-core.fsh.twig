@@ -9,7 +9,7 @@
 Instance: {{ setInstance("Instance-Patient-" ~ patient.instanceid) }}
 InstanceOf: PatientEuCore
 Title: "Patient (EU Core)"
-Description: "Patient {{ patient.given ~ " " ~ patient.family }} (Synthetic Data)"
+Description: "Patient {{ patient.name }} (Synthetic Data)"
 Usage: #inline
 
 {# include synthetic data policy meta #}
@@ -40,9 +40,11 @@ Usage: #inline
 
 {# *** HTML td 1: name #}
 * name[+].family = "{{ patient.family }}"
-* name[=].given = "{{ patient.given }}"
-* name[=].text = "{{ patient.given ~ " " ~ patient.family }}"
-{{ addHTML_td(patient.given ~ " " ~ patient.family) }}
+{% for g in patient.given %}
+* name[=].given[+] = "{{ g }}"
+{% endfor %}
+* name[=].text = "{{ patient.name }}"
+{{ addHTML_td(patient.name) }}
 
 {# *** HTML td 2: gender #}
 * gender = #{{ patient.gender }}

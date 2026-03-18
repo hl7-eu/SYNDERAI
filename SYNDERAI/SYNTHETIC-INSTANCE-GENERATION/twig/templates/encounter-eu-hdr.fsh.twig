@@ -2,7 +2,7 @@
   This is the TWIG file for the creation of an FSH instance including the HTML parts.
   see README.md
 
-  KH since 2025-09-07
+  KH since 2025-09-07, 2026-03-17
 #}
 
 %%FSH%% {# tag required #}
@@ -30,7 +30,7 @@ Usage: #inline
 {# serviceProvider shall be an organization = hospital #}
 * serviceProvider = Reference(urn:uuid:{{ hospital.instanceorganization }})
 {% endif %}
-{{ addHTML_td(hospital.name ~ ", " ~ hospital.city ~ ", " ~ hospital.country) }}
+{{ addHTML_td(hospital.name  ~ ", " ~ hospital.city ~ ", " ~ hospital.country) }}
 
 {% if hospital.instancepractitioner is not empty %}
 {# primary performer is a participant individual = practitioner role in that hospital #}

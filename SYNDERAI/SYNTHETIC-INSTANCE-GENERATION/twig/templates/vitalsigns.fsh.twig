@@ -28,8 +28,13 @@ Usage: #inline
 {{ addHTML_tr() }}
 
 {# *** HTML td 1: code #}
+{% if vital.code is iterable %}
+* code = {{ vital.code[0].system }}#{{ vital.code[0].code }} "{{ vital.code[0].display }}"
+{{ addHTML_td(vital.code[0].display) }}
+{% else %}
 * code = {{ vital.code.system }}#{{ vital.code.code }} "{{ vital.code.display }}"
 {{ addHTML_td(vital.code.display) }}
+{% endif %}
 
 * subject = Reference(urn:uuid:{{ patient.instanceid }}) "{{ patient.name }}"
 

@@ -27,6 +27,7 @@ RRDIR=../RECENT-RESULTS
 cd $RRDIR
 
 php convertall-json2xml.php ${ARTIFACT}
+php create-fhir-package.php ${ARTIFACT}
 
 # color presets
 RED='\033[0;31m'   # Red

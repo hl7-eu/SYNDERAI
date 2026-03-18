@@ -1,0 +1,160 @@
+{#
+  This is the TWIG file for the creation of an FSH instance including the HTML parts.
+  see README.md
+  
+  KH since 2025-10-21
+#}
+
+%%FSH%% {# tag required #}
+
+{% if medication is empty %}
+
+{# no known Medication data, emit it and we are done #}
+
+Instance: {{ setInstance("Instance-MedicationStatement-" ~ instanceid) }}
+InstanceOf: MedicationStatementEuCore
+Title: "MedicationStatement"
+Description: "MedicationStatement"
+Usage: #inline
+* id = "{{ instanceid }}"
+* status = #active
+* medicationCodeableConcept = $sct#787481004 "No known medications (situation)"
+* subject = Reference(urn:uuid:{{ patient.instanceid }}) "{{ patient.name }}"
+* effectivePeriod.extension.url = "http://hl7.org/fhir/StructureDefinition/data-absent-reason"
+* effectivePeriod.extension.valueCode = #unknown
+{{ addHTML_tr() }}
+{{ addHTML_td("No known medications") }}
+{{ addHTML_trend() -}}
+
+{# populate .text #}
+* text.status = #generated
+* text.div = """
+<div xmlns="http://www.w3.org/1999/xhtml">
+<table class="hl7__ips first25">{{ emitHTML() | raw }}</table>
+</div>
+"""
+
+{% else %}
+
+{# Medication first #}
+
+Instance: {{ setInstance("Instance-Medication-" ~ druginstanceid) }}
+InstanceOf: MedicationEuCore
+Title: "Medication"
+Description: "Medication"
+Usage: #inline
+
+* id = "{{ druginstanceid }}"
+
+{# add snomed #}
+{% if medication.code.code is not empty %}
+* code.coding[+] = $sct#{{ medication.code.code }} "{{ medication.code.display }}"
+{% else %}
+{# rxnorm only if no snomed #}
+{% if medication.rxnorm.code is not empty %}
+* code.coding[+] = $rxnorm#{{ medication.rxnorm.code }} "{{ medication.rxnorm.display }}"
+{% endif %}
+{% endif %}
+
+{# use preferred term, is always set as text #}
+* code.text = "{{ medication.snomed.preferredTerm }}"
+
+{# form #}
+{% set formdisplay = "" %}
+{% if manufacturedDoseForm.code is not empty %}
+* form.coding = $sct#{{ manufacturedDoseForm.code }} "{{ manufacturedDoseForm.display }}"
+{% set formdisplay = ", " ~ manufacturedDoseForm.display %}
+{% endif %}
+
+{# activeIngredient #}
+{% if activeIngredient.code is not empty %}
+* ingredient[0].itemCodeableConcept = $sct#{{ activeIngredient.code }} "{{ activeIngredient.display }}"
+* ingredient[0].isActive = true
+{% endif %}
+
+{# populate .text #}
+* text.status = #generated
+* text.div = """
+<div xmlns="http://www.w3.org/1999/xhtml">
+{{ medication.snomed.preferredTerm }} {{ formdisplay }}
+</div>
+"""
+
+{# finally MedicationStatement #}
+Instance: {{ setInstance("Instance-MedicationStatement-" ~ instanceid) }}
+InstanceOf: MedicationStatementEuCore
+Title: "MedicationStatement"
+Description: "MedicationStatement"
+Usage: #inline
+
+{# addign headers for HTML table #}
+{{ addHEAD_tr() }}
+{{ addHEAD_th("Medication") }}
+{{ addHEAD_th("Since") }}
+{{ addHEAD_th("Form") }}
+{{ addHEAD_th("Dosage") }}
+{{ addHEAD_th("Reason") }}
+{{ addHEAD_trend() -}}
+
+* id = "{{ instanceid }}"
+
+* status = #active
+
+{{ addHTML_tr() }}
+
+* medicationReference = Reference(urn:uuid:{{ druginstanceid }}) "{{ medication.snomed.preferredTerm }}"
+{# HTML td 1: add human text for medication name #}
+{{ addHTML_td(medication.snomed.preferredTerm) }}
+
+* subject = Reference(urn:uuid:{{ patient.instanceid }}) "{{ patient.name }}"
+
+{% if medication.start is not empty %}
+* effectivePeriod.start = "{{ medication.start }}"
+{# HTML td 2: add human text for the start date #}
+{{ addHTML_tdnb(medication.start) }}
+{% else %}
+{{ addHTML_td("-") }}
+{% endif %}
+
+{% if formdisplay is not empty %}
+{# HTML td 3: add human text for the form, determined above #}
+{{ addHTML_td(formdisplay) }}
+{% else %}
+{{ addHTML_td("-") }}
+{% endif %}
+
+{# add AI dosage if any #}
+{% if medication.dosagefsh is not empty %}
+{# ??? if (substr($dl, 0, 1) === '*') addFSH ($FSH, $dl); #}
+{{ medication.dosagefsh | raw }}
+{# HTML td 2: add dosage, returned already as fsh by AI #}
+{{ addHTML_td(medication.dosagedisplay) }}
+{% else %}
+{{ addHTML_td("-") }}
+{% endif %}
+
+{% if medication.reason.code is not empty %}
+* reasonCode[0].coding = $sct#{{ medication.reason.code }} "{{ medication.reason.display }}"
+{# HTML td 5: add human text for the reason #}
+{{ addHTML_td(medication.reason.display) }}
+{% else %}
+{{ addHTML_td("-") }}
+{% endif %}
+
+{{ addHTML_trend() -}}
+
+{# populate .text #}
+* text.status = #generated
+* text.div = """
+<div xmlns="http://www.w3.org/1999/xhtml">
+<table class="hl7__ips first25">{{ emitHEAD() | raw }} {{ emitHTML() | raw }}</table>
+</div>
+"""
+
+{% endif %}
+
+%%HEAD%% {# tag required, content below maybe emtpy #}
+{{ emitHEAD() | raw }}
+
+%%HTML%% {# tag required, content below maybe emtpy #}
+{{ emitHTML() | raw }}

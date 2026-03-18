@@ -34,9 +34,9 @@ Usage: #inline
 {% if hospital.practitioner.prefix is not empty %}
 * name.prefix = "{{ hospital.practitioner.prefix }}"
 {% endif %}
-{% if hospital.practitioner.given is not empty %}
-* name.given = "{{ hospital.practitioner.given }}"
-{% endif %}
+{% for g in hospital.practitioner.given %}
+* name.given[+] = "{{ g }}"
+{% endfor %}
 {% if hospital.practitioner.family is not empty %}
 * name.family = "{{ hospital.practitioner.family }}"
 {% endif %}
@@ -52,7 +52,7 @@ Usage: #inline
 * text.status = #generated
 * text.div = """
 <div xmlns="http://www.w3.org/1999/xhtml">
-Practitioner in Hospital: {{ hospital.practitioner.prefix ~ " " ~ hospital.practitioner.given ~ " " ~ hospital.practitioner.family }}
+Practitioner in Hospital: {{ hospital.practitioner.prefix|join(" ") ~ " " ~ (hospital.practitioner.given|join(" ")) ~ " " ~ hospital.practitioner.family }}
 </div>
 """
 

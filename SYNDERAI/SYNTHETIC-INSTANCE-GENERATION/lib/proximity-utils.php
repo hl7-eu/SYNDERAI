@@ -99,7 +99,7 @@ include_once("../CONSTANTS/constants.php");
  *                     - "distance"    (int)         Distance to patient in km (rounded).
  *                     - "practitioner" (array|null) Closest individual practitioner:
  *                         - "prefix"   (string)  Honorific (e.g. "Dr.").
- *                         - "given"    (string)  First name.
+ *                         - "given"    (array)   First name.
  *                         - "family"   (string)  Last name.
  *                         - "distance" (int)     Distance to patient in km (rounded).
  */
@@ -177,7 +177,9 @@ function getClosestProvider($pcountry, $platitude, $plongitude, $providertype) {
     if ($closestproviderperson !== NULL) {
         $hprovider = [
             "prefix"   => $closestproviderperson["prefix"],
-            "given"    => $closestproviderperson["given"],
+            "given"    => [
+                $closestproviderperson["given"]
+            ],
             "family"   => $closestproviderperson["family"],
             "gender"   => $closestproviderperson["gender"],
             "distance" => round($providerdistkm),

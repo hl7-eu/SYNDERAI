@@ -1,7 +1,7 @@
 {#
   This is the TWIG file for the creation of generic HDR in ISH format
 
-  KH since 2025-12-08
+  KH since 2025-12-08, rev 2026-03-17
 #}
 
 %%ISH%%
@@ -10,12 +10,20 @@
 # patient
 patient
   birthdate {{ patient.birthdate }}
-  given {{ patient.given }}
+{% for g in patient.given %}
+  given* {{ g }}
+{% endfor %}
   family {{ patient.family }}
   gender {{ patient.gender }}
+{% if patient.postcode is not empty %}
   postcode {{ patient.postcode }}
+{% endif %}
+{% if patient.city is not empty %}
   city {{ patient.city }}
+{% endif %}
+{% if patient.street1 is not empty %}
   street {{ patient.street1 }}
+{% endif %}
   country {{ patient.countrycode }}
   phone {{ patient.phone }}
   nameset {{ patient.language }}
@@ -33,26 +41,36 @@ encounter
 # hospital
 hospital
   name {{ hospital.name }}
+{% if hospital.street is not empty %}
   street {{ hospital.street }}
-  city {{ hospital.city }} 
+{% endif %}
+{% if hospital.city is not empty %}
+  city {{ hospital.city }}
+{% endif %}
+{% if hospital.postcode is not empty %}
   postcode {{ hospital.postcode }}
+{% endif %}
   country {{ hospital.country }}
 {% if hospital.practitioner.family is not empty %}
   practitioner
+{% if hospital.practitioner.prefix is not empty %}
     prefix {{ hospital.practitioner.prefix }}
-    given {{ hospital.practitioner.given }}
+{% endif %}
+{% for g in hospital.practitioner.given %}
+    given* {{ g }}
+{% endfor %}
     family {{ hospital.practitioner.family }}
     gender {{ hospital.practitioner.gender }}
 {% endif %}
 
 {#
-# admission evaluation
-# section*
-#   type admissionevaluation
-#   code $loinc#67852-4 Hospital Admission evaluation note
-#   title Admission evaluation
-#   text """TEXT"""
-#}
+ # admission evaluation
+ # section*
+ #   type admissionevaluation
+ #   code $loinc#67852-4 Hospital Admission evaluation note
+ #   title Admission evaluation
+ #   text """TEXT"""
+ #}
 
 {% if discharge.text is not empty %}
 # Synthesis
@@ -129,32 +147,20 @@ section*
 {% endfor %} {# procedure loop #}
 {% endif %}  {# if procedures at all #}
 
-
-{% if conditionNOTYETUSED is not empty %}
-# diagnostic summary
+{% if vitalsigns is not empty %}
+# vital signs
 section*
-  type diagnosticSummary
-  code $loinc#11535-2 Hospital discharge Dx Narrative
-  title Diagnosis at Discharge
-{% for c in condition %}
-{# precalculations #}
-{# condition inactive? #}
-{% set activeflag = c.active | slice(0, 1) %} {# condition.active format is SYYYY-MM-DD with S status 1=active, 0=inactive #}
-{% set inactive = activeflag == 0 %}
-{# condition#s preferred term #}
-{% set preferred = c.code.display %}
-{% if c.code.preferredTerm is not empty %}
-{% if c.code.display != c.code.preferredTerm %}
-{% set preferred = c.code.preferredTerm %}
-{% endif %}
-{% endif %}
+  type sectionVitalSigns
+  code $loinc#8716-3 Vital signs note
+  title Vital Signs during Stay
+{% for d, vblock in vitalsigns %}
+{% for v in vblock %}
   entry*
-    type dischargediagnosis
-{% if c.start is not empty %}
-{% set hperiod = c.start|date('d-M-Y') %}
-    date {{ hperiod }}
-{% endif %}
-    status $condition-clinical#active
-    code* {{ c.code.system }}#{{ c.code.code }} {{ c.code.display }}
-{% endfor %} {# condition loop #}
-{% endif %}  {# if conditions at all #}
+    type vitalsign
+    date {{ v.date }}
+    code* {{ v.code.system }}#{{ v.code.code }} {{ v.code.display }}
+    {# if numeric #}
+    value {{ v.value }} $ucum#{{ v.unitcode }} "{{ v.unit }}"
+{% endfor %} {# vitalsigns loop #}
+{% endfor %} {# vblock loop #}
+{% endif %}  {# if vitalsigns at all #}
