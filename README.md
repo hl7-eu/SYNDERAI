@@ -14,7 +14,7 @@ For this set of deliverables, Synthetic Example Data is created on the base of t
 
 > [!CAUTION]
 >
-> This repository and its content is **not intended** to be used as a source of information for real patient care, medicines etc.
+> This repository and its content is **not intended** to be used as a source of information for real patient care, medicines etc. See also our [SYNDERAI Synthetic Data Generation and Use Policy](https://synderai.net/index.php?menu=policy).
 
 ## Overview
 
