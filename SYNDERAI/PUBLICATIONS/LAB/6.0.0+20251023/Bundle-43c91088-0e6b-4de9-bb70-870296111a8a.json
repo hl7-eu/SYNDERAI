@@ -1,0 +1,812 @@
+{
+  "resourceType": "Bundle",
+  "id": "43c91088-0e6b-4de9-bb70-870296111a8a",
+  "meta": {
+    "profile": [
+      "http://hl7.eu/fhir/laboratory/StructureDefinition/Bundle-eu-lab"
+    ]
+  },
+  "identifier": {
+    "assigner": {
+      "display": "HL7 Europe"
+    },
+    "system": "urn:oid:2.16.840.1.113883.2.51.999",
+    "value": "364337ea-3884-4653-a784-8d04e8d3710e"
+  },
+  "entry": [
+    {
+      "fullUrl": "urn:uuid:7f5718b2-78e0-405a-a9b5-a9e1daf7effd",
+      "resource": {
+        "resourceType": "Composition",
+        "id": "7f5718b2-78e0-405a-a9b5-a9e1daf7effd",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Composition-eu-lab"
+          ]
+        },
+        "identifier": {
+          "assigner": {
+            "display": "HL7 Europe"
+          },
+          "system": "urn:oid:2.16.840.1.113883.2.51.999",
+          "value": "56b01d3e-aeab-4c7b-a7ed-08d8b4a8f99e"
+        },
+        "author": [
+          {
+            "reference": "urn:uuid:5876d6fd-ba79-47b0-bed2-ad670185672a"
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "type": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ],
+          "text": "Laboratory Report"
+        },
+        "section": [
+          {
+            "code": {
+              "coding": [
+                {
+                  "code": "26436-6",
+                  "system": "http://loinc.org",
+                  "display": "Laboratory studies (set)"
+                }
+              ],
+              "text": "Laboratory studies"
+            },
+            "section": [
+              {
+                "code": {
+                  "coding": [
+                    {
+                      "code": "$18719-5",
+                      "system": "http://loinc.org",
+                      "display": "Chemistry studies (set)"
+                    }
+                  ],
+                  "text": "Chemistry"
+                },
+                "entry": [
+                  {
+                    "reference": "urn:uuid:8566cd9f-092f-4d2d-a273-e1181d80b971"
+                  }
+                ],
+                "text": {
+                  "status": "generated",
+                  "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>Chemistry</h3><table class=\"hl7__eu__lab__report\"><thead><tr><th>Test</th><th>30-JAN-2025</th><th>Reference&#xA0;Range</th><th>Unit</th></tr></thead><tbody><tr><td>Oxygen saturation in Arterial blood</td><td><strong>76.0 L</strong></td><td>95 - 100</td><td>%</td></tr></tbody></table></div>"
+                },
+                "title": "Chemistry"
+              }
+            ],
+            "title": "Laboratory Report"
+          },
+          {
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>Annotation</h3><table class=\"hl7__eu__lab__report\"><tr><th>Conclusion and Recommendations based on this report and previous findings known to us</th></tr><tr><td>Severely reduced arterial oxygen saturation (76%) indicates significant hypoxemia, which is critical and requires urgent clinical assessment and intervention. Immediate evaluation of respiratory and/or cardiac function is recommended.</td></tr></table></div>"
+            },
+            "code": {
+              "coding": [
+                {
+                  "system": "http://loinc.org",
+                  "code": "48767-8",
+                  "display": "Annotation comment"
+                }
+              ]
+            },
+            "title": "Annotation comment"
+          }
+        ],
+        "status": "final",
+        "subject": {
+          "reference": "urn:uuid:c013f50c-0268-4162-af08-8af7de1adb28",
+          "display": "Timothy Smith"
+        },
+        "date": "2025-01-30T16:53:59Z",
+        "title": "Laboratory Report",
+        "confidentiality": "N"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:35761129-a236-468a-b9ec-87aa8d77a61c",
+      "resource": {
+        "resourceType": "DiagnosticReport",
+        "id": "35761129-a236-468a-b9ec-87aa8d77a61c",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/DiagnosticReport-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "5121fd84-7bbe-450a-bdb8-e4daa8cfa8c3"
+          }
+        ],
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-DiagnosticReport.composition",
+            "valueReference": {
+              "reference": "urn:uuid:56b01d3e-aeab-4c7b-a7ed-08d8b4a8f99e"
+            }
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:aface122-7e38-4246-89f1-37576a5c686f"
+          }
+        ],
+        "result": [
+          {
+            "reference": "urn:uuid:8566cd9f-092f-4d2d-a273-e1181d80b971"
+          }
+        ],
+        "status": "registered",
+        "code": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:c013f50c-0268-4162-af08-8af7de1adb28",
+          "display": "Timothy Smith"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:c013f50c-0268-4162-af08-8af7de1adb28",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "c013f50c-0268-4162-af08-8af7de1adb28",
+        "meta": {
+          "security": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "HTEST"
+            },
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "TRAIN"
+            }
+          ],
+          "tag": [
+            {
+              "system": "https://synderai.net/fhir/CodeSystem/tags",
+              "code": "synthetic",
+              "display": "SYNDERAI Synthetic data"
+            }
+          ],
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/patient-eu-core"
+          ]
+        },
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "PT",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://ec.europa.eu/identifier/eci",
+            "value": "8029-862360-6"
+          },
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "MR",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://local.setting.eu/identifier",
+            "value": "1fe71aa8-fb8e-4622-d398-65f6235c4fef"
+          }
+        ],
+        "name": [
+          {
+            "family": "Smith"
+          },
+          {
+            "given": [
+              "Timothy"
+            ]
+          },
+          {
+            "text": "Timothy Smith"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "9 Jeffrey orchard"
+            ],
+            "use": "home",
+            "type": "physical",
+            "postalCode": "NW1",
+            "city": "North Joshuaville",
+            "country": "United Kingdom"
+          }
+        ],
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "+44(0)28 9018592"
+          }
+        ],
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/StructureDefinition/patient-nationality",
+            "valueCodeableConcept": {
+              "coding": [
+                {
+                  "code": "GB",
+                  "system": "http://hl7.org/fhir/ValueSet/country"
+                }
+              ]
+            }
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__ips\"><tr><td>Timothy Smith</td><td>male</td><td>10-Sep-1941</td></tr></table></div>"
+        },
+        "gender": "male",
+        "birthDate": "1941-09-10"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:a8fbe41a-bb7a-483f-ad03-3c35ab405ed0",
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "a8fbe41a-bb7a-483f-ad03-3c35ab405ed0",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/ServiceRequest-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "system": "http://example.org",
+            "value": "d6076018-2776-45d1-98dc-763f75f92ca8"
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:aface122-7e38-4246-89f1-37576a5c686f"
+          }
+        ],
+        "reasonCode": [
+          {
+            "coding": [
+              {
+                "code": "88805009",
+                "system": "http://snomed.info/sct",
+                "display": "Chronic congestive heart failure"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "60573004",
+                "system": "http://snomed.info/sct",
+                "display": "Aortic valve stenosis"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "414545008",
+                "system": "http://snomed.info/sct",
+                "display": "Ischemic heart disease"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "64859006",
+                "system": "http://snomed.info/sct",
+                "display": "Osteoporosis"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "6525002",
+                "system": "http://snomed.info/sct",
+                "display": "Dependent drug abuse"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "55822004",
+                "system": "http://snomed.info/sct",
+                "display": "Hyperlipidemia"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "78275009",
+                "system": "http://snomed.info/sct",
+                "display": "Obstructive sleep apnea syndrome"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "39898005",
+                "system": "http://snomed.info/sct",
+                "display": "Sleep disorder"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "401314000",
+                "system": "http://snomed.info/sct",
+                "display": "Acute non-ST segment elevation myocardial infarction"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "124171000119105",
+                "system": "http://snomed.info/sct",
+                "display": "Chronic intractable migraine without aura"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "196416002",
+                "system": "http://snomed.info/sct",
+                "display": "Impacted molars"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "59621000",
+                "system": "http://snomed.info/sct",
+                "display": "Essential hypertension"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "80394007",
+                "system": "http://snomed.info/sct",
+                "display": "Hyperglycemia"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "237602007",
+                "system": "http://snomed.info/sct",
+                "display": "Metabolic syndrome X"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "302870006",
+                "system": "http://snomed.info/sct",
+                "display": "Hypertriglyceridemia"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "44054006",
+                "system": "http://snomed.info/sct",
+                "display": "Type 2 diabetes mellitus"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "271737000",
+                "system": "http://snomed.info/sct",
+                "display": "Anemia"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "15777000",
+                "system": "http://snomed.info/sct",
+                "display": "Prediabetes"
+              }
+            ]
+          }
+        ],
+        "status": "active",
+        "intent": "order",
+        "code": {
+          "coding": [
+            {
+              "code": "108252007",
+              "system": "http://snomed.info/sct",
+              "display": "Laboratory procedure"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:c013f50c-0268-4162-af08-8af7de1adb28",
+          "display": "Timothy Smith"
+        },
+        "requester": {
+          "reference": "urn:uuid:58fc0196-09ac-4e00-821f-d4865f711f21"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:58fc0196-09ac-4e00-821f-d4865f711f21",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "58fc0196-09ac-4e00-821f-d4865f711f21",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Role Id: 58fc0196-09ac-4e00-821f-d4865f711f21</div>"
+        },
+        "organization": {
+          "reference": "urn:uuid:5f276c83-336d-4e43-8cf4-888c05b5fc5f"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:5f276c83-336d-4e43-8cf4-888c05b5fc5f",
+      "resource": {
+        "resourceType": "Organization",
+        "id": "5f276c83-336d-4e43-8cf4-888c05b5fc5f",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/organization-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "b2281fbd-d644-4c9e-b825-849f7dfb299b"
+          }
+        ],
+        "address": [
+          {
+            "city": "London",
+            "postalCode": "SE1 7",
+            "country": "United Kingdom"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Organization: Evelina Children&#039;s Hospital</div>"
+        },
+        "name": "Evelina Children&#039;s Hospital"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:aface122-7e38-4246-89f1-37576a5c686f",
+      "resource": {
+        "resourceType": "Specimen",
+        "id": "aface122-7e38-4246-89f1-37576a5c686f",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Specimen-eu-lab"
+          ]
+        },
+        "collection": {
+          "collectedDateTime": "2025-01-30"
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Specimen</th><th>Collection Date</th></tr><tr><td>Arterial blood specimen</td><td><span class=\"nb\">30-Jan-2025</span></td></tr></table></div>"
+        },
+        "type": {
+          "coding": [
+            {
+              "code": "122552005",
+              "system": "http://snomed.info/sct",
+              "display": "Arterial blood specimen"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:8566cd9f-092f-4d2d-a273-e1181d80b971",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "8566cd9f-092f-4d2d-a273-e1181d80b971",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Observation-resultslab-eu-lab"
+          ]
+        },
+        "performer": [
+          {
+            "display": "The Central European Lab"
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                "code": "laboratory"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "code": "2708-6",
+              "system": "http://loinc.org",
+              "display": "Oxygen saturation in Arterial blood"
+            }
+          ],
+          "text": "Oxygen saturation in Arterial blood"
+        },
+        "valueQuantity": {
+          "system": "http://unitsofmeasure.org",
+          "value": 76,
+          "unit": "%",
+          "code": "%"
+        },
+        "referenceRange": [
+          {
+            "low": {
+              "value": 95,
+              "code": "%",
+              "system": "http://unitsofmeasure.org"
+            }
+          },
+          {
+            "high": {
+              "value": 100,
+              "code": "%",
+              "system": "http://unitsofmeasure.org"
+            }
+          }
+        ],
+        "interpretation": [
+          {
+            "coding": [
+              {
+                "code": "L",
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                "display": "Low"
+              }
+            ]
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Test</th><th>30-Jan-2025</th><th>Reference&#xA0;Range</th><th>Unit</th></tr><tr><td>Oxygen saturation in Arterial blood</td><td>76.0</td><td>95 - 100</td><td>L</td><td>%</td></tr></table></div>"
+        },
+        "status": "final",
+        "subject": {
+          "reference": "urn:uuid:c013f50c-0268-4162-af08-8af7de1adb28",
+          "display": "Timothy Smith"
+        },
+        "effectiveDateTime": "2025-01-30T15:53:59Z",
+        "specimen": {
+          "reference": "urn:uuid:aface122-7e38-4246-89f1-37576a5c686f"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:512daba4-dc16-401f-9e3c-f817ac57d5ab",
+      "resource": {
+        "resourceType": "Device",
+        "id": "512daba4-dc16-401f-9e3c-f817ac57d5ab",
+        "deviceName": [
+          {
+            "name": "SYNDERAI Synthetic Generator",
+            "type": "manufacturer-name"
+          }
+        ],
+        "version": [
+          {
+            "value": "5.0"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">SYNDERAI Synthetic Generator v5.0</div>"
+        },
+        "status": "active\"",
+        "distinctIdentifier": "synderai-generator-50",
+        "manufacturer": "SYNDERAI Project"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:d10f0aef-45bb-4313-864a-828dffe25077",
+      "resource": {
+        "resourceType": "Provenance",
+        "id": "d10f0aef-45bb-4313-864a-828dffe25077",
+        "target": [
+          {
+            "reference": "Patient/c013f50c-0268-4162-af08-8af7de1adb28"
+          },
+          {
+            "reference": "Bundle/43c91088-0e6b-4de9-bb70-870296111a8a"
+          },
+          {
+            "reference": "Composition/7f5718b2-78e0-405a-a9b5-a9e1daf7effd"
+          },
+          {
+            "reference": "PractitionerRole/5876d6fd-ba79-47b0-bed2-ad670185672a"
+          },
+          {
+            "reference": "Practitioner/266f775f-5fe0-4d84-9a71-b777041e0a99"
+          },
+          {
+            "reference": "PractitionerRole/58fc0196-09ac-4e00-821f-d4865f711f21"
+          },
+          {
+            "reference": "Organization/5f276c83-336d-4e43-8cf4-888c05b5fc5f"
+          }
+        ],
+        "activity": {
+          "text": "Synthetic Example Data Generation"
+        },
+        "policy": [
+          "https://synderai.net/synderai-synthetic-data-policy"
+        ],
+        "agent": [
+          {
+            "type": {
+              "text": "author"
+            },
+            "who": {
+              "reference": "Device/512daba4-dc16-401f-9e3c-f817ac57d5ab"
+            }
+          }
+        ],
+        "reason": [
+          {
+            "text": "Interoperability Testing and Training (non-clinical use)"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provenance for SYNDERAI Synthetic Example Data Resource</div>"
+        },
+        "recorded": "2025-01-30T16:53:59Z"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:5876d6fd-ba79-47b0-bed2-ad670185672a",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "5876d6fd-ba79-47b0-bed2-ad670185672a",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory Role Id: 5876d6fd-ba79-47b0-bed2-ad670185672a</div>"
+        },
+        "practitioner": {
+          "reference": "urn:uuid:266f775f-5fe0-4d84-9a71-b777041e0a99"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:266f775f-5fe0-4d84-9a71-b777041e0a99",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "266f775f-5fe0-4d84-9a71-b777041e0a99",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitioner-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "48b5f58a-5435-407f-abd6-67e3331918ea"
+          }
+        ],
+        "name": [
+          {
+            "prefix": [
+              "dr"
+            ],
+            "given": [
+              "Ex"
+            ],
+            "family": "Ample"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Laboratoire Central Européenne",
+              "Boulevard du Jardin Botanique 32"
+            ],
+            "postalCode": "1000",
+            "city": "Brussels",
+            "country": "Belgium"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory: Laboratoire Central Européenne, 1000 Brussels, Belgium</div>"
+        }
+      }
+    }
+  ],
+  "type": "document",
+  "timestamp": "2025-01-30T16:53:59Z"
+}

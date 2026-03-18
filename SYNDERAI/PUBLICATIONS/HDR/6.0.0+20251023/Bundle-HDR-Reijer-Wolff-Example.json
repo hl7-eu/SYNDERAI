@@ -1,0 +1,437 @@
+{
+  "resourceType": "Bundle",
+  "id": "HDR-Reijer-Wolff-Example",
+  "meta": {
+    "profile": [
+      "http://hl7.eu/fhir/hdr/StructureDefinition/bundle-eu-hdr"
+    ]
+  },
+  "identifier": {
+    "type": {
+      "coding": [
+        {
+          "code": "PRN",
+          "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+        }
+      ]
+    },
+    "system": "http://local.setting.eu/identifier",
+    "value": "8fd082b6-5d99-42de-988f-955a8ebac0cb"
+  },
+  "entry": [
+    {
+      "fullUrl": "urn:uuid:bd69ab8e-3835-4fb6-be83-1852a2893a65",
+      "resource": {
+        "resourceType": "Composition",
+        "id": "bd69ab8e-3835-4fb6-be83-1852a2893a65",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/hdr/StructureDefinition/composition-eu-hdr"
+          ]
+        },
+        "author": [
+          {
+            "reference": "urn:uuid:cc0ae2a0-980d-4a2b-a4fb-9c71ecc70a15"
+          }
+        ],
+        "section": [
+          {
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Mr. Reijer Wolff was admitted on April 20, 2025, following a fall that resulted in a closed fracture of the tibia and fibula of the left leg.<table class=\"hl7__hdr\"><thead><tr><th>Problems</th><th>SNOMED</th></tr></thead><tbody><tr><td>Fracture of lower leg, Left lower limb</td><td>414292006</td></tr></tbody></table></div>"
+            },
+            "code": {
+              "coding": [
+                {
+                  "code": "67851-6",
+                  "system": "http://loinc.org",
+                  "display": "Admission evaluation note"
+                }
+              ]
+            },
+            "title": "Admission evaluation"
+          },
+          {
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">On April 23, 2025, a fixateur externe was applied to stabilize the fracture. The procedure was performed under general anesthesia without complications.<table class=\"hl7__hdr\"><thead><tr><th>Procedures</th><th>SNOMED</th></tr></thead><tbody><tr><td>Application of external fixator device, Left lower limb</td><td>304527002</td></tr></tbody></table></div>"
+            },
+            "entry": [
+              {
+                "reference": "urn:uuid:1493fed2-e9ed-4dc1-b107-f077cb1d0d40"
+              }
+            ],
+            "code": {
+              "coding": [
+                {
+                  "code": "10185-7",
+                  "system": "http://loinc.org",
+                  "display": "Hospital discharge procedures Narrative"
+                }
+              ]
+            },
+            "title": "Procedures"
+          },
+          {
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">The patient received paracetamol for pain relief and cefazolin as a prophylactic antibiotic post-surgery.<table class=\"hl7__hdr\"><thead><tr><th>Medication administrations</th><th>SNOMED</th></tr></thead><tbody><tr><td>Paracetamol</td><td>387517004</td></tr><tr><td>Cefazolin</td><td>387458008</td></tr></tbody></table></div>"
+            },
+            "entry": [
+              {
+                "reference": "urn:uuid:1bcfb26f-6958-4604-a40b-712170c1e536"
+              },
+              {
+                "reference": "urn:uuid:4578e7cd-0d00-4221-9a7f-3e3d6e14a21b"
+              }
+            ],
+            "code": {
+              "coding": [
+                {
+                  "code": "87232-5",
+                  "system": "http://loinc.org",
+                  "display": "Medication administration.brief"
+                }
+              ]
+            },
+            "title": "Medications"
+          },
+          {
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">The patient was monitored for signs of infection, received regular wound care, and started physiotherapy during the stay. No adverse events occurred.</div>"
+            },
+            "code": {
+              "coding": [
+                {
+                  "code": "8648-8",
+                  "system": "http://loinc.org",
+                  "display": "Hospital Course"
+                }
+              ]
+            },
+            "title": "Hospital Course"
+          },
+          {
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Mr. Doe was discharged in stable condition with instructions to avoid weight-bearing on the left leg and to follow up in the orthopedic clinic.</div>"
+            },
+            "code": {
+              "coding": [
+                {
+                  "code": "8653-8",
+                  "system": "http://loinc.org",
+                  "display": "Hospital Discharge instructions"
+                }
+              ]
+            },
+            "title": "Discharge and Follow-up"
+          }
+        ],
+        "type": {
+          "coding": [
+            {
+              "code": "34105-7",
+              "system": "http://loinc.org",
+              "display": "Hospital Discharge summary"
+            }
+          ]
+        },
+        "status": "final",
+        "subject": {
+          "reference": "urn:uuid:a1438872-05b1-4868-857d-521c9d586a7e"
+        },
+        "encounter": {
+          "reference": "urn:uuid:12fef60c-1fe7-4988-8286-af691889a3f3"
+        },
+        "date": "2025-04-29T13:30:00+01:00",
+        "title": "Hospital Discharge Report",
+        "custodian": {
+          "reference": "urn:uuid:3f30e341-19c6-484f-827a-0c58545fb2bc"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:a1438872-05b1-4868-857d-521c9d586a7e",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "a1438872-05b1-4868-857d-521c9d586a7e",
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "JHN",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://ec.europa.eu/identifier/eci",
+            "value": "6077-888840-8"
+          },
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "MR",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://local.setting.eu/identifier",
+            "value": "395922e4-846a-4c18-81e8-9121c77e7bf9"
+          }
+        ],
+        "name": [
+          {
+            "given": [
+              "Reijer"
+            ],
+            "family": "Wolff",
+            "text": "Reijer Wolff"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Nieuweweg 134"
+            ],
+            "use": "home",
+            "type": "physical",
+            "city": "Hoogerheide",
+            "postalCode": "4631 TC",
+            "country": "Netherlands"
+          }
+        ],
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "+31 06-58675866"
+          }
+        ],
+        "gender": "male",
+        "birthDate": "1969-02-25"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:cc0ae2a0-980d-4a2b-a4fb-9c71ecc70a15",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "cc0ae2a0-980d-4a2b-a4fb-9c71ecc70a15",
+        "practitioner": {
+          "reference": "urn:uuid:b60f89db-36c7-4a23-ab59-ace7089d2387"
+        },
+        "organization": {
+          "reference": "urn:uuid:3f30e341-19c6-484f-827a-0c58545fb2bc"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:b60f89db-36c7-4a23-ab59-ace7089d2387",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "b60f89db-36c7-4a23-ab59-ace7089d2387",
+        "name": [
+          {
+            "prefix": [
+              "dr"
+            ],
+            "given": [
+              "Anna"
+            ],
+            "family": "Smit"
+          }
+        ],
+        "telecom": [
+          {
+            "system": "email",
+            "value": "anna.smit@olv-hulst.org"
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:3f30e341-19c6-484f-827a-0c58545fb2bc",
+      "resource": {
+        "resourceType": "Organization",
+        "id": "3f30e341-19c6-484f-827a-0c58545fb2bc",
+        "address": [
+          {
+            "city": "Hulst",
+            "postalCode": "4561",
+            "country": "nl"
+          }
+        ],
+        "name": "Onze Lieve Lucas Gasthuis Hulst"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:12fef60c-1fe7-4988-8286-af691889a3f3",
+      "resource": {
+        "resourceType": "Encounter",
+        "id": "12fef60c-1fe7-4988-8286-af691889a3f3",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/hdr/StructureDefinition/encounter-eu-hdr"
+          ]
+        },
+        "period": {
+          "start": "2025-04-20T10:00:00+01:00",
+          "end": "2025-04-29T11:00:00+01:00"
+        },
+        "reasonReference": [
+          {
+            "reference": "urn:uuid:38d0593b-7949-489e-9306-95df81a109df"
+          }
+        ],
+        "status": "finished",
+        "class": {
+          "code": "IMP",
+          "system": "http://terminology.hl7.org/CodeSystem/v3-ActCode"
+        },
+        "subject": {
+          "reference": "urn:uuid:a1438872-05b1-4868-857d-521c9d586a7e"
+        },
+        "serviceProvider": {
+          "reference": "urn:uuid:3f30e341-19c6-484f-827a-0c58545fb2bc"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:38d0593b-7949-489e-9306-95df81a109df",
+      "resource": {
+        "resourceType": "Condition",
+        "id": "38d0593b-7949-489e-9306-95df81a109df",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/hdr/StructureDefinition/condition-eu-hdr"
+          ]
+        },
+        "bodySite": [
+          {
+            "coding": [
+              {
+                "code": "362785004",
+                "system": "http://snomed.info/sct",
+                "display": "Entire left lower limb (body structure)"
+              }
+            ]
+          }
+        ],
+        "clinicalStatus": {
+          "coding": [
+            {
+              "code": "active",
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "code": "414292006",
+              "system": "http://snomed.info/sct",
+              "display": "Fracture of lower leg (disorder)"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:a1438872-05b1-4868-857d-521c9d586a7e"
+        },
+        "onsetDateTime": "2025-04-20"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:1493fed2-e9ed-4dc1-b107-f077cb1d0d40",
+      "resource": {
+        "resourceType": "Procedure",
+        "id": "1493fed2-e9ed-4dc1-b107-f077cb1d0d40",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/hdr/StructureDefinition/procedure-eu-hdr"
+          ]
+        },
+        "bodySite": [
+          {
+            "coding": [
+              {
+                "code": "362785004",
+                "system": "http://snomed.info/sct",
+                "display": "Entire left lower limb (body structure)"
+              }
+            ]
+          }
+        ],
+        "status": "completed",
+        "code": {
+          "coding": [
+            {
+              "code": "302617002",
+              "system": "http://snomed.info/sct",
+              "display": "Application of external fixator system (procedure)"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:a1438872-05b1-4868-857d-521c9d586a7e"
+        },
+        "performedDateTime": "2025-04-23"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:1bcfb26f-6958-4604-a40b-712170c1e536",
+      "resource": {
+        "resourceType": "MedicationAdministration",
+        "id": "1bcfb26f-6958-4604-a40b-712170c1e536",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/hdr/StructureDefinition/medicationAdministration-eu-hdr"
+          ]
+        },
+        "status": "completed",
+        "medicationCodeableConcept": {
+          "coding": [
+            {
+              "code": "387517004",
+              "system": "http://snomed.info/sct",
+              "display": "Paracetamol (substance)"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:a1438872-05b1-4868-857d-521c9d586a7e"
+        },
+        "effectiveDateTime": "2025-04-21"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:4578e7cd-0d00-4221-9a7f-3e3d6e14a21b",
+      "resource": {
+        "resourceType": "MedicationAdministration",
+        "id": "4578e7cd-0d00-4221-9a7f-3e3d6e14a21b",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/hdr/StructureDefinition/medicationAdministration-eu-hdr"
+          ]
+        },
+        "status": "completed",
+        "medicationCodeableConcept": {
+          "coding": [
+            {
+              "code": "387470007",
+              "system": "http://snomed.info/sct",
+              "display": "Cefazolin (substance)"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:a1438872-05b1-4868-857d-521c9d586a7e"
+        },
+        "effectiveDateTime": "2025-04-23"
+      }
+    }
+  ],
+  "type": "document",
+  "timestamp": "2025-04-29T14:00:00+01:00"
+}
