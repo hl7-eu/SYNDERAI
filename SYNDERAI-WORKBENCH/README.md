@@ -18,7 +18,7 @@ This directory contains all generated synthetic data as result of the synthetic 
 
 This directory contains the all parts for the **core process**: the generation of **synthetic example instances** based on the synthetic data as input and represented in FHIR Shorthand (FSH) format
 
-### FSH-FHIR-GENERATOR
+### FSH-FHIR-GENERATOR (content only partially present in GitHub)
 
 This directory contains subdirectories per artifact where the original gitgub repositories reside as copies and where all synthetic example instances from the core process will be transformed into FHIR JSON instances for further processing. 
 
@@ -34,7 +34,7 @@ This directory contains mapping files and concept maps used by the core process.
 
 This directory contains settings and global constants.
 
-### RECENT-RESULTS
+### RECENT-RESULTS (content only partially present in GitHub)
 
 This directory contains subdirectories per artifact where the recently created JSON and XML Bundles reside.
 
@@ -52,4 +52,4 @@ The main purpose of the SYNDERAI methodology is to create between 1,000 and 25,0
 
 ## Usage
 
-tbd
+See "Process Description" in "[Principles](https://synderai.net/index.php?menu=principles)".
