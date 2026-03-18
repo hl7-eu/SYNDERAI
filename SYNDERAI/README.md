@@ -44,10 +44,6 @@ This directory contains subdirectories per publishing date (organized in "waves"
 
 The content of this folder is identical with the website's `PUBLICATIONS` folder.
 
-### TESTBEDS
-
-This directory has some testing scripts and testing materials.
-
 ## Purpose
 
 SYNDERAI provides realistic, privacy-preserving synthetic European healthcare data, including the first EU-Lab FHIR synthetic datasets. Explore reusable examples supported by AI for interoperability and secondary use in healthcare systems. And meet our Personas with their health story.
