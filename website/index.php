@@ -19,6 +19,11 @@ Directory setup
 +- config.php
         what it says
 
++- examples
+        contains 1 folder per artifact, e.g. EPS
+        and 1 info file named info-{artifact}.txt per per artifact
+        see README.md there
+
 */
 
 // PHP init sets
@@ -29,7 +34,7 @@ ini_set("pcre.jit", "0");
 
 // script short and long name and version number
 define("SYNDERAINAME", "SYNDERAI");
-define("SYNDERAIVERSION", "1.5");
+define("SYNDERAIVERSION", "2.0");
 define("SYNDERAITITLE", "Synthetic Data Examples – Realistic – using AI (SYNDERAI)");
 define("SYNDERAITEASER", "Synthetic Data Examples – Realistic – using AI (SYNDERAI), pronounced /ˈsɪn.də.raɪ/");
 define("SYNDERAICONTACT", "kai.heitmann@hl7europe.org");
@@ -128,55 +133,67 @@ if ($CURRENTMENU['menu'] === 'index') {
   $allexamplecategories = glob("examples/*");
   $eclist = "";
   foreach ($allexamplecategories as $ec) {
-    if (startsWith($ec, "examples/info-")) continue;  // don't take the info files into account
-    // count files in the category directory, look at basename as we might have .json and .xml for the same artifact
-    // also count number of distinct patients (e.g. lab may have 1 to many lab reports per patient)
-    $filesincat = array();
-    $patientsincat = array();
-    foreach (glob($ec . "/*") as $f) {
-      $fp = pathinfo(basename($f), PATHINFO_FILENAME);
-      $filesincat[$fp] = 1;
-      if (endsWith($f, ".json")) {
-        list ($resourcetype, $patientname, $patientmd5) = getPatientNameFromJSON ("$ec/$fp.json");
-        // echo "$fp.json - $patientname - " . $patientmd5 . "<br/>";
-        $patientsincat[$patientmd5] = 1;
-      }
-    }
-    $catcount = count($filesincat);
-    $patcount = count($patientsincat);
-    // get info file for the respective directory
-    $baseec = basename($ec);
-    if (is_file("examples/info-$baseec.txt")) {
-      $infocontent = file_get_contents("examples/info-$baseec.txt");
-      $infolines = explode("\n", $infocontent);
-      foreach ($infolines as $il) {
-        if (substr(trim($il), 0, 1) !== "#") {
-          $info = explode("|", $il);
-          $ectitle = trim($info[0]);
-          $ecshort = trim($info[1]);
-          $ecdesc = trim($info[2]);
-          $ecvi7eti = trim($info[3]);
-          $ecicon = trim($info[4]);
-          $ecicolor = trim($info[5]);
-          // var_dump($info);
-          // echo "($ecicon)($ecicolor)---";
+    if (is_dir($ec)) { // only look at the artifact folders
+      /*
+      * look into the artifact folder, it look like this
+      * +-- LAB
+      *     +-- 1.0.0+20251023
+      *     +-- 2.0.0+20260318
+      * 1. Identify the most recent version based on the semver of the packages
+      * 2. For that: count files in the category directory, look at basename as we might have 
+      *    .json and .xml for the same artifact and also count number of distinct
+      *    patients (e.g. lab may have 1 to many lab reports per patient)
+      */
+      $filesincat = array();
+      $patientsincat = array();
+      $latestexamplesfolder = getLatestSemverFolder($ec);
+      foreach (glob($ec . "/" . $latestexamplesfolder . "/Bundle*") as $f) {
+        $fp = pathinfo(basename($f), PATHINFO_FILENAME);
+        $filesincat[$fp] = 1;
+        if (endsWith($f, ".json")) {  // this is a JSON Bundle
+          list ($resourcetype, $patientname, $patientmd5) = getPatientNameFromJSON ($f);
+          // echo "$f - $patientname - " . $patientmd5 . "<br/>";
+          $patientsincat[$patientmd5] = 1;
         }
       }
-    } else {
-      $ectitle = $ec;
-      $ecshort = "-";
-      $ecdesc = "-";
-      $ecvi7eti = "";
-      $ecicon = "mdi-file-document-multiple";
-      $ecicolor = "vi7eti_regular";
-      
+      // var_dump($filesincat);var_dump($patientsincat);exit;
+      $catcount = count($filesincat);
+      $patcount = count($patientsincat);
+      // get info file for the respective directory
+      $baseec = basename($ec);
+      if (is_file("examples/info-$baseec.txt")) {
+        $infocontent = file_get_contents("examples/info-$baseec.txt");
+        $infolines = explode("\n", $infocontent);
+        foreach ($infolines as $il) {
+          if (substr(trim($il), 0, 1) !== "#") {
+            $info = explode("|", $il);
+            $ectitle = trim($info[0]);
+            $ecshort = trim($info[1]);
+            $ecdesc = trim($info[2]);
+            $ecvi7eti = trim($info[3]);
+            $ecicon = trim($info[4]);
+            $ecicolor = trim($info[5]);
+            // var_dump($info);
+            // echo "($ecicon)($ecicolor)---";
+          }
+        }
+      } else {
+        $ectitle = $ec;
+        $ecshort = "-";
+        $ecdesc = "-";
+        $ecvi7eti = "";
+        $ecicon = "mdi-file-document-multiple";
+        $ecicolor = "vi7eti_regular";
+        
+      }
+      $eclist .= "<div class=\"feature-card\" data-animate>";
+      $eclist .= "<i class=\"mdi $ecicon $ecicolor\"></i>";
+      $eclist .= "<h3>$ectitle</h3>";
+      $eclist .= "<p><strong>$patcount synthetic patients</strong> with<br/><strong>$catcount</strong> $ecdesc";
+      $eclist .= "<br><small>(Package $latestexamplesfolder)</small></p>";
+      $eclist .= "<a href=\"index.php?menu=$ec\" class=\"learn-more-btn\">VISIT</a>";
+      $eclist .= "</div>";
     }
-    $eclist .= "<div class=\"feature-card\" data-animate>";
-    $eclist .= "<i class=\"mdi $ecicon $ecicolor\"></i>";
-    $eclist .= "<h3>$ectitle</h3>";
-    $eclist .= "<p>$patcount synthetic patients with $catcount $ecdesc</p>";
-    $eclist .= "<a href=\"index.php?menu=$ec\" class=\"learn-more-btn\">VISIT</a>";
-    $eclist .= "</div>";
   }
 
   // this is example overview page, render it using the examples template
@@ -218,7 +235,10 @@ if ($CURRENTMENU['menu'] === 'index') {
     $ecvi7eti = "";
   }
   // build the list of example files
-  $allexamples = glob($CURRENTMENU['menu'] . "/*");
+  $latestexamplesfolder = getLatestSemverFolder($CURRENTMENU['menu']);
+  // var_dump(glob($CURRENTMENU['menu'] . "/" . $latestexamplesfolder . "/*"));exit;
+  $allexamples = glob($CURRENTMENU['menu'] . "/" . $latestexamplesfolder . "/Bundle*");
+  // var_dump($allexamples);
   $exary = [];
   foreach ($allexamples as $ex) {
     $base = basename($ex);
@@ -319,6 +339,7 @@ if ($CURRENTMENU['menu'] === 'index') {
   
   $tmp = str_replace("%%EXAMPLELISTING%%", $allexampleitemsout, $tmp);
   $tmp = str_replace("%%TITLE%%", $ectitle, $tmp);
+  $tmp = str_replace("%%PACKAGE%%", $latestexamplesfolder, $tmp);
 
   $OUT = str_replace("%%MAIN%%", $tmp, $content);
   $OUT = str_replace("%%HEADER%%", "", $OUT);
@@ -571,4 +592,59 @@ function startsWith($haystack, $needle) {
 }
 function endsWith($haystack, $needle) {
     return substr_compare($haystack, $needle, -strlen($needle)) === 0;
+}
+
+/*****
+ * semver helper
+ */
+function getLatestSemverFolder(string $directory): ?string
+{
+    if (!is_dir($directory)) {
+        throw new InvalidArgumentException("Directory does not exist: $directory");
+    }
+
+    // Match folders like 1.5.0 or 1.5.0+20260316
+    $semverPattern = '/^(\d+)\.(\d+)\.(\d+)(?:\+(\w+))?$/';
+
+    $folders = array_filter(
+        scandir($directory),
+        fn($entry) =>
+            $entry !== '.' &&
+            $entry !== '..' &&
+            is_dir($directory . DIRECTORY_SEPARATOR . $entry) &&
+            preg_match($semverPattern, $entry)
+    );
+
+    if (empty($folders)) {
+        return null;
+    }
+
+    usort($folders, function (string $a, string $b) use ($semverPattern): int {
+        preg_match($semverPattern, $a, $matchesA);
+        preg_match($semverPattern, $b, $matchesB);
+
+        // Compare major, minor, patch numerically
+        foreach ([1, 2, 3] as $i) {
+            $cmp = (int)$matchesA[$i] <=> (int)$matchesB[$i];
+            if ($cmp !== 0) {
+                return $cmp;
+            }
+        }
+
+        // If core version is equal, compare build metadata
+        // No metadata is treated as lower than any metadata
+        $buildA = $matchesA[4] ?? '';
+        $buildB = $matchesB[4] ?? '';
+
+        if ($buildA === '' && $buildB === '') return 0;
+        if ($buildA === '') return -1;
+        if ($buildB === '') return 1;
+
+        // Compare build metadata: numeric if both are numeric, string otherwise
+        return is_numeric($buildA) && is_numeric($buildB)
+            ? (int)$buildA <=> (int)$buildB
+            : strcmp($buildA, $buildB);
+    });
+
+    return end($folders);
 }
