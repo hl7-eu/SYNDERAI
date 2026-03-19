@@ -6,43 +6,57 @@
 
 ## Directory Structure
 
-### SYNTHETIC-DATA-GENERATION (content only partially present in GitHub)
+### Synthetic funds
 
-This directory contains all scripts and data used for the synthetic data generation. It is **not entirely part** of this GitHub repository, especially regarding the generated data, just the scripts and parameters are present.
+#### SYNTHETIC-DATA-GENERATION (content only partially present in GitHub)
 
-### SYNTHETIC-DATA (no content present in GitHub)
+This directory contains all scripts and data used for the synthetic data generation for both tracks, the clinical stories and the synthetic European citizen demographics.
 
-This directory contains all generated synthetic data as result of the synthetic data generation process.  It is **not part** of this GitHub repository due to size limitations. Generate your own synthetic data using the scripts in SYNTHETIC-DATA-GENERATION or ask the authors/contributors.
+It is **not entirely part** of this GitHub repository, especially regarding the generated data, just the scripts and parameters are present.
 
-### SYNTHETIC-INSTANCE-GENERATION
+#### SYNTHETIC-DATA (no content present in GitHub)
 
-This directory contains the all parts for the **core process**: the generation of **synthetic example instances** based on the synthetic data as input and represented in FHIR Shorthand (FSH) format
+This directory contains all generated synthetic data for both tracks, the clinical stories and the synthetic European citizen demographics as result of the synthetic data generation process. 
 
-### FSH-FHIR-GENERATOR (content only partially present in GitHub)
+It is **not part** of this GitHub repository due to size limitations. 
 
-This directory contains subdirectories per artifact where the original gitgub repositories reside as copies and where all synthetic example instances from the core process will be transformed into FHIR JSON instances for further processing. 
+Generate your own synthetic data using the scripts in SYNTHETIC-DATA-GENERATION or ask the authors/contributors.
 
-### PERSONAS
+### SYNDERAI core process
 
-This directory contains material about the SYNDERAI personas that all have a complete Hospital Dischare Report as core artifact along with all other derived artifacts. 
+#### SYNTHETIC-INSTANCE-GENERATION
 
-### MAPPINGS
+This directory contains the all parts for the **core process**: the generation of **synthetic example instances** based on the synthetic data as input and represented in FHIR Shorthand (FSH) format.
 
-This directory contains mapping files and concept maps used by the core process.
+#### FSH-FHIR-GENERATOR (content only partially present in GitHub)
 
-### CONSTANTS
+This directory contains subdirectories per artifact where the original GitHub repositories reside as copies of the official specification GitHub repos and where all synthetic example instances from the core process will be transformed into FHIR JSON instances using the FSH sushi compiler for further processing. 
+
+#### MAPPINGS
+
+This directory contains mapping files / concept maps used by the core process.
+
+#### CONSTANTS
 
 This directory contains settings and global constants.
 
-### RECENT-RESULTS (content only partially present in GitHub)
+#### RECENT-RESULTS (content only partially present in GitHub)
 
 This directory contains subdirectories per artifact where the recently created JSON and XML Bundles reside.
 
-### PUBLICATIONS
+### Publication
+
+#### PUBLICATIONS
 
 This directory contains subdirectories per publishing date (organized in "waves") an within subdirectories per artifact where the published JSON and XML Bundles reside. The published subfolders typically are named like  `6.5.0+20251024`.
 
 The content of this folder is identical with the website's `PUBLICATIONS` folder.
+
+### Story Telling
+
+#### PERSONAS
+
+This directory contains material about the SYNDERAI personas that all have a complete Hospital Dischare Report as core artifact along with all other derived artifacts.
 
 ## Purpose
 
