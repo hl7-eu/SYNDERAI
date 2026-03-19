@@ -351,7 +351,7 @@ if ($CURRENTMENU['menu'] === 'index') {
             try {
               $latestexamplesfolder = getLatestSemverFolder($ec);
             } catch (InvalidArgumentException $e) {
-                handleError("ERROR", "SYNDERAI: " . $e->getMessage());
+                handleError(ERROR, "SYNDERAI: " . $e->getMessage());
             }
 
             // Count distinct Bundle files and distinct patients in that folder
@@ -458,7 +458,7 @@ if ($CURRENTMENU['menu'] === 'index') {
     try {
       $latestexamplesfolder = getLatestSemverFolder($CURRENTMENU['menu']);
     } catch (InvalidArgumentException $e) {
-        handleError("ERROR", "SYNDERAI: " . $e->getMessage());
+        handleError(ERROR, "SYNDERAI: " . $e->getMessage());
     }
     $allexamples          = glob($CURRENTMENU['menu'] . "/" . $latestexamplesfolder . "/Bundle*");
 
@@ -775,7 +775,7 @@ function getPatientNameFromJSON($jsonfilename) {
     if (is_file($jsonfilename)) {
         $maxFileSize = 10 * 1024 * 1024;  // 10 MB limit
         if (filesize($jsonfilename) > $maxFileSize) {
-            handleError("ERROR", "oversized JSON file skipped: $jsonfilename");
+            handleError(ERROR, "oversized JSON file skipped: $jsonfilename");
             return [$resourcetype, "example", md5("example"), "", ""];
         }    
         $pnfc = file_get_contents($jsonfilename);
@@ -786,7 +786,7 @@ function getPatientNameFromJSON($jsonfilename) {
                 $resourcetype = "(" . $jsonData->resourceType . ")";
 
             if (!isset($jsonData->entry)) {
-                handleError("ERROR", "SYNDERAI: missing entry array in $jsonfilename");
+                handleError(ERROR, "SYNDERAI: missing entry array in $jsonfilename");
                 return [$resourcetype, $patientname, md5($patientname), $patientcountrycode, $compositiondate];
             }
 
