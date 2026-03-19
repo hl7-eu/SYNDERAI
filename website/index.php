@@ -127,9 +127,6 @@
  *   markup_json()              Wrap JSON tokens in colour-coded HTML <span> tags
  *   startsWith()               Test whether a string has a given prefix
  *   endsWith()                 Test whether a string has a given suffix
- *   test_pretty_json_object()  Unit test for pretty_json() with an object
- *   test_pretty_json_str()     Unit test for pretty_json() with a scalar string
- *   test_markup_json()         Unit test for markup_json()
  */
 
 
@@ -214,7 +211,7 @@ foreach ($MENU as $ix => $m) {
     // Step 1: Basic character whitelist — reject anything containing
     // traversal sequences, null bytes, or characters with no place in a
     // URL menu parameter before any further processing.
-    $sp = (isset($_GET['menu']) > 0) ? htmlspecialchars($_GET['menu']) : ""; // ... but overwritten here on every pass
+    $sp = (isset($_GET['menu']) > 0) ? htmlspecialchars($_GET['menu'], ENT_QUOTES | ENT_HTML5, 'UTF-8') : ""; // ... but overwritten here on every pass
 
     if (!preg_match('/^[a-zA-Z0-9_\-\/]*$/', $sp)) {
         // Contains illegal characters — reject immediately
@@ -780,7 +777,12 @@ function getPatientNameFromJSON($jsonfilename) {
         }    
         $pnfc = file_get_contents($jsonfilename);
         if ($pnfc !== FALSE) {
+            
             $jsonData = json_decode($pnfc, FALSE);
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                handleError(ERROR, "SYNDERAI: JSON parse error in $jsonfilename: " . json_last_error_msg());
+                return [$resourcetype, "example", md5("example"), "", ""];
+            }
 
             if (isset($jsonData->resourceType))
                 $resourcetype = "(" . $jsonData->resourceType . ")";
@@ -894,7 +896,7 @@ function handleError($severity, $text) {
 function antispambot($email_address, $hex_encoding = 0) {
     $email_no_spam_address = '';
     for ($i = 0, $len = strlen($email_address); $i < $len; $i++) {
-        $j = rand(0, 1 + $hex_encoding);
+        $j = random_int(0, 1 + $hex_encoding);
         if (0 == $j) {
             $email_no_spam_address .= '&#' . ord($email_address[$i]) . ';';
         } elseif (1 == $j) {
@@ -992,66 +994,6 @@ function markup_json(string $in): string {
         },
         str_replace(['<', '>', '&'], ['&lt;', '&gt;', '&amp;'], $in)
     ) ?? $in;
-}
-
-
-// ============================================================================
-// UNIT TESTS
-// These functions are test cases for pretty_json() and markup_json().
-// They use $this->assertEquals() and are intended to be run inside a
-// PHPUnit test class — they cannot be called standalone from this script.
-// ============================================================================
-
-/**
- * Unit test: pretty_json() with a stdClass object input.
- * Verifies that a single-property object is serialised with 2-space indentation.
- */
-function test_pretty_json_object() {
-    $ob       = new \stdClass();
-    $ob->test = 'unit-tester';
-    $json     = pretty_json($ob);
-    $expected = <<<JSON
-{
-  "test": "unit-tester"
-}
-JSON;
-    $this->assertEquals($expected, $json);
-}
-
-/**
- * Unit test: pretty_json() with a plain scalar string input.
- * Verifies that a bare string is returned as a quoted JSON string.
- */
-function test_pretty_json_str() {
-    $ob   = 'unit-tester';
-    $json = pretty_json($ob);
-    $this->assertEquals("\"$ob\"", $json);
-}
-
-/**
- * Unit test: markup_json() chained with pretty_json() and json_decode().
- * Verifies that a compact JSON array is expanded and colour-coded correctly,
- * with each token wrapped in the expected <span style='color:...'> element.
- */
-function test_markup_json() {
-    $json = <<<JSON
-[{"name":"abc","id":123,"warnings":[],"errors":null},{"name":"abc"}]
-JSON;
-    $expected = <<<STR
-[
-  {
-    <span style='color:red'>"name":</span> <span style='color:green'>"abc"</span>,
-    <span style='color:red'>"id":</span> <span style='color:darkorange'>123</span>,
-    <span style='color:red'>"warnings":</span> [],
-    <span style='color:red'>"errors":</span> <span style='color:magenta'>null</span>
-  },
-  {
-    <span style='color:red'>"name":</span> <span style='color:green'>"abc"</span>
-  }
-]
-STR;
-    $output = markup_json(pretty_json(json_decode($json)));
-    $this->assertEquals($expected, $output);
 }
 
 
