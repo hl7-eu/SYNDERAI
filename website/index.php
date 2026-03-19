@@ -603,6 +603,76 @@ if ($CURRENTMENU['menu'] === 'index') {
     $OUT = str_replace("%%MAIN%%",   $tmp, $content);
     $OUT = str_replace("%%HEADER%%", "",   $OUT);
 
+} elseif ($CURRENTMENU['menu'] === 'downloads') {
+    // -------------------------------------------------------------------------
+    // DOWNLOADS PAGE
+    // Renders all download packages under examples/{artifact}/package.tar.tgz
+    // and offer them in a hierarchical list for download
+    // -------------------------------------------------------------------------
+    $content = str_replace("%%BACKGROUNDIMG%%", "page-image", $content);
+
+    $tmp = file_get_contents('tmpl/downloads.html');
+    $tmp = str_replace("%%TEASER%%", SYNDERAITEASER, $tmp);
+
+    // get all semver subfolders from the example directory
+    $allpackages = glob("examples/*/*.*.*");
+
+    $strlist = "<ul>";
+    foreach ($allpackages as $pf) {
+      $items = explode("/", $pf); 
+      $artifact = $items[1];
+      // Read display metadata from the companion info file (same format as above)
+      if (is_file("examples/info-$artifact.txt")) {
+          $infocontent = file_get_contents("examples/info-$artifact.txt");
+          $infolines   = explode("\n", $infocontent);
+          foreach ($infolines as $il) {
+              if (substr(trim($il), 0, 1) !== "#") {
+                  $info     = explode("|", $il);
+                  $ectitle  = trim($info[0]);
+                  $ecshort  = trim($info[1]);
+                  $ecdesc   = trim($info[2]);
+                  $ecvi7eti = trim($info[3]);
+              }
+          }
+      } else {
+          $ectitle  = $artifact;
+          $ecshort  = "-";
+          $ecdesc   = "-";
+          $ecvi7eti = "";
+      }
+      $ppath = is_file("$pf/package.tar.gz") ? "$pf/package.tar.gz" : NULL;
+      $package = $items[2];
+      $packagedate = after("+", $package);
+      $plist[$artifact][] = [
+        "artifact" => $artifact,
+        "title" => $ectitle,
+        "desc" => $ecdesc,
+        "package" => $items[2],
+        "date" => $packagedate,
+        "path" => str_replace("+", "%2B", $ppath)
+      ]; 
+    }
+    foreach ($plist as $af => $pinfo) {
+      // $pinfo has now all packages per this artifact $af
+      // prepare "headline"
+      $strlist .= "<h3>" . $pinfo[0]["title"] . " (" . $af . ")</h3><ul>";
+      // sort entries by package date
+      $dates = array_column($pinfo, 'date');
+      array_multisort($dates, SORT_DESC, $pinfo);
+      foreach ($pinfo as $pk) {
+        $strlist .= "<li><i class=\"mdi mdi-package green\"></i> " . 
+          " Package " .
+          $pk["package"] . 
+          "<a href=\"" . $pk["path"]  . "\"> " .
+          " <i class=\"mdi mdi-download\"></i>" . "</a></li>";
+      }
+      $strlist .= "</ul>";
+      // var_dump($pinfo);
+    }
+    $content = str_replace("%%MAIN%%",         $tmp,  $content);
+    $content = str_replace("%%DOWNLOADLIST%%", $strlist, $content);
+    $OUT = str_replace("%%HEADER%%",           "",    $content);
+
 } else {
 
     // -------------------------------------------------------------------------
@@ -645,7 +715,14 @@ $OUT = str_replace("%%FOOTER%%", $content, $OUT);
 header("X-Frame-Options: SAMEORIGIN");
 header("X-Content-Type-Options: nosniff");
 header("Referrer-Policy: strict-origin-when-cross-origin");
-header("Content-Security-Policy: default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'");
+header("Content-Security-Policy: "
+    . "default-src 'self'; "
+    . "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net; "
+    . "font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net; "
+    . "script-src 'self' 'unsafe-inline'; "
+    . "img-src 'self' data:; "
+    . "connect-src 'self'; "
+    . "frame-ancestors 'none';");
 echo $OUT;
 exit;
 
@@ -1084,4 +1161,19 @@ function getLatestSemverFolder(string $directory): ?string {
     });
 
     return end($folders);  // highest version is last after ascending sort
+}
+
+/**
+ * Return the substring of $inthat that follows the first occurrence of $needle.
+ *
+ * @param  string      $needle  The delimiter to search for.
+ * @param  string      $inthat  The string to search within.
+ *
+ * @return string|void  The substring after the first occurrence of $needle,
+ *                      or void (implicit NULL) if $needle is not found.
+ */
+function after($needle, $inthat) {
+    if (!is_bool(strpos($inthat, $needle))) {
+        return substr($inthat, strpos($inthat, $needle) + strlen($needle));
+    }
 }
