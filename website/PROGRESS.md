@@ -22,6 +22,9 @@
 - 2025-09-18: Published 37 HL7 FHIR example instances of the European European Patient Summary (EPS), 106 HL7 FHIR example instances of the European Laboratory Report (LAB), 3 HL7 FHIR example instances of the European Hospital Discharge Report (HDR)
 - 2025-09-29: New set of synthetic demographic data, matched with clinical data
 - 2025-10-19: Published new examples for EPS and LAB based on the new synthetic demographic data set
-- 2025-10-23: Published 50 synthetic patients / 50 HL7 FHIR example instance of the European European Patient Summary (EPS), 50 synthetic patients / 890 HL7 FHIR example instances of the European Laboratory Report (LAB), introduced [SYNDERAI Synthetic Data Generation and Use Policy](https://synderai.net/index.php?menu=policy) with corresponding markers in all instances of Bundles that the data is synthetic
-- 2025-12-07: recreated 50 synthetic patients / 50 HL7 FHIR example instance of the European European Patient Summary (EPS)
-- 2025-03-01: starting the big validation "marathon" to process all synthetic examples by the HAPI validator aiming on passing (virtually) all examples with no errors
+- 2025-10-23: Published 50 synthetic patients / 50 HL7 FHIR example instance of the European European Patient Summary (EPS), 50 synthetic patients / 890 HL7 FHIR example instances of the European Laboratory Report (LAB), introduced [SYNDERAI Synthetic Data Generation and Use Policy](https://synderai.net/index.php?menu=policy) with corresponding markers in all instances of Bundles that the data is synthetic; added all hand crafted HDR examples so far.
+   – published as **package 1.0.0+20251023** for EPS and LAB and HDR
+- 2025-12-07 and 2025-12-09: recreated 50 synthetic patients / 50 HL7 FHIR example instance of the European European Patient Summary (EPS)
+  – published as **package 1.5.0+20251209** for EPS and LAB
+- 2025-03-01: starting the big validation "marathon" to process all synthetic examples by the HAPI validator aiming on passing (virtually) all examples with no errors, perparations for the EHDS Plugathon during the IHE Connectathon week 23-27 March 2026 in Brussels
+  – published as **package 2.0.0+20260318** for EPS and LAB
