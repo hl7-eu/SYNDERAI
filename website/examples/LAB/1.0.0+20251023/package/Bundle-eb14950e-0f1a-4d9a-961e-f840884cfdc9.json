@@ -1,0 +1,754 @@
+{
+  "resourceType": "Bundle",
+  "id": "eb14950e-0f1a-4d9a-961e-f840884cfdc9",
+  "meta": {
+    "profile": [
+      "http://hl7.eu/fhir/laboratory/StructureDefinition/Bundle-eu-lab"
+    ]
+  },
+  "identifier": {
+    "assigner": {
+      "display": "HL7 Europe"
+    },
+    "system": "urn:oid:2.16.840.1.113883.2.51.999",
+    "value": "60abadc2-7475-4af8-8dc7-ee74cdd160d4"
+  },
+  "entry": [
+    {
+      "fullUrl": "urn:uuid:2f3e72e5-6f6b-4771-b7e8-aaac74411fbe",
+      "resource": {
+        "resourceType": "Composition",
+        "id": "2f3e72e5-6f6b-4771-b7e8-aaac74411fbe",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Composition-eu-lab"
+          ]
+        },
+        "identifier": {
+          "assigner": {
+            "display": "HL7 Europe"
+          },
+          "system": "urn:oid:2.16.840.1.113883.2.51.999",
+          "value": "65dc5350-8af1-456c-b6ec-7d542e3377ff"
+        },
+        "author": [
+          {
+            "reference": "urn:uuid:607211fe-fe4e-4198-a2c1-947e1af9787a"
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "type": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ],
+          "text": "Laboratory Report"
+        },
+        "section": [
+          {
+            "code": {
+              "coding": [
+                {
+                  "code": "26436-6",
+                  "system": "http://loinc.org",
+                  "display": "Laboratory studies (set)"
+                }
+              ],
+              "text": "Laboratory studies"
+            },
+            "section": [
+              {
+                "code": {
+                  "coding": [
+                    {
+                      "code": "$18719-5",
+                      "system": "http://loinc.org",
+                      "display": "Chemistry studies (set)"
+                    }
+                  ],
+                  "text": "Chemistry"
+                },
+                "entry": [
+                  {
+                    "reference": "urn:uuid:c29d4038-1b43-4864-b580-2b8da3b132f9"
+                  }
+                ],
+                "text": {
+                  "status": "generated",
+                  "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>Chemistry</h3><table class=\"hl7__eu__lab__report\"><thead><tr><th>Test</th><th>25-AUG-2020</th><th>Reference&#xA0;Range</th><th>Unit</th></tr></thead><tbody><tr><td>Hemoglobin A1c/Hemoglobin.total in Blood</td><td>5.4</td><td>4.5 - 6.4</td><td>%</td></tr></tbody></table></div>"
+                },
+                "title": "Chemistry"
+              }
+            ],
+            "title": "Laboratory Report"
+          },
+          {
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>Annotation</h3><table class=\"hl7__eu__lab__report\"><tr><th>Conclusion and Recommendations based on this report and previous findings known to us</th></tr><tr><td>Hemoglobin A1c is within the normal range, indicating good long-term glycemic control. No laboratory abnormalities detected in this result. No further action required from a clinical laboratory perspective.</td></tr></table></div>"
+            },
+            "code": {
+              "coding": [
+                {
+                  "system": "http://loinc.org",
+                  "code": "48767-8",
+                  "display": "Annotation comment"
+                }
+              ]
+            },
+            "title": "Annotation comment"
+          }
+        ],
+        "status": "final",
+        "subject": {
+          "reference": "urn:uuid:960b37ba-71f2-439e-961f-6eafc2226fb3",
+          "display": "Urbano Cantón"
+        },
+        "date": "2020-08-25T19:07:13Z",
+        "title": "Laboratory Report",
+        "confidentiality": "N"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:52216fd8-1f2e-4a96-ba5e-eb1773512f49",
+      "resource": {
+        "resourceType": "DiagnosticReport",
+        "id": "52216fd8-1f2e-4a96-ba5e-eb1773512f49",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/DiagnosticReport-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "59d57a47-3594-45a4-9a8f-f7908b93119a"
+          }
+        ],
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-DiagnosticReport.composition",
+            "valueReference": {
+              "reference": "urn:uuid:65dc5350-8af1-456c-b6ec-7d542e3377ff"
+            }
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:012b01e0-0977-41c3-bdf3-2511441b12e7"
+          }
+        ],
+        "result": [
+          {
+            "reference": "urn:uuid:c29d4038-1b43-4864-b580-2b8da3b132f9"
+          }
+        ],
+        "status": "registered",
+        "code": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:960b37ba-71f2-439e-961f-6eafc2226fb3",
+          "display": "Urbano Cantón"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:960b37ba-71f2-439e-961f-6eafc2226fb3",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "960b37ba-71f2-439e-961f-6eafc2226fb3",
+        "meta": {
+          "security": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "HTEST"
+            },
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "TRAIN"
+            }
+          ],
+          "tag": [
+            {
+              "system": "https://synderai.net/fhir/CodeSystem/tags",
+              "code": "synthetic",
+              "display": "SYNDERAI Synthetic data"
+            }
+          ],
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/patient-eu-core"
+          ]
+        },
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "PT",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://ec.europa.eu/identifier/eci",
+            "value": "8854-480268-4"
+          },
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "MR",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://local.setting.eu/identifier",
+            "value": "91128f5c-658f-cfab-4640-b680ec2e24a1"
+          }
+        ],
+        "name": [
+          {
+            "family": "Cantón"
+          },
+          {
+            "given": [
+              "Urbano"
+            ]
+          },
+          {
+            "text": "Urbano Cantón"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Vial Vito Trujillo 29 Piso 2 "
+            ],
+            "use": "home",
+            "type": "physical",
+            "postalCode": "38001",
+            "city": "Santa Cruz de Tenerife",
+            "country": "Spain"
+          }
+        ],
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "+34 740 588 857"
+          }
+        ],
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/StructureDefinition/patient-nationality",
+            "valueCodeableConcept": {
+              "coding": [
+                {
+                  "code": "ES",
+                  "system": "http://hl7.org/fhir/ValueSet/country"
+                }
+              ]
+            }
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__ips\"><tr><td>Urbano Cantón</td><td>male</td><td>01-Apr-1945</td></tr></table></div>"
+        },
+        "gender": "male",
+        "birthDate": "1945-04-01"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:388b9655-1bf2-4f15-9712-1d490560b7d6",
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "388b9655-1bf2-4f15-9712-1d490560b7d6",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/ServiceRequest-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "system": "http://example.org",
+            "value": "7be3eeaf-20a0-4478-9a63-66ff492b2d9b"
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:012b01e0-0977-41c3-bdf3-2511441b12e7"
+          }
+        ],
+        "reasonCode": [
+          {
+            "coding": [
+              {
+                "code": "55822004",
+                "system": "http://snomed.info/sct",
+                "display": "Hyperlipidemia"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "401314000",
+                "system": "http://snomed.info/sct",
+                "display": "Acute non-ST segment elevation myocardial infarction"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "6525002",
+                "system": "http://snomed.info/sct",
+                "display": "Dependent drug abuse"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "124171000119105",
+                "system": "http://snomed.info/sct",
+                "display": "Chronic intractable migraine without aura"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "414545008",
+                "system": "http://snomed.info/sct",
+                "display": "Ischemic heart disease"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "368581000119106",
+                "system": "http://snomed.info/sct",
+                "display": "Neuropathy due to type 2 diabetes mellitus"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "80394007",
+                "system": "http://snomed.info/sct",
+                "display": "Hyperglycemia"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "237602007",
+                "system": "http://snomed.info/sct",
+                "display": "Metabolic syndrome X"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "302870006",
+                "system": "http://snomed.info/sct",
+                "display": "Hypertriglyceridemia"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "44054006",
+                "system": "http://snomed.info/sct",
+                "display": "Type 2 diabetes mellitus"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "59621000",
+                "system": "http://snomed.info/sct",
+                "display": "Essential hypertension"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "271737000",
+                "system": "http://snomed.info/sct",
+                "display": "Anemia"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "40055000",
+                "system": "http://snomed.info/sct",
+                "display": "Chronic sinusitis"
+              }
+            ]
+          }
+        ],
+        "status": "active",
+        "intent": "order",
+        "code": {
+          "coding": [
+            {
+              "code": "108252007",
+              "system": "http://snomed.info/sct",
+              "display": "Laboratory procedure"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:960b37ba-71f2-439e-961f-6eafc2226fb3",
+          "display": "Urbano Cantón"
+        },
+        "requester": {
+          "reference": "urn:uuid:e88f76c3-6940-46d0-b320-3be01224d2ce"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:e88f76c3-6940-46d0-b320-3be01224d2ce",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "e88f76c3-6940-46d0-b320-3be01224d2ce",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Role Id: e88f76c3-6940-46d0-b320-3be01224d2ce</div>"
+        },
+        "organization": {
+          "reference": "urn:uuid:b5954a35-6b67-4f96-9440-6ad6b01b82d4"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:b5954a35-6b67-4f96-9440-6ad6b01b82d4",
+      "resource": {
+        "resourceType": "Organization",
+        "id": "b5954a35-6b67-4f96-9440-6ad6b01b82d4",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/organization-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "80aba803-fe97-47ed-a863-6967bb297306"
+          }
+        ],
+        "address": [
+          {
+            "country": "Spain"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Organization: Centro de Salud Ruiz de Padrón</div>"
+        },
+        "name": "Centro de Salud Ruiz de Padrón"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:012b01e0-0977-41c3-bdf3-2511441b12e7",
+      "resource": {
+        "resourceType": "Specimen",
+        "id": "012b01e0-0977-41c3-bdf3-2511441b12e7",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Specimen-eu-lab"
+          ]
+        },
+        "collection": {
+          "collectedDateTime": "2020-08-25"
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Specimen</th><th>Collection Date</th></tr><tr><td>Whole blood specimen (specimen)</td><td><span class=\"nb\">25-Aug-2020</span></td></tr></table></div>"
+        },
+        "type": {
+          "coding": [
+            {
+              "code": "258580003",
+              "system": "http://snomed.info/sct",
+              "display": "Whole blood specimen (specimen)"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:c29d4038-1b43-4864-b580-2b8da3b132f9",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "c29d4038-1b43-4864-b580-2b8da3b132f9",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Observation-resultslab-eu-lab"
+          ]
+        },
+        "performer": [
+          {
+            "display": "The Central European Lab"
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                "code": "laboratory"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "code": "4548-4",
+              "system": "http://loinc.org",
+              "display": "Hemoglobin A1c/Hemoglobin.total in Blood"
+            }
+          ],
+          "text": "Hemoglobin A1c/Hemoglobin.total in Blood"
+        },
+        "valueQuantity": {
+          "system": "http://unitsofmeasure.org",
+          "value": 5.4,
+          "unit": "%",
+          "code": "%"
+        },
+        "referenceRange": [
+          {
+            "low": {
+              "value": 4.5,
+              "code": "%",
+              "system": "http://unitsofmeasure.org"
+            }
+          },
+          {
+            "high": {
+              "value": 6.4,
+              "code": "%",
+              "system": "http://unitsofmeasure.org"
+            }
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Test</th><th>25-Aug-2020</th><th>Reference&#xA0;Range</th><th>Unit</th></tr><tr><td>Hemoglobin A1c/Hemoglobin.total in Blood</td><td>5.4</td><td>4.5 - 6.4</td><td></td><td>%</td></tr></table></div>"
+        },
+        "status": "final",
+        "subject": {
+          "reference": "urn:uuid:960b37ba-71f2-439e-961f-6eafc2226fb3",
+          "display": "Urbano Cantón"
+        },
+        "effectiveDateTime": "2020-08-25T17:07:13Z",
+        "specimen": {
+          "reference": "urn:uuid:012b01e0-0977-41c3-bdf3-2511441b12e7"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:75c7e0c4-752f-43b8-8abb-94ca091bd095",
+      "resource": {
+        "resourceType": "Device",
+        "id": "75c7e0c4-752f-43b8-8abb-94ca091bd095",
+        "deviceName": [
+          {
+            "name": "SYNDERAI Synthetic Generator",
+            "type": "manufacturer-name"
+          }
+        ],
+        "version": [
+          {
+            "value": "5.0"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">SYNDERAI Synthetic Generator v5.0</div>"
+        },
+        "status": "active\"",
+        "distinctIdentifier": "synderai-generator-50",
+        "manufacturer": "SYNDERAI Project"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:320faa75-8e52-4f28-9c3d-5104ffdda0a5",
+      "resource": {
+        "resourceType": "Provenance",
+        "id": "320faa75-8e52-4f28-9c3d-5104ffdda0a5",
+        "target": [
+          {
+            "reference": "Patient/960b37ba-71f2-439e-961f-6eafc2226fb3"
+          },
+          {
+            "reference": "Bundle/eb14950e-0f1a-4d9a-961e-f840884cfdc9"
+          },
+          {
+            "reference": "Composition/2f3e72e5-6f6b-4771-b7e8-aaac74411fbe"
+          },
+          {
+            "reference": "PractitionerRole/607211fe-fe4e-4198-a2c1-947e1af9787a"
+          },
+          {
+            "reference": "Practitioner/7bfb9d21-6386-457e-8b8f-9af5597fa0ff"
+          },
+          {
+            "reference": "PractitionerRole/e88f76c3-6940-46d0-b320-3be01224d2ce"
+          },
+          {
+            "reference": "Organization/b5954a35-6b67-4f96-9440-6ad6b01b82d4"
+          }
+        ],
+        "activity": {
+          "text": "Synthetic Example Data Generation"
+        },
+        "policy": [
+          "https://synderai.net/synderai-synthetic-data-policy"
+        ],
+        "agent": [
+          {
+            "type": {
+              "text": "author"
+            },
+            "who": {
+              "reference": "Device/75c7e0c4-752f-43b8-8abb-94ca091bd095"
+            }
+          }
+        ],
+        "reason": [
+          {
+            "text": "Interoperability Testing and Training (non-clinical use)"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provenance for SYNDERAI Synthetic Example Data Resource</div>"
+        },
+        "recorded": "2020-08-25T19:07:13Z"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:607211fe-fe4e-4198-a2c1-947e1af9787a",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "607211fe-fe4e-4198-a2c1-947e1af9787a",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory Role Id: 607211fe-fe4e-4198-a2c1-947e1af9787a</div>"
+        },
+        "practitioner": {
+          "reference": "urn:uuid:7bfb9d21-6386-457e-8b8f-9af5597fa0ff"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:7bfb9d21-6386-457e-8b8f-9af5597fa0ff",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "7bfb9d21-6386-457e-8b8f-9af5597fa0ff",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitioner-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "958ac7f7-f57f-45cb-8c52-424c7e1c042b"
+          }
+        ],
+        "name": [
+          {
+            "prefix": [
+              "dr"
+            ],
+            "given": [
+              "Ex"
+            ],
+            "family": "Ample"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Laboratoire Central Européenne",
+              "Boulevard du Jardin Botanique 32"
+            ],
+            "postalCode": "1000",
+            "city": "Brussels",
+            "country": "Belgium"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory: Laboratoire Central Européenne, 1000 Brussels, Belgium</div>"
+        }
+      }
+    }
+  ],
+  "type": "document",
+  "timestamp": "2020-08-25T19:07:13Z"
+}

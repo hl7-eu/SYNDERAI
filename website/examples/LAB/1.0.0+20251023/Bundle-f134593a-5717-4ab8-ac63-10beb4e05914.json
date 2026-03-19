@@ -1,0 +1,618 @@
+{
+  "resourceType": "Bundle",
+  "id": "f134593a-5717-4ab8-ac63-10beb4e05914",
+  "meta": {
+    "profile": [
+      "http://hl7.eu/fhir/laboratory/StructureDefinition/Bundle-eu-lab"
+    ]
+  },
+  "identifier": {
+    "assigner": {
+      "display": "HL7 Europe"
+    },
+    "system": "urn:oid:2.16.840.1.113883.2.51.999",
+    "value": "5d9590b7-3fde-40d2-9f0f-c81dab90fe59"
+  },
+  "entry": [
+    {
+      "fullUrl": "urn:uuid:4af9900a-0997-4a26-8975-7d4f1c4723bb",
+      "resource": {
+        "resourceType": "Composition",
+        "id": "4af9900a-0997-4a26-8975-7d4f1c4723bb",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Composition-eu-lab"
+          ]
+        },
+        "identifier": {
+          "assigner": {
+            "display": "HL7 Europe"
+          },
+          "system": "urn:oid:2.16.840.1.113883.2.51.999",
+          "value": "ea3d3044-aea5-418b-9d55-5b1348c637b8"
+        },
+        "author": [
+          {
+            "reference": "urn:uuid:ae53594b-0654-4720-a6a6-dc4d1b49bc40"
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "type": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ],
+          "text": "Laboratory Report"
+        },
+        "section": [
+          {
+            "code": {
+              "coding": [
+                {
+                  "code": "26436-6",
+                  "system": "http://loinc.org",
+                  "display": "Laboratory studies (set)"
+                }
+              ],
+              "text": "Laboratory studies"
+            },
+            "section": [
+              {
+                "code": {
+                  "coding": [
+                    {
+                      "code": "$18725-2",
+                      "system": "http://loinc.org",
+                      "display": "Microbiology studies"
+                    }
+                  ],
+                  "text": "Microbiology Panel"
+                },
+                "entry": [
+                  {
+                    "reference": "urn:uuid:adbf6648-6b8e-4afa-b61b-e95f9d967f73"
+                  }
+                ],
+                "text": {
+                  "status": "generated",
+                  "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>Microbiology Panel</h3><table class=\"hl7__eu__lab__report\"><thead><tr><th>Test</th><th>10-DEC-2020</th><th>Reference&#xA0;Range</th><th>Unit</th></tr></thead><tbody><tr><td>SARS-CoV-2 (COVID-19) RNA panel - Respiratory system specimen by NAA with probe detection</td><td>Detected</td><td></td><td></td></tr></tbody></table></div>"
+                },
+                "title": "Microbiology Panel"
+              }
+            ],
+            "title": "Laboratory Report"
+          },
+          {
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>Annotation</h3><table class=\"hl7__eu__lab__report\"><tr><th>Conclusion and Recommendations based on this report and previous findings known to us</th></tr><tr><td>SARS-CoV-2 RNA was detected in the respiratory specimen, indicating an active COVID-19 infection. Clinical correlation and appropriate infection control measures are recommended. No other laboratory parameters provided for further assessment.</td></tr></table></div>"
+            },
+            "code": {
+              "coding": [
+                {
+                  "system": "http://loinc.org",
+                  "code": "48767-8",
+                  "display": "Annotation comment"
+                }
+              ]
+            },
+            "title": "Annotation comment"
+          }
+        ],
+        "status": "final",
+        "subject": {
+          "reference": "urn:uuid:78b0c784-3859-40c9-a18c-01818e60d2f9",
+          "display": "Elias Höfig"
+        },
+        "date": "2020-12-10T11:32:47Z",
+        "title": "Laboratory Report",
+        "confidentiality": "N"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:c1f55e70-6360-46f2-9f14-f9cdbd920140",
+      "resource": {
+        "resourceType": "DiagnosticReport",
+        "id": "c1f55e70-6360-46f2-9f14-f9cdbd920140",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/DiagnosticReport-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "9e4bb2af-263d-42c3-b415-b7a93396cfa5"
+          }
+        ],
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-DiagnosticReport.composition",
+            "valueReference": {
+              "reference": "urn:uuid:ea3d3044-aea5-418b-9d55-5b1348c637b8"
+            }
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:e046e3fa-edac-4626-98b6-1b9f57947770"
+          }
+        ],
+        "result": [
+          {
+            "reference": "urn:uuid:adbf6648-6b8e-4afa-b61b-e95f9d967f73"
+          }
+        ],
+        "status": "registered",
+        "code": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:78b0c784-3859-40c9-a18c-01818e60d2f9",
+          "display": "Elias Höfig"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:78b0c784-3859-40c9-a18c-01818e60d2f9",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "78b0c784-3859-40c9-a18c-01818e60d2f9",
+        "meta": {
+          "security": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "HTEST"
+            },
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "TRAIN"
+            }
+          ],
+          "tag": [
+            {
+              "system": "https://synderai.net/fhir/CodeSystem/tags",
+              "code": "synthetic",
+              "display": "SYNDERAI Synthetic data"
+            }
+          ],
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/patient-eu-core"
+          ]
+        },
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "PT",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://ec.europa.eu/identifier/eci",
+            "value": "7833-401919-3"
+          },
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "MR",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://local.setting.eu/identifier",
+            "value": "55b3d71c-a283-2178-4db6-d251ed0e1404"
+          }
+        ],
+        "name": [
+          {
+            "family": "Höfig"
+          },
+          {
+            "given": [
+              "Elias"
+            ]
+          },
+          {
+            "text": "Elias Höfig"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Pauline-Schwital-Allee 6-2"
+            ],
+            "use": "home",
+            "type": "physical",
+            "postalCode": "39326",
+            "city": "Wolmirstedt",
+            "country": "Germany"
+          }
+        ],
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "+49 (0) 4602 154908"
+          }
+        ],
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/StructureDefinition/patient-nationality",
+            "valueCodeableConcept": {
+              "coding": [
+                {
+                  "code": "DE",
+                  "system": "http://hl7.org/fhir/ValueSet/country"
+                }
+              ]
+            }
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__ips\"><tr><td>Elias Höfig</td><td>male</td><td>19-May-1974</td></tr></table></div>"
+        },
+        "gender": "male",
+        "birthDate": "1974-05-19"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:7f05fbec-80b1-4fdd-a7d2-580610e26ea0",
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "7f05fbec-80b1-4fdd-a7d2-580610e26ea0",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/ServiceRequest-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "system": "http://example.org",
+            "value": "6533e5b5-8bae-4b4b-82e3-a41525b54cf8"
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:e046e3fa-edac-4626-98b6-1b9f57947770"
+          }
+        ],
+        "status": "active",
+        "intent": "order",
+        "code": {
+          "coding": [
+            {
+              "code": "108252007",
+              "system": "http://snomed.info/sct",
+              "display": "Laboratory procedure"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:78b0c784-3859-40c9-a18c-01818e60d2f9",
+          "display": "Elias Höfig"
+        },
+        "requester": {
+          "reference": "urn:uuid:ae2ffea2-7b03-461f-8b07-f38eb97bb426"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:ae2ffea2-7b03-461f-8b07-f38eb97bb426",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "ae2ffea2-7b03-461f-8b07-f38eb97bb426",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Role Id: ae2ffea2-7b03-461f-8b07-f38eb97bb426</div>"
+        },
+        "organization": {
+          "reference": "urn:uuid:e76d6bf1-ac3c-46c5-a1a7-051ed9d7eca4"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:e76d6bf1-ac3c-46c5-a1a7-051ed9d7eca4",
+      "resource": {
+        "resourceType": "Organization",
+        "id": "e76d6bf1-ac3c-46c5-a1a7-051ed9d7eca4",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/organization-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "f77b11d5-23fa-4b5e-b4bc-410a8299d722"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Birkenallee 34"
+            ],
+            "city": "Magdeburg",
+            "postalCode": "39130",
+            "country": "Germany"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Organization: Klinikum Magdeburg</div>"
+        },
+        "name": "Klinikum Magdeburg"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:e046e3fa-edac-4626-98b6-1b9f57947770",
+      "resource": {
+        "resourceType": "Specimen",
+        "id": "e046e3fa-edac-4626-98b6-1b9f57947770",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Specimen-eu-lab"
+          ]
+        },
+        "collection": {
+          "collectedDateTime": "2020-12-10"
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Specimen</th><th>Collection Date</th></tr><tr><td>Respiratory specimen (specimen)</td><td><span class=\"nb\">10-Dec-2020</span></td></tr></table></div>"
+        },
+        "type": {
+          "coding": [
+            {
+              "code": "258603007",
+              "system": "http://snomed.info/sct",
+              "display": "Respiratory specimen (specimen)"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:adbf6648-6b8e-4afa-b61b-e95f9d967f73",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "adbf6648-6b8e-4afa-b61b-e95f9d967f73",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Observation-resultslab-eu-lab"
+          ]
+        },
+        "performer": [
+          {
+            "display": "The Central European Lab"
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                "code": "laboratory"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "code": "94531-1",
+              "system": "http://loinc.org",
+              "display": "SARS-CoV-2 (COVID-19) RNA panel - Respiratory system specimen by NAA with probe detection"
+            }
+          ],
+          "text": "SARS-CoV-2 (COVID-19) RNA panel - Respiratory system specimen by NAA with probe detection"
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Test</th><th>10-Dec-2020</th><th>Reference&#xA0;Range</th><th>Unit</th></tr><tr><td>SARS-CoV-2 (COVID-19) RNA panel - Respiratory system specimen by NAA with probe detection</td></tr></table></div>"
+        },
+        "status": "final",
+        "subject": {
+          "reference": "urn:uuid:78b0c784-3859-40c9-a18c-01818e60d2f9",
+          "display": "Elias Höfig"
+        },
+        "effectiveDateTime": "2020-12-10T10:32:47Z",
+        "specimen": {
+          "reference": "urn:uuid:e046e3fa-edac-4626-98b6-1b9f57947770"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:ac1ab6f1-1680-4fc9-9dce-0269517e040e",
+      "resource": {
+        "resourceType": "Device",
+        "id": "ac1ab6f1-1680-4fc9-9dce-0269517e040e",
+        "deviceName": [
+          {
+            "name": "SYNDERAI Synthetic Generator",
+            "type": "manufacturer-name"
+          }
+        ],
+        "version": [
+          {
+            "value": "5.0"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">SYNDERAI Synthetic Generator v5.0</div>"
+        },
+        "status": "active\"",
+        "distinctIdentifier": "synderai-generator-50",
+        "manufacturer": "SYNDERAI Project"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:aeac921c-ab6e-4168-9468-8070d19e3734",
+      "resource": {
+        "resourceType": "Provenance",
+        "id": "aeac921c-ab6e-4168-9468-8070d19e3734",
+        "target": [
+          {
+            "reference": "Patient/78b0c784-3859-40c9-a18c-01818e60d2f9"
+          },
+          {
+            "reference": "Bundle/f134593a-5717-4ab8-ac63-10beb4e05914"
+          },
+          {
+            "reference": "Composition/4af9900a-0997-4a26-8975-7d4f1c4723bb"
+          },
+          {
+            "reference": "PractitionerRole/ae53594b-0654-4720-a6a6-dc4d1b49bc40"
+          },
+          {
+            "reference": "Practitioner/ec1bd493-ad66-4c1e-a009-0d6d3628cb00"
+          },
+          {
+            "reference": "PractitionerRole/ae2ffea2-7b03-461f-8b07-f38eb97bb426"
+          },
+          {
+            "reference": "Organization/e76d6bf1-ac3c-46c5-a1a7-051ed9d7eca4"
+          }
+        ],
+        "activity": {
+          "text": "Synthetic Example Data Generation"
+        },
+        "policy": [
+          "https://synderai.net/synderai-synthetic-data-policy"
+        ],
+        "agent": [
+          {
+            "type": {
+              "text": "author"
+            },
+            "who": {
+              "reference": "Device/ac1ab6f1-1680-4fc9-9dce-0269517e040e"
+            }
+          }
+        ],
+        "reason": [
+          {
+            "text": "Interoperability Testing and Training (non-clinical use)"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provenance for SYNDERAI Synthetic Example Data Resource</div>"
+        },
+        "recorded": "2020-12-10T11:32:47Z"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:ae53594b-0654-4720-a6a6-dc4d1b49bc40",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "ae53594b-0654-4720-a6a6-dc4d1b49bc40",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory Role Id: ae53594b-0654-4720-a6a6-dc4d1b49bc40</div>"
+        },
+        "practitioner": {
+          "reference": "urn:uuid:ec1bd493-ad66-4c1e-a009-0d6d3628cb00"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:ec1bd493-ad66-4c1e-a009-0d6d3628cb00",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "ec1bd493-ad66-4c1e-a009-0d6d3628cb00",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitioner-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "90ebeaf5-fd77-4072-8e29-bd50e5b02226"
+          }
+        ],
+        "name": [
+          {
+            "prefix": [
+              "dr"
+            ],
+            "given": [
+              "Ex"
+            ],
+            "family": "Ample"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Laboratoire Central Européenne",
+              "Boulevard du Jardin Botanique 32"
+            ],
+            "postalCode": "1000",
+            "city": "Brussels",
+            "country": "Belgium"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory: Laboratoire Central Européenne, 1000 Brussels, Belgium</div>"
+        }
+      }
+    }
+  ],
+  "type": "document",
+  "timestamp": "2020-12-10T11:32:47Z"
+}

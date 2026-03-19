@@ -1,0 +1,725 @@
+{
+  "resourceType": "Bundle",
+  "id": "75c913d7-cb28-40ef-95a0-64b135a0af99",
+  "meta": {
+    "profile": [
+      "http://hl7.eu/fhir/laboratory/StructureDefinition/Bundle-eu-lab"
+    ]
+  },
+  "identifier": {
+    "assigner": {
+      "display": "HL7 Europe"
+    },
+    "system": "urn:oid:2.16.840.1.113883.2.51.999",
+    "value": "f3d80087-6bcd-4441-9a48-11c37aac51bb"
+  },
+  "entry": [
+    {
+      "fullUrl": "urn:uuid:7b0a863c-76a7-4fb3-8d9a-f2b3628f24ad",
+      "resource": {
+        "resourceType": "Composition",
+        "id": "7b0a863c-76a7-4fb3-8d9a-f2b3628f24ad",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Composition-eu-lab"
+          ]
+        },
+        "identifier": {
+          "assigner": {
+            "display": "HL7 Europe"
+          },
+          "system": "urn:oid:2.16.840.1.113883.2.51.999",
+          "value": "73c0096d-066d-4238-acca-49cc1969a03e"
+        },
+        "author": [
+          {
+            "reference": "urn:uuid:6561ec27-aacd-46ff-a802-912d2be3326a"
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "type": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ],
+          "text": "Laboratory Report"
+        },
+        "section": [
+          {
+            "code": {
+              "coding": [
+                {
+                  "code": "26436-6",
+                  "system": "http://loinc.org",
+                  "display": "Laboratory studies (set)"
+                }
+              ],
+              "text": "Laboratory studies"
+            },
+            "section": [
+              {
+                "code": {
+                  "coding": [
+                    {
+                      "code": "$18719-5",
+                      "system": "http://loinc.org",
+                      "display": "Chemistry studies (set)"
+                    }
+                  ],
+                  "text": "Chemistry"
+                },
+                "entry": [
+                  {
+                    "reference": "urn:uuid:0080ffe2-db2f-4f49-8947-044616d01549"
+                  }
+                ],
+                "text": {
+                  "status": "generated",
+                  "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>Chemistry</h3><table class=\"hl7__eu__lab__report\"><thead><tr><th>Test</th><th>18-APR-2021</th><th>Reference&#xA0;Range</th><th>Unit</th></tr></thead><tbody><tr><td>Hemoglobin A1c/Hemoglobin.total in Blood</td><td><strong>3.9 L</strong></td><td>4 - 6</td><td>%</td></tr></tbody></table></div>"
+                },
+                "title": "Chemistry"
+              }
+            ],
+            "title": "Laboratory Report"
+          },
+          {
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>Annotation</h3><table class=\"hl7__eu__lab__report\"><tr><th>Conclusion and Recommendations based on this report and previous findings known to us</th></tr><tr><td>The patient&quot;s HbA1c is slightly below the normal range, suggesting possible recent hypoglycemia or conditions affecting red blood cell turnover (e.g., anemia, recent blood loss, or hemolysis). Clinical correlation is recommended to assess for underlying causes and to ensure glycemic control is not overly aggressive, especially considering the patient&quot;s advanced age.</td></tr></table></div>"
+            },
+            "code": {
+              "coding": [
+                {
+                  "system": "http://loinc.org",
+                  "code": "48767-8",
+                  "display": "Annotation comment"
+                }
+              ]
+            },
+            "title": "Annotation comment"
+          }
+        ],
+        "status": "final",
+        "subject": {
+          "reference": "urn:uuid:7dde5810-b119-4d70-a21e-dbc7a6d09eef",
+          "display": "Marlene Gerlach"
+        },
+        "date": "2021-04-18T21:24:33Z",
+        "title": "Laboratory Report",
+        "confidentiality": "N"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:b7abcfff-87d9-43c7-8786-5111e117af12",
+      "resource": {
+        "resourceType": "DiagnosticReport",
+        "id": "b7abcfff-87d9-43c7-8786-5111e117af12",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/DiagnosticReport-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "25d8e91c-54c1-4a61-a97b-a9b1efbf6e3f"
+          }
+        ],
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-DiagnosticReport.composition",
+            "valueReference": {
+              "reference": "urn:uuid:73c0096d-066d-4238-acca-49cc1969a03e"
+            }
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:93e9e250-1e4e-441b-bfa0-6bec4489b431"
+          }
+        ],
+        "result": [
+          {
+            "reference": "urn:uuid:0080ffe2-db2f-4f49-8947-044616d01549"
+          }
+        ],
+        "status": "registered",
+        "code": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:7dde5810-b119-4d70-a21e-dbc7a6d09eef",
+          "display": "Marlene Gerlach"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:7dde5810-b119-4d70-a21e-dbc7a6d09eef",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "7dde5810-b119-4d70-a21e-dbc7a6d09eef",
+        "meta": {
+          "security": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "HTEST"
+            },
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "TRAIN"
+            }
+          ],
+          "tag": [
+            {
+              "system": "https://synderai.net/fhir/CodeSystem/tags",
+              "code": "synthetic",
+              "display": "SYNDERAI Synthetic data"
+            }
+          ],
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/patient-eu-core"
+          ]
+        },
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "PT",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://ec.europa.eu/identifier/eci",
+            "value": "4536-398571-9"
+          },
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "MR",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://local.setting.eu/identifier",
+            "value": "ff7a4ff6-4bac-f07f-03c9-b91b1e1cfb23"
+          }
+        ],
+        "name": [
+          {
+            "family": "Gerlach"
+          },
+          {
+            "given": [
+              "Marlene"
+            ]
+          },
+          {
+            "text": "Marlene Gerlach"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Etzlerplatz 57-53"
+            ],
+            "use": "home",
+            "type": "physical",
+            "postalCode": "71522",
+            "city": "Backnang",
+            "country": "Germany"
+          }
+        ],
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "+49(0)2700 61724"
+          }
+        ],
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/StructureDefinition/patient-nationality",
+            "valueCodeableConcept": {
+              "coding": [
+                {
+                  "code": "DE",
+                  "system": "http://hl7.org/fhir/ValueSet/country"
+                }
+              ]
+            }
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__ips\"><tr><td>Marlene Gerlach</td><td>female</td><td>28-Aug-1939</td></tr></table></div>"
+        },
+        "gender": "female",
+        "birthDate": "1939-08-28"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:a0a6eb69-c8fd-44a5-a879-ee52ead08a87",
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "a0a6eb69-c8fd-44a5-a879-ee52ead08a87",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/ServiceRequest-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "system": "http://example.org",
+            "value": "a6ee27d0-b78d-48e9-a751-49392622a010"
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:93e9e250-1e4e-441b-bfa0-6bec4489b431"
+          }
+        ],
+        "reasonCode": [
+          {
+            "coding": [
+              {
+                "code": "55822004",
+                "system": "http://snomed.info/sct",
+                "display": "Hyperlipidemia"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "414545008",
+                "system": "http://snomed.info/sct",
+                "display": "Ischemic heart disease"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "157141000119108",
+                "system": "http://snomed.info/sct",
+                "display": "Proteinuria due to type 2 diabetes mellitus"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "90781000119102",
+                "system": "http://snomed.info/sct",
+                "display": "Microalbuminuria due to type 2 diabetes mellitus"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "127013003",
+                "system": "http://snomed.info/sct",
+                "display": "Disorder of kidney due to diabetes mellitus"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "271737000",
+                "system": "http://snomed.info/sct",
+                "display": "Anemia"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "15777000",
+                "system": "http://snomed.info/sct",
+                "display": "Prediabetes"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "59621000",
+                "system": "http://snomed.info/sct",
+                "display": "Essential hypertension"
+              }
+            ]
+          }
+        ],
+        "status": "active",
+        "intent": "order",
+        "code": {
+          "coding": [
+            {
+              "code": "108252007",
+              "system": "http://snomed.info/sct",
+              "display": "Laboratory procedure"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:7dde5810-b119-4d70-a21e-dbc7a6d09eef",
+          "display": "Marlene Gerlach"
+        },
+        "requester": {
+          "reference": "urn:uuid:67aa59e1-57e7-4c18-9176-b6ccbd49daed"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:67aa59e1-57e7-4c18-9176-b6ccbd49daed",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "67aa59e1-57e7-4c18-9176-b6ccbd49daed",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Role Id: 67aa59e1-57e7-4c18-9176-b6ccbd49daed</div>"
+        },
+        "organization": {
+          "reference": "urn:uuid:e079d521-0176-4ea5-b690-ef53b693f823"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:e079d521-0176-4ea5-b690-ef53b693f823",
+      "resource": {
+        "resourceType": "Organization",
+        "id": "e079d521-0176-4ea5-b690-ef53b693f823",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/organization-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "348ad330-f849-4912-8f7d-3ede59bd9764"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Karl-Krische-Straße 4"
+            ],
+            "city": "Backnang",
+            "postalCode": "71522",
+            "country": "Germany"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Organization: Gesundheitszentrum</div>"
+        },
+        "name": "Gesundheitszentrum"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:93e9e250-1e4e-441b-bfa0-6bec4489b431",
+      "resource": {
+        "resourceType": "Specimen",
+        "id": "93e9e250-1e4e-441b-bfa0-6bec4489b431",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Specimen-eu-lab"
+          ]
+        },
+        "collection": {
+          "collectedDateTime": "2021-04-18"
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Specimen</th><th>Collection Date</th></tr><tr><td>Whole blood specimen (specimen)</td><td><span class=\"nb\">18-Apr-2021</span></td></tr></table></div>"
+        },
+        "type": {
+          "coding": [
+            {
+              "code": "258580003",
+              "system": "http://snomed.info/sct",
+              "display": "Whole blood specimen (specimen)"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:0080ffe2-db2f-4f49-8947-044616d01549",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "0080ffe2-db2f-4f49-8947-044616d01549",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Observation-resultslab-eu-lab"
+          ]
+        },
+        "performer": [
+          {
+            "display": "The Central European Lab"
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                "code": "laboratory"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "code": "4548-4",
+              "system": "http://loinc.org",
+              "display": "Hemoglobin A1c/Hemoglobin.total in Blood"
+            }
+          ],
+          "text": "Hemoglobin A1c/Hemoglobin.total in Blood"
+        },
+        "valueQuantity": {
+          "system": "http://unitsofmeasure.org",
+          "value": 3.9,
+          "unit": "%",
+          "code": "%"
+        },
+        "referenceRange": [
+          {
+            "low": {
+              "value": 4,
+              "code": "%",
+              "system": "http://unitsofmeasure.org"
+            }
+          },
+          {
+            "high": {
+              "value": 6,
+              "code": "%",
+              "system": "http://unitsofmeasure.org"
+            }
+          }
+        ],
+        "interpretation": [
+          {
+            "coding": [
+              {
+                "code": "L",
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                "display": "Low"
+              }
+            ]
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Test</th><th>18-Apr-2021</th><th>Reference&#xA0;Range</th><th>Unit</th></tr><tr><td>Hemoglobin A1c/Hemoglobin.total in Blood</td><td>3.9</td><td>4 - 6</td><td>L</td><td>%</td></tr></table></div>"
+        },
+        "status": "final",
+        "subject": {
+          "reference": "urn:uuid:7dde5810-b119-4d70-a21e-dbc7a6d09eef",
+          "display": "Marlene Gerlach"
+        },
+        "effectiveDateTime": "2021-04-18T19:24:33Z",
+        "specimen": {
+          "reference": "urn:uuid:93e9e250-1e4e-441b-bfa0-6bec4489b431"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:780cf698-5c46-4fa9-9d48-f74a5aad3023",
+      "resource": {
+        "resourceType": "Device",
+        "id": "780cf698-5c46-4fa9-9d48-f74a5aad3023",
+        "deviceName": [
+          {
+            "name": "SYNDERAI Synthetic Generator",
+            "type": "manufacturer-name"
+          }
+        ],
+        "version": [
+          {
+            "value": "5.0"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">SYNDERAI Synthetic Generator v5.0</div>"
+        },
+        "status": "active\"",
+        "distinctIdentifier": "synderai-generator-50",
+        "manufacturer": "SYNDERAI Project"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:8d76ec3c-5d0b-4a6b-8b7b-eea313ad949d",
+      "resource": {
+        "resourceType": "Provenance",
+        "id": "8d76ec3c-5d0b-4a6b-8b7b-eea313ad949d",
+        "target": [
+          {
+            "reference": "Patient/7dde5810-b119-4d70-a21e-dbc7a6d09eef"
+          },
+          {
+            "reference": "Bundle/75c913d7-cb28-40ef-95a0-64b135a0af99"
+          },
+          {
+            "reference": "Composition/7b0a863c-76a7-4fb3-8d9a-f2b3628f24ad"
+          },
+          {
+            "reference": "PractitionerRole/6561ec27-aacd-46ff-a802-912d2be3326a"
+          },
+          {
+            "reference": "Practitioner/07b6d6a3-805c-4602-a06a-54b663e595e3"
+          },
+          {
+            "reference": "PractitionerRole/67aa59e1-57e7-4c18-9176-b6ccbd49daed"
+          },
+          {
+            "reference": "Organization/e079d521-0176-4ea5-b690-ef53b693f823"
+          }
+        ],
+        "activity": {
+          "text": "Synthetic Example Data Generation"
+        },
+        "policy": [
+          "https://synderai.net/synderai-synthetic-data-policy"
+        ],
+        "agent": [
+          {
+            "type": {
+              "text": "author"
+            },
+            "who": {
+              "reference": "Device/780cf698-5c46-4fa9-9d48-f74a5aad3023"
+            }
+          }
+        ],
+        "reason": [
+          {
+            "text": "Interoperability Testing and Training (non-clinical use)"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provenance for SYNDERAI Synthetic Example Data Resource</div>"
+        },
+        "recorded": "2021-04-18T21:24:33Z"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:6561ec27-aacd-46ff-a802-912d2be3326a",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "6561ec27-aacd-46ff-a802-912d2be3326a",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory Role Id: 6561ec27-aacd-46ff-a802-912d2be3326a</div>"
+        },
+        "practitioner": {
+          "reference": "urn:uuid:07b6d6a3-805c-4602-a06a-54b663e595e3"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:07b6d6a3-805c-4602-a06a-54b663e595e3",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "07b6d6a3-805c-4602-a06a-54b663e595e3",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitioner-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "fb00d5a2-672b-4292-874b-a7313d3ea294"
+          }
+        ],
+        "name": [
+          {
+            "prefix": [
+              "dr"
+            ],
+            "given": [
+              "Ex"
+            ],
+            "family": "Ample"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Laboratoire Central Européenne",
+              "Boulevard du Jardin Botanique 32"
+            ],
+            "postalCode": "1000",
+            "city": "Brussels",
+            "country": "Belgium"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory: Laboratoire Central Européenne, 1000 Brussels, Belgium</div>"
+        }
+      }
+    }
+  ],
+  "type": "document",
+  "timestamp": "2021-04-18T21:24:33Z"
+}
