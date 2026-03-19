@@ -647,7 +647,7 @@ if ($CURRENTMENU['menu'] === 'index') {
         "artifact" => $artifact,
         "title" => $ectitle,
         "desc" => $ecdesc,
-        "package" => $items[2],
+        "package" => $package,
         "date" => $packagedate,
         "path" => str_replace("+", "%2B", $ppath)
       ]; 
@@ -660,10 +660,10 @@ if ($CURRENTMENU['menu'] === 'index') {
       $dates = array_column($pinfo, 'date');
       array_multisort($dates, SORT_DESC, $pinfo);
       foreach ($pinfo as $pk) {
-        $strlist .= "<li><i class=\"mdi mdi-package green\"></i> " . 
+        $strlist .= "<li><i class=\"mdi mdi-treasure-chest green\"></i> " . 
           " Package " .
           $pk["package"] . 
-          "<a href=\"" . $pk["path"]  . "\"> " .
+          "<a href=\"" . $pk["path"]  . "\" download=\"package.tar.gz\">" .
           " <i class=\"mdi mdi-download\"></i>" . "</a></li>";
       }
       $strlist .= "</ul>";
