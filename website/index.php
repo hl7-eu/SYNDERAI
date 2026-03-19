@@ -237,16 +237,14 @@ foreach ($MENU as $ix => $m) {
           $requestedPath = realpath($sp);
 
           if ($allowedRoot === FALSE) {
-              error_log("SYNDERAI: examples/ root directory not found");
-              handleError(FATAL, "Server configuration error.");
+              handleError(FATAL, "Server configuration error: SYNDERAI: examples/ root directory not found");
           }
 
           if ($requestedPath === FALSE
               || $requestedPath === $allowedRoot
               || strpos($requestedPath, $allowedRoot . DIRECTORY_SEPARATOR) !== 0
           ) {
-              error_log("SYNDERAI: path traversal attempt blocked: " . $_GET['menu']);
-              handleError(ERROR, "Invalid example path requested.");
+              handleError(FATAL, "Invalid example path requested: path traversal attempt blocked!");
               $sp = "";
           }
 
@@ -350,7 +348,11 @@ if ($CURRENTMENU['menu'] === 'index') {
         if (is_dir($ec)) {
 
             // Find the most recent SemVer sub-folder
-            $latestexamplesfolder = getLatestSemverFolder($ec);
+            try {
+              $latestexamplesfolder = getLatestSemverFolder($ec);
+            } catch (InvalidArgumentException $e) {
+                handleError("ERROR", "SYNDERAI: " . $e->getMessage());
+            }
 
             // Count distinct Bundle files and distinct patients in that folder
             $filesincat    = array();
@@ -453,7 +455,11 @@ if ($CURRENTMENU['menu'] === 'index') {
     }
 
     // Enumerate all Bundle files in the latest SemVer sub-folder
-    $latestexamplesfolder = getLatestSemverFolder($CURRENTMENU['menu']);
+    try {
+      $latestexamplesfolder = getLatestSemverFolder($CURRENTMENU['menu']);
+    } catch (InvalidArgumentException $e) {
+        handleError("ERROR", "SYNDERAI: " . $e->getMessage());
+    }
     $allexamples          = glob($CURRENTMENU['menu'] . "/" . $latestexamplesfolder . "/Bundle*");
 
     // Pass 1: build the $exary index — one entry per unique filename stem,
@@ -494,44 +500,7 @@ if ($CURRENTMENU['menu'] === 'index') {
     // placeholders that are resolved in Pass 3.
     $exlist = array();
     foreach ($exary as $exk => $exf) {
-        /*
-        $showlink = ($exf['json'] ? "json=" : ($exf['xml'] ? "xml=" : ""));
-        if ($showlink !== '') {
-            // Build the Vi7eti FHIR viewer deep-link
-            $showlink .= $VI7ETIDEEPLINK . $showlink;
-            $showlink .= $exf['vi7eti'] . "&url=" . "$SELFURL/";
-            $showlink .= $exf['json'] ? $exf['json'] : $exf['xml'];
-
-            $jsonl = $exf['json']
-                ? "<a target=\"_blank\" rel=\"noopener noreferrer\" href=\"" . $exf['json'] . "\">JSON </a>"
-                : "";
-            $xmll  = $exf['xml']
-                ? "<a target=\"_blank\" rel=\"noopener noreferrer\" href=\"" . $exf['xml'] . "\">XML </a>"
-                : "";
-
-            // Format date for display (d-Mon-YYYY) and for sort class (YYYYMMDD)
-            $thedate     = strlen($exf["compositiondate"]) > 0
-                ? date('d-M-Y', strtotime($exf["compositiondate"]))
-                : "##CT##";  // replaced with a sequential counter in Pass 3
-            $thesortdate = strlen($exf["compositiondate"]) > 0
-                ? date('Ymd', strtotime($exf["compositiondate"]))
-                : "missingdate";
-
-            // Append this row to the patient's bucket; %%TR%% and %%CT%% are
-            // resolved in Pass 3 when the visible/hidden split is determined
-            $row = "<tr class=\"$thesortdate {$exf['patientmd5']} ##TR##\">"
-                 . "<td class=\"smaller\">$thedate</td>"
-                 . "<td><a href=\"$showlink\">View</a></td>"
-                 . "<td>$jsonl</td><td>$xmll</td>"
-                 . "<tr>\n";
-
-            if (isset($exlist[$exf["patientmd5"]])) {
-                $exlist[$exf["patientmd5"]] .= $row;
-            } else {
-                $exlist[$exf["patientmd5"]]  = $row;
-            }
-        }
-            */
+        
         // Determine file format and path once, cleanly
         $format  = $exf['json'] ? "json" : ($exf['xml'] ? "xml" : "");
         $fileurl = $exf['json'] ?: $exf['xml'];
@@ -539,11 +508,12 @@ if ($CURRENTMENU['menu'] === 'index') {
         if ($format !== '') {
             // Correct: VI7ETI deep-link is the full URL base
             // ?json=<vi7eti>&url=<self_url>/<file>
+            // also replace any "+" in semver, eg "1.0.0+20260316", with %2B
             $showlink = $VI7ETIDEEPLINK
                       . $format . "="
                       . $exf['vi7eti']
                       . "&url=" . $SELFURL . "/"
-                      . $fileurl;
+                      . str_replace("+", "%2B", $fileurl);
 
             $jsonl = $exf['json']
                 ? "<a target=\"_blank\" rel=\"noopener noreferrer\" href=\"" . $exf['json'] . "\">JSON </a>"
@@ -672,6 +642,10 @@ $content = str_replace("%%CURRENTYEAR%%",  date('Y'),                           
 
 $OUT = str_replace("%%FOOTER%%", $content, $OUT);
 
+header("X-Frame-Options: SAMEORIGIN");
+header("X-Content-Type-Options: nosniff");
+header("Referrer-Policy: strict-origin-when-cross-origin");
+header("Content-Security-Policy: default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'");
 echo $OUT;
 exit;
 
@@ -722,6 +696,11 @@ function getPatientNameFromJSON($jsonfilename) {
     $compositiondate    = "";
 
     if (is_file($jsonfilename)) {
+        $maxFileSize = 10 * 1024 * 1024;  // 10 MB limit
+        if (filesize($jsonfilename) > $maxFileSize) {
+            handleError("ERROR", "oversized JSON file skipped: $jsonfilename");
+            return [$resourcetype, "example", md5("example"), "", ""];
+        }    
         $pnfc = file_get_contents($jsonfilename);
         if ($pnfc !== FALSE) {
             $jsonData = json_decode($pnfc, FALSE);
@@ -729,8 +708,10 @@ function getPatientNameFromJSON($jsonfilename) {
             if (isset($jsonData->resourceType))
                 $resourcetype = "(" . $jsonData->resourceType . ")";
 
-            if (!isset($jsonData->entry))
-                die("+++" . "$jsonfilename has no entry???");
+            if (!isset($jsonData->entry)) {
+                handleError("ERROR", "SYNDERAI: missing entry array in $jsonfilename");
+                return [$resourcetype, $patientname, md5($patientname), $patientcountrycode, $compositiondate];
+            }
 
             foreach ($jsonData->entry as $e) {
 
@@ -807,6 +788,10 @@ function handleError($severity, $text) {
     $text = str_replace("\n", "<br/>", $text);
     $OUT  = "<div class='severitymessage'>" . $text . "</div>";
     $OUT .= "</body>";
+    header("X-Frame-Options: SAMEORIGIN");
+    header("X-Content-Type-Options: nosniff");
+    header("Referrer-Policy: strict-origin-when-cross-origin");
+    header("Content-Security-Policy: default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'");
     echo $OUT;
     if ($severity == FATAL) die;
 }
