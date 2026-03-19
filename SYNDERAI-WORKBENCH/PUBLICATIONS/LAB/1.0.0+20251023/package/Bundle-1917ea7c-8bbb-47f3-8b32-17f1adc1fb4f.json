@@ -1,0 +1,716 @@
+{
+  "resourceType": "Bundle",
+  "id": "1917ea7c-8bbb-47f3-8b32-17f1adc1fb4f",
+  "meta": {
+    "profile": [
+      "http://hl7.eu/fhir/laboratory/StructureDefinition/Bundle-eu-lab"
+    ]
+  },
+  "identifier": {
+    "assigner": {
+      "display": "HL7 Europe"
+    },
+    "system": "urn:oid:2.16.840.1.113883.2.51.999",
+    "value": "97983fdb-e6ba-4713-b20f-f271f85bb255"
+  },
+  "entry": [
+    {
+      "fullUrl": "urn:uuid:f86122dc-7214-4e0b-b9fe-9a7d5b8f599a",
+      "resource": {
+        "resourceType": "Composition",
+        "id": "f86122dc-7214-4e0b-b9fe-9a7d5b8f599a",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Composition-eu-lab"
+          ]
+        },
+        "identifier": {
+          "assigner": {
+            "display": "HL7 Europe"
+          },
+          "system": "urn:oid:2.16.840.1.113883.2.51.999",
+          "value": "f59ee797-767f-4f72-9964-fa740b001dcf"
+        },
+        "author": [
+          {
+            "reference": "urn:uuid:287cb6a0-7f0d-4414-9262-d03e444e00a5"
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "type": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ],
+          "text": "Laboratory Report"
+        },
+        "section": [
+          {
+            "code": {
+              "coding": [
+                {
+                  "code": "26436-6",
+                  "system": "http://loinc.org",
+                  "display": "Laboratory studies (set)"
+                }
+              ],
+              "text": "Laboratory studies"
+            },
+            "section": [
+              {
+                "code": {
+                  "coding": [
+                    {
+                      "code": "$18719-5",
+                      "system": "http://loinc.org",
+                      "display": "Chemistry studies (set)"
+                    }
+                  ],
+                  "text": "Chemistry"
+                },
+                "entry": [
+                  {
+                    "reference": "urn:uuid:837cef43-991c-496d-afff-227bc5b109ac"
+                  }
+                ],
+                "text": {
+                  "status": "generated",
+                  "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>Chemistry</h3><table class=\"hl7__eu__lab__report\"><thead><tr><th>Test</th><th>11-NOV-2020</th><th>Reference&#xA0;Range</th><th>Unit</th></tr></thead><tbody><tr><td>Oxygen saturation in Arterial blood</td><td><strong>89.2 L</strong></td><td>95 - 100</td><td>%</td></tr></tbody></table></div>"
+                },
+                "title": "Chemistry"
+              }
+            ],
+            "title": "Laboratory Report"
+          },
+          {
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>Annotation</h3><table class=\"hl7__eu__lab__report\"><tr><th>Conclusion and Recommendations based on this report and previous findings known to us</th></tr><tr><td>The patient shows decreased arterial oxygen saturation (89.2%), indicating hypoxemia. This finding may suggest underlying respiratory or cardiac compromise and warrants prompt clinical evaluation and intervention to address potential causes and prevent further complications.</td></tr></table></div>"
+            },
+            "code": {
+              "coding": [
+                {
+                  "system": "http://loinc.org",
+                  "code": "48767-8",
+                  "display": "Annotation comment"
+                }
+              ]
+            },
+            "title": "Annotation comment"
+          }
+        ],
+        "status": "final",
+        "subject": {
+          "reference": "urn:uuid:aa622536-8816-4353-ae72-a055a225f6e0",
+          "display": "Lazăr Florea"
+        },
+        "date": "2020-11-11T06:09:31Z",
+        "title": "Laboratory Report",
+        "confidentiality": "N"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:39e3ffc9-9e7e-4faf-9f95-0075e24c7c72",
+      "resource": {
+        "resourceType": "DiagnosticReport",
+        "id": "39e3ffc9-9e7e-4faf-9f95-0075e24c7c72",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/DiagnosticReport-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "cf5ea3c7-2361-43ab-8e3f-2850c381a60c"
+          }
+        ],
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-DiagnosticReport.composition",
+            "valueReference": {
+              "reference": "urn:uuid:f59ee797-767f-4f72-9964-fa740b001dcf"
+            }
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:80e02b40-c250-4ab0-8b81-a3b28e0d18ca"
+          }
+        ],
+        "result": [
+          {
+            "reference": "urn:uuid:837cef43-991c-496d-afff-227bc5b109ac"
+          }
+        ],
+        "status": "registered",
+        "code": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:aa622536-8816-4353-ae72-a055a225f6e0",
+          "display": "Lazăr Florea"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:aa622536-8816-4353-ae72-a055a225f6e0",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "aa622536-8816-4353-ae72-a055a225f6e0",
+        "meta": {
+          "security": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "HTEST"
+            },
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "TRAIN"
+            }
+          ],
+          "tag": [
+            {
+              "system": "https://synderai.net/fhir/CodeSystem/tags",
+              "code": "synthetic",
+              "display": "SYNDERAI Synthetic data"
+            }
+          ],
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/patient-eu-core"
+          ]
+        },
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "PT",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://ec.europa.eu/identifier/eci",
+            "value": "8693-862290-8"
+          },
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "MR",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://local.setting.eu/identifier",
+            "value": "602fbbf5-967b-6d86-a533-5cec24b13e71"
+          }
+        ],
+        "name": [
+          {
+            "family": "Florea"
+          },
+          {
+            "given": [
+              "Lazăr"
+            ]
+          },
+          {
+            "text": "Lazăr Florea"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Drumul Grațian Nistor"
+            ],
+            "use": "home",
+            "type": "physical",
+            "postalCode": "265300",
+            "city": "Lupeni",
+            "country": "Romania"
+          }
+        ],
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "0753 950 380"
+          }
+        ],
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/StructureDefinition/patient-nationality",
+            "valueCodeableConcept": {
+              "coding": [
+                {
+                  "code": "RO",
+                  "system": "http://hl7.org/fhir/ValueSet/country"
+                }
+              ]
+            }
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__ips\"><tr><td>Lazăr Florea</td><td>male</td><td>10-Feb-1946</td></tr></table></div>"
+        },
+        "gender": "male",
+        "birthDate": "1946-02-10"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:3a10e01b-286f-4d8f-8d76-11818da6c527",
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "3a10e01b-286f-4d8f-8d76-11818da6c527",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/ServiceRequest-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "system": "http://example.org",
+            "value": "2c9575b7-9382-4d8f-98fe-7bbbf56db604"
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:80e02b40-c250-4ab0-8b81-a3b28e0d18ca"
+          }
+        ],
+        "reasonCode": [
+          {
+            "coding": [
+              {
+                "code": "197927001",
+                "system": "http://snomed.info/sct",
+                "display": "Recurrent urinary tract infection"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "414545008",
+                "system": "http://snomed.info/sct",
+                "display": "Ischemic heart disease"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "237602007",
+                "system": "http://snomed.info/sct",
+                "display": "Metabolic syndrome X"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "271737000",
+                "system": "http://snomed.info/sct",
+                "display": "Anemia"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "15777000",
+                "system": "http://snomed.info/sct",
+                "display": "Prediabetes"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "59621000",
+                "system": "http://snomed.info/sct",
+                "display": "Essential hypertension"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "40055000",
+                "system": "http://snomed.info/sct",
+                "display": "Chronic sinusitis"
+              }
+            ]
+          }
+        ],
+        "status": "active",
+        "intent": "order",
+        "code": {
+          "coding": [
+            {
+              "code": "108252007",
+              "system": "http://snomed.info/sct",
+              "display": "Laboratory procedure"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:aa622536-8816-4353-ae72-a055a225f6e0",
+          "display": "Lazăr Florea"
+        },
+        "requester": {
+          "reference": "urn:uuid:b096a80c-2b81-4e2e-a993-21731aaa5957"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:b096a80c-2b81-4e2e-a993-21731aaa5957",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "b096a80c-2b81-4e2e-a993-21731aaa5957",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Role Id: b096a80c-2b81-4e2e-a993-21731aaa5957</div>"
+        },
+        "organization": {
+          "reference": "urn:uuid:7cd78379-15a2-42d0-992a-396f0c550d27"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:7cd78379-15a2-42d0-992a-396f0c550d27",
+      "resource": {
+        "resourceType": "Organization",
+        "id": "7cd78379-15a2-42d0-992a-396f0c550d27",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/organization-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "ac227697-ef6d-41f5-9cb5-1d79be9b35a4"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Strada 1 Decembrie 1918 137 A"
+            ],
+            "city": "Petroșani",
+            "postalCode": "332019",
+            "country": "Romania"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Organization: Spitalul de Urgență</div>"
+        },
+        "name": "Spitalul de Urgență"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:80e02b40-c250-4ab0-8b81-a3b28e0d18ca",
+      "resource": {
+        "resourceType": "Specimen",
+        "id": "80e02b40-c250-4ab0-8b81-a3b28e0d18ca",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Specimen-eu-lab"
+          ]
+        },
+        "collection": {
+          "collectedDateTime": "2020-11-11"
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Specimen</th><th>Collection Date</th></tr><tr><td>Arterial blood specimen</td><td><span class=\"nb\">11-Nov-2020</span></td></tr></table></div>"
+        },
+        "type": {
+          "coding": [
+            {
+              "code": "122552005",
+              "system": "http://snomed.info/sct",
+              "display": "Arterial blood specimen"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:837cef43-991c-496d-afff-227bc5b109ac",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "837cef43-991c-496d-afff-227bc5b109ac",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Observation-resultslab-eu-lab"
+          ]
+        },
+        "performer": [
+          {
+            "display": "The Central European Lab"
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                "code": "laboratory"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "code": "2708-6",
+              "system": "http://loinc.org",
+              "display": "Oxygen saturation in Arterial blood"
+            }
+          ],
+          "text": "Oxygen saturation in Arterial blood"
+        },
+        "valueQuantity": {
+          "system": "http://unitsofmeasure.org",
+          "value": 89.2,
+          "unit": "%",
+          "code": "%"
+        },
+        "referenceRange": [
+          {
+            "low": {
+              "value": 95,
+              "code": "%",
+              "system": "http://unitsofmeasure.org"
+            }
+          },
+          {
+            "high": {
+              "value": 100,
+              "code": "%",
+              "system": "http://unitsofmeasure.org"
+            }
+          }
+        ],
+        "interpretation": [
+          {
+            "coding": [
+              {
+                "code": "L",
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                "display": "Low"
+              }
+            ]
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Test</th><th>11-Nov-2020</th><th>Reference&#xA0;Range</th><th>Unit</th></tr><tr><td>Oxygen saturation in Arterial blood</td><td>89.2</td><td>95 - 100</td><td>L</td><td>%</td></tr></table></div>"
+        },
+        "status": "final",
+        "subject": {
+          "reference": "urn:uuid:aa622536-8816-4353-ae72-a055a225f6e0",
+          "display": "Lazăr Florea"
+        },
+        "effectiveDateTime": "2020-11-11T05:09:31Z",
+        "specimen": {
+          "reference": "urn:uuid:80e02b40-c250-4ab0-8b81-a3b28e0d18ca"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:00ddaaf8-d4cf-464a-99a9-79742469ed63",
+      "resource": {
+        "resourceType": "Device",
+        "id": "00ddaaf8-d4cf-464a-99a9-79742469ed63",
+        "deviceName": [
+          {
+            "name": "SYNDERAI Synthetic Generator",
+            "type": "manufacturer-name"
+          }
+        ],
+        "version": [
+          {
+            "value": "5.0"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">SYNDERAI Synthetic Generator v5.0</div>"
+        },
+        "status": "active\"",
+        "distinctIdentifier": "synderai-generator-50",
+        "manufacturer": "SYNDERAI Project"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:26f69a38-4d5b-4063-96e7-c6bea32182c2",
+      "resource": {
+        "resourceType": "Provenance",
+        "id": "26f69a38-4d5b-4063-96e7-c6bea32182c2",
+        "target": [
+          {
+            "reference": "Patient/aa622536-8816-4353-ae72-a055a225f6e0"
+          },
+          {
+            "reference": "Bundle/1917ea7c-8bbb-47f3-8b32-17f1adc1fb4f"
+          },
+          {
+            "reference": "Composition/f86122dc-7214-4e0b-b9fe-9a7d5b8f599a"
+          },
+          {
+            "reference": "PractitionerRole/287cb6a0-7f0d-4414-9262-d03e444e00a5"
+          },
+          {
+            "reference": "Practitioner/805fd419-e884-4f05-90f4-f9d05646ea1e"
+          },
+          {
+            "reference": "PractitionerRole/b096a80c-2b81-4e2e-a993-21731aaa5957"
+          },
+          {
+            "reference": "Organization/7cd78379-15a2-42d0-992a-396f0c550d27"
+          }
+        ],
+        "activity": {
+          "text": "Synthetic Example Data Generation"
+        },
+        "policy": [
+          "https://synderai.net/synderai-synthetic-data-policy"
+        ],
+        "agent": [
+          {
+            "type": {
+              "text": "author"
+            },
+            "who": {
+              "reference": "Device/00ddaaf8-d4cf-464a-99a9-79742469ed63"
+            }
+          }
+        ],
+        "reason": [
+          {
+            "text": "Interoperability Testing and Training (non-clinical use)"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provenance for SYNDERAI Synthetic Example Data Resource</div>"
+        },
+        "recorded": "2020-11-11T06:09:31Z"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:287cb6a0-7f0d-4414-9262-d03e444e00a5",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "287cb6a0-7f0d-4414-9262-d03e444e00a5",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory Role Id: 287cb6a0-7f0d-4414-9262-d03e444e00a5</div>"
+        },
+        "practitioner": {
+          "reference": "urn:uuid:805fd419-e884-4f05-90f4-f9d05646ea1e"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:805fd419-e884-4f05-90f4-f9d05646ea1e",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "805fd419-e884-4f05-90f4-f9d05646ea1e",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitioner-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "d1060613-6aae-47c2-b20a-c81fd2420b6c"
+          }
+        ],
+        "name": [
+          {
+            "prefix": [
+              "dr"
+            ],
+            "given": [
+              "Ex"
+            ],
+            "family": "Ample"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Laboratoire Central Européenne",
+              "Boulevard du Jardin Botanique 32"
+            ],
+            "postalCode": "1000",
+            "city": "Brussels",
+            "country": "Belgium"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory: Laboratoire Central Européenne, 1000 Brussels, Belgium</div>"
+        }
+      }
+    }
+  ],
+  "type": "document",
+  "timestamp": "2020-11-11T06:09:31Z"
+}
