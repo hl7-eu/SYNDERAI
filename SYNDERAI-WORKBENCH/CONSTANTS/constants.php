@@ -6,6 +6,12 @@ define("SYNTHEADIR",               SYNTHETICDATA . "/synthea_sample_data_generat
 define("SYNTHEAINTL",              SYNTHETICDATA . "/synthea-international-202507");
 define("MAPPINGS",                 "../MAPPINGS");
 
+/** Severity constants used by lognlsev(). */
+define("FATAL",   -1);   // display error and die()
+define("SUCCESS",  0);   // display warning, continue
+define("WARNING",  1);   // display warning, continue
+define("ERROR",    2);   // display error, continue
+define("INFO",     3);   // display error, continue
 
 /* DIR NAMES, relative to INSTANCE GENERATION directory */
 define("CACHEDIR",                 "cache");
