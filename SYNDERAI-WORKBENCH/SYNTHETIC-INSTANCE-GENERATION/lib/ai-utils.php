@@ -850,8 +850,12 @@ AIP;
 
     // Correct extraction using the Anthropic response schema:
     //   $result["content"][0]["text"]
+
     $result = json_decode($response, true);
     $valid = isset($result["content"][0]["text"]);
+    
+    if (!$valid) echo "+++ AI returned no content: " . $result["error"]["message"] . "\n";
+
     return [
          'text'  => $valid ? $result["content"][0]["text"] : "",
          'code'  => $code,

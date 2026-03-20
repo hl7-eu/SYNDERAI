@@ -15,7 +15,7 @@ case "$1" in
         PROFILE=http://hl7.eu/fhir/laboratory/StructureDefinition/Bundle-eu-lab	
         ;;
     EPS)
-    ARTIFACT=EPS
+        ARTIFACT=EPS
         OUT=_validation-EPS.html
         SDIR=../RECENT-RESULTS/EPS
         FILES=Bundle-*.json
@@ -27,7 +27,7 @@ case "$1" in
         OUT=_validation-HDR.html
         SDIR=../RECENT-RESULTS/HDR
         FILES=Bundle-*.json
-        IG='hl7.fhir.eu.hdr#1.0.0-alpha'
+        IG='hl7.fhir.eu.hdr'
         PROFILE=http://hl7.eu/fhir/hdr/StructureDefinition/bundle-eu-hdr
         ;;
 esac
@@ -39,7 +39,7 @@ fi
 
 # if TX is set to "-tx n/a" no external terminology validation takes place, otherwise set it to ""
 TX="-tx n/a"
-TX=""
+TX="-tx http://tx.fhir.org/r4"
 
 # store HOME directory
 HOME=`pwd`
@@ -64,7 +64,7 @@ echo "${WHITE}${BLUEBG}VALIDATING ${ARTIFACT} INSTANCES OF IG $IG$NC ($TX)"
 echo "---------------------------$BLUE"
 ls $FILES
 echo "$NC---------------------------"
-java -jar $VALIDATOR -version 4.0.1 -locale en-US $FILES -ig $IG $TX -allow-example-urls -tx http://tx.fhir.org/r4 -display-issues-are-warnings  -profile $PROFILE -html-output $HOME/$OUT
+java -jar $VALIDATOR -version 4.0.1 -locale en-US $FILES -ig $IG $TX -allow-example-urls -display-issues-are-warnings  -profile $PROFILE -html-output $HOME/$OUT
 if [ $? -eq 0 ]; then
     echo ${WHITE}${GREENBG}VALIDATION SUCCEEDED $NC
 else

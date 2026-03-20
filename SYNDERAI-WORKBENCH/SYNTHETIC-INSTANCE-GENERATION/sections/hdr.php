@@ -193,6 +193,6 @@ foreach($thisStayISH->section as $section) {
 
 }
 
-// var_dump( $sections[$type] );var_dump($pdat->hdrentries);//exit;
+ // var_dump( $sections[$type] );var_dump($pdat->hdrentries);//exit;
 
 ?>

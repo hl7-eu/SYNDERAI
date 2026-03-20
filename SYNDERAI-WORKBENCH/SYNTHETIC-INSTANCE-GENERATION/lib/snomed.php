@@ -98,8 +98,14 @@ function get_SNOMED_properties($c, $hint = "no hints") {
     if (strlen($c) === 0) return $EMPTYPROPERTIES;
 
     // temporary shortcut patches from validation marathon
-    if ($c === "66348005") $c = "386216000"; // Childbirth
+    if ($c === "66348005") $c = "386216000";  // Childbirth
     if ($c === "308113008") $c = "282290005"; // Review of imaging findings
+    if ($c === "281790002") $c = "281790008"; // Intravenous antibiotic therapy
+    if ($c === "281790004") $c = "281790008"; // Intravenous antibiotic therapy
+    if ($c === "304449002") $c = "117722009"; // Measurement of circulating antiplatelet antibody
+    if ($c === "surprisingly") $c = "773996000"; // Transcatheter aortic valve implantation
+    if ($c === "25132001") $c = "26212005"; // Replacement of aortic valve
+    if ($c === "14442009") $c = "63697000"; // Cardiopulmonary bypass operation
 
     // -------------------------------------------------------------------------
     // Stage 2: cache lookup snomed and snomed-replacements
