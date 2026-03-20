@@ -25,31 +25,24 @@ Usage: #inline
 
 * status = #completed
 
-{# procedure.code can be an array (from ISH) or a single element, simplify! #}
-{% if procedure.code is iterable %}
-{% set thisprocedurecode = procedure.code[0] %}
-{% else %}
-{% set thisprocedurecode = procedure.code %}
-{% endif %}
-
 {# procedure's preferred term #}
-{% set preferred = thisprocedurecode.display %}
+{% set preferred = procedure.code.preferredTerm %}
+
 {# dp: make html with display and possible site #}
-{% set dp = thisprocedurecode.display %}
+{% set dp = preferred %}
 {# refinements #}
 {% if procedure.text is iterable %}
 {% set dp = procedure.text[0] %}
 {% else %}
 {% set dp = procedure.text %}
 {% endif %}
-{% if thisprocedurecode.preferredTerm is not empty %}
-{% set preferred = thisprocedurecode.preferredTerm %}
-{% set dp = thisprocedurecode.preferredTerm %}
+{% if preferred is not empty %}
+{% set dp = preferred %}
 {% endif %}
 
-{# *** HTML td 1: code/display #}
-{% if thisprocedurecode is not empty %}
-* code.coding[0] = {{ thisprocedurecode.system }}#{{ thisprocedurecode.code }} "{{ thisprocedurecode.display }}"
+{# *** HTML td 1: iterate code[0] #}
+{% if procedure.code is not empty %}
+* code.coding[0] = {{ procedure.code.system }}#{{ procedure.code.code }} "{{ procedure.code.display }}"
 {% if procedure.site.code is not empty %}
 {% set dp = dp ~ "<br> </br>" ~ procedure.site.display %}
 {% endif %}
