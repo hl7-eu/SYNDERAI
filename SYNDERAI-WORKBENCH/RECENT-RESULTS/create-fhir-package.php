@@ -72,8 +72,13 @@ $theartifact = $toprocess["short"];
 chdir ($theartifact);
 
 // create package folders
-if (!is_dir("package")) mkdir("package");
-if (!is_dir("package/xml")) mkdir("package/xml");
+if (is_dir("package")) {
+    deleteDirectory("package");
+    mkdir("package");
+} else {
+    mkdir("package");
+}
+mkdir("package/xml");
 
 
 // first get all JSON Bundles
@@ -186,5 +191,16 @@ function logmeterinit() {
   $elapsed -= $m * 60;
   $out = sprintf("%8s (%d:%02d:%02d) ", date('H:i:s'), $h, $m, $elapsed);
   echo $out;
+}
+
+function deleteDirectory($dir) {
+    if (!file_exists($dir)) return true;
+    if (!is_dir($dir)) return unlink($dir);
+    
+    foreach (scandir($dir) as $item) {
+        if ($item == '.' || $item == '..') continue;
+        if (!deleteDirectory($dir . DIRECTORY_SEPARATOR . $item)) return false;
+    }
+    return rmdir($dir);
 }
 ?>
