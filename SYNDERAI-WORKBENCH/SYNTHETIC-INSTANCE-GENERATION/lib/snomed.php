@@ -62,8 +62,10 @@
  * accepting the result; note that curl_exec() is only called once and the
  * retry loop only re-reads CURLINFO_HTTP_CODE, which is idempotent.
  *
- * @param  string $c  SNOMED CT concept code (numeric string, e.g. "372687004").
- *                    An empty string triggers an immediate empty-result return.
+ * @param  string $c     SNOMED CT concept code (numeric string, e.g. "372687004").
+ *                       An empty string triggers an immediate empty-result return.
+ * @param  string $hint  A hint string (from the sources) shown in case of errors
+ *                       that may indicate what the code display was for a code
  *
  * @return array  Associative array with the following keys (all strings):
  *                - "code"                        The resolved SNOMED CT code.
@@ -77,7 +79,7 @@
  *                - "manufacturedDoseFormDisplay"  Dose-form human-readable label.
  *                All values are empty strings when the concept cannot be resolved.
  */
-function get_SNOMED_properties($c) {
+function get_SNOMED_properties($c, $hint = "no hints") {
 
     // Canonical empty result — returned whenever resolution is not possible
     $EMPTYPROPERTIES = [
@@ -95,8 +97,12 @@ function get_SNOMED_properties($c) {
     // Stage 1: guard against empty input
     if (strlen($c) === 0) return $EMPTYPROPERTIES;
 
+    // temporary shortcut patches from validation marathon
+    if ($c === "66348005") $c = "386216000"; // Childbirth
+    if ($c === "308113008") $c = "282290005"; // Review of imaging findings
+
     // -------------------------------------------------------------------------
-    // Stage 2: cache lookup
+    // Stage 2: cache lookup snomed and snomed-replacements
     // -------------------------------------------------------------------------
     $sincache = inCACHE("snomed", $c);
     if ($sincache !== FALSE) {
@@ -105,6 +111,26 @@ function get_SNOMED_properties($c) {
         //                       activeIngredient | activeIngredientCode |
         //                       manufacturedDoseForm | manufacturedDoseFormDisplay
         $item = explode(CACHEITEMSEPARATOR, $sincache);
+
+        return [
+            "code"                        => $item[0],
+            "preferredTerm"               => $item[1],
+            "fullySpecifiedName"          => $item[2],
+            "activeIngredient"            => $item[3],
+            "activeIngredientCode"        => $item[4],
+            "manufacturedDoseForm"        => $item[5],
+            "manufacturedDoseFormDisplay" => trim($item[6])
+        ];
+    }
+    $sincache = inCACHE("snomed-replacements", $c);
+    if ($sincache !== FALSE) {
+        // Cache hit — split the stored pipe-delimited record back into fields.
+        // Field order in cache: code | preferredTerm | fullySpecifiedName |
+        //                       activeIngredient | activeIngredientCode |
+        //                       manufacturedDoseForm | manufacturedDoseFormDisplay
+        $item = explode(CACHEITEMSEPARATOR, $sincache);
+
+        lognlsev(2, INFO, "......... SNOMED code $c immediate replacement by $item[0] $item[1]");
 
         return [
             "code"                        => $item[0],
@@ -168,8 +194,8 @@ function get_SNOMED_properties($c) {
             $cinfo         = $xml->xpath("/concept/designation[@lang='en-US'][@use='pref']");
             $preferredTerm = isset($cinfo[0]) ? (string) $cinfo[0] : "";
             if (strlen($preferredTerm) === 0) {
-                lognlsev(2, "ERROR",
-                "......... +++ SNOMED $c code not found or no preferred term.");
+                lognlsev(2, ERROR,
+                "......... +++ SNOMED $c code not found or no preferred term ($hint)");
             };
 
             // Fully specified name (FSN)
@@ -227,16 +253,24 @@ function get_SNOMED_properties($c) {
             $cinfo          = $xml->xpath("/concept/association[@targetComponentId='$replacecode']/targetLabel[@lang='en-US']");
             $replacedisplay = isset($cinfo[0]) ? (string) $cinfo[0] : "";
 
-            lognlsev(2, "INFO", "......... SNOMED code $c is outdated, replaced by $replacecode $replacedisplay");
-
             if (strlen($replacecode) > 0) {
                 // Recurse with the replacement code
-                return get_SNOMED_properties($replacecode);
+                lognlsev(2, INFO, "......... SNOMED code $c is outdated, replaced by $replacecode $replacedisplay");
+                $repinfo = get_SNOMED_properties($replacecode);
+                toCACHE("snomed-replacements", $c,
+                    $repinfo["code"]                        . CACHEITEMSEPARATOR .
+                    $repinfo["preferredTerm"]               . CACHEITEMSEPARATOR .
+                    $repinfo["fullySpecifiedName"]          . CACHEITEMSEPARATOR .
+                    $repinfo["activeIngredient"]            . CACHEITEMSEPARATOR .
+                    $repinfo["activeIngredientCode"]        . CACHEITEMSEPARATOR .
+                    $repinfo["manufacturedDoseForm"]        . CACHEITEMSEPARATOR .
+                    $repinfo["manufacturedDoseFormDisplay"] . "\n");
+                return $repinfo;
             } else {
                 // No replacement found — log and return empty result
-                lognlsev(2, "ERROR",
-                    "......... +++ not successful: wanted a SNOMED replacement for code $c $preferredTerm" .
-                    "but didn't get it -> $replacecode $replacedisplay"
+                lognlsev(2, ERROR,
+                    "......... SNOMED code $c is outdated, finding a replacement was not successful, " .
+                    "terms: |$preferredTerm|$hint|"
                 );
                 return $EMPTYPROPERTIES;
             }
