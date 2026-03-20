@@ -34,20 +34,20 @@ while (($item = fgetcsv($allergyhandle, 10000, ",", '"', '\\')) !== FALSE) {
 
     $type = trim($item[7]);
     $category = trim($item[8]);
-    $snomedproperties = get_SNOMED_properties ($snomed);
+    $snomedproperties = get_SNOMED_properties ($snomed, $snomeddisplay);
     if ($snomedproperties["code"] !== $snomed) $snomed = $snomedproperties["code"]; // this is a replacement
     $snomeddisplay = strlen($snomedproperties["fullySpecifiedName"]) > 0 ? $snomedproperties["fullySpecifiedName"] : $snomeddisplay;
 
     $reaction1 = trim($item[9]);
     $reactiondisplay1 = trim($item[10]);
-    $reaction1properties = get_SNOMED_properties ($reaction1);
+    $reaction1properties = get_SNOMED_properties ($reaction1, $reactiondisplay1);
     if ($reaction1properties["code"] !== $reaction1) $reaction1 = $reaction1properties["code"]; // this is a replacement
     $reactiondisplay1 = strlen($reaction1properties["fullySpecifiedName"]) > 0 ? $reaction1properties["fullySpecifiedName"] : $reactiondisplay1;
     $severity1 = trim($item[11]);
 
     $reaction2 = trim($item[12]);
     $reactiondisplay2 = trim($item[13]);
-    $reaction2properties = get_SNOMED_properties ($reaction2);
+    $reaction2properties = get_SNOMED_properties ($reaction2, $reactiondisplay2);
     if ($reaction2properties["code"] !== $reaction2) $reaction2 = $reaction2properties["code"]; // this is a replacement
     $reactiondisplay2 = strlen($reaction2properties["fullySpecifiedName"]) > 0 ? $reaction2properties["fullySpecifiedName"] : $reactiondisplay2;
     $severity2 = trim($item[14]);
@@ -105,7 +105,7 @@ if (rand(0,100) > 94) {
 }
 
 if (count($found) === 0) {
-   lognlsev(3, "WARN", "......... +++ No allergies/intolerances found\n");
+   lognlsev(3, WARNING, "......... +++ No allergies/intolerances found\n");
    $pdat->allergies = NULL;
 } else {
   // store / handle result

@@ -56,7 +56,7 @@ while (($item = fgetcsv($procedureshandle, 10000, ",", '"', '\\')) !== FALSE) {
     }
     */
 
-    $snomedproperties = get_SNOMED_properties($snomed);
+    $snomedproperties = get_SNOMED_properties($snomed, $snomeddisplay);
     if ($snomedproperties["code"] !== $snomed) $snomed = $snomedproperties["code"]; // this is a replacement
     $snomeddisplay = strlen($snomedproperties["fullySpecifiedName"]) > 0 ? $snomedproperties["fullySpecifiedName"] : $snomeddisplay;
     
@@ -68,7 +68,7 @@ while (($item = fgetcsv($procedureshandle, 10000, ",", '"', '\\')) !== FALSE) {
     $reason = trim($item[7]);
     $reasondisplay = trim($item[8]);
     if (strlen($reason) > 0) {
-      $reasonproperties = get_SNOMED_properties ($reason);
+      $reasonproperties = get_SNOMED_properties ($reason, $reasondisplay);
     if ($reasonproperties["code"] !== $reason) $reason = $reasonproperties["code"]; // this is a replacement
       $reasondisplay = strlen($reasonproperties["fullySpecifiedName"]) > 0 ? $reasonproperties["fullySpecifiedName"] : $reasondisplay;
     }
@@ -102,12 +102,14 @@ while (($item = fgetcsv($procedureshandle, 10000, ",", '"', '\\')) !== FALSE) {
 fclose($procedureshandle);
 
 if (count($found) === 0) {
-   lognlsev(3, "WARN", "......... +++ No procedures found\n");
+   lognlsev(3, WARNING, "......... +++ No procedures found\n");
    $pdat->procedures = NULL;
 } else {
   // store / handle result
   array_multisort(array_column($found, 'date'), SORT_DESC, $found); // sort by date and report
   $pdat->procedures = $found;
 }
+
+// if ($pdat->eci === "1298-659206-6") {var_dump($found);exit;}
 
 ?>

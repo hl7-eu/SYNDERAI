@@ -26,7 +26,7 @@ while (!feof($conditionshandle)) {
       $display = "Prediabetes (disorder)";
     }
 
-    $snomedproperties = get_SNOMED_properties($snomed);
+    $snomedproperties = get_SNOMED_properties($snomed, $display);
     if ($snomedproperties["code"] !== $snomed) $snomed = $snomedproperties["code"]; // this is a replacement
     $display = strlen($snomedproperties['fullySpecifiedName']) > 0 ? $snomedproperties['fullySpecifiedName'] : $display;
     if (str_contains($display . " " . $snomedproperties['fullySpecifiedName'], "(disorder)")) {
@@ -57,11 +57,12 @@ while (!feof($conditionshandle)) {
 }
 fclose($conditionshandle);
 if (count($found) === 0) {
-  lognlsev (3, "WARN", "......... +++ No conditions found\n");
+  lognlsev (3, WARNING, "......... +++ No conditions found\n");
   $pdat->conditions = NULL;
 } else {
   // store / handle result
-  if ($activeconditions === 0) lognlsev (3, "WARN", "......... +++ No active conditions found\n");
+  if ($activeconditions === 0) 
+    lognlsev (3, WARNING, "......... +++ No active conditions found\n");
   array_multisort(array_column($found, 'active'), SORT_DESC, $found); // sort by date and report
   // var_dump($found);
   $pdat->conditions = $found;

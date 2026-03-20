@@ -19,7 +19,7 @@ while (!feof($careplanhandle)) {
 
       $snomed = trim($item[5]);
       $display = trim($item[6]);
-      $snomedproperties = get_SNOMED_properties($snomed);
+      $snomedproperties = get_SNOMED_properties($snomed, $display);
       if ($snomedproperties["code"] !== $snomed) $snomed = $snomedproperties["code"]; // this is a replacement
       if (strlen($snomedproperties['fullySpecifiedName']) > 0) $display = $snomedproperties['fullySpecifiedName'];
       
@@ -27,7 +27,7 @@ while (!feof($careplanhandle)) {
       $reason = trim($item[7]);
       $reasondisplay = trim($item[8]);
       if (strlen($reason) > 0) {
-        $reasonproperties = get_SNOMED_properties($reason);
+        $reasonproperties = get_SNOMED_properties($reason, $reasondisplay);
         if ($reasonproperties["code"] !== $reason) $reason = $reasonproperties["code"]; // this is a replacement
         if (strlen($reasonproperties['fullySpecifiedName']) > 0) $reasondisplay = $reasonproperties['fullySpecifiedName'];
       }
@@ -58,7 +58,7 @@ while (!feof($careplanhandle)) {
 }
 fclose($careplanhandle);
 if (count($found) === 0) {
-  lognlsev(3, "WARN", "......... +++ No care plan items found\n");
+  lognlsev(3, WARNING, "......... +++ No care plan items found\n");
   $pdat->careplans = NULL;
 } else {
   // store / handle result

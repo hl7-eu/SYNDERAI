@@ -57,7 +57,7 @@ while (($item = fgetcsv($observationhandle, 10000, ",", '"', '\\')) !== FALSE) {
 fclose($observationhandle);
 
 if (count($found) === 0) {
-   lognlsev(3, "WARN", "......... +++ No vital signs found");
+   lognlsev(3, WARNING, "......... +++ No vital signs found");
    $pdat->vitalsigns = NULL;
 } else {
 

@@ -20,7 +20,7 @@
             $snomed = trim($item[4]);
             $display = trim($item[5]);
 
-            $snomedproperties = get_SNOMED_properties($snomed);
+            $snomedproperties = get_SNOMED_properties($snomed, $display);
             if ($snomedproperties["code"] !== $snomed) $snomed = $snomedproperties["code"]; // this is a replacement
             $uid = trim($item[6]);
 

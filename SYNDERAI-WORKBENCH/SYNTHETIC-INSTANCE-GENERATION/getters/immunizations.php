@@ -27,16 +27,16 @@
 
           $themap = $MAP_CVX_2_SNOMED[$cvxcode];
           // get SNOMED right with code, display, route and site
-          $snomedproperties = get_SNOMED_properties($themap["snomed"]["code"]);  // might do a replacement on retired codes as well
+          $snomedproperties = get_SNOMED_properties($themap["snomed"]["code"], $cvxdisplay);  // might do a replacement on retired codes as well
           if (strlen($snomedproperties["preferredTerm"]) === 0) {
-            lognlsev(1, "WARN", "......... +++ vaccination: SNOMED code for CVX $cvxcode $cvxdisplay not found!");
+            lognlsev(1, WARNING, "......... +++ vaccination: SNOMED code for CVX $cvxcode $cvxdisplay not found!");
             registerMapMissing("vaccination: SNOMED code for CVX $cvxcode $cvxdisplay not found");
           }
           // assume SNOMED for site and route are ok, maybe this needs to be verified later but the concept maps are all based on SNOMED
           // get ATC right
-          $atcproperties = get_ATC_properties($themap["atc"]["code"]);
+          $atcproperties = get_ATC_properties($themap["atc"]["code"], $cvxdisplay);
           if (strlen($atcproperties["display"]) === 0) {
-            lognlsev(1, "WARN", "......... +++ vaccination: information for ATC " . $themap["atc"]["code"] . " not found!");
+            lognlsev(1, WARNING, "......... +++ vaccination: information for ATC " . $themap["atc"]["code"] . " not found!");
             registerMapMissing("vaccination: information for ATC " . $themap["atc"]["code"] . " not found");
           }
           if ($themap !== NULL) {        
@@ -79,10 +79,10 @@
               $snomedproperties["preferredTerm"]
             ));
             if (strlen($date)<7) {
-              lognlsev(1, "ERROR", "+++ DATE len<7 $date");
+              lognlsev(1, ERROR, "+++ DATE len<7 $date");
             }
           } else {
-            lognlsev(1, "ERROR", "Cannot map CVX $cvxcode $cvxdisplay");
+            lognlsev(1, ERROR, "Cannot map CVX $cvxcode $cvxdisplay");
             registerMapMissing("Cannot map CVX $cvxcode $cvxdisplay");
           }
         }
@@ -90,7 +90,7 @@
       fclose($immunizationshandle);
       
       if (count($found) === 0) {
-        lognlsev(3, "WARN", "......... +++ No immunizations found\n");
+        lognlsev(3, WARNING, "......... +++ No immunizations found\n");
         $pdat->immunizations = NULL;
       } else {
         // store / handle result

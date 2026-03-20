@@ -36,12 +36,12 @@ while (($item = fgetcsv($observationhandle, 10000, ",", '"', '\\')) !== FALSE) {
         $thisunit = "";
         $skey = array_search($resultvalue, array_column(SUPPORTED_SNOMED_LABRESULT_CODES, 'snomed'));
         if ($skey === FALSE) {
-          lognlsev(1, "ERROR", "......... +++ Not able to get answer code '$resultvalue'\n");
+          lognlsev(1, ERROR, "......... +++ Not able to get answer code '$resultvalue'\n");
           $thiscode = "$item[4]";
           $thisdisplay = "$item[5]";
         } else {
           if (!isset(SUPPORTED_SNOMED_LABRESULT_CODES[$skey]["code"])) {
-            lognlsev(1, "WARN", "+++ Supported SNOMED Code not available for '$resultvalue' (key=$skey)");
+            lognlsev(1, WARNING, "+++ Supported SNOMED Code not available for '$resultvalue' (key=$skey)");
             // var_dump(SUPPORTED_SNOMED_LABRESULT_CODES[$skey]);
           }
           $thiscode = SUPPORTED_SNOMED_LABRESULT_CODES[$skey]['code'];
@@ -94,7 +94,7 @@ fclose($observationhandle);
 
  // echo "Matching lab counts: " .  count($found) . "\n";exit;
 if (count($found) === 0) {
-   lognlsev(3, "WARN", "......... +++ No lab observations found\n");
+   lognlsev(3, WARNING, "......... +++ No lab observations found\n");
    $pdat->labobservations = NULL;
 } else {
   
@@ -212,7 +212,7 @@ foreach ($tmpspecimenlist as $ldate => $tspm)
         'display' => "Specimen (specimen)",
         'date' => $specimencollectiondate
       ];
-      lognlsev(1, "ERROR", "......... +++ Not able to derive specimen from LOINC system '" . $lnsystem . "'\n");
+      lognlsev(1, ERROR, "......... +++ Not able to derive specimen from LOINC system '" . $lnsystem . "'\n");
     }
     $pdat->specimen[$ldate][$lnsystem] = $specmitem;
   }

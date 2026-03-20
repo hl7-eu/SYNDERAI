@@ -10,7 +10,7 @@ $pdat->inpatientencounters = NULL;
 // has encounter id, story (candidate) id and if appropriate admission reason also the discharge information 
 
 if (!isset($INPATIENTENCOUNTERS)) {
-  lognlsev (1, "ERROR", "......... +++ No inpatient encounter list found, 'encounter' getters must be called before this function\n");
+  lognlsev (1, ERROR, "......... +++ No inpatient encounter list found, 'encounter' getters must be called before this function\n");
 } else {
   
   lognl(1, "...... List of inpatient encounters for this patient");
@@ -20,12 +20,12 @@ if (!isset($INPATIENTENCOUNTERS)) {
     if ($ipe["candid"] === $candid) {
 
       $proceduredisplay = $ipe["procedure"]["display"];
-      $procedureproperties = get_SNOMED_properties($ipe["procedure"]["code"]);
+      $procedureproperties = get_SNOMED_properties($ipe["procedure"]["code"], $proceduredisplay);
       if ($procedureproperties["code"] !== $ipe["procedure"]["code"]) $ipe["procedure"]["code"] = $procedureproperties["code"]; // this is a replacement
       if (strlen($procedureproperties['fullySpecifiedName']) > 0) $proceduredisplay = $procedureproperties['fullySpecifiedName'];
       
       $reasondisplay = $ipe["reason"]["display"];
-      $reasonproperties = get_SNOMED_properties($ipe["reason"]["code"]);
+      $reasonproperties = get_SNOMED_properties($ipe["reason"]["code"], $reasondisplay);
       if ($reasonproperties["code"] !== $ipe["reason"]["code"]) $ipe["procedure"]["code"] = $reasonproperties["code"]; // this is a replacement
       if (strlen($reasonproperties['fullySpecifiedName']) > 0) $reasondisplay = $reasonproperties['fullySpecifiedName'];
 
@@ -77,7 +77,7 @@ if (!isset($INPATIENTENCOUNTERS)) {
 }
 
 if (count($found) === 0) {
-  lognlsev (3, "WARN", "......... +++ No inpatient encounters found\n");
+  lognlsev (3, WARNING, "......... +++ No inpatient encounters found\n");
 } else {
   // store / handle result
   // var_dump($found);
@@ -159,7 +159,7 @@ if (count($found) === 0) {
                  $dischargeinfo["display"]
               ));
             } else {
-              lognlsev (2, "WARN", "......... +++ No discharge information found for reason $reasondisplay ($reason) period $start - $end\n");
+              lognlsev (2, WARNING, "......... +++ No discharge information found for reason $reasondisplay ($reason) period $start - $end\n");
             }
           }
         }

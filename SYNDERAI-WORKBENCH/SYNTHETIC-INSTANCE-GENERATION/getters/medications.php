@@ -19,7 +19,7 @@ while (!feof($medicationshandle)) {
       $rxnorm = trim($item[5]);
       $themap = isset($RXNORM2SNOMED[$rxnorm]) ? $RXNORM2SNOMED[$rxnorm] : NULL;
       if ($themap !== NULL) {
-        $snomedproperties = get_SNOMED_properties($themap["snomed"]);
+        $snomedproperties = get_SNOMED_properties($themap["snomed"], trim($item[6]));
         if ($snomedproperties["code"] !== $themap["snomed"]) $themap["snomed"] = $snomedproperties["code"]; // this is a replacement
         $cfound = [
           "rxnorm" => [
@@ -49,7 +49,7 @@ while (!feof($medicationshandle)) {
           "sectionentryslicename" => "medicationStatementOrRequest"
         ];
       } else {
-        lognlsev(1, "ERROR", "Cannot map RXNORM $rxnorm " . trim($item[6]));
+        lognlsev(1, ERROR, "Cannot map RXNORM $rxnorm " . trim($item[6]));
         registerMapMissing("Cannot map RXNORM $rxnorm " . trim($item[6]));
         $cfound = [
           "rxnorm" => [
@@ -135,7 +135,7 @@ while (!feof($medicationshandle)) {
 }
 fclose($medicationshandle);
 if (count($found) === 0) {
-  lognlsev (3, "WARN", "......... +++ No medications found\n");
+  lognlsev (3, WARNING, "......... +++ No medications found\n");
   $pdat->medications = NULL;
 } else {
   // store / handle result
