@@ -114,7 +114,7 @@ function getClosestProvider($pcountry, $platitude, $plongitude, $providertype) {
     // NOTE: the fallback line below uses === (comparison) instead of = (assignment)
     // and therefore does NOT actually reset $providertype — this is a known bug.
     if (!($providertype === "hospitals" or $providertype === "primary_care_facilities")) {
-        lognlsev(0, "ERROR", "......... +++ Provider type $providertype not allowed.\n");
+        lognlsev(0, ERROR, "......... +++ Provider type $providertype not allowed.\n");
         $providertype === "primary_care_facilities";  // BUG: should be = not ===
     }
 
@@ -221,7 +221,7 @@ function getClosestProvider($pcountry, $platitude, $plongitude, $providertype) {
     } else {
         // No facility was found for this country / provider type combination
         $RES = NULL;
-        lognlsev(3, "WARN",
+        lognlsev(3, WARNING,
             "......... +++ No provider $providertype found for patient in $eucountrycode, " .
             "lastest distance $dist: Patient $platitude $plongitude Provider $providerlat $providerlong\n"
         );

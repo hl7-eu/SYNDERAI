@@ -116,7 +116,7 @@ if ($pdat->careplans !== NULL) {
               if (200 === $tmp["code"]) {
                 $gf = $tmp["text"];
               } else {
-                lognlsev(2, "WARN", "......... in Careplan Goals, a proper target.measure could not be generated, skipping.");
+                lognlsev(2, WARNING, "......... in Careplan Goals, a proper target.measure could not be generated, skipping.");
                 // invalidate the FSH part for now, as we cannot fix the AI shortcomings yet
                 $gf = "";
               }
@@ -143,7 +143,7 @@ if ($pdat->careplans !== NULL) {
                   // echo "  D $olddisplay -> $newdisplay\n";
                   if (strlen($newdisplay) === 0) {
                     $newdisplay = "?undef?";
-                    lognlsev(2, "WARN", "......... in Careplan Goals, a LOINC code needed to be replaced but a new correct one could not be found, skipping.");
+                    lognlsev(2, WARNING, "......... in Careplan Goals, a LOINC code needed to be replaced but a new correct one could not be found, skipping.");
                     // invalidate the FSH part for now, as we cannot fix the AI shortcomings yet
                     $newlines = "";
                   } else {
@@ -158,7 +158,7 @@ if ($pdat->careplans !== NULL) {
             // if even now details are present without a measure make the fsh invalid, so we emit minila text only.
             if (str_contains($gf, ".detail") and !str_contains($gf, ".measure = http://loinc.org#")) {
               $gf = "";   // invalidating the FSH remainder will prevent validation errors
-              lognlsev(2, "WARN", "......... in Careplan Goals, even an attempt to add a target measure failed, skipping.");
+              lognlsev(2, WARNING, "......... in Careplan Goals, even an attempt to add a target measure failed, skipping.");
             }
             // echo "\nFINALLY-vvvvv--------------------\n";echo $goalsdesc[$cnt] . "\n";echo $gf;echo "\nFINALLY-^^^^^------------------\n";
             $goalinstanceid = uuid();

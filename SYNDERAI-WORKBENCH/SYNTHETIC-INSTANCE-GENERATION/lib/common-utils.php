@@ -296,10 +296,11 @@ function lognl($level, $text) {
  * severity. The colour is reset automatically at the end of each line.
  *
  * Supported severity values and their colours:
- *   "ERROR"   → Red
- *   "WARN"    → Yellow
- *   "INFO"    → Blue
- *   "SUCCESS" → Green
+ *   ERROR   → Red
+ *   WARN    → Yellow
+ *   INFO    → Blue
+ *   SUCCESS → Green
+ *   FATAL   → Red (and the script stops)
  *
  * Messages whose severity is not one of the above are silently suppressed.
  *
@@ -311,21 +312,26 @@ function lognl($level, $text) {
  */
 function lognlsev($level, $severity, $text) {
     if (DEBUGLEVEL >= $level) {
-        if ($severity === "ERROR") {
+        if ($severity === ERROR) {
             echo consoleColor("RED");
             lognl($level, $text . consoleColor("NC"));
         }
-        if ($severity === "WARN") {
+        if ($severity === WARNING) {
             echo consoleColor("YELLOW");
             lognl($level, $text . consoleColor("NC"));
         }
-        if ($severity === "INFO") {
+        if ($severity === INFO) {
             echo consoleColor("BLUE");
             lognl($level, $text . consoleColor("NC"));
         }
-        if ($severity === "SUCCESS") {
+        if ($severity === SUCCESS) {
             echo consoleColor("GREEN");
             lognl($level, $text . consoleColor("NC"));
+        }
+        if ($severity === FATAL) {
+            echo consoleColor("RED");
+            lognl($level, $text . consoleColor("NC"));
+            die;
         }
     }
 }

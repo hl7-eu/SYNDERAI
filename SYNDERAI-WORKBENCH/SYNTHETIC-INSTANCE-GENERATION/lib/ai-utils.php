@@ -284,15 +284,15 @@ AIP;
     // Validate all nested keys before accessing the content
     $valid = TRUE;
     if (!isset($phpres['choices'])) {
-        lognlsev (2, "WARN", "............ +++ AI returned no value for \$phpres['choices'] getAIlabtable");
+        lognlsev (2, WARNING, "............ +++ AI returned no value for \$phpres['choices'] getAIlabtable");
         $valid = FALSE;
     }
     if (!isset($phpres['choices'][0]['message'])) {
-        lognlsev (2, "WARN", "............ +++ AI returned no value for \$phpres['choices'][0]['message'] getAIlabtable");
+        lognlsev (2, WARNING, "............ +++ AI returned no value for \$phpres['choices'][0]['message'] getAIlabtable");
         $valid = FALSE;
     }
     if (!isset($phpres['choices'][0]['message']['content'])) {
-        lognlsev (2, "WARN", "............ +++ AI returned no value for \$phpres['choices'][0]['message']['content'] getAIlabtabl");
+        lognlsev (2, WARNING, "............ +++ AI returned no value for \$phpres['choices'][0]['message']['content'] getAIlabtabl");
         $valid = FALSE;
     }
     if (!$valid) var_dump($phpres);

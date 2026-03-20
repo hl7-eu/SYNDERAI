@@ -327,7 +327,7 @@ foreach ($options as $opt => $val) {
                 while (($csvline = fgetcsv($patienthandle, NULL, ";", '"', '\\')) !== FALSE) {
                     if (count($csvline) === 0 or startsWith($csvline[0], "#")) continue;
                     if (count($csvline) < 9)
-                        lognlsev (2, "WARN", "... re-run file $SELRERUN is malformed.");
+                        lognlsev (2, WARNING, "... re-run file $SELRERUN is malformed.");
                     // var_dump($csvline);
                     $ceci = $csvline[3];  // ECI is in column 3
                     $stid = $csvline[4];  // story ID is in column 4
@@ -338,11 +338,11 @@ foreach ($options as $opt => $val) {
                     }
                 }
                 if (count($STORYFOR) === 0) {
-                    lognlsev(1, "ERROR", "... +++ statistics file $SELRERUN seems to be empty, running with defaults!\n");
+                    lognlsev(1, ERROR, "... +++ statistics file $SELRERUN seems to be empty, running with defaults!\n");
                     $ISARERUN = FALSE;
                 }
             } else {
-                lognlsev(1, "ERROR", "... +++ statistics file $SELRERUN not found, running with defaults!\n");
+                lognlsev(1, ERROR, "... +++ statistics file $SELRERUN not found, running with defaults!\n");
                 $ISARERUN = FALSE;
             }
         }
@@ -372,8 +372,8 @@ HELP;
 
 /* --artifacts is mandatory — exit immediately if not provided */
 if ($ARTIFACTS === NULL) {
-    lognlsev(1, "ERROR", "... +++ No artifacts to generate specified (I'm ready!)\n");
-    lognlsev(1, "ERROR", "... +++ Use CLI --artifacts to specify one or more artifacts to process...\n");
+    lognlsev(1, ERROR, "... +++ No artifacts to generate specified (I'm ready!)\n");
+    lognlsev(1, ERROR, "... +++ Use CLI --artifacts to specify one or more artifacts to process...\n");
     exit;
 }
 
@@ -423,7 +423,7 @@ include_once("config.php");
  * If unavailable, generation continues without AI calls.
  */
 if (!testAIavailability() and USE_AI) {
-    lognlsev(1, "WARN", "... +++ AI desired but not available, skipping all AI calls\n");
+    lognlsev(1, WARNING, "... +++ AI desired but not available, skipping all AI calls\n");
 }
 
 /*
@@ -438,7 +438,7 @@ $DESIREDFILES = [
 ];
 foreach ($DESIREDFILES as $f) {
     if (!is_file(SYNTHEADIR . "/$f.csv")) {
-        lognlsev(1, "ERROR", "+++ No $f.csv in " . SYNTHEADIR . "\n");
+        lognlsev(1, ERROR, "+++ No $f.csv in " . SYNTHEADIR . "\n");
         exit;
     }
 }
@@ -517,7 +517,7 @@ while (($csvline = fgetcsv($patienthandle, NULL, "\t", '"', '\\')) !== FALSE) {
     }
 }
 fclose($patienthandle);
-lognlsev(1, "SUCCESS", "... patient list" . ($preselectionineffect ? " (pre-selections in effect): " : ": ") . count($PATIENTS) . " found");
+lognlsev(1, SUCCESS, "... patient list" . ($preselectionineffect ? " (pre-selections in effect): " : ": ") . count($PATIENTS) . " found");
 
 
 // ============================================================================
@@ -540,7 +540,7 @@ if ($SELCOUNT == 0) {
     }
 }
 
-lognlsev(1, "SUCCESS", "... # of selected patients for this run: " . count($PATIENTS));
+lognlsev(1, SUCCESS, "... # of selected patients for this run: " . count($PATIENTS));
 
 
 // ============================================================================
@@ -588,7 +588,7 @@ $firststat    = "gender;age;country;eci;storyid;lat;long;name;";
 foreach ($ARTIFACTS as $a) $firststat .= "$a;";
 $firststat    = before_last(";", $firststat) . "\n";
 file_put_contents($THESTATSFILE, $firststat);
-lognlsev(1, "SUCCESS", "... recordings/statistics to file $THESTATSFILE");
+lognlsev(1, SUCCESS, "... recordings/statistics to file $THESTATSFILE");
 
 
 // ============================================================================
@@ -654,7 +654,7 @@ if (in_array("HDR", $ARTIFACTS) && $PROCESSISH) {
             $PATIENTS[] = $hdrpatient;
             $count++;
         } else {
-            lognlsev(1, "ERROR", "... Processing ish file $hdrfile throws errors, skipping...");
+            lognlsev(1, ERROR, "... Processing ish file $hdrfile throws errors, skipping...");
         }
 
     }
@@ -672,6 +672,9 @@ if (in_array("HDR", $ARTIFACTS) && $PROCESSISH) {
 // ============================================================================
 
 $PATIENTS = json_decode(json_encode($PATIENTS));
+if (json_last_error() !== JSON_ERROR_NONE) {
+    lognlsev(2, ERROR, "............ JSON encode+decode patient failed: " . json_last_error_msg());
+}
 // var_dump($PATIENTS[0]);exit;
 
 
@@ -718,7 +721,7 @@ foreach ($PATIENTS as $pdat) {
     /* Normalise country field to consistent [code, name] pair */
     list($pdat->country, $pdat->countryname) = unifyCountryCodeName($pdat->country);
 
-    lognlsev(1, "INFO", "... Processing example #" . ++$round . " '" .
+    lognlsev(1, INFO, "... Processing example #" . ++$round . " '" .
         implode(" ", $pdat->given) . " " . $pdat->family . "' age $age yr, $pdat->gender, from " . $pdat->countryname .
         " (ECI: " . $pdat->eci . ")...\n");
 
@@ -830,91 +833,91 @@ foreach ($PATIENTS as $pdat) {
     //   hospitalCourse — AI-generated narrative
     //
     // -------------------------------------------------------------------------
-    if (isset($pdat->inpatientencounters))
-        if ($pdat->inpatientencounters !== NULL) {
+    if (isset($pdat->inpatientencounters) && ($pdat->inpatientencounters !== NULL)) {
 
-            $maxix           = count($pdat->inpatientencounters) - 1;
-            $stays           = array();
-            $staycount       = 0;
-            $thisencounterset = array();
+        $maxix           = count($pdat->inpatientencounters) - 1;
+        $stays           = array();
+        $staycount       = 0;
+        $thisencounterset = array();
 
-            lognl(2, "......... Detecting consecutive encounters, creating stay period(s)");
-            if ($maxix >= 0) {
-                // start of the very first encounter
-                $hxstart           = $pdat->inpatientencounters[0]["start"];
-                $stays[$staycount] = ["episodestart" => $hxstart];
+        lognl(2, "......... Detecting consecutive encounters, creating stay period(s)");
+        if ($maxix >= 0) {
+            // start of the very first encounter
+            $hxstart           = $pdat->inpatientencounters[0]["start"];
+            $stays[$staycount] = ["episodestart" => $hxstart];
 
-                for ($ii = 0; $ii <= $maxix; $ii++) {
-                    $hxend             = $pdat->inpatientencounters[$ii]["end"];
-                    $thisencounterset[] = $pdat->inpatientencounters[$ii];
+            for ($ii = 0; $ii <= $maxix; $ii++) {
+                $hxend             = $pdat->inpatientencounters[$ii]["end"];
+                $thisencounterset[] = $pdat->inpatientencounters[$ii];
 
-                    if ($ii < $maxix) {
-                        // there is still a next encounter
-                        if ($pdat->inpatientencounters[$ii + 1]["start"] === $hxend) {
-                            // Consecutive encounter: continue building this stay cluster
-                            // $hxnextstart = $pdat->inpatientencounters[$ii + 1]["start"];
-                            // $hxnextend   = $pdat->inpatientencounters[$ii + 1]["end"];
-                        } else {
-                            // Gap detected: close the current stay and start a new one
-                            $stays[$staycount] = array_merge(
-                                $stays[$staycount],
-                                ["episodeend" => $hxend, "encounters" => $thisencounterset]
-                            );
-                            $staycount++;
-                            $stays[$staycount] = ["episodestart" => $pdat->inpatientencounters[$ii + 1]["start"]];
-                            $thisencounterset  = array();
-                        }
+                if ($ii < $maxix) {
+                    // there is still a next encounter
+                    if ($pdat->inpatientencounters[$ii + 1]["start"] === $hxend) {
+                        // Consecutive encounter: continue building this stay cluster
+                        // $hxnextstart = $pdat->inpatientencounters[$ii + 1]["start"];
+                        // $hxnextend   = $pdat->inpatientencounters[$ii + 1]["end"];
+                    } else {
+                        // Gap detected: close the current stay and start a new one
+                        $stays[$staycount] = array_merge(
+                            $stays[$staycount],
+                            ["episodeend" => $hxend, "encounters" => $thisencounterset]
+                        );
+                        $staycount++;
+                        $stays[$staycount] = ["episodestart" => $pdat->inpatientencounters[$ii + 1]["start"]];
+                        $thisencounterset  = array();
                     }
                 }
-                // Close the final stay
-                $stays[$staycount] = array_merge(
-                    $stays[$staycount],
-                    ["episodeend" => $hxend, "encounters" => $thisencounterset]
-                );
             }
+            // Close the final stay
+            $stays[$staycount] = array_merge(
+                $stays[$staycount],
+                ["episodeend" => $hxend, "encounters" => $thisencounterset]
+            );
+        }
 
-            // var_dump($stays);exit;/*üüüüü*/
+        // var_dump($stays);exit;/*üüüüü*/
 
-            // Attach a short hospital course narrative to each stay
-            lognl(2, "......... Getting hospital course and invented procedures per stay");
-            for ($ii = 0; $ii <= count($stays) - 1; $ii++) {
-                $md5 = md5(
-                    $pdat->eci . 
-                    $pdat->inpatientencounters[$ii]["procedure"]["code"] . 
-                    $stays[$ii]["episodestart"] . 
-                    $stays[$ii]["episodeend"]);
-                $hcipai = inCACHE("hospitalcourse", "$md5.json");  // look for hospital course and invented procedures in cache first
-                if ($hcipai !== FALSE) {
-                    // hooray, in cache
-                    $thishcipai = json_decode($hcipai, TRUE);
-                    $stays[$ii] = array_merge($stays[$ii], $thishcipai);
-                    // var_dump($stays[$ii]);exit;
-                } else {
-                    $tmp = getAIHospitalCourse($pdat->age, $pdat->gender, $stays[$ii], TRUE);
-                    // includeProcedures = TRUE|FALSE
-                    if (200 === $tmp["code"]) {
-                        /*
-                        * now we have the hospital course text between %%TEXT%% tags and
-                        * optional procedures between %%PROCEDURES%% - split them up
-                        * example
-                        * %%TEXT%%
-                        * Dear Colleague, I am writing to inform you regarding the discharge of your patient, an 84-year-old male, ...
-                        * %%TEXT%%
-                        * %%PROCEDURES%%
-                        * diagnostic|2026-03-16|Clinical knee examination with valgus stress testing|5880005|Physical examination procedure
-                        * therapeutic|2026-03-16|Postoperative analgesia administration|18629005|Administration of drug or medicament
-                        * %%PROCEDURES%%
-                        */
-                        $theText = trim(after("%%TEXT%%", before_last("%%TEXT%%", $tmp["text"])));
-                        $theProcedureLines = trim(after("%%PROCEDURES%%", before_last("%%PROCEDURES%%", $tmp["text"])));
-                        $theProcedures = array();
-                        foreach (explode("\n", $theProcedureLines) as $line) {
-                            $items = explode("|", $line);
-                            // correct the codes if needed
-                            $snomed = trim($items[3]);
-                            $snomedproperties = get_SNOMED_properties($snomed);
-                            if ($snomedproperties["code"] !== $snomed) $snomed = $snomedproperties["code"]; // this is a replacement
-                            $snomeddisplay = strlen($snomedproperties["fullySpecifiedName"]) > 0 ? $snomedproperties["fullySpecifiedName"] : $snomeddisplay;
+        // Attach a short hospital course narrative to each stay
+        lognl(2, "......... Getting hospital course and invented procedures per stay");
+        for ($ii = 0; $ii <= count($stays) - 1; $ii++) {
+            $md5 = md5(
+                $pdat->eci . 
+                $pdat->inpatientencounters[$ii]["procedure"]["code"] . 
+                $stays[$ii]["episodestart"] . 
+                $stays[$ii]["episodeend"]);
+            $hcipai = inCACHE("hospitalcourse", "$md5.json");  // look for hospital course and invented procedures in cache first
+            if ($hcipai !== FALSE) {
+                // hooray, in cache
+                $thishcipai = json_decode($hcipai, TRUE);
+                $stays[$ii] = array_merge($stays[$ii], $thishcipai);
+                // echo "-----$md5\n";var_dump($stays[$ii]);exit;
+            } else {
+                $tmp = getAIHospitalCourse($pdat->age, $pdat->gender, $stays[$ii], TRUE);
+                // includeProcedures = TRUE|FALSE
+                if (200 === $tmp["code"]) {
+                    /*
+                    * now we have the hospital course text between %%TEXT%% tags and
+                    * optional procedures between %%PROCEDURES%% - split them up
+                    * example
+                    * %%TEXT%%
+                    * Dear Colleague, I am writing to inform you regarding the discharge of your patient, an 84-year-old male, ...
+                    * %%TEXT%%
+                    * %%PROCEDURES%%
+                    * diagnostic|2026-03-16|Clinical knee examination with valgus stress testing|5880005|Physical examination procedure
+                    * therapeutic|2026-03-16|Postoperative analgesia administration|18629005|Administration of drug or medicament
+                    * %%PROCEDURES%%
+                    */
+                    $theText = trim(after("%%TEXT%%", before_last("%%TEXT%%", $tmp["text"])));
+                    $theProcedureLines = trim(after("%%PROCEDURES%%", before_last("%%PROCEDURES%%", $tmp["text"])));
+                    $theProcedures = array();
+                    foreach (explode("\n", $theProcedureLines) as $line) {
+                        $items = explode("|", $line);
+                        // correct the codes if needed
+                        $snomed = trim($items[3]);
+                        $snomedproperties = get_SNOMED_properties($snomed, trim($items[4]));
+                        if ($snomedproperties["code"] !== $snomed) $snomed = $snomedproperties["code"]; // this is a replacement
+                        $snomeddisplay = strlen($snomedproperties["fullySpecifiedName"]) > 0 ? $snomedproperties["fullySpecifiedName"] : $snomeddisplay;
+                        if (strlen($snomed) > 0)
                             $theProcedures[] = [
                                 "type" => trim($items[0]),
                                 "date" => trim($items[1]),
@@ -926,29 +929,29 @@ foreach ($PATIENTS as $pdat) {
                                     "preferredTerm" => $snomedproperties["preferredTerm"],
                                 ]
                             ];
-                        }
-                        $stays[$ii] = array_merge($stays[$ii], [
-                            "hospitalCourse" => $theText,
-                            "inventedProcedures" => $theProcedures
-                        ]);
-                        // var_dump($stays[$ii]);exit;
-                        toCACHE("hospitalcourse", "$md5.json", json_encode([
-                            "hospitalCourse" => $theText,
-                            "inventedProcedures" => $theProcedures
-                        ]));
-                    } else {
-                        $stays[$ii] = array_merge($stays[$ii], [
-                            "hospitalCourse" => NULL,
-                            "inventedProcedures" => NULL
-                        ]);
                     }
+                    $stays[$ii] = array_merge($stays[$ii], [
+                        "hospitalCourse" => $theText,
+                        "inventedProcedures" => $theProcedures
+                    ]);
+                    // var_dump($stays[$ii]);exit;
+                    toCACHE("hospitalcourse", "$md5.json", json_encode([
+                        "hospitalCourse" => $theText,
+                        "inventedProcedures" => $theProcedures
+                    ]));
+                } else {
+                    $stays[$ii] = array_merge($stays[$ii], [
+                        "hospitalCourse" => NULL,
+                        "inventedProcedures" => NULL
+                    ]);
                 }
             }
-            
-            // echo "------------------\n";var_dump($stays);/*üüüüü*/
-
-            $pdat->hospitalstays = $stays;
         }
+        
+        // echo "------------------\n";var_dump($stays);/*üüüüü*/
+
+        $pdat->hospitalstays = $stays;
+    }
 
     // -------------------------------------------------------------------------
     // LAB OBSERVATION LOADING
@@ -968,17 +971,26 @@ foreach ($PATIENTS as $pdat) {
     // required for a complete artifact of the requested type.
     // -------------------------------------------------------------------------
     if (in_array("EPS", $ARTIFACTS)) {
-        if (!($pdat->conditions !== NULL or $pdat->medications !== NULL
-            or $pdat->immunizations !== NULL or $pdat->procedures !== NULL))
-            lognl(2, "...... +++ Patient's clinical story candidate has missing parts for a proper EPS, continuing anyway\n");
+        if ($pdat->conditions === NULL)
+                lognlsev(2, WARNING, "...... +++ Patient's clinical story candidate has missing conditions for a proper EPS, continuing anyway\n");
+        if ($pdat->medications === NULL)
+                lognlsev(2, WARNING, "...... +++ Patient's clinical story candidate has missing medications for a proper EPS, continuing anyway\n");
+        if ($pdat->immunizations === NULL)
+                lognlsev(2, WARNING, "...... +++ Patient's clinical story candidate has missing immunizations for a proper EPS, continuing anyway\n");
+        if ($pdat->procedures === NULL)
+                lognlsev(2, WARNING, "...... +++ Patient's clinical story candidate has missing procedures for a proper EPS, continuing anyway\n");
     }
     if (in_array("LAB", $ARTIFACTS)) {
-        if (!($pdat->labobservations !== NULL))
-            lognl(2, "...... +++ Patient's clinical story candidate has missing parts for a proper LAB, continuing anyway\n");
+        if ($pdat->labobservations === NULL)
+                lognlsev(2, FATAL, "...... +++ Patient's clinical story candidate has missing lab observations for a proper LAB, refusing to continue\n");
     }
     if (in_array("HDR", $ARTIFACTS)) {
-        if (!($pdat->conditions !== NULL or $pdat->procedures !== NULL))
-            lognl(2, "...... +++ Patient's clinical story candidate has missing parts for a proper HDR, continuing anyway\n");
+        if ($pdat->conditions === NULL)
+                lognlsev(2, WARNING, "...... +++ Patient's clinical story candidate has missing conditions for a proper HDR, continuing anyway\n");
+        if ($pdat->procedures === NULL)
+                lognlsev(2, WARNING, "...... +++ Patient's clinical story candidate has missing procedures for a proper HDR, continuing anyway\n");
+        if ($pdat->inpatientencounters === NULL)
+                lognlsev(2, FATAL, "...... +++ Patient's clinical story candidate has missing inpatient encounters for a proper HDR, refusing to continue\n");
     }
     
     if ($pdat->match === NULL)
@@ -1064,7 +1076,7 @@ foreach ($PATIENTS as $pdat) {
                             if ($m["encounter"] === $eeii["encounterid"])
                                 $thisencounterprocedures[] = $m;
             // if we did not find any generated procedures, out the procedures invented by AI on the list
-            if (count($thisencounterprocedures) === 0) {
+            if (count($thisencounterprocedures) === 0 && isset($thisstay["inventedProcedures"])) {
                 foreach($thisstay["inventedProcedures"] as $sp) {
                     $thisencounterprocedures[] = [
                         "type" => $sp["type"],
@@ -1075,7 +1087,7 @@ foreach ($PATIENTS as $pdat) {
                             "display" => $sp["text"],
                             "preferredTerm" => $sp["code"]["display"]
                         ]
-                    ];
+                    ];    
                 }
             }
             $thisencountervitalsigns = array();
@@ -1145,8 +1157,12 @@ foreach ($PATIENTS as $pdat) {
             // var_dump($ISHHDR);
 
             $thisish       = parse_ish($ISHHDR);
+
             $pdat->ish[]   = json_decode(json_encode($thisish));
-            // if ($thisstay["episodeend"] === "2023-06-25") {echo "---------------\n";var_dump($thisish);echo "---------------\n";exit;}
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                lognlsev(2, ERROR, "............ JSON encode+decode ish for patient failed: " . json_last_error_msg());
+            }
+            // echo "---------------\n";var_dump($ISHHDR);echo "---------------\n";var_dump($pdat->ish);
         }
     }
 
@@ -1183,13 +1199,13 @@ foreach ($PATIENTS as $pdat) {
 
     /* Log per-patient success or failure */
     if ($allcount > 0) {
-        lognlsev(1, "SUCCESS", "... *** round #$round: $allcount example file" .
+        lognlsev(1, SUCCESS, "... *** round #$round: $allcount example file" .
             ($allcount === 1 ? "" : "s") .
             " for " . implode(" ", $pdat->given) . " " . $pdat->family .
             " (" . $pdat->age . " yr) with ECI " . $pdat->eci . " emitted.");
         $TOTALEXAMPLEFILES += $allcount;
     } else {
-        lognlsev(1, "ERROR", "... +++ round #$round: NO example file" .
+        lognlsev(1, ERROR, "... +++ round #$round: NO example file" .
             ($allcount === 1 ? "" : "s") .
             " for " . implode(" ", $pdat->given) . " " . $pdat->family .
             " (" . $pdat->age . " yr) with ECI " . $pdat->eci . " emitted.");
@@ -1213,18 +1229,18 @@ if ($TOTALEXAMPLEFILES > 0) {
         if (is_file("synderai-make-fhir.sh")) {
             $result = liveExecuteCommand("sh synderai-make-fhir.sh $a");
             if ($result['exit_status'] === 0) {
-                lognlsev(1, "SUCCESS", "... post-processing for $a succeeded");
+                lognlsev(1, SUCCESS, "... post-processing for $a succeeded");
             } else {
-                lognlsev(1, "ERROR", "... post-processing for $a failed");
+                lognlsev(1, ERROR, "... post-processing for $a failed");
             }
         } else {
-            lognlsev(1, "WARN", "... no post-processing instructions for $a yet (missing synderai-make-fhir.sh)");
+            lognlsev(1, WARNING, "... no post-processing instructions for $a yet (missing synderai-make-fhir.sh)");
         }
     }
-    lognlsev(1, "SUCCESS", "*** konec");
+    lognlsev(1, SUCCESS, "*** konec");
 } else {
     lognl(1, "+++ Phase II: post-processing omitted as there were no example files emitted for any candidate");
-    lognlsev(1, "ERROR", "*** konec (with errors)");
+    lognlsev(1, ERROR, "*** konec (with errors)");
 }
 
 exit;
@@ -1448,7 +1464,7 @@ function emitFSH($pdat, $thisartifact) {
             list($FSHPCP) = twigit(["provider" => $pdat->provider], "provider-as-primarycarephysician-eps");
         } else {
             $FSHPCP = "";
-            lognlsev(3, "WARN", "......... +++ No provider as primary care physician found for " . $pdat->name . "\n");
+            lognlsev(3, WARNING, "......... +++ No provider as primary care physician found for " . $pdat->name . "\n");
         }
 
         // Include all EPS section assemblers
@@ -1557,7 +1573,7 @@ function emitFSH($pdat, $thisartifact) {
             } else {
                 $requester    = NULL;
                 $FSHrequester = "";
-                lognlsev(3, "WARN", "......... +++ No provider as requester found for " . $pdat->name . "\n");
+                lognlsev(3, WARNING, "......... +++ No provider as requester found for " . $pdat->name . "\n");
             }
 
             // Render the FHIR ServiceRequest for this lab round
