@@ -38,7 +38,7 @@ foreach($thisStayISH->section as $section) {
       /* ------------------------------------ */
       if ($entrytype === "vitalsign") {
       /* ------------------------------------ */
-        var_dump($ent);
+        // var_dump($ent);
         // add some data for twig template
         /*
         if (isset($ent->valueQuantity)) {
@@ -99,10 +99,10 @@ foreach($thisStayISH->section as $section) {
       /* ------------------------------------ */
       if ($entrytype === "procedure") {
       /* ------------------------------------ */
-        // var_dump($ent);
+        // reset array of array procedure.code from array (ish artifact) to simple code array
+        $ent->code = $ent->code[0];
         list($tmpfsh, $tmphtml, $tmphead, $entinstance) =
           twigit(["instanceid" => $entinstanceid, "patient" => $pdat, "procedure" => $ent], "procedure-eu");
-        // var_dump($tmpfsh);
         // set entry meta data
         // echo "ÜÜÜÜÜÜÜÜÜÜ\n";var_dump($ent);// exit;
         $ent->bundleentryslicenameentries = "";
