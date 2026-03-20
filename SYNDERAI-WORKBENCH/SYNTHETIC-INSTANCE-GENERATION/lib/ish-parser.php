@@ -18,10 +18,10 @@ function after(string $needle, string $haystack): string {
 */
 
 function is_block_start(string $line): ?string {
-    return preg_match('/^(\S+)\s*$/', $line, $m) ? $m[1] : null;
+    return preg_match('/^(\S+)\s*$/u', $line, $m) ? $m[1] : null;
 }
 function split_key_value(string $line): ?array {
-    return preg_match('/^\s+(\S+)\s+(.*)$/', $line, $m) ? [$m[1], rtrim($m[2])] : null;
+    return preg_match('/^\s+(\S+)\s+(.*)$/u', $line, $m) ? [$m[1], rtrim($m[2])] : null;
 }
 function base_and_repeatable(string $name): array {
     return (substr($name, -1) === '*') ? [substr($name, 0, -1), true] : [$name, false];
@@ -76,7 +76,7 @@ function parse_ish_file(string $inputfile): array {
 function parse_ish(string $input): array {
 
     // ---- state ----
-    $lines    = preg_split('/\R/', $input);
+    $lines = preg_split('/\R/u', $input);
     // stack frames: ['base'=>string, 'repeat'=>bool, 'indent'=>int, 'data'=>array]
     $stack    = [];
     $topLevel = [];
