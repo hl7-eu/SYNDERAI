@@ -619,18 +619,19 @@ if (in_array("HDR", $ARTIFACTS) && $PROCESSISH) {
             if ($ish["patient"]["gender"] === "male") $ok = TRUE;
             if ($ish["patient"]["gender"] === "female") $ok = TRUE;
         }
+        if (isset($ish["patient"]["country"]) && strlen($ish["patient"]["country"]) > 0) $ok = TRUE;
         if (isset($ish["patient"]["birthdate"]) && validateYmd($ish["patient"]["birthdate"])) $ok = TRUE;
         if (isset($ish["patient"]["latitude"]) && preg_match('/^\d+\.\d+$/', $ish["patient"]["latitude"])) $ok = TRUE;
         if (isset($ish["patient"]["longitude"]) && preg_match('/^\d+\.\d+$/', $ish["patient"]["longitude"])) $ok = TRUE;
         // get all conditions as preselection criteria
-        $hdrconditions = array();
+        $hdrconditions = NULL;
         if (isset($ish["section"])) {
             foreach ($ish["section"] as $s) {
                 if (isset($s["entry"])) {
                     foreach ($s["entry"] as $e) {
                         if (isset($e["type"]) && $e["type"] === "condition") {
                             // var_dump($e["code"]);
-                            $hdrconditions[] = $e["code"]["code"];  // stroe SNOMED code of condition form later preselect
+                            $hdrconditions[] = $e["code"]["code"];  // store SNOMED code of condition form later preselect
                         }
                     }
                 }
@@ -639,19 +640,55 @@ if (in_array("HDR", $ARTIFACTS) && $PROCESSISH) {
         
         if ($ok) {
             // store ISH patient and data
-            $hdrpatient                = $ish["patient"];
-            $hdrpatient["name"]        = implode(" ", $hdrpatient["given"]) . " " . $hdrpatient["family"];
-            // Calculate current age from birthdate (31 556 926 seconds per Julian year)
-            $hdrpatient["age"]         = floor((time() - strtotime($hdrpatient["birthdate"])) / 31556926);
-            $hdrpatient["instanceid"]  = uuid();
-            $hdrpatient["eci"]         = generateECI();  // ISH patients do not have a pre-existing ECI
-            $hdrpatient["ish"][]       = $ish;           // retain the full parsed ISH definition
-            $hdrpatient["preselected"] = [               // set preselected array
+            $hdrpatient                    = $ish["patient"]; // assign read-only shortcut again, for simpler expressions
+            // complete name
+            $ish["patient"]["name"]        = implode(" ", $hdrpatient["given"]) . " " . $hdrpatient["family"];
+            // calculate current age from birthdate (31 556 926 seconds per Julian year)
+            $ish["patient"]["age"]         = floor((time() - strtotime($hdrpatient["birthdate"])) / 31556926);
+            $ish["patient"]["instanceid"]  = uuid();
+            // ISH patients do not have a pre-existing ECI, assign one based on md5 of some data
+            $md5 = md5($ish["patient"]["name"] . $ish["patient"]["birthdate"]);
+            $ish["patient"]["eci"]         = generateECImd5($md5); 
+            // set preselected array
+            $ish["patient"]["preselected"] = [
                 "inpatient" => TRUE,
                 "diagnosis" => $hdrconditions
-            ];      
-
-            $PATIENTS[] = $hdrpatient;
+            ];
+            $hdrpatient                    = $ish["patient"];  // reassign shortcut again
+            // is there already a hospital in ISH? If not, find an appropriate one
+            if (!isset($ish["hospital"])) {
+                lognl(2, "......... Finding a close-by provider (hospital) for " . 
+                    $hdrpatient["name"] . ", " . $ish["patient"]["country"] . ", " .
+                    " latitude: " . $ish["patient"]["latitude"] .
+                    " longitude: " . $ish["patient"]["longitude"] . "...");
+                $hdrhospital = getClosestProvider(
+                    $ish["patient"]["country"],
+                    $ish["patient"]["latitude"],
+                    $ish["patient"]["longitude"], 
+                    "hospitals");
+                lognl(2, "............ closest hospital: " . $hdrhospital['name'] . " in " .
+                    $hdrhospital['postcode'] . " " . $hdrhospital['city'] .
+                    " (" . round($hdrhospital['distance']) . " km away)");
+                if (!(isset($ish["practitioner"]) or isset($ish["provider"]))) {
+                    // for the newly found hospital there is obviously no practitioner/provider in ISH, 
+                    // use the one found in hospital which is already present in $hdrhospital
+                } else {
+                    // otherwise ISH specified a practitioner/provider, use it
+                    $hdrhospital["practitioner"] = 
+                        isset($ish["provider"]) ? $ish["provider"] : 
+                            (isset($ish["practitioner"]) ? $ish["practitioner"] : $ish["practitioner"]);
+                }
+                lognl(2, "............ practitioner/provider: " . 
+                    implode(" ", $hdrhospital["practitioner"]["given"]) . " " .
+                    $hdrhospital["practitioner"]["family"]);
+                $ish["hospital"] = $hdrhospital;
+            }
+            // create the whole set and assign it to $PATIENTS, patient primary info is on root level
+            $newpatient = $ish["patient"];
+            foreach ($ish as $ikey => $iary) {
+                if ($ikey !== "patient") $newpatient = array_merge($newpatient, [ $ikey => $iary ]);
+            }
+            $PATIENTS[] = $newpatient;
             $count++;
         } else {
             lognlsev(1, ERROR, "... Processing ish file $hdrfile throws errors, skipping...");
@@ -707,8 +744,12 @@ foreach ($ARTIFACTS as $a) {
 // story, collect clinical data, and emit FSH example files.
 // ============================================================================
 
-lognl(1, "*** Phase I: Pairing clinical stories and demographics data using stratification,");
-lognl(1, "             Processing synthetic patient`s clinical stories, Emitting FSH");
+if ($PROCESSISH) {
+    lognl(1, "*** Phase I: Processing synthetic patient`s clinical story based on ISH, emitting FSH");
+} else {
+    lognl(1, "*** Phase I: Pairing clinical stories and demographics data using stratification,");
+    lognl(1, "             Processing synthetic patient`s clinical stories, emitting FSH");
+}
 
 $round             = 0;
 $TOTALEXAMPLEFILES = 0;
@@ -730,17 +771,19 @@ foreach ($PATIENTS as $pdat) {
      * Mark the patient's preselection accordingly so the clinical story
      * matcher will only return candidates that have inpatient encounters.
      */
-    if (in_array("HDR", $ARTIFACTS)) $pdat->preselected->inpatient = TRUE;
+    if (in_array("HDR", $ARTIFACTS)) {
+        $pdat->preselected->inpatient = TRUE;
+    }
 
     $findacandidaterounds = 10;  // maximum attempts to find a matching clinical story
     $matchcount           = 0;
     $pdat->match          = NULL;
 
     /*
-     * If the patient has preselection criteria (e.g. required diagnoses,
+     * For non-ISH patients: If patient has preselection criteria (e.g. required diagnoses,
      * medications, or inpatient status), first narrow the candidate pool.
      */
-    if (isset($pdat->preselected)) {
+    if (!$PROCESSISH and isset($pdat->preselected)) {
         lognl(2, "...... Collecting candidates that matches pre-selection criteria\n");
         $matchingpreselectioncriteriacandidates = getClinicalStoryCandidatesWithMatchingPreselections($pdat->preselected);
     } else {
@@ -759,7 +802,9 @@ foreach ($PATIENTS as $pdat) {
     //   - Candidate age must be between (patient age + 1) and (patient age + 4).
     //   - If preselection criteria were specified, the candidate must satisfy all.
     // -------------------------------------------------------------------------
-    if ($ISARERUN) {
+    if ($PROCESSISH) {
+        lognl(2, "...... Using clinical story of ISH patient $pdat->name\n");
+    } else if ($ISARERUN) {
         $eci           = $pdat->eci;
         $candid        = $STORYFOR[$eci];
         lognl(2, "...... Using stored clinical story candidate for this patient: $candid\n");
@@ -802,20 +847,26 @@ foreach ($PATIENTS as $pdat) {
 
     // -------------------------------------------------------------------------
     // CLINICAL DATA LOADING
-    // get clinical data - even if patient has alrerdy ISH defined items
+    // get clinical data, from patient's clinical story candidate
+    // or – if patient has already ISH defined items – from the ISH items.
     // Each getter is included only when required by the active artifact set.
-    // Getters read from the Synthea CSV files and populate properties on $pdat.
+    // Getters either read from the Synthea CSV files or from ISH data
+    // and populate properties on $pdat.
     // -------------------------------------------------------------------------
 
-    if (includeConditionally("conditions"))           include("getters/conditions.php");
-    if (includeConditionally("medications"))          include("getters/medications.php");
-    if (includeConditionally("immunizations"))        include("getters/immunizations.php");
-    if (includeConditionally("procedures"))           include("getters/procedures.php");
-    if (includeConditionally("allergiesintolerances")) include("getters/allergiesintolerances.php");
-    if (includeConditionally("careplans"))            include("getters/careplans.php");
-    if (includeConditionally("vitalsigns"))           include("getters/vitalsigns.php");
-    if (includeConditionally("pregnancies"))          include("getters/pregnancies.php");
-    if (includeConditionally("inpatientencounters"))  include("getters/inpatientencounters.php");
+    if (includeConditionally("conditions"))            include("getters/conditions.php");
+    if (includeConditionally("procedures"))            include("getters/procedures.php");
+    if (includeConditionally("inpatientencounters"))   include("getters/inpatientencounters.php");
+    if (!$PROCESSISH) {
+        // non-ISH patients must get these information from their clinical story candidate
+        if (includeConditionally("medications"))           include("getters/medications.php");
+        if (includeConditionally("immunizations"))         include("getters/immunizations.php");
+        if (includeConditionally("allergiesintolerances")) include("getters/allergiesintolerances.php");
+        if (includeConditionally("careplans"))             include("getters/careplans.php");
+        if (includeConditionally("vitalsigns"))            include("getters/vitalsigns.php");
+        if (includeConditionally("pregnancies"))           include("getters/pregnancies.php");
+    }
+    // var_dump($pdat->conditions);var_dump($pdat->procedures);exit;
 
     // -------------------------------------------------------------------------
     // HOSPITAL STAY ASSEMBLY (HDR prerequisite)
@@ -877,93 +928,96 @@ foreach ($PATIENTS as $pdat) {
 
         // var_dump($stays);exit;/*üüüüü*/
 
-        // Attach a short hospital course narrative to each stay
-        lognl(2, "......... Getting hospital course and invented procedures per stay");
-        for ($ii = 0; $ii <= count($stays) - 1; $ii++) {
-            $md5 = md5(
-                $pdat->eci . 
-                $pdat->inpatientencounters[$ii]["procedure"]["code"] . 
-                $stays[$ii]["episodestart"] . 
-                $stays[$ii]["episodeend"]);
-            $hcipai = inCACHE("hospitalcourse", "$md5.json");  // look for hospital course and invented procedures in cache first
-            if ($hcipai !== FALSE) {
-                // hooray, in cache
-                $thishcipai = json_decode($hcipai, TRUE);
-                $stays[$ii] = array_merge($stays[$ii], $thishcipai);
-                // echo "-----$md5\n";var_dump($stays[$ii]);exit;
-            } else {
-                $tmp = getAIHospitalCourse($pdat->age, $pdat->gender, $stays[$ii], TRUE);
-                // includeProcedures = TRUE|FALSE
-                if (200 === $tmp["code"]) {
-                    /*
-                    * now we have the hospital course text between %%TEXT%% tags and
-                    * optional procedures between %%PROCEDURES%% - split them up
-                    * example
-                    * %%TEXT%%
-                    * Dear Colleague, I am writing to inform you regarding the discharge of your patient, an 84-year-old male, ...
-                    * %%TEXT%%
-                    * %%PROCEDURES%%
-                    * diagnostic|2026-03-16|Clinical knee examination with valgus stress testing|5880005|Physical examination procedure
-                    * therapeutic|2026-03-16|Postoperative analgesia administration|18629005|Administration of drug or medicament
-                    * %%PROCEDURES%%
-                    */
-                    $theText = trim(after("%%TEXT%%", before_last("%%TEXT%%", $tmp["text"])));
-                    $theProcedureLines = trim(after("%%PROCEDURES%%", before_last("%%PROCEDURES%%", $tmp["text"])));
-                    $theProcedures = array();
-                    foreach (explode("\n", $theProcedureLines) as $line) {
-                        $items = explode("|", $line);
-                        // correct the codes if needed
-                        $snomed = trim($items[3]);
-                        $snomedproperties = get_SNOMED_properties($snomed, trim($items[4]));
-                        if ($snomedproperties["code"] !== $snomed) $snomed = $snomedproperties["code"]; // this is a replacement
-                        $snomeddisplay = strlen($snomedproperties["fullySpecifiedName"]) > 0 ? $snomedproperties["fullySpecifiedName"] : $snomeddisplay;
-                        if (strlen($snomed) > 0)
-                            $theProcedures[] = [
-                                "type" => trim($items[0]),
-                                "date" => trim($items[1]),
-                                "text" => trim($items[2]),
-                                "code" => [
-                                    "code" => $snomed,
-                                    "system" => "\$sct",
-                                    "display" => $snomeddisplay,
-                                    "preferredTerm" => $snomedproperties["preferredTerm"],
-                                ]
-                            ];
-                    }
-                    $stays[$ii] = array_merge($stays[$ii], [
-                        "hospitalCourse" => $theText,
-                        "inventedProcedures" => $theProcedures
-                    ]);
-                    // var_dump($stays[$ii]);exit;
-                    toCACHE("hospitalcourse", "$md5.json", json_encode([
-                        "hospitalCourse" => $theText,
-                        "inventedProcedures" => $theProcedures
-                    ]));
+        // Attach a short hospital course narrative to each stay - if not ish
+        if (!$PROCESSISH) {
+            lognl(2, "......... Getting hospital course and invented procedures per stay");
+            for ($ii = 0; $ii <= count($stays) - 1; $ii++) {
+                $md5 = md5(
+                    $pdat->eci . 
+                    $pdat->inpatientencounters[$ii]["procedure"]["code"] . 
+                    $stays[$ii]["episodestart"] . 
+                    $stays[$ii]["episodeend"]);
+                $hcipai = inCACHE("hospitalcourse", "$md5.json");  // look for hospital course and invented procedures in cache first
+                if ($hcipai !== FALSE) {
+                    // hooray, in cache
+                    $thishcipai = json_decode($hcipai, TRUE);
+                    $stays[$ii] = array_merge($stays[$ii], $thishcipai);
+                    // echo "-----$md5\n";var_dump($stays[$ii]);exit;
                 } else {
-                    $stays[$ii] = array_merge($stays[$ii], [
-                        "hospitalCourse" => NULL,
-                        "inventedProcedures" => NULL
-                    ]);
+                    $tmp = getAIHospitalCourse($pdat->age, $pdat->gender, $stays[$ii], TRUE);
+                    // includeProcedures = TRUE|FALSE
+                    if (200 === $tmp["code"]) {
+                        /*
+                        * now we have the hospital course text between %%TEXT%% tags and
+                        * optional procedures between %%PROCEDURES%% - split them up
+                        * example
+                        * %%TEXT%%
+                        * Dear Colleague, I am writing to inform you regarding the discharge of your patient, an 84-year-old male, ...
+                        * %%TEXT%%
+                        * %%PROCEDURES%%
+                        * diagnostic|2026-03-16|Clinical knee examination with valgus stress testing|5880005|Physical examination procedure
+                        * therapeutic|2026-03-16|Postoperative analgesia administration|18629005|Administration of drug or medicament
+                        * %%PROCEDURES%%
+                        */
+                        $theText = trim(after("%%TEXT%%", before_last("%%TEXT%%", $tmp["text"])));
+                        $theProcedureLines = trim(after("%%PROCEDURES%%", before_last("%%PROCEDURES%%", $tmp["text"])));
+                        $theProcedures = array();
+                        foreach (explode("\n", $theProcedureLines) as $line) {
+                            $items = explode("|", $line);
+                            // correct the codes if needed
+                            $snomed = trim($items[3]);
+                            $snomedproperties = get_SNOMED_properties($snomed, trim($items[4]));
+                            if ($snomedproperties["code"] !== $snomed) $snomed = $snomedproperties["code"]; // this is a replacement
+                            $snomeddisplay = strlen($snomedproperties["fullySpecifiedName"]) > 0 ? $snomedproperties["fullySpecifiedName"] : $snomeddisplay;
+                            if (strlen($snomed) > 0)
+                                $theProcedures[] = [
+                                    "type" => trim($items[0]),
+                                    "date" => trim($items[1]),
+                                    "text" => trim($items[2]),
+                                    "code" => [
+                                        "code" => $snomed,
+                                        "system" => "\$sct",
+                                        "display" => $snomeddisplay,
+                                        "preferredTerm" => $snomedproperties["preferredTerm"],
+                                    ]
+                                ];
+                        }
+                        $stays[$ii] = array_merge($stays[$ii], [
+                            "hospitalCourse" => $theText,
+                            "inventedProcedures" => $theProcedures
+                        ]);
+                        // var_dump($stays[$ii]);exit;
+                        toCACHE("hospitalcourse", "$md5.json", json_encode([
+                            "hospitalCourse" => $theText,
+                            "inventedProcedures" => $theProcedures
+                        ]));
+                    } else {
+                        $stays[$ii] = array_merge($stays[$ii], [
+                            "hospitalCourse" => NULL,
+                            "inventedProcedures" => NULL
+                        ]);
+                    }
                 }
             }
         }
-        
+
         // echo "------------------\n";var_dump($stays);/*üüüüü*/
 
         $pdat->hospitalstays = $stays;
     }
 
     // -------------------------------------------------------------------------
-    // LAB OBSERVATION LOADING
+    // LAB OBSERVATION and DEVICES LOADING - if not an ISH patient
     // Uses ALLLABS mode to retrieve every lab result for EPS, LAB, and HDR.
     // -------------------------------------------------------------------------
-    $LABRESULTTYPE = "ALLLABS";
-    if (includeConditionally("labresults") or includeConditionally("recentlabresults")) {
-        include("getters/validlabcodes.php");
-        include("getters/labobservations.php");
+    if (!$PROCESSISH) {
+        $LABRESULTTYPE = "ALLLABS";
+        if (includeConditionally("labresults") or includeConditionally("recentlabresults")) {
+            include("getters/validlabcodes.php");
+            include("getters/labobservations.php");
+        }
+        if (includeConditionally("devices")) include("getters/devices.php");
     }
-
-    if (includeConditionally("devices")) include("getters/devices.php");
 
     // -------------------------------------------------------------------------
     // MINIMUM DATA VALIDATION
@@ -985,11 +1039,11 @@ foreach ($PATIENTS as $pdat) {
                 lognlsev(2, FATAL, "...... +++ Patient's clinical story candidate has missing lab observations for a proper LAB, refusing to continue\n");
     }
     if (in_array("HDR", $ARTIFACTS)) {
-        if ($pdat->conditions === NULL)
+        if (!isset($pdat->conditions) or $pdat->conditions === NULL)
                 lognlsev(2, WARNING, "...... +++ Patient's clinical story candidate has missing conditions for a proper HDR, continuing anyway\n");
-        if ($pdat->procedures === NULL)
+        if (!isset($pdat->procedures) or $pdat->procedures === NULL)
                 lognlsev(2, WARNING, "...... +++ Patient's clinical story candidate has missing procedures for a proper HDR, continuing anyway\n");
-        if ($pdat->inpatientencounters === NULL)
+        if (!isset($pdat->inpatientencounters) or $pdat->inpatientencounters === NULL)
                 lognlsev(2, FATAL, "...... +++ Patient's clinical story candidate has missing inpatient encounters for a proper HDR, refusing to continue\n");
     }
     
@@ -1024,8 +1078,9 @@ foreach ($PATIENTS as $pdat) {
     //   2. Finding the nearest hospital via getClosestProvider().
     //   3. Rendering a generic-hdr Twig template to produce an ISH string.
     //   4. Parsing the ISH string via parse_ish() and storing on $pdat->ish[].
+    // If this is an ISH patient, simpy, assign his data so far to $pdat->ish[]
     // -------------------------------------------------------------------------
-    if (in_array("HDR", $ARTIFACTS) and !isset($pdat->ish)) {
+    if (in_array("HDR", $ARTIFACTS) and !$PROCESSISH) {
 
         lognl(2, "...... Inventing HDR by creating and parsing ISH information " .
             "based on the hospital stay(s) clinical story for " . implode(" ", $pdat->given) . " " . $pdat->family);
@@ -1270,10 +1325,6 @@ exit;
  *     device Twig templates.
  *   - Writes one .fsh file per stay.
  *
- * NOTE (HDR): a live var_dump($hdrencounter) exists at ~line 944 and will
- * produce unexpected output during HDR generation. Remove before production use.
- * NOTE (HDR): the FHIR Bundle assembly for HDR is marked TODO and not yet done.
- *
  * ---- EPS path ---------------------------------------------------------------
  * Single pass per patient:
  *   - Finds the nearest individual practitioner from $SYNTHETICPROVIDERS and
@@ -1313,6 +1364,7 @@ function emitFSH($pdat, $thisartifact) {
 
     global $COMPONENTS;
     global $SYNTHETICPROVIDERS;
+    global $PROCESSISH;
 
     $sections    = array();
 
@@ -1328,7 +1380,17 @@ function emitFSH($pdat, $thisartifact) {
         // emit all HDRs
         $outputcount = 0;
 
-        foreach ($pdat->ish as $thisStayISH) {
+        if ($PROCESSISH) {
+            // all the pdat collected so far is "the ISH"
+            $allishdat = json_decode(json_encode( [ $pdat ] ));
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                lognlsev(2, ERROR, "............ JSON encode+decode ish for patient failed: " . json_last_error_msg());
+            }
+        } else {
+            $allishdat = $pdat->ish;
+        }
+
+        foreach ($allishdat as $thisStayISH) {
 
             // Assign fresh UUIDs to all FHIR resource instances for this stay
             $pdat->instanceid = uuid();
@@ -1412,7 +1474,8 @@ function emitFSH($pdat, $thisartifact) {
             $OUTFSH = applyCorrectionsOnAIflawsInFSH($OUTFSH);
             if (!is_dir(FSHOUTPUTDIR . "/$thisartifact")) mkdir(FSHOUTPUTDIR . "/$thisartifact");
             $outputcount++;
-            $fn = FSHOUTPUTDIR . "/$thisartifact/__" . $pdat->eci . "-hdr-example-$outputcount-" . $hdrencounter->end . ".fsh";
+            $fn = FSHOUTPUTDIR . "/$thisartifact/__" . $pdat->eci . 
+                "-hdr-example-$outputcount-" . substr($hdrencounter->end, 0, 10) . ".fsh";
             file_put_contents($fn, $OUTFSH);
         }
     }

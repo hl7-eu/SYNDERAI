@@ -22,27 +22,32 @@
 
 * status = #final
 
-* performer[+].display = "The Central European Lab"
-{# * performer[=] = Reference(urn:uuid:e512e2e2-9600-4c69-a269-af3ab5421e09) #}
-
-* code.coding[+] = ${{ labresult.code.system }}#{{ labresult.code.code }} "{{ labresult.code.display }}"
-* code.text = "{{ labresult.code.display }}"
-{{ addHTML_td(labresult.code.display) }}
+{# we may have more than 1 code which is legal but HL7 EU HDR only want exactly 1..1, take the first #}
+{# so instead of iterating with for c in labresult.code use code[0] #}
+{% set c = labresult.code | first %}
+* code[+].coding = {{ c.system }}#{{ c.code }} "{{ c.display }}"
+* code[=].text = "{{ c.display }}"
+{{ addHTML_td(c.display) }}
 
 {# * method = $sct#70621000052105 "Spectrophotometric technique" #}
 
 * subject = Reference(urn:uuid:{{ labresult.subject }}) "{{ labresult.subjectname }}"
 
+{% if labresult.effective is not empty %}
 * effectiveDateTime = "{{ labresult.effective }}"
+{% endif %}
+{% if labresult.date is not empty %}
+{% endif %}
+* effectiveDateTime = "{{ labresult.date|date('Y-m-d') }}"
 
-{% if labresult.value.type == "Quantity" %}
+{% if labresult.value.type == "Quantity" or labresult.valueQuantity is not empty %}
 
-* valueQuantity.value = {{ labresult.value.value }}
-* valueQuantity.unit = "{{ labresult.value.unit }}"
-* valueQuantity.code = #{{ labresult.value.unit }}
+* valueQuantity.value = {{ labresult.value.value ?? labresult.valueQuantity.value }}
+* valueQuantity.unit = "{{ labresult.value.code ?? labresult.valueQuantity.code }}"
+* valueQuantity.code = #{{ labresult.value.unit ?? labresult.valueQuantity.unit }}
 * valueQuantity.system = ${{ labresult.value.system }}
 
-{{ addHTML_td(labresult.value.value) }}
+{{ addHTML_td(labresult.value.value ?? labresult.valueQuantity.value) }}
 
 {% if labresult.reference.low is not empty and labresult.reference.high is not empty %}
 
@@ -51,17 +56,17 @@
 
 {{ addHTML_td(labresult.reference.low ~ " - " ~ labresult.reference.high) }}
 
-{% if labresult.value.value < labresult.reference.low %}
+{% if (labresult.value.value ?? labresult.valueQuantity.value) < labresult.reference.low %}
 * interpretation = $v3-ObservationInterpretation#L "Low"
 {{ addHTML_td("L") }}
-{% elseif labresult.value.value > labresult.reference.high %}
+{% elseif (labresult.value.value ?? labresult.valueQuantity.value) > labresult.reference.high %}
 * interpretation = $v3-ObservationInterpretation#H "High"
 {{ addHTML_td("H") }}
 {% else %}
 {{ addHTML_td("") }}
 {% endif %}
 
-{{ addHTML_td(labresult.value.unit) }}
+{{ addHTML_td(labresult.value.unit ?? labresult.valueQuantity.unit)}}
 
 {# if if lr.low or high #}
 {% elseif labresult.reference.text is not empty %}
@@ -70,13 +75,12 @@
 {{ addHTML_td("-") }}
 {% endif %} {# if if lr.low or high or lr.text #}
 
-
 {% endif %} {# Quantity #}
 
-{% if labresult.value.type == "CodeableConcept" %}
+{% if labresult.value.type == "CodeableConcept" or labresult.valueCodeableConcept is not empty %}
 
-* valueCodeableConcept = ${{ labresult.value.system }}#{{ labresult.value.code}} "{{ labresult.value.display }}"
-{{ addHTML_td(labresult.value.display) }}
+* valueCodeableConcept = {{ labresult.value.system ?? labresult.valueCodeableConcept.system }}#{{ labresult.value.code ?? labresult.valueCodeableConcept.code }} "{{ labresult.value.display ?? labresult.valueCodeableConcept.display }}"
+{{ addHTML_td(labresult.valueCodeableConcept.display) }}
 
 {% if labresult.reference.low is not empty and labresult.reference.high is not empty %}
 * referenceRange[+].low = "{{ labresult.reference.low }}"
@@ -84,6 +88,10 @@
 {% endif %}
 
 {% endif %} {# CodeableConcept #}
+
+{% if labresult.site is not empty %}
+* bodySite[+] = {{ labresult.site.system }}#{{ labresult.site.code }} "{{ labresult.site.display }}"
+{% endif %}
 
 {% if labresult.specimenid is not empty %}
 * specimen = Reference(urn:uuid:{{ labresult.specimenid }})

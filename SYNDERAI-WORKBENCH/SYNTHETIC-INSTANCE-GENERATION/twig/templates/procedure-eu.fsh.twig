@@ -70,7 +70,7 @@ Usage: #inline
 {% endif %}
 
 {% if procedure.site.code is not empty %}
-* site.coding[0] = {{ procedure.site.system }}#{{ procedure.site.code }} "{{ procedure.site.display }}"
+* bodySite[+].coding = {{ procedure.site.system }}#{{ procedure.site.code }} "{{ procedure.site.display }}"
 {% endif %}
 
 * subject = Reference(urn:uuid:{{ patient.instanceid }}) "{{ patient.name }}"

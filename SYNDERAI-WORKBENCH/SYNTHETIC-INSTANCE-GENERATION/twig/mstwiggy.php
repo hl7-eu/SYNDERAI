@@ -349,13 +349,13 @@ function twigit($data, $with) {
         $rendition = $twig->render("$with.ish.twig", $data);
 
         if (!str_contains($rendition, '%%ISH%%')) echo "+++Error: twig rendition does not contain required %%ISH%% tag!\n";
-
+        
         $split = explode('%%ISH%%', $rendition);
         return $split[1];   // return only the ISH content section
 
     } else {
         // No matching template file found for either convention
-        echo "+++Error: twig template $with not found!\n";
+        throw new InvalidArgumentException("Twig template does not exist: $with");
         return [];
     }
 }

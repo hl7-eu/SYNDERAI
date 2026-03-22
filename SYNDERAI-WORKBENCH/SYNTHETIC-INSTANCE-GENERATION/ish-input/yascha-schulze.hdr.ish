@@ -14,13 +14,14 @@ patient
   latitude 52.481903
   longitude 13.425926
   preselected
-  #  diagnosis* 1
-  #  diagnosis* 2
-  #  medication* 3
+    inpatient
+#  diagnosis* 1
+#  medication* 3
 # closest hospital will be dectected by SYNDERAI
 encounter
   start 2025-06-06T21:45:00Z
   end 2025-06-08T11:00:00Z
+  procedure* $sct#20701002 Open reduction of fracture with internal fixation (procedure)
   reason* $sct#125593007 Injury of face (disorder)
 # the provider person in the hopital as primary contact person there
 provider
@@ -31,7 +32,7 @@ provider
   phone +49 30 234276-13
 section*
   type admissionevaluation
-  code $loinc#67852-4 Hospital Admission evaluation note
+  code $loinc#67851-6 Hospital Admission evaluation note
   title Admission evaluation
   text """The patient, a 29-year-old male, was admitted following a physical altercation in Berlin-Neukölln, during which he sustained blunt trauma to the left side of the face. On presentation, clinical findings included a prominent facial contusion and swelling over the left zygomatic region. Palpation suggested underlying bone discontinuity. CT imaging confirmed a displaced left zygomatic arch fracture."""
 section*
@@ -46,18 +47,24 @@ section*
     code $loinc#11367-0 History of Tobacco use
     valueCodeableConcept $sct#77176002 Current smoker
 section*
+  type synthesis
+  code $loinc#67781-5 Summarization of encounter note
+  title Summarization of Encounter
+  text """Displaced left zygomatic fracture, open reduction and internal fixation (ORIF), postoperative uneventful."""
+section*
   type hospitalcourse
   code $loinc#8648-8 Hospital Course
+  title Hospital Course
   text """The patient was admitted to the Oral and Maxillofacial Surgery service for operative management. Pre-operative assessments were completed, and no contraindications to anesthesia or surgery were identified.<p/>A surgical intervention under general anesthesia was performed for open reduction and internal fixation (ORIF) of the zygomatic fracture. Stabilization was achieved using titanium mini-plates and screws. The surgical wound was closed in layers with absorbable sutures.<p/>The postoperative period was uneventful. Pain was adequately managed, and there were no signs of infection, wound dehiscence, or sensory disturbances. The patient received standard post-op wound care and showed good initial healing progress."""
 section*
   type procedure
   code $loinc#10185-7 Hospital discharge procedures Narrative
   title Significant procedures
-  text """<table class="hl7__ips"><tr><td>Open reduction of fracture with internal fixation of left zygomatic bone</td><td>male</td><td class="nb">06-JUN-2025</td></tr><tr><td>Computed tomography of maxillofacial area</td><td>male</td><td class="nb">06-JUN-2025</td></tr></table>
+  text """<table class="hl7__ips"><tr><td>Open reduction of fracture with internal fixation of left zygomatic bone</td><td>male</td><td class="nb">06-JUN-2025</td></tr><tr><td>Computed tomography of maxillofacial area</td><td>male</td><td class="nb">06-JUN-2025</td></tr></table>"""
   entry*
     type procedure
     date 2025-06-06
-    code $sct#1362046005 Computed tomography of maxillofacial area (procedure)
+    code $sct#1362046005 Computed tomography of maxillofacial area (procedure) 
     status #completed
   entry*
     type procedure
@@ -77,17 +84,18 @@ section*
     code* $loinc#24696-7 CT Facial bones
     valueCodeableConcept $sct#123735002 Fracture with displacement (morphologic abnormality)
     site $sct#787058006 Structure of left zygomatic bone (body structure)
-  entry*
-    type addrecentlabresults
+#  entry*
+#    type addrecentlabresults
 section*
-  type medication
+  type pharmacotherapy
   code $loinc#87232-5 Medication administration.brief
-  title Medications
+  title Medication
   entry*
     type medication
     start 2025-06-06
     code $sct#776287003 Product containing only ibuprofen (medicinal product)
     route $sct#26643006 Oral route
+    asNeeded $sct#22253000 Pain (finding)
     text """Analgesics: Ibuprofen as need"""
   entry*
     type medication
@@ -98,7 +106,7 @@ section*
     text """Antibiotics: Amoxicillin-clavulanic acid post-op"""
 section*
   type careplan
-  code $loinc#10185-7 Plan of care note
+  code $loinc#18776-5 Plan of care note
   title Follow-up
   entry*
     type careplan
@@ -129,21 +137,22 @@ section*
     type dischargediagnosis
     date 2025-06-08
     status $condition-clinical#resolved
-    code* $sct#1278528006 Facial swelling (finding) 
+    code* $sct#278528006 Facial swelling (finding) 
   entry*
     type dischargediagnosis
     date 2025-06-08
     status $condition-clinical#resolved
     code* $icd10#S02.40FA zygomatic fracture, left side, initial encounter for closed fracture
-    code* http://id.who.int/icd/release/11/mms#NA02.5 Fracture of zygoma
     code* $sct#16561521000119103 Closed fracture of left zygomatic bone (disorder)
+    code* http://id.who.int/icd/release/11/mms#NA02.5 Fracture of zygoma
 section*
   type dischargemedication
   date 2025-06-08
-  code $lojnc#75311-1 Discharge medications note
+  code $loinc#75311-1 Discharge medications note
   entry*
     type medication
     start 2025-06-08
     code $sct#776287003 Product containing only ibuprofen (medicinal product)
     route $sct#26643006 Oral route
+    asNeeded $sct#22253000 Pain (finding)
     text """Analgesics: Ibuprofen as need"""

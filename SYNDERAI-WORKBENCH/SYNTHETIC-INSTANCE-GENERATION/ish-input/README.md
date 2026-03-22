@@ -1,5 +1,7 @@
 # Instance Short Hand (ISH)
 
+by dr K. Heitmann
+
 ## Introduction
 
 **Instance Short Hand (ISH)** is a lightweight, indentation-based notation designed to describe healthcare data instances in a human-friendly yet machine-parsable form. Its purpose is to bridge the gap between highly structured healthcare standards (such as HL7 FHIR or CDA) and the practical need to **prototype, test, and exchange clinical scenarios** in a concise text format.

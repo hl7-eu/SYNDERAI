@@ -99,12 +99,12 @@ if ($pdat->careplans !== NULL) {
               Add missing text to Goal resource
             */
             $gf .= "\n" . 
-                   "* text.status = #generated\n" .
-                   "* text.div = \"\"\"" .
-                   "<div xmlns=\"http://www.w3.org/1999/xhtml\">" .
-                   $goalsdesc[$cnt] .
-                   "</div>" .
-                  "\"\"\"";
+               "* text.status = #generated\n" .
+               "* text.div = \"\"\"" .
+               "<div xmlns=\"http://www.w3.org/1999/xhtml\">" .
+               $goalsdesc[$cnt] .
+               "</div>" .
+              "\"\"\"";
             /*
               CAVEAT #1
               ... Goal.target.measure is required if Goal.target.detail is populated
@@ -154,6 +154,7 @@ if ($pdat->careplans !== NULL) {
               }
               // if all is done, re-construct the fsh
               $gf = $newlines;
+
             }
             // if even now details are present without a measure make the fsh invalid, so we emit minila text only.
             if (str_contains($gf, ".detail") and !str_contains($gf, ".measure = http://loinc.org#")) {
@@ -182,7 +183,12 @@ if ($pdat->careplans !== NULL) {
 
     $careplaninstanceid = uuid();
     list($tmpfsh, $tmphtml, $HEADcareplan, $cpinstance) = 
-      twigit(["instanceid" => $careplaninstanceid, "patient" => $pdat, "careplan" => $sdata, "goals" => $goals], "careplan");
+      twigit([
+        "instanceid" => $careplaninstanceid,
+        "patient" => $pdat,
+        "careplan" => $sdata,
+        "goals" => $goals
+      ], "careplan");
     // echo("---------\n" . $tmpfsh);
     $pdat->careplanentries[] = [
       'id' => $careplaninstanceid,

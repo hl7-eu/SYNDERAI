@@ -27,7 +27,7 @@ case "$1" in
         OUT=_validation-HDR.html
         SDIR=../RECENT-RESULTS/HDR
         FILES=Bundle-*.json
-        IG='hl7.fhir.eu.hdr'
+        IG='hl7.fhir.eu.hdr#1.0.0-alpha'
         PROFILE=http://hl7.eu/fhir/hdr/StructureDefinition/bundle-eu-hdr
         ;;
 esac

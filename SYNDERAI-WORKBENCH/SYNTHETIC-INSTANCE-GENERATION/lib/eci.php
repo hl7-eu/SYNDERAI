@@ -45,6 +45,7 @@ function generateECI() {
 }
 
 
+
 /**
  * Calculate the Luhn (mod-10) check digit for a numeric string.
  *
@@ -142,4 +143,58 @@ function generateId($digits = 4) {
     }
 
     return $pin;
+}
+
+/**
+ * Derives a $digits-length numeric string from a given MD5 hex string.
+ * Strips non-numeric characters from the hash and pads with a secondary
+ * MD5 pass if the hash yields insufficient digits.
+ */
+function generateIdMd5(string $md5, int $digits = 4): ?string
+{
+    if ($digits < 2 || $digits > 12) {
+        return null;
+    }
+
+    // Extract only numeric characters from the MD5 hex string
+    $numeric = preg_replace('/[^0-9]/', '', $md5);
+
+    // If the MD5 doesn't yield enough digits, chain a second MD5 pass
+    while (strlen($numeric) < $digits) {
+        $numeric .= preg_replace('/[^0-9]/', '', md5($numeric));
+    }
+
+    // Ensure the first digit is 1–9 (no leading zero), same rule as generateId()
+    $first = $numeric[0] === '0' ? '1' : $numeric[0];
+    $pin   = $first . substr($numeric, 1, $digits - 1);
+
+    return $pin;
+}
+
+/**
+ * Generates a European Citizen Identifier (ECI) using an MD5 hash
+ * as the entropy source instead of mt_rand().
+ *
+ * @param  string|null  $md5  Optional pre-computed MD5 hex string (32 chars).
+ *                            If omitted, one is generated from a random seed.
+ * @return string             Formatted ECI: XXXX-XXXXXX-C
+ */
+function generateECImd5(?string $md5 = null): string
+{
+    // Allow callers to supply their own MD5 (e.g. from a document hash,
+    // patient seed, or external source); otherwise generate one fresh.
+    if ($md5 === null || !preg_match('/^[a-f0-9]{32}$/i', $md5)) {
+        $md5 = md5(uniqid('', true));
+    }
+
+    $i = generateIdMd5($md5, 10);               // 10-digit MD5-derived base
+    $j = luhn_checksum($i);                     // Luhn check digit
+    $k = substr($i, 0, 4) . "-"
+       . substr($i, 4, 6) . "-" . $j;          // formatted ECI
+
+    if (!is_valid_luhn($k)) {
+        echo "+++ Invalid LUHN Checksum, please check, son!";
+    }
+
+    return $k;
 }

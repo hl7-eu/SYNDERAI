@@ -49,15 +49,16 @@ Usage: #inline
 {# add snomed #}
 {% if medication.code.code is not empty %}
 * code.coding[+] = $sct#{{ medication.code.code }} "{{ medication.code.display }}"
+{% if medication.code.preferredTerm is not empty %}
+{# use preferred term, if present emit as text #}
+* code.text[=] = "{{ medication.code.preferredTerm }}"
+{% endif %}
 {% else %}
 {# rxnorm only if no snomed #}
 {% if medication.rxnorm.code is not empty %}
 * code.coding[+] = $rxnorm#{{ medication.rxnorm.code }} "{{ medication.rxnorm.display }}"
 {% endif %}
 {% endif %}
-
-{# use preferred term, is always set as text #}
-* code.text = "{{ medication.snomed.preferredTerm }}"
 
 {# form #}
 {% set formdisplay = "" %}
@@ -76,7 +77,7 @@ Usage: #inline
 * text.status = #generated
 * text.div = """
 <div xmlns="http://www.w3.org/1999/xhtml">
-{{ medication.snomed.preferredTerm }} {{ formdisplay }}
+{{ medication.code.preferredTerm ?? medication.code.display }} {{ formdisplay }}
 </div>
 """
 
@@ -102,9 +103,19 @@ Usage: #inline
 
 {{ addHTML_tr() }}
 
-* medicationReference = Reference(urn:uuid:{{ druginstanceid }}) "{{ medication.snomed.preferredTerm }}"
-{# HTML td 1: add human text for medication name #}
-{{ addHTML_td(medication.snomed.preferredTerm) }}
+* medicationReference = Reference(urn:uuid:{{ druginstanceid }}) "{{ medication.code.preferredTerm ?? medication.code.display }}"
+{# HTML td 1: add human text for medication name + optional "as needed" #}
+{% set med = medication.code.preferredTerm ?? medication.code.display %}
+{% if medication.asNeeded is not empty %}
+{# either "true" or a snomed code $sct#... #}
+{% if medication.asNeeded == "true" %}
+{% set med = med ~ " - as needed" %}
+{% endif %}
+{% if medication.asNeeded.display is not empty %}
+{% set med = med ~ " - " ~ medication.asNeeded.display %}
+{% endif %}
+{% endif %} {# asNeeded not empty #}
+{{ addHTML_td(med) }}
 
 * subject = Reference(urn:uuid:{{ patient.instanceid }}) "{{ patient.name }}"
 
@@ -123,15 +134,30 @@ Usage: #inline
 {{ addHTML_td("-") }}
 {% endif %}
 
+{% set contdose = "+" %}
 {# add AI dosage if any #}
 {% if medication.dosagefsh is not empty %}
 {# ??? if (substr($dl, 0, 1) === '*') addFSH ($FSH, $dl); #}
 {{ medication.dosagefsh | raw }}
+{% set contdose = "=" %}
 {# HTML td 2: add dosage, returned already as fsh by AI #}
+{% endif %} {# asNeeded not empty #}
+
+{% if medication.asNeeded is not empty %}
+{# either "true" or a snomed code $sct#... #}
+{% if medication.asNeeded == "true" %}
+* dosage[{{ contdose }}].asNeededBoolean = true
+{% endif %}
+{% if medication.asNeeded.display is not empty %}
+* dosage[{{ contdose }}].asNeededCodeableConcept = {{ medication.asNeeded.system }}#{{ medication.asNeeded.code }} "{{ medication.asNeeded.display }}"
+{% endif %} 
+{% endif %}  {# medication.asNeeded not empty #}
+
+{% if medication.dosagedisplay is not empty %}
 {{ addHTML_td(medication.dosagedisplay) }}
 {% else %}
 {{ addHTML_td("-") }}
-{% endif %}
+{% endif %} {# dosagedisplay not empty #}
 
 {% if medication.reason.code is not empty %}
 * reasonCode[0].coding = $sct#{{ medication.reason.code }} "{{ medication.reason.display }}"

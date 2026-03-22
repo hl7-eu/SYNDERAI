@@ -53,7 +53,11 @@ Usage: #inline
 //
 // section, slice {{ slicename }}
 //
+{% if slicename is empty %}
+* section[+]
+{% else %}
 * section[{{ slicename }}]
+{% endif %}
   * title = "{{ section.title }}"
   * code = {{ section.code }} "{{ section.display }}"
 {# populate .text #}
