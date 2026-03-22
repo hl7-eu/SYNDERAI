@@ -1,6 +1,6 @@
 
 
-![image-20250509173421291](./image-20250509173421291.png)
+<img src="./martha.png" alt="image-20250509173421291" style="zoom:25%;" />
 
 **Martha DeLarosa**
 
@@ -13,4 +13,3 @@ Martha takes oral anastrozole 1mg daily as part of her ongoing breast cancer rem
 Due to a confirmed allergy to penicillins, her care providers maintain a strict medication safety protocol to prevent adverse reactions.
 
 She finds support and motivation in a local women's health group, where she shares her journey and learns practical tips for managing hormonal changes and metabolic health.
-
