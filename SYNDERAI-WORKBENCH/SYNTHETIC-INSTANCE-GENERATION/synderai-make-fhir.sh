@@ -18,6 +18,11 @@ case "$1" in
         MASTERCOPY=HDR-master-copy
         ;;
 esac
+if [ -z "$ARTIFACT" ]
+then
+   echo "Must specify spec to validate LAB, EPS or HDR";
+   exit;
+fi
 
 SIC=`pwd`
 
@@ -28,6 +33,7 @@ rm -rf ../FSH-FHIR-GENERATOR/${MASTERCOPY}/input/fsh/examples/*.fsh
 cp pex/${ARTIFACT}/*.fsh ../FSH-FHIR-GENERATOR/${MASTERCOPY}/input/fsh/examples/
 # go to the master copy directory
 cd ../FSH-FHIR-GENERATOR/${MASTERCOPY}/
+pwd
 # run sushi compiler
 sushi
 

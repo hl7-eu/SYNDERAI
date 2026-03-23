@@ -44,7 +44,7 @@ Usage: #inline
 {% if procedure.code is not empty %}
 * code.coding[0] = {{ procedure.code.system }}#{{ procedure.code.code }} "{{ procedure.code.display }}"
 {% if procedure.site.code is not empty %}
-{% set dp = dp ~ "<br> </br>" ~ procedure.site.display %}
+{% set dp = dp ~ "<br/>" ~ procedure.site.display %}
 {% endif %}
 {{ addHTML_td(dp) }}
 {% else %}

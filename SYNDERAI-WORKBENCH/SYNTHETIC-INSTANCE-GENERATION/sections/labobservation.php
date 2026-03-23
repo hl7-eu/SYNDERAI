@@ -61,10 +61,10 @@ foreach ($pdat->labobservations as $ldate => $lbspd) {
     foreach ($lbspd as $labi) {
       $code = array();
       $code = [
-        "code" => $labi["codecode"],
-        "display" => $labi["codedisplay"],
+        "code" => $labi["code"]["code"],
+        "display" => $labi["code"]["display"],
         // must tweak system snomed short alias "snomed" to "sct"
-        "system" => $labi["codesystem"] === "snomed" ? "sct" : $labi["codesystem"]
+        "system" => $labi["code"]["system"] === "snomed" ? "\$sct" : $labi["code"]["system"]
       ];
       $lnsystem = $labi["lnsystem"];
       $value = array();
@@ -74,12 +74,12 @@ foreach ($pdat->labobservations as $ldate => $lbspd) {
         'code' => $labi["valuecode"],
         'unit' => $labi["valueunit"],
         // must tweak system snomed short alias "snomed" to "sct"
-        'system' => $labi["valuesystem"] === "snomed" ? "sct" :$labi["valuesystem"],
+        'system' => $labi["valuesystem"] === "snomed" ? "\$sct" :$labi["valuesystem"],
         'display' => $labi["valuedisplay"]
       ];
       if (USE_AI) {
-        $labtestai = $labi["codedisplay"] . " " . $labi["value"] . " " . $labi["valueunit"];
-        $labtestmd5 = $pdat->age . $pdat->gender . $labi["codedisplay"] . $labi["valueunit"];
+        $labtestai = $labi["code"]["display"] . " " . $labi["value"] . " " . $labi["valueunit"];
+        $labtestmd5 = $pdat->age . $pdat->gender . $labi["code"]["display"] . $labi["valueunit"];
         // reference range in cache?
         $md5 = md5($pdat->age . $pdat->gender . $labtestmd5);
         $fai = inCACHE('referencerange', $md5);
@@ -148,10 +148,10 @@ foreach ($pdat->labobservations as $ldate => $lbspd) {
       $rrlow = $rr1['low'];
       $rrhigh = $rr1['high'];
       $rrunit = $rr1['unit'];
-      echo $labi["codedisplay"] . ": " . $rrlow . " - " . $rrhigh . " " . $rrunit . "\n";
+      echo $labi["code"]["display"] . ": " . $rrlow . " - " . $rrhigh . " " . $rrunit . "\n";
       */
       $data = [
-        "code" => $code,
+        "code" => [$code],  // code must be an array
         "subject" => $pdat->instanceid,
         "subjectname" => $pdat->name,
         "effective" => $ldate,
@@ -163,7 +163,7 @@ foreach ($pdat->labobservations as $ldate => $lbspd) {
         "lnsystem" => $labi["lnsystem"]
       ];
       // if ($value["code"] === "275778006") {echo "$md5\n";var_dump($rr1);exit;}
-      // echo "*** " . $labi["codedisplay"] . " " . $labi["value"] . " " . $labi["valuesystem"] . " " . $data["lnclass"] . "\n";
+      // echo "*** " . $labi["code"]["display"] . " " . $labi["value"] . " " . $labi["valuesystem"] . " " . $data["lnclass"] . "\n";
       $data = json_decode(json_encode($data));
       // var_dump($data);
       // var_dump($data->code);
@@ -180,14 +180,14 @@ foreach ($pdat->labobservations as $ldate => $lbspd) {
         );
 
       // build string for log
-      $logtext = substr($data->effective, 0, 10) . ": " . $data->code->display . " (" . $data->code->code . ") ";
+      $logtext = substr($data->effective, 0, 10) . ": " . $data->code[0]->display . " (" . $data->code[0]->code . ") ";
       if ($labi["valuetype"] === 'Quantity')
         if ( ! ( ((float) $labi["value"]) || (float) $labi["value"] > 0 || $labi["value"] === '0.0' ) ) echo "+++ Cannot cast as float/decimal: " . $labi["value"] . "\n";
       
       // build a table row with the results for AI conclusion
       $overalllabtesttable .=
         "| " . substr($ldate, 0, 10) .
-        " | " . $labi["codedisplay"] .
+        " | " . $labi["code"]["display"] .
         " | " . $labi["value"] . " " . $labi["valueunit"];
       $logtext .= $labi["value"] . " " . $labi["valueunit"] . " ";
       if ($labi["valuetype"] === 'Quantity')  {

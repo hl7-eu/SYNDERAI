@@ -12,11 +12,8 @@ Title: "Observation Results Laboratory"
 Description: "Observation Results Laboratory"
 Usage: #inline
 
-{# special handling of category.coding, see also https://github.com/hl7-eu/SYNDERAI/issues/100 #}
-{% if isVitaLSignCode %}
-* category[VSCat].coding = $observation-category#vital-signs
-{% else %}
-* category.coding = $observation-category#laboratory
-{% endif %}
+* category[laboratory].coding = $observation-category#laboratory
+* performer[+].display = "The Central European Laboratory"
+{# * performer[=] = Reference(urn:uuid:e512e2e2-9600-4c69-a269-af3ab5421e09) #}
 
 {% include 'observation-medical-test-body.fsh.twig' %}

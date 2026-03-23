@@ -69,9 +69,11 @@ while (($item = fgetcsv($observationhandle, 10000, ",", '"', '\\')) !== FALSE) {
       }
       // echo "***** $thistype $resultvalue $thiscode $thisdisplay\n";
       $hislabobs = [
-        "codecode" => $lnc,
-        "codedisplay" => $lk['display'],
-        "codesystem" => "loinc",
+        "code" => [
+          "code" => $lnc,
+          "display" => $lk['display'],
+          "system" => "\$loinc",
+        ],
         "lnclass" => $lk['class'],
         "lnsystem" => $lk['system'],
         "valuetype" => $thistype,
@@ -169,12 +171,12 @@ if (DEBUGLEVEL >= 2) {
       foreach ($lbspd as $lbc)
         lognl(3, 
           sprintf("........ -> %-10s %-10s %-10s %20.20s %10s %20s",
-          $lbc["codecode"],
+          $lbc["code"]["code"],
           $lbc["lnclass"],
           $lbc["lnsystem"],
           $lbc["value"],
           $lbc["valueunit"],
-          $lbc["codedisplay"]
+          $lbc["code"]["display"]
           )
         );
   }

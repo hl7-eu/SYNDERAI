@@ -19,10 +19,10 @@ foreach ($pdat->labobservations as $ldate => $lbspd) {
   foreach ($lbspd as $labi) {
     $code = array();
     $code = [
-        "code" => $labi["codecode"],
-        "display" => $labi["codedisplay"],
+        "code" => $labi["code"]["code"],
+        "display" => $labi["coded"]["isplay"],
         // must tweak system snomed short alias "snomed" to "sct"
-        "system" => $labi["codesystem"] === "snomed" ? "sct" : $labi["codesystem"]
+        "system" => $labi["code"]["system"] === "snomed" ? "\$sct" : $labi["code"]["system"]
       ];
     $lnsystem = $labi["lnsystem"];
     $value = array();
@@ -32,12 +32,12 @@ foreach ($pdat->labobservations as $ldate => $lbspd) {
         'code' => $labi["valuecode"],
         'unit' => $labi["valueunit"],
         // must tweak system snomed short alias "snomed" to "sct"
-        'system' => $labi["valuesystem"] === "snomed" ? "sct" :$labi["valuesystem"],
+        'system' => $labi["valuesystem"] === "snomed" ? "\$sct" :$labi["valuesystem"],
         'display' => $labi["valuedisplay"]
       ];
     if (USE_AI) {
-      $labtestai = $labi["codedisplay"] . " " . $labi["value"] . " " . $labi["valueunit"];
-      $labtestmd5 = $pdat->age . $pdat->gender . $labi["codedisplay"] . $labi["valueunit"];
+      $labtestai = $labi["code"]["display"] . " " . $labi["value"] . " " . $labi["valueunit"];
+      $labtestmd5 = $pdat->age . $pdat->gender . $labi["code"]["display"] . $labi["valueunit"];
       // reference range in cache?
       $md5 = md5($pdat->age . $pdat->gender . $labtestmd5);
       $fai = inCACHE('referencerange', $md5);
