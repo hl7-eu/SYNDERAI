@@ -154,3 +154,82 @@ From April 2026 on the SYNDERAI synthetic funds will be re-generated with specif
 | 🟡 Medium | Reduce opioid/drug overdose; increase alcohol use disorder   | Shifts substance abuse to EU patterns             |
 | 🟢 Lower  | Author new modules for EU-specific conditions                | Fills gaps not covered by default Synthea         |
 | 🟢 Lower  | Validate with KL divergence against GBD/WHO reference data   | Ensures quantitative accuracy                     |
+
+## On the way to a solution
+
+We created both deliverables: a recalibrated **European Hypertension Synthea module** ([here](nextgensyntghea/hypertension_europe.json)) and a **Python validation script** ([here](nextgensynthea/validate_synthea_europe.py)) with statistical fit testing against WHO/Eurostat reference data.
+
+### Deliverables
+
+**`hypertension_europe.json`** — A drop-in Synthea module replacing the US default. Key changes from the US original: age-stratified onset rates from EHIS 2019 (ranging from 0.45%/yr at age 18–34 to 1.7%/yr at 55–64), ESC/ESH-preferred medications (ramipril → losartan → amlodipine instead of lisinopril/HCTZ), European BP control targets (<130/80), and complication rates calibrated against GBD 2019 Europe. Install by placing it under `src/main/resources/modules/`.
+
+**`validate_synthea_europe.py`** — Run against any `conditions.csv` with:
+
+```bash
+python3 validate_synthea_europe.py --input conditions.csv --population 100000 --output results.csv --charts
+```
+
+### What the validation found on your actual data
+
+The numbers are striking — only **1 out of 38 reference conditions** falls within the acceptable ±20% band:
+
+| Global Metric       | Value       | Interpretation                        |
+| ------------------- | ----------- | ------------------------------------- |
+| KL Divergence       | **4.01**    | Very high (>0.5 = poor)               |
+| Jensen-Shannon Div. | **0.21**    | Moderate fit — recalibration required |
+| Weighted MAE        | **12.6 pp** | 12.6 percentage point average error   |
+
+The three sharpest failure modes surfacing from your data:
+
+**1. Respiratory infections are wildly over-represented** — Viral sinusitis at 9.78% vs an EU reference of 0.8% (+1,122%), and acute pharyngitis at 5.51% vs 0.7% (+687%). These are acute, self-limiting conditions that accumulate many records per patient lifetime in Synthea's default encounter model, inflating them far beyond population prevalence.
+
+**2. Eight conditions are completely absent** — COPD, Depression, Anxiety disorder, Osteoarthritis, Osteoporosis, Prostate cancer, Dementia, and Parkinson's disease generate zero records. These represent some of the largest sources of disability-adjusted life years in Europe.
+
+**3. Metabolic and cardiovascular burden is severely compressed** — Hyperlipidaemia sits at 1.64% vs a 22% EU reference (−93%), Metabolic syndrome at 2.7% vs 25% (−89%), and Hypertension at 4.78% vs 32% (−85%). These are the foundational chronic conditions that drive most downstream morbidity in any European cohort.
+
+The `hypertension_europe.json` module directly corrects the hypertension gap. The same calibration logic can be applied to the other missing/under-sampled modules following the same pattern.
+
+![synthea_validation_results_comparison](img/synthea_validation_results_comparison.png)
+
+![synthea_validation_results_comparison](img/synthea_validation_results_heatmap.png)
+
+| SNOMED            | Condition                            | Category         | ICD-10  | Synthea Count | Synthea Prev % | EU Ref Prev % | Deviation % | Status    | Source                                                       |
+| ----------------- | ------------------------------------ | ---------------- | ------- | ------------- | -------------- | ------------- | ----------- | --------- | ------------------------------------------------------------ |
+| 59621000          | Essential hypertension               | Cardiovascular   | I10     | 42144         | 4.781          | 32.0          | -85.1       | ⬇  UNDER  | WHO Europe 2023; EHIS 2019                                   |
+| 414545008         | Ischemic heart disease               | Cardiovascular   | I20-I25 | 26525         | 3.009          | 4.5           | -33.1       | ⬇  UNDER  | ESC Atlas of Cardiology 2021; GBD 2019 Europe                |
+| 22298006          | Myocardial infarction                | Cardiovascular   | I21     | 3442          | 0.391          | 1.8           | -78.3       | ⬇  UNDER  | ESC Atlas 2021; EuroHeart 2022                               |
+| 84114007          | Heart failure                        | Cardiovascular   | I50     | 197           | 0.022          | 2.2           | -99.0       | ⬇  UNDER  | ESC Heart Failure Atlas 2021                                 |
+| 49436004          | Atrial fibrillation                  | Cardiovascular   | I48     | 1353          | 0.154          | 2.5           | -93.9       | ⬇  UNDER  | ESC/EHRA 2020; EuroObservational Research Programme          |
+| 44054006          | Diabetes mellitus type 2             | Metabolic        | E11     | 9103          | 1.033          | 7.5           | -86.2       | ⬇  UNDER  | IDF Diabetes Atlas 10th Ed. 2021; WHO Europe 2022            |
+| 15777000          | Prediabetes                          | Metabolic        | R73.09  | 41340         | 4.69           | 8.0           | -41.4       | ⬇  UNDER  | IDF Atlas 2021; Diabetes Care Europe estimates               |
+| 162864005         | Obesity (BMI 30+)                    | Metabolic        | E66     | 51883         | 5.886          | 17.0          | -65.4       | ⬇  UNDER  | WHO Europe Obesity Report 2022; Eurostat EHIS 2019           |
+| 55822004          | Hyperlipidaemia                      | Metabolic        | E78     | 14429         | 1.637          | 22.0          | -92.6       | ⬇  UNDER  | EAS Dyslipidaemia survey; Eurostat EHIS 2019                 |
+| 237602007         | Metabolic syndrome                   | Metabolic        | E88.81  | 23838         | 2.704          | 25.0          | -89.2       | ⬇  UNDER  | IDF; DECODE Study; GBD 2019 Europe                           |
+| 13645005          | COPD                                 | Respiratory      | J44     | 0             | 0.0            | 6.5           | -100.0      | ❌ MISSING | ERS White Book 2013; BOLD Europe 2022; GBD 2019              |
+| 195967001         | Asthma                               | Respiratory      | J45     | 151           | 0.017          | 7.0           | -99.8       | ⬇  UNDER  | GINA 2023; ERS / European Lung Foundation survey             |
+| 444814009         | Viral sinusitis                      | Respiratory      | J01     | 86161         | 9.775          | 0.8           | 1121.9      | ⬆  OVER   | EPOS 2020 guidelines; GP consultation rates EU               |
+| 195662009         | Acute viral pharyngitis              | Respiratory      | J02.9   | 48576         | 5.511          | 0.7           | 687.3       | ⬆  OVER   | ECDC Antimicrobial Resistance 2022; Eurostat health care use |
+| 35489007          | Depression                           | Mental Health    | F32-F33 | 0             | 0.0            | 6.9           | -100.0      | ❌ MISSING | ECNP/EBC 2023 Size and Burden of Mental Disorders in Europe  |
+| 197480006         | Anxiety disorder                     | Mental Health    | F40-F41 | 0             | 0.0            | 6.5           | -100.0      | ❌ MISSING | ECNP/EBC 2023; WHO Mental Health Atlas Europe 2022           |
+| 80583007          | Severe anxiety (panic)               | Mental Health    | F41.0   | 17858         | 2.026          | 2.0           | 1.3         | ✅ OK      | ECNP/EBC 2023; ESEMeD study                                  |
+| 36923009          | Major depression single episode      | Mental Health    | F32     | 43            | 0.005          | 4.0           | -99.9       | ⬇  UNDER  | ECNP/EBC 2023; ESEMeD; GBD 2019 Europe                       |
+| 396275006         | Osteoarthritis                       | Musculoskeletal  | M15-M19 | 0             | 0.0            | 9.5           | -100.0      | ❌ MISSING | EULAR / Arthritis Research UK; GBD 2019 Europe               |
+| 69896004          | Rheumatoid arthritis                 | Musculoskeletal  | M05-M06 | 321           | 0.036          | 0.8           | -95.4       | ⬇  UNDER  | EULAR 2022; Eurostat EHIS 2019                               |
+| 278860009         | Chronic low back pain                | Musculoskeletal  | M54.5   | 16647         | 1.889          | 8.0           | -76.4       | ⬇  UNDER  | EuroSpine / Airaksinen 2006; GBD 2019; Eurostat EHIS 2019    |
+| 82423001          | Chronic pain                         | Musculoskeletal  | G89.29  | 24045         | 2.728          | 19.0          | -85.6       | ⬇  UNDER  | Breivik et al. 2006 European Pain Survey; Pain Alliance Europe 2022 |
+| 64572001          | Osteoporosis                         | Musculoskeletal  | M81     | 0             | 0.0            | 5.6           | -100.0      | ❌ MISSING | IOF European Audit 2021; Kanis et al. 2021                   |
+| 254837009         | Malignant neoplasm of breast         | Oncology         | C50     | 2280          | 0.259          | 1.4           | -81.5       | ⬇  UNDER  | ECIS/IARC GLOBOCAN 2020 Europe; ECDC Cancer Burden           |
+| 363418001         | Malignant neoplasm of prostate       | Oncology         | C61     | 0             | 0.0            | 1.1           | -100.0      | ❌ MISSING | ECIS/IARC GLOBOCAN 2020 Europe                               |
+| 363406005         | Colorectal cancer                    | Oncology         | C18-C20 | 990           | 0.112          | 0.7           | -84.0       | ⬇  UNDER  | ECIS/IARC GLOBOCAN 2020 Europe                               |
+| 254637007         | Non-small cell lung cancer           | Oncology         | C34     | 1068          | 0.121          | 0.5           | -75.8       | ⬇  UNDER  | ECIS/IARC GLOBOCAN 2020 Europe; ERS Lung Cancer Report       |
+| 230690007         | Cerebrovascular accident (stroke)    | Neurological     | I63-I64 | 819           | 0.093          | 1.6           | -94.2       | ⬇  UNDER  | ESO European Stroke Organisation; GBD 2019 Europe            |
+| 26929004          | Alzheimer disease                    | Neurological     | G30     | 4887          | 0.554          | 1.5           | -63.0       | ⬇  UNDER  | Alzheimer Europe Dementia Monitor 2022; Eurostat Ageing      |
+| 56193007          | Dementia                             | Neurological     | F00-F03 | 0             | 0.0            | 2.0           | -100.0      | ❌ MISSING | Alzheimer Europe 2022; WHO Europe NCD Report 2022            |
+| 32798002          | Parkinson disease                    | Neurological     | G20     | 0             | 0.0            | 0.3           | -100.0      | ❌ MISSING | European Parkinson's Disease Association; GBD 2019           |
+| 431855005         | Chronic kidney disease stage 1       | Renal            | N18.1   | 18151         | 2.059          | 3.0           | -31.4       | ⬇  UNDER  | ERA-EDTA 2020; KDIGO CKD Prevalence in Europe                |
+| 431856006         | Chronic kidney disease stage 2       | Renal            | N18.2   | 16177         | 1.835          | 3.1           | -40.8       | ⬇  UNDER  | ERA-EDTA 2020                                                |
+| 433144002         | Chronic kidney disease stage 3       | Renal            | N18.3   | 11820         | 1.341          | 3.9           | -65.6       | ⬇  UNDER  | ERA-EDTA 2020; CKD Prognosis Consortium Europe               |
+| 68496003          | Polyp of colon                       | Gastrointestinal | K63.5   | 10188         | 1.156          | 2.5           | -53.8       | ⬇  UNDER  | European Society of Gastrointestinal Endoscopy 2022; ESGE    |
+| 40055000          | Chronic sinusitis                    | Gastrointestinal | J32     | 21536         | 2.443          | 1.2           | 103.6       | ⬆  OVER   | EPOS 2020; Fokkens et al. Rhinology 2020                     |
+| 307426000         | Acute infective cystitis             | Infectious       | N30.0   | 9885          | 1.121          | 1.5           | -25.2       | ⬇  UNDER  | EAU Guidelines on Urological Infections 2023; ECDC           |
+| 10939881000119105 | Unhealthy alcohol drinking behaviour | Substance Use    | F10     | 19579         | 2.221          | 7.6           | -70.8       | ⬇  UNDER  | WHO Europe Alcohol & Health Status Report 2022; Eurostat EHIS |
