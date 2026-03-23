@@ -10,7 +10,7 @@ date_default_timezone_set("Europe/Brussels");
 
 $starttimer = time();   // for emiting teh elapsed time register the start time
 
-$THISSYNDERAIVERSION = "2.0.0";
+$THISSYNDERAIVERSION = "2.1.0";
 $SYNTHETICDATAURL = "http://hl7.eu/fhir/syntheticdata";
 $SUPPORTEDARTIFACTS = [
     [
