@@ -612,23 +612,62 @@ if (in_array("HDR", $ARTIFACTS) && $PROCESSISH) {
          * Patient must have gender (male|female), given, family, birthdate, longitude and latitude
          */
         // var_dump($ish["section"]);exit;
-        $ok = FALSE;
-        if (isset($ish["patient"]["given"]) && is_array($ish["patient"]["given"]) && strlen(implode(" ", $ish["patient"]["given"])) > 0) $ok = TRUE;
-        if (isset($ish["patient"]["family"]) && strlen($ish["patient"]["family"]) > 0) $ok = TRUE;
-        if (isset($ish["patient"]["gender"])) {
-            if ($ish["patient"]["gender"] === "male") $ok = TRUE;
-            if ($ish["patient"]["gender"] === "female") $ok = TRUE;
+        $isherror = FALSE;  // assume all is ok for now
+        if (!(
+            isset($ish["patient"]["given"]) &&
+            is_array($ish["patient"]["given"]) && 
+            strlen(implode(" ", $ish["patient"]["given"])) > 0
+        )) $isherror = "no given";
+        if (!(
+            isset($ish["patient"]["family"]) &&
+            strlen($ish["patient"]["family"]) > 0
+        )) $isherror = "no family";
+        if (!(
+            isset($ish["patient"]["gender"])
+        )) $isherror = "no gender";
+        else {
+            if (!(
+                $ish["patient"]["gender"] === "male" or $ish["patient"]["gender"] === "female"
+            )) $isherror = "no good gender code";
         }
-        if (isset($ish["patient"]["country"]) && strlen($ish["patient"]["country"]) > 0) $ok = TRUE;
-        if (isset($ish["patient"]["birthdate"]) && validateYmd($ish["patient"]["birthdate"])) $ok = TRUE;
-        if (isset($ish["patient"]["latitude"]) && preg_match('/^\d+\.\d+$/', $ish["patient"]["latitude"])) $ok = TRUE;
-        if (isset($ish["patient"]["longitude"]) && preg_match('/^\d+\.\d+$/', $ish["patient"]["longitude"])) $ok = TRUE;
+        if (!(
+            isset($ish["patient"]["country"]) && 
+            strlen($ish["patient"]["country"]) > 0
+        )) $isherror = "no country";
+        if (!(
+            isset($ish["patient"]["birthdate"]) && 
+            validateYmd($ish["patient"]["birthdate"])
+        )) $isherror = "no or incorrect birthdate";
+        if (!(
+            isset($ish["patient"]["latitude"]) &&
+            preg_match('/^\d+\.\d+$/', $ish["patient"]["latitude"])
+        )) $isherror = "no or incorrect latitude";
+        if (!(
+            isset($ish["patient"]["longitude"]) &&
+            preg_match('/^\d+\.\d+$/', $ish["patient"]["longitude"])
+        )) $isherror = "no or incorrect longitude";
+        if (!(
+            isset($ish["encounter"]["procedure"]) && 
+            count($ish["encounter"]["procedure"]) > 0
+        )) $isherror = "no encounter procedure";
+        if (!(
+            isset($ish["encounter"]["reason"]) && 
+            count($ish["encounter"]["reason"]) > 0
+        )) $isherror = "no encounter reason";
         // get all conditions as preselection criteria
         $hdrconditions = NULL;
         if (isset($ish["section"])) {
             foreach ($ish["section"] as $s) {
+                if (!(
+                    isset($s["type"]) && 
+                    strlen($s["type"]) > 0
+                )) $isherror = "section with no type";
                 if (isset($s["entry"])) {
                     foreach ($s["entry"] as $e) {
+                        if (!(
+                            isset($e["type"]) && 
+                            strlen($e["type"]) > 0
+                        )) $isherror = "entry with no type";
                         if (isset($e["type"]) && $e["type"] === "condition") {
                             // var_dump($e["code"]);
                             $hdrconditions[] = $e["code"]["code"];  // store SNOMED code of condition form later preselect
@@ -638,7 +677,7 @@ if (in_array("HDR", $ARTIFACTS) && $PROCESSISH) {
             }
         }
         
-        if ($ok) {
+        if ($isherror === FALSE) {
             // store ISH patient and data
             $hdrpatient                    = $ish["patient"]; // assign read-only shortcut again, for simpler expressions
             // complete name
@@ -691,7 +730,7 @@ if (in_array("HDR", $ARTIFACTS) && $PROCESSISH) {
             $PATIENTS[] = $newpatient;
             $count++;
         } else {
-            lognlsev(1, ERROR, "... Processing ish file $hdrfile throws errors, skipping...");
+            lognlsev(1, ERROR, "... Processing ish file $hdrfile throws errors ($isherror), skipping...");
         }
 
     }
