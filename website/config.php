@@ -39,6 +39,11 @@ $MENU = [
         "file" => "-"
     ],
     [
+        "title" => "Caveats",
+        "menu" => "caveats",
+        "file" => "CAVEATS.md"
+    ],
+    [
         "title" => "Policy",
         "menu" => "policy",
         "file" => "SYNDERAI-SYNTHETIC-DATA-POLICY.md"
