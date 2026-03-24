@@ -39,9 +39,9 @@ $MENU = [
         "file" => "-"
     ],
     [
-        "title" => "Caveats",
-        "menu" => "caveats",
-        "file" => "CAVEATS.md"
+        "title" => "Future",
+        "menu" => "future",
+        "file" => "FUTURE-ACTIVITIES.md"
     ],
     [
         "title" => "Policy",
