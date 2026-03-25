@@ -3,12 +3,13 @@
 // prepare all sections and entries of the HDR parsed from ish (if ish is set) or as prepared sections
 
 // for later correct section slice names following HDR spec
-//                     -- used in ISH --        -- correct slice in HDR --
+//                     -- used in ISH --     -- correct section slice in HDR --
 $CORRECTSECTIONSLICES["admissionevaluation"] = "sectionAdmissionEvaluation";
 $CORRECTSECTIONSLICES["socialhistory"]       = "";
+$CORRECTSECTIONSLICES["tobaccouse"]          = "";
 $CORRECTSECTIONSLICES["synthesis"]           = "sectionSynthesis";
 $CORRECTSECTIONSLICES["hospitalcourse"]      = "sectionHospitalCourse";
-$CORRECTSECTIONSLICES["procedure"]           = "sectionSignificantProcedures";
+$CORRECTSECTIONSLICES["procedures"]          = "sectionSignificantProcedures";
 $CORRECTSECTIONSLICES["results"]             = "sectionSignificantResults";
 $CORRECTSECTIONSLICES["vitalsign"]           = "sectionVitalSigns";
 $CORRECTSECTIONSLICES["medication"]          = "sectionPharmacotherapy";
@@ -29,8 +30,13 @@ foreach($thisStayISH->section as $section) {
   // catch all entries for this section
   $thissectionentries = array();
   // Preset
-  $thisectionentryslicename = 
-    isset($CORRECTSECTIONSLICES[$section->type]) ? $CORRECTSECTIONSLICES[$section->type] : "UNKNOWN-SECTION-TYPE-NOT-SET";
+  $thisectionentryslicename = "";
+  if (isset($CORRECTSECTIONSLICES[$section->type])) {
+    $thisectionentryslicename = $CORRECTSECTIONSLICES[$section->type];
+  } else {
+    $thisectionentryslicename = "UNKNOWN-SECTION-TYPE-OR-NOT-SET";
+    lognlsev(ERROR, 2, "............... " . "Unknown section type '" . $section->type . "', please check\n");
+  } 
 
   // process section entries first if any
   if (isset($section->entry)) {
@@ -57,34 +63,7 @@ foreach($thisStayISH->section as $section) {
       /* ------------------------------------ */
       if ($entrytype === "vitalsign") {
       /* ------------------------------------ */
-        // var_dump($ent);
-        // add some data for twig template
-        /*
-        if (isset($ent->valueQuantity)) {
-          $ent->scale = "numeric";
-          list($ev, $eu, $es) = splitValueQuantityCompound($ent->valueQuantity);
-          // determine unit code
-          $theunitcode = $eu;
-          if ($unit === "{score}") $theunitcode = "1";
-          if ($unit === "{nominal}") $theunitcode = "1";
-          $ent->value = $ev;
-          $ent->unit = $eu;
-          $ent->code = $theunitcode;
-        }
-        if (isset($ent->component)) {
-          foreach($ent->component as $ix => $e) {
-            if (isset($e->valueQuantity)) {
-              $ent->component[$ix]->scale = "numeric";
-              list($ev, $eu, $ec, $es) = splitValueQuantityCompound($e->valueQuantity);   
-              $ent->component[$ix]->slice = $e->slice;
-              $ent->component[$ix]->value = $ev;
-              $ent->component[$ix]->unit = $eu;
-              $ent->component[$ix]->code = $eu === "{score}" ? "1" : $eu;
-              $ent->component[$ix]->system = $es;
-            };
-          }
-        }
-          */
+        var_dump($ent);
         list($tmpfsh, $tmphtml, $tmphead, $entinstance) = 
           twigit([
             "instanceid" => $entinstanceid,
@@ -92,6 +71,7 @@ foreach($thisStayISH->section as $section) {
             "vital" => $ent
           ], "vitalsigns");
         // set entry meta data
+        var_dump($tmpfsh);
         $ent->bundleentryslicenameentries = "";
       } else 
       /* ------------------------------------ */
@@ -107,6 +87,18 @@ foreach($thisStayISH->section as $section) {
         $ent->bundleentryslicenameentries = "";
       } else 
       /* ------------------------------------ */
+      if ($entrytype === "tobaccouse") {
+      /* ------------------------------------ */
+        list($tmpfsh, $tmphtml, $tmphead, $entinstance) =
+          twigit([
+            "instanceid" => $entinstanceid,
+            "patient" => $pdat,
+            "tobaccouse" => $ent
+          ], "observation-tobaccouse");
+        // set entry meta data
+        $ent->bundleentryslicenameentries = "";
+      } else 
+      /* ------------------------------------ */
       if ($entrytype === "results" or $entrytype === "addrecentlabresults") {
       /* ------------------------------------ */
         if ($entrytype === "addrecentlabresults") {
@@ -118,7 +110,7 @@ foreach($thisStayISH->section as $section) {
           // some additions
           $ent->subject = $pdat->instanceid;
           $ent->subjectname = $pdat->name;
-          // var_dump($ent);exit;
+          // var_dump($ent);//exit;
           if ($entrytype === "results") {
             list($tmpfsh, $tmphtml, $tmphead, $entinstance) =
               twigit([
@@ -182,7 +174,7 @@ foreach($thisStayISH->section as $section) {
         $ent->bundleentryslicenameentries = "";
       } else 
       /* ------------------------------------ */
-      if ($entrytype === "dischargediagnosis") {
+      if ($entrytype === "condition") {
       /* ------------------------------------ */
         // var_dump($ent);
         list($tmpfsh, $tmphtml, $tmphead, $entinstance) = 
