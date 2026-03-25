@@ -28,7 +28,6 @@ while (($item = fgetcsv($observationhandle, 10000, ",", '"', '\\')) !== FALSE) {
       $rr1 = json_decode($AI['rr'], TRUE);
       */
       // determine the unit code
-      $theunitcode = $unit;
       $found[$date][$loinc] = [
         "date" => $date,
         "code" => [
@@ -36,10 +35,13 @@ while (($item = fgetcsv($observationhandle, 10000, ",", '"', '\\')) !== FALSE) {
           "system" => "\$loinc",
           "display" => $loincdisplay
         ],
-        "value" => $value,
-        "unit" => $unit,
-        "unitcode" => $theunitcode,
-        "scale" => $scale,
+        "value" => [
+          "value" => $value,
+          "unit" => $unit,
+          "code" => $unit,
+          "system" => "\$ucum",
+          "scale" => $scale,
+        ],
         "encounter" => trim($item[2])
       ];
       lognl(3, sprintf(
@@ -107,10 +109,13 @@ if (count($found) === 0) {
                 "system" => "\$loinc",
                 "display" => "Systolic blood pressure"
               ],
-              "value" => $systolic["value"],
-              "unit" => $systolic["unit"],
-              "unitcode" => $systolic["unit"],
-              "scale" => $systolic["scale"]
+              "value" => [
+                "value" => $systolic["value"],
+                "unit" => "mm[Hg]",
+                "code" => "mm[Hg]",
+                "system" => "\$ucum",
+                "scale" => "numeric"
+              ],
             ],
             [
               // "slice" => "DiastolicBP",
@@ -119,10 +124,14 @@ if (count($found) === 0) {
                 "system" => "\$loinc",
                 "display" => "Diastolic blood pressure"
               ],
-              "value" => $distolic["value"],
-              "unit" => $distolic["unit"],
-              "unitcode" => $distolic["unit"],
-              "scale" => $distolic["scale"]
+              "value" => [
+                "value" => $distolic["value"],
+                "unit" => "mm[Hg]",
+                "code" => "mm[Hg]",
+                "system" => "\$ucum",
+                "scale" => "numeric"
+              ],
+              
             ]
           ]
         ];

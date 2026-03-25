@@ -9,7 +9,7 @@ if ($PROCESSISH) {
       foreach ($pdat->section as $s) {
           if (isset($s->entry)) {
               foreach ($s->entry as $e) {
-                  if (isset($e->type) && $e->type === "dischargediagnosis") {
+                  if (isset($e->type) && $e->type === "condition") {
                     $ccode = array();
                     foreach ($e->code as $cc) {
                       if (isset($cc->code))
@@ -22,8 +22,8 @@ if ($PROCESSISH) {
                     $found[] = [
                       "code" => $ccode,
                       "start" => $e->date,
-                      "end" => $e->status->code === "resolved" ? $e->date: NULL,
-                      "active" => $e->status->code === "resolved" ? FALSE : TRUE,
+                      "end" => $e->status === "resolved" ? $e->date: NULL,
+                      "active" => $e->status === "resolved" ? FALSE : TRUE,
                       "encounter" => NULL
                     ];
                   }

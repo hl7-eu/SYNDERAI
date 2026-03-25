@@ -20,11 +20,12 @@ if ($PROCESSISH) {
                         "system" => $e->site->system,
                         "display" => $e->site->display,
                       ];
-                    $found[$e->code->code] = [
+                    $ecode = $e->code[0];
+                    $found[$ecode->code] = [
                     "code" => [
-                      "code" => $e->code->code,
-                      "system" => $e->code->system,
-                      "display" => $e->code->display,
+                      "code" => $ecode->code,
+                      "system" => $ecode->system,
+                      "display" => $ecode->display,
                       "preferredTerm" => "",
                     ],
                     "date" => $e->date,
