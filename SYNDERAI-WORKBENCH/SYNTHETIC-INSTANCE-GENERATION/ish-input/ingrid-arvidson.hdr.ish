@@ -28,7 +28,7 @@ section*
   text """Decompensated congestive heart failure, Transcatheter Aortic Valve Implantation (TAVI) performed, discharged in stable condition."""
 section*
   type admissionevaluation
-  code $loinc#67852-4 Hospital Admission evaluation note
+  code $loinc#67851-6 Hospital Admission evaluation note
   title Admission evaluation
   text """Mrs. Ingrid Arvidson, an 84-year-old Swedish female, was admitted on 2nd February 2025 with bilateral lower limb oedema and progressive dyspnoea. On physical examination, severe bilateral pulmonary crepitations were noted throughout both lung fields. Initial laboratory investigations revealed markedly elevated troponin I at 400 ng/L, strongly suggestive of cardiac pathology.<p/>The clinical picture was consistent with acute decompensated congestive heart failure. The patient was haemodynamically stable on arrival. She was commenced immediately on intravenous diuretic therapy (furosemide) and heart failure medications, and an urgent cardiology consultation was requested."""
 section*
@@ -95,37 +95,37 @@ section*
   code $loinc#8648-8 Hospital Course
   text = """On admission (Day 0), Mrs. Arvidson presented with dyspnoea, bilateral leg oedema, and pulmonary crepitations. Troponin I was 400 ng/L. An ECG and chest X-ray were obtained. Intravenous diuretics and oxygen therapy were commenced immediately.<p/>On Day 1, an urgent echocardiogram confirmed reduced ejection fraction and significant aortic valve stenosis. NT-proBNP, renal function, and repeat cardiac markers were obtained. The heart team was convened to assess suitability for valve intervention.<p/>On Day 2, diagnostic cardiac catheterization was performed. Aortography demonstrated severe aortic valve dysfunction with 3+ to 4+ contrast backflow into a dilated left ventricle. Left ventricular ejection fraction was estimated at 40% from contrast ventriculography.<p/>On Day 3, the multidisciplinary heart team meeting concluded that surgical aortic valve replacement carried prohibitive risk given the patient's advanced age and clinical frailty. Transcatheter Aortic Valve Implantation (TAVI) was indicated and scheduled accordingly.<p/>Between Days 4 and 7, the TAVI procedure was successfully performed without intraoperative complications. The patient was transferred to the coronary care unit for post-procedural monitoring and was observed for rhythm disturbances, vascular access complications, and neurological status.<p/>From Days 8 to 14 (discharge), Mrs. Arvidson demonstrated progressive clinical improvement. Troponin I declined to 200 ng/L by the time of discharge. Diuretic therapy and heart failure medications were continued and titrated. The patient was discharged on 12th February 2025 in stable condition."""
 section*
-  type problems
+  type dischargediagnosis
   code $loinc#11535-2 Hospital discharge Dx Narrative
   title Discharge Diagnoses
   entry*
     type condition
     date 2025-02-02
-    code $sct#42343007 Congestive heart failure (disorder)
+    code* $sct#42343007 Congestive heart failure (disorder)
     text """Acute decompensated congestive heart failure with bilateral oedema, pulmonary congestion, and elevated troponin."""
     status active
   entry*
     type condition
     date 2025-02-02
-    code $sct#60573004 Aortic valve stenosis (disorder)
+    code* $sct#60573004 Aortic valve stenosis (disorder)
     text """Severe aortic valve dysfunction with reduced ejection fraction of 40%. Confirmed on cardiac catheterization and echocardiography."""
     status active
   entry*
     type condition
     date 2025-02-05
-    code $sct#609446009 Transcatheter aortic valve implantation done (situation)
+    code* $sct#609446009 Transcatheter aortic valve implantation done (situation)
     text """Status post-TAVI. Procedure performed successfully without intraoperative complications."""
     status active
   entry*
     type condition
     date 2025-02-02
-    code $sct#102572006 Edema of lower extremity (finding)
+    code* $sct#102572006 Edema of lower extremity (finding)
     text """Bilateral lower limb oedema secondary to congestive heart failure."""
     status active
   entry*
     type condition
     date 2025-02-02
-    code $sct#230145002 Pulmonary congestion (disorder)
+    code* $sct#230145002 Pulmonary congestion (disorder)
     text """Severe pulmonary congestion with bilateral crepitations on admission. Improving with diuretic therapy."""
     status active
 section*
@@ -136,49 +136,49 @@ section*
   entry*
     type results
     date 2025-02-02
-    code $loinc#10839-9 Troponin I.cardiac [Mass/volume] in Serum or Plasma
+    code* $loinc#10839-9 Troponin I.cardiac [Mass/volume] in Serum or Plasma
     valueQuantity 400 #ng/L
     interpretation high
     performer Centralsjukhuset Kristianstad
   entry*
     type results
     date 2025-02-12
-    code $loinc#10839-9 Troponin I.cardiac [Mass/volume] in Serum or Plasma
+    code* $loinc#10839-9 Troponin I.cardiac [Mass/volume] in Serum or Plasma
     valueQuantity 200 #ng/L
     interpretation high
     performer Centralsjukhuset Kristianstad
   entry*
     type results
     date 2025-02-03
-    code $loinc#18041-4 Left ventricular Ejection fraction by US.2D+Calculated by biplane ellipse
+    code* $loinc#18041-4 Left ventricular Ejection fraction by US.2D+Calculated by biplane ellipse
     valueQuantity 40 #%
     interpretation low
     performer Centralsjukhuset Kristianstad
   entry*
     type results
     date 2025-02-03
-    code $loinc#59052-1 Doppler echocardiography panel
+    code* $loinc#59052-1 Doppler echocardiography panel
     component*
-      code $loinc#20354-7 Aortic valve regurgitation severity [Presence] by US
-      valueCodeableConcept severe
+      code* $loinc#20354-7 Aortic valve regurgitation severity [Presence] by US
+      valueString Severe
     component*
-      code $loinc#59113-1 Left ventricular Internal diameter diastole by US
+      code* $loinc#59113-1 Left ventricular Internal diameter diastole by US
       valueQuantity 65 #mm
     component*
-      code $loinc#72080-3 Regurgitant volume [Volume] Aortic valve by US
+      code* $loinc#72080-3 Regurgitant volume [Volume] Aortic valve by US
       valueQuantity 65 #mL
     performer Centralsjukhuset Kristianstad
   entry*
     type results
     date 2025-02-02
-    code $loinc#24604-1 Chest X-ray AP and Lateral
-    valueCodeableConcept severe pulmonary congestion bilateral
+    code* $loinc#24604-1 Chest X-ray AP and Lateral
+    valueString Severe pulmonary congestion bilateral
     performer Centralsjukhuset Kristianstad
   entry*
     type results
     date 2025-02-02
-    code $loinc#11524-6 ECG 12 channel panel
-    valueCodeableConcept see report
+    code* $loinc#11524-6 ECG 12 channel panel
+    valueString See report
     performer Centralsjukhuset Kristianstad
 section*
   type procedure
@@ -188,17 +188,17 @@ section*
   entry*
     type procedure
     date 2025-02-04
-    code $sct#301095005 Cardiac catheterization (procedure)
+    code* $sct#301095005 Cardiac catheterization (procedure)
     status completed
   entry*
     type procedure
     date 2025-02-05
-    code $sct#450506006 Transcatheter aortic valve implantation (procedure)
+    code* $sct#450506006 Transcatheter aortic valve implantation (procedure)
     status completed
   entry*
     type procedure
     date 2025-02-02
-    code $sct#47545007 Continuous intravenous infusion therapy (procedure)
+    code* $sct#47545007 Continuous intravenous infusion therapy (procedure)
     text """Intravenous diuresis with furosemide on admission."""
     status completed
 section*
@@ -208,7 +208,7 @@ section*
   entry*
     type medication
     start 2025-02-02
-    code $sct#387475002 Furosemide (substance)
+    code* $sct#387475002 Furosemide (substance)
     route $sct#47625008 Intravenous route
     text """Furosemide 40 mg IV on admission, transitioned to oral for volume control of oedema and pulmonary congestion."""
   entry*
@@ -249,7 +249,7 @@ section*
     text """Pantoprazole 20 mg daily for gastrointestinal protection while on antiplatelet therapy."""
 section*
   type careplan
-  code $loinc#8653-8 Hospital Discharge Instructions
+  code $loinc#18776-5 Hospital Discharge Instructions
   title Follow-up and Care Plan
   text = """<ul><li>Cardiology Outpatient: Follow-up appointment in 4 weeks to review post-TAVI recovery and optimise heart failure medications</li><li>Doppler Echocardiogram: Repeat in 4 weeks to evaluate aortic valve function and ejection fraction post-TAVI</li><li>Troponin Monitoring: Periodic measurement to track cardiac biomarker trend</li><li>Electrolytes and Renal Function: Regular monitoring given ongoing diuretic and ACE inhibitor therapy</li><li>Weight Monitoring: Patient instructed to monitor daily weight and report rapid gains exceeding 2 kg suggesting fluid accumulation</li><li>Medication Compliance: Continue all discharge medications - furosemide, bisoprolol, ramipril, spironolactone, aspirin, atorvastatin, pantoprazole</li><li>Symptom Awareness: Report any worsening dyspnoea, new leg swelling, dizziness, or palpitations immediately</li></ul>"""
   entry*

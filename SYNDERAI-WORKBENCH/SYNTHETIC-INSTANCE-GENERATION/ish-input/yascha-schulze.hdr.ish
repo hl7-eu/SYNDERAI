@@ -37,13 +37,12 @@ section*
   title Admission evaluation
   text """The patient, a 29-year-old male, was admitted following a physical altercation in Berlin-Neukölln, during which he sustained blunt trauma to the left side of the face. On presentation, clinical findings included a prominent facial contusion and swelling over the left zygomatic region. Palpation suggested underlying bone discontinuity. CT imaging confirmed a displaced left zygomatic arch fracture."""
 section*
-  type socialhistory
+  type tobaccouse
   code $loinc#11367-0 History of Tobacco use
-  category $observation-category#social-history Social History
-  text """Current smoker"""
+  text """Patient smokes a few cigarettes per day."""
   entry*
-    type socialhistory
-    date 2025-04-01
+    type tobaccouse
+    date 2025-02-02
     category #social-history Social History
     code $loinc#11367-0 History of Tobacco use
     valueCodeableConcept $sct#77176002 Current smoker
@@ -65,12 +64,12 @@ section*
   entry*
     type procedure
     date 2025-06-06
-    code $sct#1362046005 Computed tomography of maxillofacial area (procedure) 
+    code* $sct#1362046005 Computed tomography of maxillofacial area (procedure) 
     status #completed
   entry*
     type procedure
     date 2025-06-06
-    code $sct#20701002 Open reduction of fracture with internal fixation (procedure)
+    code* $sct#20701002 Open reduction of fracture with internal fixation (procedure)
     site $sct#787058006 Structure of left zygomatic bone (body structure)
     status #completed
     outcome 
@@ -135,12 +134,12 @@ section*
   code $loinc#11535-2 Hospital discharge diagnosis note
   title Diagnosis at Discharge
   entry*
-    type dischargediagnosis
+    type condition
     date 2025-06-08
     status $condition-clinical#resolved
     code* $sct#278528006 Facial swelling (finding) 
   entry*
-    type dischargediagnosis
+    type condition
     date 2025-06-08
     status $condition-clinical#resolved
     code* $icd10#S02.40FA zygomatic fracture, left side, initial encounter for closed fracture
