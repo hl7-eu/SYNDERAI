@@ -1498,7 +1498,10 @@ function emitFSH($pdat, $thisartifact) {
             ], "composition-eu-hdr");
 
             // Prepare Bundle metadata
-            $bundle = ["instanceid" => uuid(), "identifier" => uuid()];
+            $bundle = [
+                "instanceid" => uuid(),
+                "identifier" => uuid()
+            ];
 
             // Render the HDR FHIR Bundle
             list($FSHBNDL) = twigit([
@@ -1510,6 +1513,8 @@ function emitFSH($pdat, $thisartifact) {
                 "sections"    => $sections,
                 "provenance"  => $provenance
             ], "bundle-eu-hdr");
+            //var_dump($sections["sectionSignificantResults"]["entries"]);exit;
+            //var_dump($FSHBNDL);//exit;
 
             $OUTFSH = $FSHBNDL . $FSHCMP . $FSHPAT . $FSHENC . $FSHHOS . $FSHPROVDEV;
             $OUTFSH = applyCorrectionsOnAIflawsInFSH($OUTFSH);

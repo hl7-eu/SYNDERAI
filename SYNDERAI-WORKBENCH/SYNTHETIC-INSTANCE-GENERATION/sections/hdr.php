@@ -11,13 +11,14 @@ $CORRECTSECTIONSLICES["synthesis"]           = "sectionSynthesis";
 $CORRECTSECTIONSLICES["hospitalcourse"]      = "sectionHospitalCourse";
 $CORRECTSECTIONSLICES["procedures"]          = "sectionSignificantProcedures";
 $CORRECTSECTIONSLICES["results"]             = "sectionSignificantResults";
-$CORRECTSECTIONSLICES["vitalsign"]           = "sectionVitalSigns";
+$CORRECTSECTIONSLICES["vitalsigns"]          = "sectionVitalSigns";
 $CORRECTSECTIONSLICES["medication"]          = "sectionPharmacotherapy";
 $CORRECTSECTIONSLICES["pharmacotherapy"]     = "sectionPharmacotherapy";
 $CORRECTSECTIONSLICES["careplan"]            = "sectionPlanOfCare";
 $CORRECTSECTIONSLICES["dischargediagnosis"]  = "sectionDiagnosticSummary";
 $CORRECTSECTIONSLICES["dischargemedication"] = "sectionDischargeMedications";
 $CORRECTSECTIONSLICES["pharmacotherapy"]     = "sectionPharmacotherapy";
+$CORRECTSECTIONSLICES["familyhistory"]       = "";
 
 foreach($thisStayISH->section as $section) {
 
@@ -34,7 +35,7 @@ foreach($thisStayISH->section as $section) {
   if (isset($CORRECTSECTIONSLICES[$section->type])) {
     $thisectionentryslicename = $CORRECTSECTIONSLICES[$section->type];
   } else {
-    $thisectionentryslicename = "UNKNOWN-SECTION-TYPE-OR-NOT-SET";
+    $thisectionentryslicename = "UNKNOWN-SECTION-TYPE-OR-NOT-SET-$section->type";
     lognlsev(ERROR, 2, "............... " . "Unknown section type '" . $section->type . "', please check\n");
   } 
 
@@ -63,7 +64,7 @@ foreach($thisStayISH->section as $section) {
       /* ------------------------------------ */
       if ($entrytype === "vitalsign") {
       /* ------------------------------------ */
-        var_dump($ent);
+        // var_dump($ent);
         list($tmpfsh, $tmphtml, $tmphead, $entinstance) = 
           twigit([
             "instanceid" => $entinstanceid,
@@ -71,7 +72,7 @@ foreach($thisStayISH->section as $section) {
             "vital" => $ent
           ], "vitalsigns");
         // set entry meta data
-        var_dump($tmpfsh);
+        // var_dump($tmpfsh);
         $ent->bundleentryslicenameentries = "";
       } else 
       /* ------------------------------------ */
@@ -99,7 +100,7 @@ foreach($thisStayISH->section as $section) {
         $ent->bundleentryslicenameentries = "";
       } else 
       /* ------------------------------------ */
-      if ($entrytype === "results" or $entrytype === "addrecentlabresults") {
+      if ($entrytype === "result" or $entrytype === "addrecentlabresults") {
       /* ------------------------------------ */
         if ($entrytype === "addrecentlabresults") {
           // add recent lab value for this patient from his labobservations - of any
@@ -111,7 +112,7 @@ foreach($thisStayISH->section as $section) {
           $ent->subject = $pdat->instanceid;
           $ent->subjectname = $pdat->name;
           // var_dump($ent);//exit;
-          if ($entrytype === "results") {
+          if ($entrytype === "result") {
             list($tmpfsh, $tmphtml, $tmphead, $entinstance) =
               twigit([
                 "instanceid" => $entinstanceid,
@@ -133,7 +134,7 @@ foreach($thisStayISH->section as $section) {
         list($tmpfsh, $tmphtml, $tmphead, $entinstance) =
           twigit(["instanceid" => $entinstanceid, "patient" => $pdat, "procedure" => $ent], "procedure-eu");
         // set entry meta data
-        // echo "ÜÜÜÜÜÜÜÜÜÜ\n";var_dump($ent);// exit;
+        // echo "ÜÜÜÜÜÜÜÜÜÜ\n";var_dump($ent);var_dump($tmpfsh);//exit;
         $ent->bundleentryslicenameentries = "";
       } else 
       /* ------------------------------------ */
@@ -170,6 +171,7 @@ foreach($thisStayISH->section as $section) {
             "careplan" => $ent
           ], "careplan");
         $tmpfsh = str_replace("= =", "=", $tmpfsh);  // fix possible AI flaw
+        //echo "ÜÜÜÜÜÜÜÜÜÜ\n";var_dump($tmpfsh);
         // set entry meta data
         $ent->bundleentryslicenameentries = "";
       } else 
@@ -223,6 +225,7 @@ foreach($thisStayISH->section as $section) {
 
 }
 
-//var_dump( $sections );var_dump($pdat->hdrentries);exit;
+// var_dump( $sections["sectionSignificantProcedures"] );//var_dump($pdat->hdrentries);exit;
+// var_dump( $sections["sectionPlanOfCare"] );
 
 ?>

@@ -25,24 +25,10 @@ Usage: #inline
 
 * status = #completed
 
-{# procedure's preferred term #}
-{% set preferred = procedure.code.preferredTerm %}
-
-{# dp: make html with display and possible site #}
-{% set dp = preferred %}
-{# refinements #}
-{% if procedure.text is iterable %}
-{% set dp = procedure.text[0] %}
-{% else %}
-{% set dp = procedure.text %}
-{% endif %}
-{% if preferred is not empty %}
-{% set dp = preferred %}
-{% endif %}
-
 {# *** HTML td 1: iterate code[0] #}
 {% if procedure.code is not empty %}
 * code.coding[0] = {{ procedure.code.system }}#{{ procedure.code.code }} "{{ procedure.code.display }}"
+{% set dp = procedure.code.preferredTerm ?? procedure.code.display %}
 {% if procedure.site.code is not empty %}
 {% set dp = dp ~ "<br/>" ~ procedure.site.display %}
 {% endif %}
