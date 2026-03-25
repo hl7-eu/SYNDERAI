@@ -37,16 +37,30 @@ function attach_child(array &$parent, string $base, bool $repeat, array $data): 
 
 /**
  * Transform code per rule:
- * If value contains BOTH '$' and '#', split at first space into
- * ['code'=>..., 'system'=>..., 'display'=>...].
+ * If value contains BOTH '$' and '#', e.g. "$sct#65147003 display",
+ * split into ['code'=>..., 'system'=>..., 'display'=>...]
+ * If value is constructed as numeric #unit or numeric $system#unit
+ * e.g. 400 #ng/l or 145 $ucum#mm[Hg]
+ * split into ['value'=>..., 'system'=>..., 'unit'=>...]
+ *
  * Otherwise return original value unchanged.
  *
  * BUG 5 FIX: parameter type changed from string to mixed.
  * The original string type hint caused a TypeError when an already-transformed
  * array value was passed in (possible if a value is processed more than once).
+ * 
+ * examples  (if system is omittedm ucum is assumed...)
+ * 
+ * "400 #ng/l"         → ['value' => 400,   'system' => '$ucum', 'unit' => 'ng/l']
+ * "3.5 #mmol/l"       → ['value' => 3.5,   'system' => '$ucum', 'unit' => 'mmol/l']
+ * "145 $ucum#mm[Hg]"  → ['value' => 145,   'system' => 'ucum',  'unit' => 'mm[Hg]']
+ * "$sct#65147003 Foo" → ['code'  => '65147003', 'system' => '$sct', 'display' => 'Foo']
+ * "plain string"      → ['text'  => 'plain string']
  */
 function transform_code(mixed $value): mixed {
     if (!is_string($value)) return $value;
+
+    // Branch 1 — coded concept: "$system#code [display]"
     if (strpos($value, '$') !== false && strpos($value, '#') !== false) {
         $pos = strpos($value, ' ');
         if ($pos === false) {
@@ -59,8 +73,27 @@ function transform_code(mixed $value): mixed {
         $code    = after('#', $cosy);
         $system  = before('#', $cosy);
         $display = ltrim(substr($value, $pos + 1));
-        return ['code' => $code, 'system' => $system, 'display' => $display];
+        return [
+            'code' => $code,
+            'system' => $system,
+            'display' => $display
+        ];
     }
+
+    // Branch 2 — quantity: "numeric #unit" or "numeric $system#unit"
+    // Matches an integer or decimal, whitespace, an optional $system, then #unit.
+    if (preg_match('/^(\d+(?:\.\d+)?)\s+(?:\$([^#]*))?#(.+)$/', $value, $m)) {
+        $numeric = strpos($m[1], '.') !== false ? (float) $m[1] : (int) $m[1];
+        $system = strlen($m[2]) == 0 ? "ucum" : $m[2];  // empty string when no system was present, assume $ucum
+        return [
+            'value'  => $numeric,
+            'system' => $system,   
+            'unit'   => $m[3],
+            'code'   => $m[3],
+            'scale'  => 'numeric'
+        ];
+    }
+
     return $value;
 }
 
