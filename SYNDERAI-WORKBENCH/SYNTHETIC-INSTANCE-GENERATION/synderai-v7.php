@@ -648,10 +648,12 @@ if (in_array("HDR", $ARTIFACTS) && $PROCESSISH) {
         )) $isherror = "no or incorrect longitude";
         if (!(
             isset($ish["encounter"]["procedure"]) && 
+            is_array($ish["encounter"]["procedure"]) && 
             count($ish["encounter"]["procedure"]) > 0
         )) $isherror = "no encounter procedure";
         if (!(
             isset($ish["encounter"]["reason"]) && 
+            is_array($ish["encounter"]["reason"]) && 
             count($ish["encounter"]["reason"]) > 0
         )) $isherror = "no encounter reason";
         // get all conditions as preselection criteria
@@ -670,7 +672,7 @@ if (in_array("HDR", $ARTIFACTS) && $PROCESSISH) {
                         )) $isherror = "entry with no type";
                         if (isset($e["type"]) && $e["type"] === "condition") {
                             // var_dump($e["code"]);
-                            $hdrconditions[] = $e["code"]["code"];  // store SNOMED code of condition form later preselect
+                            $hdrconditions[] = $e["code"][0]["code"];  // store SNOMED code of condition form later preselect
                         }
                     }
                 }
