@@ -37,7 +37,9 @@ Usage: #inline
 * activity.detail.status = {{ careplan.status }}
 {% endif %}
 
+{% if careplan.activity.code is not empty %}
 * activity.detail.code.coding = {{ careplan.activity.system }}#{{ careplan.activity.code }} "{{ careplan.activity.display }}"
+{% endif %}
 
 {% if careplan.activity.preferredTerm is not empty %}
 * activity.detail.description = "{{ careplan.activity.preferredTerm }}"
@@ -56,8 +58,12 @@ Usage: #inline
 * activity.detail.doNotPerform = true
 {% else %}
 
+{% if careplan.start is not empty %}
 * period.start = "{{ careplan.start }}"
 {{ addHTML_tdnb(careplan.start|date('d-M-Y')) }}
+{% else %}
+{{ addHTML_tdnb("-") }}
+{% endif %}
 
 {% if careplan.reason.code is empty %}
 {{ addHTML_td("-") }}

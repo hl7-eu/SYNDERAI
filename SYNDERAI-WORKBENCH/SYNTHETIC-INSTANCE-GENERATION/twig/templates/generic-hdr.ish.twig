@@ -77,7 +77,7 @@ hospital
 # short discharge summary text of this encounter episode
 # synthesis
 section*
-  type sectionSynthesis
+  type synthesis
   code $loinc#67781-5 Summarization of encounter note
   title Synthesis
   text """{{ discharge.text }}"""
@@ -85,14 +85,14 @@ section*
 
 # Hospital Course
 section*
-  type sectionHospitalCourse
+  type hospitalcourse
   code $loinc#8648-8 Hospital course note
   text """{{ encounter.hospitalCourse }}"""
 
 {% if medication is not empty %}
 # medications associated with this encounter episode
 section*
-  type sectionPharmacotherapy
+  type pharmacotherapy
   code $loinc#87232-5 Medication administration.brief
   title Medications
 {% for m in medication %}
@@ -118,11 +118,11 @@ section*
 {% if discharge is not empty %}
 # discharge diagnoses of this encounter episode
 section*
-  type sectionDiagnosticSummary
+  type dischargediagnosis
   code $loinc#11535-2 Hospital discharge diagnosis note
   title Diagnosis at Discharge
   entry*
-    type dischargediagnosis
+    type condition
     start {{ encounter.episodeend }}
     code* $icd10#{{ discharge.code }} {{ discharge.display }}
 {% endif %}
@@ -130,7 +130,7 @@ section*
 {% if procedure is not empty %}
 # significant sectionSignificantProcedures
 section*
-  type sectionSignificantProcedures
+  type procedures
   code $loinc#10185-7 Hospital discharge procedure note
   title Significant procedures
 {% for p in procedure %}
@@ -160,7 +160,7 @@ section*
     date {{ v.date }}
     code* {{ v.code.system }}#{{ v.code.code }} {{ v.code.display }}
     {# if numeric #}
-    value {{ v.value }} $ucum#{{ v.unitcode }} "{{ v.unit }}"
+    value {{ v.value.value }} {{ v.value.system }}#{{ v.value.code }} "{{ v.value.unit }}"
 {% endfor %} {# vitalsigns loop #}
 {% endfor %} {# vblock loop #}
 {% endif %}  {# if vitalsigns at all #}

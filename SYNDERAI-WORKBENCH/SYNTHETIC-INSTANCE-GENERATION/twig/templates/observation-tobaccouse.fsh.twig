@@ -1,0 +1,45 @@
+{#
+  This is the TWIG file for the creation of an FSH instance including the HTML parts.
+  see README.md
+
+  KH since 2026-03-24
+#}
+
+%%FSH%% {# tag required #}
+Instance: {{ setInstance("Instance-Observation-" ~ instanceid) }}
+InstanceOf: Observation
+Title: "Observation Tobacco Use"
+Description: "Observation Tobacco Use"
+Usage: #inline
+
+* id = "{{ instanceid }}"
+
+* status = #final
+
+{{ addHTML_tr() }}
+
+* code = {{ tobaccouse.code.system }}#{{ tobaccouse.code.code }} "{{ tobaccouse.code.display }}"
+{{- addHTML_td(tobaccouse.display) }}
+
+{% if tobaccouse.effective is not empty %}
+* effectiveDateTime = "{{ tobaccouse.effective }}"
+{% endif %}
+
+* valueCodeableConcept.coding = {{ tobaccouse.valueCodeableConcept.system }}#{{ tobaccouse.valueCodeableConcept.code }} "{{ tobaccouse.valueCodeableConcept.display }}"
+{{- addHTML_td(tobaccouse.valueCodeableConcept.code) }}
+
+* subject = Reference(urn:uuid:{{ patient.instanceid }}) "{{ patient.name }}"
+
+{{ addHTML_trend() -}}
+
+* text.status = #generated
+* text.div = """
+<div xmlns="http://www.w3.org/1999/xhtml">
+<table class="hl7__ips">{{ emitHTML() | raw }}</table>
+</div>
+"""
+
+%%HEAD%% {# tag required, content below maybe emtpy #}
+
+%%HTML%% {# tag required, content below maybe emtpy #}
+{{ emitHTML() | raw }}

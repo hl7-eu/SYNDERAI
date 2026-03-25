@@ -45,12 +45,12 @@ Usage: #inline
 {# should have: * performer = Reference(urn:uuid:{practitionerrole-uuid}) "{practitioner-name}" #}
 
 {# *** HTML td 3: measurement, either single or components #}
-{% if vital.scale == "numeric" and vital.value is not empty %}
-* valueQuantity.value = {{ vital.value }}
-* valueQuantity.code = #{{ vital.unitcode }}
+{% if vital.value.scale == "numeric" or vital.valueQuantity.scale == "numeric" and (vital.value.value is not empty or vital.valueQuantity.value is not empty) %}
+* valueQuantity.value = {{ vital.value.value ?? vital.valueQuantity.value }}
+* valueQuantity.code = #{{ vital.value.code ?? vital.valueQuantity.code }}
 * valueQuantity.system = "http://unitsofmeasure.org"
-* valueQuantity.unit = "{{ vital.unit }}"
-{{ addHTML_td(vital.value ~ " " ~ vital.unit) }}
+* valueQuantity.unit = "{{ vital.value.unit ?? vital.valueQuantity.unit }}"
+{{ addHTML_td(vital.value.value ~ " " ~ vital.value.unit) }}
 {% elseif vital.component %}
 {% set valueunit = "-" %}
 {% for c in vital.component %}
@@ -60,10 +60,10 @@ Usage: #inline
 {% else %}
 * component[+].code = {{ c.code.system }}#{{ c.code.code }} "{{ c.code.display }}"
 {% endif %}
-* component[=].valueQuantity.value = {{ c.value }}
-* component[=].valueQuantity.code = #{{ c.unitcode }}
+* component[=].valueQuantity.value = {{ c.value.value ?? c.valueQuantity.value }}
+* component[=].valueQuantity.code = #{{ c.value.code ?? c.valueQuantity.code }}
 * component[=].valueQuantity.system = "http://unitsofmeasure.org"
-* component[=].valueQuantity.unit = "{{ c.unit }}"
+* component[=].valueQuantity.unit = "{{ c.value.unit ?? c.valueQuantity.unit }}"
 {% set valueunit = c.value ~ " " ~ c.unit %}
 {% endfor %}
 {{ addHTML_td(valueunit) }}

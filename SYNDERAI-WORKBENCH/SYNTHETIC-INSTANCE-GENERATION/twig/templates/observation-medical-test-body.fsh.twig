@@ -43,10 +43,16 @@
 
 {% if labresult.value.type == "Quantity" or labresult.valueQuantity is not empty %}
 
+{# if the value is contained in value.value or valueQuantity.value emit them as proper quantities #}
+{# if the valueString is just a plain string (no array) express it as .text #}
+{% if labresult.value.value is not empty or labresult.valueQuantity.value is not empty %}
 * valueQuantity.value = {{ labresult.value.value ?? labresult.valueQuantity.value }}
 * valueQuantity.unit = "{{ labresult.value.code ?? labresult.valueQuantity.code }}"
 * valueQuantity.code = #{{ labresult.value.unit ?? labresult.valueQuantity.unit }}
-* valueQuantity.system = ${{ labresult.value.system }}
+* valueQuantity.system = ${{ labresult.value.system ?? labresult.valueQuantity.system }}
+{% elseif labresult.valueString is not empty %}
+* valueString = {{ labresult.valueString }}
+{% endif %}
 
 {{ addHTML_td(labresult.value.value ?? labresult.valueQuantity.value) }}
 
