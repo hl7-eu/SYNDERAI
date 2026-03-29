@@ -109,13 +109,7 @@ if (count($found) === 0) {
                 "system" => "\$loinc",
                 "display" => "Systolic blood pressure"
               ],
-              "value" => [
-                "value" => $systolic["value"],
-                "unit" => "mm[Hg]",
-                "code" => "mm[Hg]",
-                "system" => "\$ucum",
-                "scale" => "numeric"
-              ],
+              "value" => $systolic["value"]
             ],
             [
               // "slice" => "DiastolicBP",
@@ -124,14 +118,7 @@ if (count($found) === 0) {
                 "system" => "\$loinc",
                 "display" => "Diastolic blood pressure"
               ],
-              "value" => [
-                "value" => $distolic["value"],
-                "unit" => "mm[Hg]",
-                "code" => "mm[Hg]",
-                "system" => "\$ucum",
-                "scale" => "numeric"
-              ],
-              
+              "value" => $distolic["value"]
             ]
           ]
         ];

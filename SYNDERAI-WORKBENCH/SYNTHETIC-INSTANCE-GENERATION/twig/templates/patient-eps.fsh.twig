@@ -44,7 +44,7 @@ Usage: #inline
 * name[=].given[+] = "{{ g }}"
 {% endfor %}
 * name[=].text = "{{ patient.name }}"
-{{ addHTML_td(patient.given ~ " " ~ patient.family) }}
+{{ addHTML_td(patient.given|join(" ") ~ " " ~ patient.family) }}
 
 {# *** HTML td 2: gender #}
 * gender = #{{ patient.gender }}

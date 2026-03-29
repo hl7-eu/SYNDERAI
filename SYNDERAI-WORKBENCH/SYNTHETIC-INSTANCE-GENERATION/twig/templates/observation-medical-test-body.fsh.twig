@@ -25,7 +25,7 @@
 {# we may have more than 1 code which is legal but HL7 EU HDR only want exactly 1..1, take the first #}
 {# so if labresult.code is an array instead of iterating with for c in labresult.code use code[0] #}
 {# if it is a simple value just use that #}
-{% set c = labresult.code | first %}
+{% set c = labresult.code|first %}
 * code[+].coding = {{ c.system }}#{{ c.code }} "{{ c.display }}"
 * code[=].text = "{{ c.display }}"
 {{ addHTML_td(c.display) }}

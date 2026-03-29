@@ -50,8 +50,8 @@ Usage: #inline
 * valueQuantity.code = #{{ vital.value.code ?? vital.valueQuantity.code }}
 * valueQuantity.system = "http://unitsofmeasure.org"
 * valueQuantity.unit = "{{ vital.value.unit ?? vital.valueQuantity.unit }}"
-{{ addHTML_td(vital.value.value ~ " " ~ vital.value.unit) }}
-{% elseif vital.component %}
+{{ addHTML_td((vital.value.value ?? vital.valueQuantity.value) ~ " " ~ (vital.value.unit ?? vital.valueQuantity.unit)) }}
+{% elseif vital.component is not empty %}
 {% set valueunit = "-" %}
 {% for c in vital.component %}
 {# component with a slice? #}
@@ -64,8 +64,8 @@ Usage: #inline
 * component[=].valueQuantity.code = #{{ c.value.code ?? c.valueQuantity.code }}
 * component[=].valueQuantity.system = "http://unitsofmeasure.org"
 * component[=].valueQuantity.unit = "{{ c.value.unit ?? c.valueQuantity.unit }}"
-{% set valueunit = c.value ~ " " ~ c.unit %}
-{% endfor %}
+{% set valueunit = (c.value.value ?? c.valueQuantity.value) ~ " " ~ (c.value.unit ?? c.valueQuantity.unit) %}
+{% endfor %} {# c in vital.component #}
 {{ addHTML_td(valueunit) }}
 {% else %}
 {{ addHTML_td("-") }}

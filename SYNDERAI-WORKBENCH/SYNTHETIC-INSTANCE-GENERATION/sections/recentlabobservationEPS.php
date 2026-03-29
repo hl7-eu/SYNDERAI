@@ -20,7 +20,7 @@ foreach ($pdat->labobservations as $ldate => $lbspd) {
     $code = array();
     $code = [
         "code" => $labi["code"]["code"],
-        "display" => $labi["coded"]["isplay"],
+        "display" => $labi["code"]["display"],
         // must tweak system snomed short alias "snomed" to "sct"
         "system" => $labi["code"]["system"] === "snomed" ? "\$sct" : $labi["code"]["system"]
       ];
@@ -84,7 +84,7 @@ foreach ($pdat->labobservations as $ldate => $lbspd) {
     }
   
     $data = [
-        "code" => $code,
+        "code" => [$code],  // code must be an array
         "subject" => $pdat->instanceid,
         "subjectname" => $pdat->name,
         "effective" => $ldate,

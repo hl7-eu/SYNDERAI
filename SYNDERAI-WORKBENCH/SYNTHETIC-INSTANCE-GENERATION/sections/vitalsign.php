@@ -15,6 +15,7 @@ if ($pdat->vitalsigns !== NULL) {
     if ($key === $pdat->vitalsignslastdate) {
       foreach($gdata as $sdata) {
         $vitalinstanceid = uuid();
+        // var_dump($sdata);
         list($tmpfsh, $tmphtml, $HEADvitals, $vitainstance) = 
           twigit([
             "instanceid" => $vitalinstanceid,
