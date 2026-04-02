@@ -28,13 +28,9 @@ Usage: #inline
 {{ addHTML_tr() }}
 
 {# *** HTML td 1: code #}
-{% if vital.code is iterable %}
-* code = {{ vital.code[0].system }}#{{ vital.code[0].code }} "{{ vital.code[0].display }}"
-{{ addHTML_td(vital.code[0].display) }}
-{% else %}
-* code = {{ vital.code.system }}#{{ vital.code.code }} "{{ vital.code.display }}"
-{{ addHTML_td(vital.code.display) }}
-{% endif %}
+{% set c = vital.code|first %}
+* code = {{ c.system }}#{{ c.code }} "{{ c.display }}"
+{{ addHTML_td(c.display) }}
 
 * subject = Reference(urn:uuid:{{ patient.instanceid }}) "{{ patient.name }}"
 
@@ -45,28 +41,37 @@ Usage: #inline
 {# should have: * performer = Reference(urn:uuid:{practitionerrole-uuid}) "{practitioner-name}" #}
 
 {# *** HTML td 3: measurement, either single or components #}
-{% if vital.value.scale == "numeric" or vital.valueQuantity.scale == "numeric" and (vital.value.value is not empty or vital.valueQuantity.value is not empty) %}
+{% if (vital.value.scale == "numeric" or vital.valueQuantity.scale == "numeric") and (vital.value.value is not empty or vital.valueQuantity.value is not empty) %}
 * valueQuantity.value = {{ vital.value.value ?? vital.valueQuantity.value }}
 * valueQuantity.code = #{{ vital.value.code ?? vital.valueQuantity.code }}
 * valueQuantity.system = "http://unitsofmeasure.org"
 * valueQuantity.unit = "{{ vital.value.unit ?? vital.valueQuantity.unit }}"
 {{ addHTML_td((vital.value.value ?? vital.valueQuantity.value) ~ " " ~ (vital.value.unit ?? vital.valueQuantity.unit)) }}
 {% elseif vital.component is not empty %}
-{% set valueunit = "-" %}
-{% for c in vital.component %}
+{% for cmp in vital.component %}
+{% set c = cmp.code|first %}
 {# component with a slice? #}
-{% if c.slice is not empty %}
-* component[{{c.slice}}].code = {{ c.code.system }}#{{ c.code.code }} "{{ c.code.display }}"
+{% if cmp.slice is not empty %}
+* component[{{cmp.slice}}].code = {{ c.system }}#{{ c.code }} "{{ c.display }}"
 {% else %}
-* component[+].code = {{ c.code.system }}#{{ c.code.code }} "{{ c.code.display }}"
+* component[+].code = {{ c.system }}#{{ c.code }} "{{ c.display }}"
 {% endif %}
-* component[=].valueQuantity.value = {{ c.value.value ?? c.valueQuantity.value }}
-* component[=].valueQuantity.code = #{{ c.value.code ?? c.valueQuantity.code }}
+* component[=].valueQuantity.value = {{ cmp.value.value ?? cmp.valueQuantity.value }}
+* component[=].valueQuantity.code = #{{ cmp.value.code ?? cmp.valueQuantity.code }}
 * component[=].valueQuantity.system = "http://unitsofmeasure.org"
-* component[=].valueQuantity.unit = "{{ c.value.unit ?? c.valueQuantity.unit }}"
-{% set valueunit = (c.value.value ?? c.valueQuantity.value) ~ " " ~ (c.value.unit ?? c.valueQuantity.unit) %}
+* component[=].valueQuantity.unit = "{{ cmp.value.unit ?? cmp.valueQuantity.unit }}"
 {% endfor %} {# c in vital.component #}
-{{ addHTML_td(valueunit) }}
+{# build the component string as x/y unit #}
+{% set cvalue = "" %}
+{% set cunit = "" %}
+{% for cmp in vital.component %}
+{% set cvalue = cvalue ~ (cmp.value.value ?? cmp.valueQuantity.value) %}
+{% if not loop.last %}
+{% set cvalue = cvalue ~ " / " %}
+{% endif %}
+{% set cunit = cmp.value.unit %}
+{% endfor %}
+{{ addHTML_td(cvalue ~ " " ~ cunit) }}
 {% else %}
 {{ addHTML_td("-") }}
 {% endif %}

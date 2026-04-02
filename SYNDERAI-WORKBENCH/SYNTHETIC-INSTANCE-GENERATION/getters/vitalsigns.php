@@ -31,9 +31,11 @@ while (($item = fgetcsv($observationhandle, 10000, ",", '"', '\\')) !== FALSE) {
       $found[$date][$loinc] = [
         "date" => $date,
         "code" => [
-          "code" => $loinc,
-          "system" => "\$loinc",
-          "display" => $loincdisplay
+          [
+            "code" => $loinc,
+            "system" => "\$loinc",
+            "display" => $loincdisplay
+          ]
         ],
         "value" => [
           "value" => $value,
@@ -97,26 +99,32 @@ if (count($found) === 0) {
       $found[$thisdate]["85354-9"] = [
           "date" => $thisdate,
           "code" => [
-            "code" => "85354-9",
-            "system" => "\$loinc",
-            "display" => "Blood pressure panel with all children optional"
+            [
+              "code" => "85354-9",
+              "system" => "\$loinc",
+              "display" => "Blood pressure panel with all children optional"
+            ]
           ],
           "component" => [
             [
               // "slice" => "SystolicBP",
               "code" => [
-                "code" => "8480-6",
-                "system" => "\$loinc",
-                "display" => "Systolic blood pressure"
+                [
+                  "code" => "8480-6",
+                  "system" => "\$loinc",
+                  "display" => "Systolic blood pressure"
+                ]
               ],
               "value" => $systolic["value"]
             ],
             [
               // "slice" => "DiastolicBP",
               "code" => [
-                "code" => "8462-4",
-                "system" => "\$loinc",
-                "display" => "Diastolic blood pressure"
+                [
+                  "code" => "8462-4",
+                  "system" => "\$loinc",
+                  "display" => "Diastolic blood pressure"
+                ]
               ],
               "value" => $distolic["value"]
             ]

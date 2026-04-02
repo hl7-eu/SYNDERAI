@@ -22,6 +22,7 @@ if ($pdat->vitalsigns !== NULL) {
             "patient" => $pdat,
             "vital" => $sdata
           ], "vitalsigns");
+        // var_dump($tmpfsh);
         // split this tr td td tr into first td content as array key and the rest as array value
         $FSHvitals .= $tmpfsh;
         $firstpart = before("</td>", $tmphtml) . "</td>";  // is like <tr><td>Body Height</td>
@@ -47,12 +48,14 @@ if ($pdat->vitalsigns !== NULL) {
     if ($key === $pdat->vitalsignslastbutonedate) {
       foreach($gdata as $sdata) {
         $vitalinstanceid = uuid();
+        // var_dump($sdata);
         list($tmpfsh, $tmphtml, $HEADvitals, $vitainstance) =
           twigit([
             "instanceid" => $vitalinstanceid,
             "patient" => $pdat,
             "vital" => $sdata
           ], "vitalsigns");
+        // var_dump($tmpfsh);
         // split this tr td td tr into first td content, check the tmphtml array if key is present and add the second td as an extra column
         $FSHvitals .= $tmpfsh;
         $firstpart = before("</td>", $tmphtml) . "</td>";

@@ -21,8 +21,12 @@ Usage: #inline
 * category.coding = $observation-category#imaging
 * performer[+].display = "The Central European Radiology"
 {# * performer[=] = Reference(urn:uuid:e512e2e2-9600-4c69-a269-af3ab5421e09) #}
-{% else %}
+{% elseif isLaboratory %}
 * category[laboratory].coding = $observation-category#laboratory
+* performer[+].display = "The Central European Laboratory"
+{# * performer[=] = Reference(urn:uuid:e512e2e2-9600-4c69-a269-af3ab5421e09) #}
+{% else %}
+* category.coding = $observation-category#laboratory
 * performer[+].display = "The Central European Laboratory"
 {# * performer[=] = Reference(urn:uuid:e512e2e2-9600-4c69-a269-af3ab5421e09) #}
 {% endif %}
