@@ -120,10 +120,10 @@ foreach ($pdat->labobservations as $ldate => $lbspd) {
           $isok = TRUE;  // assume all ik ok
           if (isset($rr1["low"])) {
             if (!is_numeric($rr1["low"])) $isok = FALSE; 
-          }
+          } else $rr1["low"] += 0;  // make it really a int/float
           if (isset($rr1["high"])) {
             if (!is_numeric($rr1["high"])) $isok = FALSE; 
-          }
+          } else $rr1["high"] += 0; // make it really a int/float
           if (!$isok) {
             // the low or hugh field contains "non-numeric" values, reset $rr1 reference range to be used as text
             if (isset($rr1["display"])) {
