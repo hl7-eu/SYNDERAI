@@ -12,19 +12,23 @@
    - [Helper and Policy functions](#helper-and-policy-functions)
    - [Global constants](#global-constants)
 6. [FSH Constructions](#fsh-constructions)
-   - [Comments](#comments)
+   - [Comments — Twig vs FSH](#comments--twig-vs-fsh)
+   - [Single and multiple instances per template](#single-and-multiple-instances-per-template)
    - [Setting the Instance name](#setting-the-instance-name)
+   - [Static templates with no Twig expressions](#static-templates-with-no-twig-expressions)
    - [Constant FSH instructions](#constant-fsh-instructions)
    - [Outputting variables](#outputting-variables)
+   - [Local variables](#local-variables)
    - [Conditional instructions](#conditional-instructions)
    - [Loop instructions](#loop-instructions)
    - [FSH slice indexing](#fsh-slice-indexing)
    - [FHIR extensions](#fhir-extensions)
-   - [Embedding the FHIR narrative (text.div)](#embedding-the-fhir-narrative-textdiv)
+   - [FHIR narrative patterns (text.div)](#fhir-narrative-patterns-textdiv)
 7. [HTML Constructions](#html-constructions)
    - [Building table head rows](#building-table-head-rows)
    - [Building table body rows](#building-table-body-rows)
    - [Emitting the bags into the output sections](#emitting-the-bags-into-the-output-sections)
+   - [CSS table classes](#css-table-classes)
    - [Inline HTML in the FSH section](#inline-html-in-the-fsh-section)
 8. [Twig Filters used in this Project](#twig-filters-used-in-this-project)
 9. [Whitespace Control](#whitespace-control)
@@ -173,9 +177,19 @@ The *HEAD bag* works identically to the HTML bag, but accumulates `<th>` cells t
 
 | Function call | Description |
 |---------------|-------------|
-| `setInstance(name)` | Registers `name` as a tracked FSH instance identifier and returns it for inline output. Must be called exactly once per template, as the value of the `Instance:` keyword. The returned string is also collected into the `twigit()` return array. |
-| `getUUID()` | Generates and returns a fresh UUID v4 string. Useful for inline `urn:uuid:` references that do not correspond to a pre-assigned instance id. |
+| `setInstance(name)` | Registers `name` as a tracked FSH instance identifier and returns it for inline output. The returned string is also collected into the `twigit()` return array in call order. May be called zero, one, or multiple times — see [Single and multiple instances per template](#single-and-multiple-instances-per-template). |
+| `getUUID()` | Generates and returns a fresh RFC 4122 UUID v4 string at render time. Used where an identifier value is required but no pre-assigned id exists (e.g. practitioner identifiers). The UUID is ephemeral — not tracked across renders. |
 | `syntheticDataPolicyMeta()` | Returns a block of FSH `* meta.tag` statements that mark the resource as synthetically generated, in accordance with the SYNDERAI data-governance policy. Output is raw FSH; always apply the `\| raw` filter. Must be placed directly after the `Usage:` line in the FSH instance header. |
+
+**`getUUID()` usage:**
+
+```twig
+{# Generate a transient UUID for a practitioner identifier not tracked by the pipeline #}
+* identifier.system           = "urn:oid:{{ HL7EUROPEEXAMPLESOID }}"
+{% set practitioneridentifier = getUUID() %}
+* identifier.value            = "{{ practitioneridentifier }}"
+* identifier.assigner.display = "HL7 Europe"
+```
 
 **`syntheticDataPolicyMeta()` usage:**
 
@@ -198,28 +212,105 @@ Usage: #inline
 
 ## FSH Constructions
 
-### Comments
+### Comments — Twig vs FSH
 
-Twig comments are delimited by `{#` and `#}`. They are stripped from output and do not appear in the generated FSH.
+Two distinct comment syntaxes are used in these templates and they behave very differently:
+
+**Twig comments** — `{# … #}` — are stripped by the Twig engine before the output reaches SUSHI. They never appear in the generated FSH.
 
 ```twig
-{# This is a comment — it will not appear in the FSH output #}
+{# This comment disappears from output entirely #}
+* status = #active {# inline annotation — also stripped #}
 ```
 
-Use comments to label sections, mark HTML cell positions, and document non-obvious FSH choices:
+**FSH line comments** — `// …` — are passed through by Twig (they are plain text) and are seen by SUSHI. Use them when you want the comment to appear in the compiled FSH output or when authoring a static template that has no Twig expressions.
+
+```
+// This comment survives into the FSH output and SUSHI sees it
+* status = #active
+```
+
+Use Twig `{# #}` for all template logic, labelling, and HTML cell markers. Use FSH `//` only in static or near-static templates (see [Static templates](#static-templates-with-no-twig-expressions)).
+
+> **Warning — non-nestable Twig comments:** Twig comments cannot be nested. The first `#}` encountered closes the open comment, regardless of any `{#` inside it. This means that a large block comment containing an inner `{# … #}` tag will be split into two separate comment segments at the inner tag's `#}`. This is exploited in some templates to comment out entire FSH instance blocks; see `provider-as-requester-eu-lab_fsh.twig` for an example.
+
+### Single and multiple instances per template
+
+The `%%FSH%%` section is not limited to a single `Instance:` block. A template may define zero, one, or several FSH instances, each beginning with its own `Instance:` keyword line.
+
+**Pattern A — single instance with `setInstance()` (most common):**
 
 ```twig
-{# *** HTML td 1: patient name #}
-{{ addHTML_td(patient.name) }}
+Instance: {{ setInstance("Instance-Patient-" ~ patient.instanceid) }}
+InstanceOf: PatientEuCore
+...
+```
+
+`setInstance()` registers the name in the `twigit()` return array so the PHP caller can reference it.
+
+**Pattern B — multiple instances, all registered:**
+
+Used when two tightly related resources must be generated together (e.g. ResearchStudy + ResearchSubject). Call `setInstance()` once per instance; names are collected in call order.
+
+```twig
+Instance: {{ setInstance("Instance-ResearchStudy-" ~ researchstudyinstanceid) }}
+InstanceOf: ResearchStudy
+...
+
+Instance: {{ setInstance("Instance-ResearchSubject-" ~ researchsubjectinstanceid) }}
+InstanceOf: ResearchSubject
+...
+```
+
+**Pattern C — multiple instances, some not registered:**
+
+Used when secondary instances (e.g. Practitioner, Organization) are subordinate to a primary one. The primary is registered via `setInstance()`; the others use direct `{{ }}` interpolation.
+
+```twig
+{# Primary — registered #}
+Instance: {{ setInstance("Instance-PractitionerRole-" ~ provider.instancerole) }}
+InstanceOf: PractitionerRoleEuCore
+...
+
+{# Secondary — NOT registered; id interpolated directly #}
+Instance: Instance-Organization-{{ provider.instanceroleorg }}
+InstanceOf: OrganizationEuCore
+...
+```
+
+**Pattern D — no `setInstance()` at all:**
+
+Used when no instance names need to be returned to the PHP caller. All `Instance:` lines use direct interpolation. None of the instance names appear in the `twigit()` return array.
+
+```twig
+Instance: Instance-PractitionerRole-{{ hospital.instancerole }}
+InstanceOf: PractitionerRoleEuCore
+...
 ```
 
 ### Setting the Instance name
 
-Every FSH instance must begin with an `Instance:` declaration. Use `setInstance()` to both register the name with the SYNDERAI pipeline and output it inline. The instance name is typically composed from a fixed prefix and a dynamic id using Twig's string concatenation operator `~`.
+When using `setInstance()`, compose the name from a fixed resource-type prefix and a dynamic id using Twig's string concatenation operator `~`:
 
 ```twig
 Instance: {{ setInstance("Instance-Patient-" ~ patient.instanceid) }}
 ```
+
+### Static templates with no Twig expressions
+
+Some templates contain no `{{ }}` expression tags and no `{% %}` block tags at all — the entire `%%FSH%%` section is plain FSH text that Twig passes through unchanged. These are used for governance fixtures and example bundles that are identical for every pipeline run.
+
+```twig
+%%FSH%% {# tag required #}
+
+// Static FSH — no Twig variables
+Instance: Patient-example-synth
+InstanceOf: Patient
+* id = "example-synth"
+* gender = #female
+```
+
+The section markers and Twig comments are still processed; everything else is literal.
 
 ### Constant FSH instructions
 
@@ -242,6 +333,14 @@ Inline Twig comments can annotate constant lines without affecting output:
 * status = #active {# always active for synthetic patients #}
 ```
 
+FSH also supports multi-line string values using triple double-quotes `"""`. This is used both in `text.div` and in longer `description` fields:
+
+```twig
+* description = """
+This study aims on treating **Diabetes Type 2** patients using a new drug.
+"""
+```
+
 ### Outputting variables
 
 Variable values are interpolated using double-curly-brace syntax `{{ expression }}`. The expression is replaced by its string value in the output.
@@ -253,6 +352,30 @@ Variable values are interpolated using double-curly-brace syntax `{{ expression 
 ```
 
 Object properties are accessed with dot notation: `patient.name`, `device.display`, etc.
+
+### Local variables
+
+Use `{% set varname = expression %}` to capture a computed value into a local variable for reuse, avoiding repetition and improving readability.
+
+```twig
+{# Resolve preferred display term once, then use it in both FSH and HTML #}
+{% set dp = procedure.code.preferredTerm ?? procedure.code.display %}
+* code.coding[0] = {{ procedure.code.system }}#{{ procedure.code.code }} "{{ dp }}"
+{{ addHTML_td(dp) }}
+```
+
+Local variables are also used to extract values computed across loop iterations:
+
+```twig
+{% set cvalue = "" %}
+{% for cmp in vital.component %}
+{% set cvalue = cvalue ~ (cmp.value.value ?? cmp.valueQuantity.value) %}
+{% if not loop.last %}{% set cvalue = cvalue ~ " / " %}{% endif %}
+{% endfor %}
+{{ addHTML_td(cvalue) }}
+```
+
+> **Note:** Twig's scoping rules mean that `{% set %}` inside a `{% for %}` block does not persist after the loop ends unless the variable was initialised *before* the loop (as shown above).
 
 ### Conditional instructions
 
@@ -278,6 +401,16 @@ With an `else` branch for absent data:
 {% endif %}
 ```
 
+The **null-coalescing operator `??`** is a compact alternative to `{% if %}` when choosing between two possible value paths. It returns the left operand if it is defined and non-null, otherwise the right operand:
+
+```twig
+{# Use vital.value.value if defined, otherwise fall back to vital.valueQuantity.value #}
+* valueQuantity.value = {{ vital.value.value ?? vital.valueQuantity.value }}
+
+{# Preferred term with display fallback #}
+{% set label = procedure.code.preferredTerm ?? procedure.code.display %}
+```
+
 ### Loop instructions
 
 Use `{% for item in collection %} … {% endfor %}` to iterate over array variables and emit one FSH rule per element.
@@ -294,6 +427,27 @@ Use `{% for item in collection %} … {% endfor %}` to iterate over array variab
 {% endfor %}
 ```
 
+Inside a loop, Twig provides the special `loop` object with useful metadata:
+
+| Variable | Description |
+|----------|-------------|
+| `loop.index` | Current iteration (1-based). |
+| `loop.index0` | Current iteration (0-based). |
+| `loop.first` | `true` on the first iteration. |
+| `loop.last` | `true` on the last iteration. |
+| `loop.length` | Total number of items. |
+
+`loop.last` is particularly useful for suppressing a trailing separator:
+
+```twig
+{% set cvalue = "" %}
+{% for cmp in vital.component %}
+{% set cvalue = cvalue ~ cmp.value.value %}
+{% if not loop.last %}{% set cvalue = cvalue ~ " / " %}{% endif %}
+{% endfor %}
+{# result for two components: "120 / 80" #}
+```
+
 ### FSH slice indexing
 
 FSH uses two special index operators to address repeating elements:
@@ -302,17 +456,18 @@ FSH uses two special index operators to address repeating elements:
 |----------|---------|
 | `[+]` | **Append** — open a new slice at the next available index. |
 | `[=]` | **Current** — address the slice most recently opened by `[+]`. |
+| `[0]`, `[1]` … | **Explicit** — address a specific, known index directly. |
 
-This pattern allows multi-property slices to be populated without repeating an explicit numeric index:
+`[+]`/`[=]` is preferred for dynamic slices (loops, conditional blocks) because the index is determined at compile time by SUSHI. Explicit `[0]` is appropriate when exactly one element is always expected:
 
 ```twig
-* identifier[+].type   = $v2-0203#JHN   {# opens slice 0 #}
+{# Dynamic — index determined by slice count at compile time #}
+* identifier[+].type   = $v2-0203#JHN
 * identifier[=].system = "http://ec.europa.eu/identifier/eci"
 * identifier[=].value  = "{{ patient.eci }}"
 
-* identifier[+].type   = $v2-0203#MR    {# opens slice 1 #}
-* identifier[=].system = "http://local.setting.eu/identifier"
-* identifier[=].value  = "{{ patient.localid }}"
+{# Explicit — always exactly one coding #}
+* code.coding[0] = {{ procedure.code.system }}#{{ procedure.code.code }} "{{ procedure.code.display }}"
 ```
 
 Inside a `{% for %}` loop, combining `[+]` with `[=]` naturally produces one complete slice per iteration:
@@ -343,9 +498,13 @@ Complex extensions (with nested sub-extensions) require an additional level of i
 {% endif %}
 ```
 
-### Embedding the FHIR narrative (text.div)
+### FHIR narrative patterns (text.div)
 
-FHIR requires every resource to carry a human-readable narrative in `Resource.text.div` (§ 2.4.1). In FSH, multi-line string values are enclosed in triple double-quotes `"""`. The HTML bag is flushed here with `emitHTML() | raw` inside an XHTML-namespaced `<div>`:
+FHIR requires every resource to carry a human-readable narrative in `Resource.text.div` (§ 2.4.1). Four distinct patterns are used across the templates:
+
+**Pattern 1 — Body rows only** (most clinical-data templates)
+
+`emitHTML()` is flushed inside `text.div`; `emitHEAD()` is not. The inline narrative table has data rows but no column header row. The HEAD bag is emitted separately in `%%HEAD%%` for external consumers.
 
 ```twig
 * text.status = #generated
@@ -356,7 +515,43 @@ FHIR requires every resource to carry a human-readable narrative in `Resource.te
 """
 ```
 
-> `text.status = #generated` indicates that the narrative was derived entirely from the structured data — it must not be edited manually after generation.
+**Pattern 2 — Full table with headers** (socialhistory, vitalsigns, specimen, research-study-and-subject)
+
+Both bags are flushed inside `text.div`, producing a complete table with a header row in the inline narrative. Used when the narrative is the primary rendering surface.
+
+```twig
+* text.status = #generated
+* text.div = """
+<div xmlns="http://www.w3.org/1999/xhtml">
+<table class="hl7__ips">{{ emitHEAD() | raw }}{{ emitHTML() | raw }}</table>
+</div>
+"""
+```
+
+**Pattern 3 — Inline literal HTML** (provider templates)
+
+No bag functions are used. The `text.div` carries a hand-authored single-cell table with a brief identification string. Appropriate when the resource contains only one or two identifying pieces of data.
+
+```twig
+* text.status = #generated
+* text.div = """
+<div xmlns="http://www.w3.org/1999/xhtml">
+<table class="hl7__ips"><tr><td>Provider Role Id {{ provider.instancerole }}</td></tr></table>
+</div>
+"""
+```
+
+**Pattern 4 — Intentionally empty narrative** (servicerequest-eu-lab)
+
+Used when the resource carries no clinically meaningful human-readable content of its own. `text.status = #empty` is the correct FHIR status code for this case.
+
+```twig
+* text.status = #empty
+* text.div = "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+```
+
+> `text.status = #generated` — narrative was derived from structured data; do not edit manually.  
+> `text.status = #empty` — resource deliberately has no narrative; the element is present only to satisfy the FHIR cardinality requirement.
 
 ---
 
@@ -425,6 +620,30 @@ When a section has no content (e.g. a template that does not produce a header ro
 <!-- empty -->
 ```
 
+### CSS table classes
+
+The `<table>` element inside `text.div` uses a CSS class that determines column widths, typography, and colour scheme in the vi7eti / SYNDERAI viewer. The class is chosen based on the clinical context:
+
+| Class | Context | Used by |
+|-------|---------|---------|
+| `hl7__ips` | IPS / EPS resources — general clinical data | Patient, Procedure, Observation, DeviceUse, etc. |
+| `hl7__eu__lab__report` | EU Laboratory Report resources | Specimen, DiagnosticReport lab context |
+| `hl7__ips first25` | IPS context where the first column should be constrained to ~25% width | Research Study/Subject combined table |
+
+```twig
+{# Standard IPS table #}
+<table class="hl7__ips">{{ emitHEAD() | raw }}{{ emitHTML() | raw }}</table>
+
+{# EU Lab Report table #}
+<table class="hl7__eu__lab__report">
+{{ emitHEAD() | raw }}
+{{ emitHTML() | raw }}
+</table>
+
+{# IPS table with narrowed first column #}
+<table class="hl7__ips first25">{{ emitHEAD() | raw }} {{ emitHTML() | raw }}</table>
+```
+
 ### Inline HTML in the FSH section
 
 Plain HTML can also be written directly into the template body outside the bag functions. This is useful for wrapping structures or when rendering literal HTML that is not part of the row/cell pattern:
@@ -442,8 +661,11 @@ Twig filters are applied to an expression with the pipe character: `{{ expressio
 | Filter | Example | Description |
 |--------|---------|-------------|
 | `raw` | `{{ emitHTML() \| raw }}` | Suppresses HTML-escaping of the value. **Required** whenever a function returns an HTML or FSH string that must not be entity-encoded. |
-| `date(format)` | `{{ patient.birthdate \| date('d-M-Y') }}` | Formats a date/datetime value using PHP `date()` format codes. Common formats used in this project: `'d-M-Y'` → `14-Mar-1978` (HTML display), `'Y-m-d'` → `1978-03-14` (FHIR dateTime). |
+| `date(format)` | `{{ patient.birthdate \| date('d-M-Y') }}` | Formats a date/datetime value using PHP `date()` format codes. Common formats: `'d-M-Y'` → `14-Mar-1978` (HTML display); `'Y-m-d'` → `1978-03-14` (FHIR dateTime). |
 | `upper` | `{{ patient.countrycode \| upper }}` | Converts a string to upper-case. Used to normalise ISO 3166-1 country codes regardless of input casing. |
+| `first` | `{{ vital.code \| first }}` | Returns the first element of an array. Used when a field is an array of codings but only the first entry is needed. |
+| `slice(start, length)` | `{{ condition.active \| slice(0, 1) }}` | Extracts a substring or sub-array. Used to extract a single status character from an encoded string (e.g. `"SYYYY-MM-DD"` → `"S"`). |
+| `join(separator)` | `{{ names \| join(", ") }}` | Joins an array into a single string with the given separator. Used when a field (e.g. name prefix) may be supplied as an array that needs to appear as one string in a narrative. |
 
 **Combining filters and functions:**
 
@@ -456,6 +678,16 @@ Twig filters are applied to an expression with the pipe character: `{{ expressio
 
 {# ISO 3166-1 country code, normalised to upper-case #}
 * extension[=].extension[=].valueCodeableConcept = urn:iso:std:iso:3166#{{ patient.countrycode|upper }}
+
+{# First coding from an array of codings #}
+{% set c = vital.code|first %}
+* code = {{ c.system }}#{{ c.code }} "{{ c.display }}"
+
+{# Active-condition flag extracted from encoded string "SYYYY-MM-DD" #}
+{% set activeflag = condition.active|slice(0, 1) %}
+
+{# Prefix array joined for narrative display #}
+{{ hospital.practitioner.prefix|join(" ") ~ " " ~ hospital.practitioner.given|join(" ") }}
 ```
 
 ---
