@@ -62,16 +62,60 @@ foreach ($pdat->labobservations as $ldate => $lbspd) {
           $rr1 = NULL;
         }
       }
-      // var_dump($rr1);
-      if ($rr1 === NULL) {  // still no ref range, add athe "placeholder reference range"
-          $rr1 = [
-          "low" => NULL,
-          "high" => NULL,
-          "unit" => $labi["valueunit"],
-          "display" => NULL,
-          "text" => NULL
-        ];
-      }
+      // if ($value["code"] = "275778006") var_dump($rr1);
+        if ($rr1 === NULL) {  // still no ref range, add the "placeholder reference range"
+            $rr1 = [
+              "low" => NULL,
+              "high" => NULL,
+              "unit" => $labi["valueunit"],
+              "display" => NULL,
+              "text" => NULL
+            ];
+        } else {
+          // if set check whether low and high are real numbers (hich is ok)
+          // or characters like "Negative" coming from faulty AI. 
+          // if the latter correct it.
+          $isnumeric = TRUE;  // assume all is numeric
+          $thetext = array(); // to record non-numeric ranges like "Negative-Trace".
+          if (isset($rr1["low"])) {
+            if (is_numeric($rr1["low"])) {
+              $rr1["low"] = (0 + $rr1["low"]);   // make it really a int/float
+            } else {
+              $isnumeric = FALSE;
+              $thetext[] = $rr1["low"];
+            }
+          }
+          if (isset($rr1["high"])) {
+            if (is_numeric($rr1["high"])) {
+              $rr1["high"] = (0 + $rr1["high"]);  // make it really a int/float
+            } else {
+              $isnumeric = FALSE;
+              $thetext[] = $rr1["high"];
+            }
+          }
+          if (!$isnumeric) {
+            // the low or high field contains "non-numeric" values, reset $rr1 reference range to be used as text
+            if (isset($rr1["display"])) {
+              // if display is already set use it...
+              $rr1 = [
+               "text" => $rr1["display"]
+              ];
+            } else {
+              // ... otherwise try to compile something usefull out of the text(s)
+              if (count($thetext) == 2) {
+                $rr1 = [
+                  "text" => $thetext[0] . " - " . $thetext[0]
+                  ];
+              } else if (count($thetext) == 1) {
+                 $rr1 = [
+                  "text" => $thetext[0] . $thetext[0]
+                  ];
+              } else {
+                $rr1 = [];  // no reference range at all
+              }
+            } 
+          }
+        }
     } else {
       // no AI but add the "placeholder reference range"
       $rr1 = [
@@ -103,19 +147,20 @@ foreach ($pdat->labobservations as $ldate => $lbspd) {
     if ($value["type"] === 'Quantity') {
       $rvl = $value["value"];
       $rvu = $value["unit"];
-      if ($rr1["low"] !== NULL and $rr1["high"] !== NULL) {
-        $refl = $rr1["low"];
-        $refh = $rr1["high"];
-        $refr = $refl . " - " . $refh;
-        // correct display of value if out of range
-        if ($rvl < $refl) {
-          $rvl = "<strong>$rvl L</strong>";
-        } else if ($rvl > $refh) {
-          $rvl = "<strong>$rvl H</strong>";
+      if (isset($rr1["low"]) and isset($rr1["high"])) {
+        if ($rr1["low"] !== NULL and $rr1["high"] !== NULL) {
+          $refl = $rr1["low"];
+          $refh = $rr1["high"];
+          $refr = $refl . " - " . $refh;
+          // correct display of value if out of range
+          if ($rvl < $refl) {
+            $rvl = "<strong>$rvl L</strong>";
+          } else if ($rvl > $refh) {
+            $rvl = "<strong>$rvl H</strong>";
+          }
         }
-      } else {
-        $refr = "";
       }
+      
     }
     if ($value["type"] === 'CodeableConcept') {
       $rvl = $value["display"];

@@ -104,33 +104,62 @@ foreach ($pdat->labobservations as $ldate => $lbspd) {
             $rr1 = NULL;
           }
         }
-        // if ($value["code"] = "275778006") var_dump($rr1);
+        // check / process reference range
         if ($rr1 === NULL) {  // still no ref range, add the "placeholder reference range"
             $rr1 = [
-            "low" => NULL,
-            "high" => NULL,
-            "unit" => $labi["valueunit"],
-            "display" => NULL,
-            "text" => NULL
-          ];
+              "low" => NULL,
+              "high" => NULL,
+              "unit" => $labi["valueunit"],
+              "display" => NULL,
+              "text" => NULL
+            ];
         } else {
           // if set check whether low and high are real numbers (hich is ok)
           // or characters like "Negative" coming from faulty AI. 
           // if the latter correct it.
-          $isok = TRUE;  // assume all ik ok
+          // if it is numeric change value['type'] to 'Quantity'
+          $isnumeric = TRUE;  // assume all is numeric
+          $thetext = array(); // to record non-numeric ranges like "Negative-Trace".
           if (isset($rr1["low"])) {
-            if (!is_numeric($rr1["low"])) $isok = FALSE; 
-          } else $rr1["low"] += 0;  // make it really a int/float
+            if (is_numeric($rr1["low"])) {
+              $rr1["low"] = (0 + $rr1["low"]);   // make it really a int/float
+            } else {
+              $isnumeric = FALSE;
+              $thetext[] = $rr1["low"];
+            }
+          }
           if (isset($rr1["high"])) {
-            if (!is_numeric($rr1["high"])) $isok = FALSE; 
-          } else $rr1["high"] += 0; // make it really a int/float
-          if (!$isok) {
-            // the low or hugh field contains "non-numeric" values, reset $rr1 reference range to be used as text
+            if (is_numeric($rr1["high"])) {
+              $rr1["high"] = (0 + $rr1["high"]);  // make it really a int/float
+            } else {
+              $isnumeric = FALSE;
+              $thetext[] = $rr1["high"];
+            }
+          }
+          if (!$isnumeric) {
+            // the low or high field contains "non-numeric" values, reset $rr1 reference range to be used as text
             if (isset($rr1["display"])) {
+              // if display is already set use it...
               $rr1 = [
                "text" => $rr1["display"]
               ];
-            } else $rr1 = [];  // no reference range at all
+            } else {
+              // ... otherwise try to compile something usefull out of the text(s)
+              if (count($thetext) == 2) {
+                $rr1 = [
+                  "text" => $thetext[0] . " - " . $thetext[0]
+                  ];
+              } else if (count($thetext) == 1) {
+                 $rr1 = [
+                  "text" => $thetext[0] . $thetext[0]
+                  ];
+              } else {
+                $rr1 = [];  // no reference range at all
+              }
+            } 
+          } else {
+            // this is numeric, overwrite value['type'] with 'Quantity'
+            $value['type'] = "Quantity";
           }
         }
       } else {

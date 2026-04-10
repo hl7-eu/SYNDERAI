@@ -1676,8 +1676,10 @@ function emitFSH($pdat, $thisartifact) {
                     "orgname"       => $pdat->provider["name"]
                 ];
                 list($FSHrequester) = twigit(
-                    ["requester" => $requester, "provider" => $pdat->provider],
-                    "provider-as-requester-eu-lab"
+                    [
+                        "requester" => $requester, 
+                        "provider" => $pdat->provider
+                    ], "provider-as-requester-eu-lab"
                 );
             } else {
                 $requester    = NULL;
