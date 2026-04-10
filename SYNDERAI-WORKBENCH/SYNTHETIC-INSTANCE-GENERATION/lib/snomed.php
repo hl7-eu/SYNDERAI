@@ -261,7 +261,7 @@ function get_SNOMED_properties($c, $hint = "no hints") {
 
             if (strlen($replacecode) > 0) {
                 // Recurse with the replacement code
-                lognlsev(2, INFO, "......... SNOMED code $c is outdated, replaced by $replacecode $replacedisplay");
+                lognlsev(2, INFO, "......... SNOMED code $c is outdated ($statusCode), replaced by $replacecode $replacedisplay");
                 $repinfo = get_SNOMED_properties($replacecode);
                 toCACHE("snomed-replacements", $c,
                     $repinfo["code"]                        . CACHEITEMSEPARATOR .
@@ -275,7 +275,7 @@ function get_SNOMED_properties($c, $hint = "no hints") {
             } else {
                 // No replacement found — log and return empty result
                 lognlsev(2, ERROR,
-                    "......... SNOMED code $c is outdated, finding a replacement was not successful, " .
+                    "......... SNOMED code $c is outdated ($statusCode), finding a replacement was not successful, " .
                     "terms: |$preferredTerm|$hint|"
                 );
                 return $EMPTYPROPERTIES;
