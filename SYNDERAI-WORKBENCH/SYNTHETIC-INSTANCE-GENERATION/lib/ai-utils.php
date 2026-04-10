@@ -694,10 +694,11 @@ function getAIHospitalCourse($patage, $patgender, $stayinfo, $includeProcedures 
             // STEP 0a: File-upload mode — instruct Claude to read the attached file
             $proceduresPrompt = <<<AIP
     2. If you the look at the text of the hospital course, can you find a list of
-    procdures performed using the enclosed snomed-procedure list with code/display with 
-    all possible procedures? 
+    procdures performed using the enclosed SNOMED procedure code list with code/display with 
+    all possible procedures.
     Add an appropriate date to the procedure YYYY-MM-DD, e.g. 2000-03-16
     within the stay period $start to $end.
+    Please note that the SNOMED code and display for the procedure MUST be taken from the file.
     Split the list into "diagnostic" procedures and final 
     "therpeutic" procedures.
 
@@ -713,11 +714,12 @@ AIP;
             // STEP 0b: URL-reference mode — point Claude to the public file at synderai.net
             $proceduresPrompt = <<<AIP
     2. If you the look at the text of the hospital course, can you find a list of
-    procdures performed using the snomed-procedure list that can be found at
+    procdures performed using the SNOMED procedure code list that can be found at
     https://synderai.net/supporting-materials/snomed-procedures.txt
-    with code/display with all possible procedures?
+    with code/display with all possible procedures.
     Add an appropriate date to the procedure YYYY-MM-DD, e.g. 2000-03-16
     within the stay period $start to $end.
+    Please note that the SNOMED code and display for the procedure MUST be taken from the file.
     Split the list into "diagnostic" procedures and final 
     "therpeutic" procedures.
 
