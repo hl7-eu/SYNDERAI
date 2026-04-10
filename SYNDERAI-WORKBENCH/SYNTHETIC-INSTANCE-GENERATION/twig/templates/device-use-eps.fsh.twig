@@ -1,13 +1,92 @@
 {#
-  This is the TWIG file for the creation of an FSH instance including the HTML parts.
-  see README.md
+  ============================================================================
+  TEMPLATE: device-use-eps_fsh.twig
+  ============================================================================
+  PURPOSE
+    Generates TWO FSH instances that together represent a medical device
+    implanted or used by a patient in the EPS (European Patient Summary)
+    context:
 
-  KH since 2025-09-12
+      1. Device              — the physical or software device (DeviceEuEps),
+                               carrying the UDI identifier and device type.
+      2. DeviceUseStatement  — the clinical record of the device use
+                               (DeviceUseStatementEuEps), carrying the start
+                               date and linking patient to device.
+
+    This template is the canonical example referenced throughout the README
+    documentation and is the most complete illustration of the two-instance
+    pattern with both HEAD and HTML bags.
+
+  PROFILE CONFORMANCE
+    Device            : DeviceEuEps
+    DeviceUseStatement: DeviceUseStatementEuEps
+
+  TWO-COLUMN HTML TABLE (on DeviceUseStatement only)
+    Column 1 — Device display name   (always present)
+    Column 2 — Use start date        (conditional; "?" when absent)
+    HEAD and HTML bags are populated and emitted normally.
+    The Device instance produces no HTML output — only a plain-text narrative.
+
+  DEVICE INSTANCE
+    The Device carries:
+      * patient         — Reference linking the device to the patient
+      * udiCarrier[0].id — the UDI (Unique Device Identifier) string
+      * type            — conditional SNOMED/system code for the device type
+    Note: `udiCarrier[0].id` uses the FHIR id sub-element on the UDI carrier,
+    which identifies a specific UDI carrier record rather than the UDI string
+    itself (which would be `udiCarrier[0].deviceIdentifier`). Verify the
+    profile element binding if strict UDI compliance is required.
+    The Device narrative is an inline literal: display name + uid in parentheses.
+
+  DEVICE USE STATEMENT INSTANCE
+    status is hardcoded as #active — all device uses are assumed ongoing.
+    The device Reference links back to the Device instance above by UUID.
+
+  TIMING — ABSENT REASON PATTERN
+    When `device.start` is empty, a data-absent-reason extension is emitted
+    on `timing` (not on `timingPeriod`):
+      * timing.extension.url       = ".../data-absent-reason"
+      * timing.extension.valueCode = #unknown
+    When present, the start date is stored in `timingPeriod.start`. Note that
+    both `timing` and `timingPeriod` are used depending on the branch — they
+    are different FHIR elements. `timing` is a Timing data type; `timingPeriod`
+    is a Period. The profile may require one specific form — verify accordingly.
+
+  NARRATIVE PATTERN — Device vs DeviceUseStatement
+    Device narrative: inline literal (Pattern 3) — no bag functions.
+    DeviceUseStatement narrative: body-rows-only (Pattern 1) — emitHTML() only,
+    no emitHEAD() in text.div.
+
+  CONTEXT VARIABLES
+  ┌──────────────────────────┬──────────┬──────────────────────────────────────────────┐
+  │ Variable                 │ Type     │ Description                                  │
+  ├──────────────────────────┼──────────┼──────────────────────────────────────────────┤
+  │ deinstanceid             │ string   │ UUID for the Device resource.                │
+  │ duinstanceid             │ string   │ UUID for the DeviceUseStatement resource.    │
+  │ patient.instanceid       │ string   │ UUID of the Patient resource.               │
+  │ patient.name             │ string   │ Full display name for References.            │
+  │ device.uid               │ string   │ UDI string stored in udiCarrier[0].id.      │
+  │ device.display           │ string   │ Human-readable device name; used in HTML td 1│
+  │                          │          │ and in Device narrative and Reference label. │
+  │ device.system            │ string   │ CodeSystem URI for the device type code.    │
+  │ device.code              │ string?  │ Device type code (optional; gates the type  │
+  │                          │          │ rule). When empty, no type rule is emitted. │
+  │ device.start             │ string?  │ ISO 8601 start date of device use. When     │
+  │                          │          │ absent, data-absent-reason on timing.        │
+  └──────────────────────────┴──────────┴──────────────────────────────────────────────┘
+
+  AUTHOR   KH
+  SINCE    2025-09-12
+  ============================================================================
 #}
 
-%%FSH%% {# tag required #}
+%%FSH%% {# ── Section marker required by the FSH pre-processor ─────────────── #}
 
-{# first emit the device #}
+{#
+  ── Instance 1: Device ───────────────────────────────────────────────────────
+  The physical or software device. Registered first so the DeviceUseStatement
+  can reference it by UUID below.
+#}
 Instance: {{ setInstance("Instance-Device-" ~ deinstanceid) }}
 InstanceOf: DeviceEuEps
 Title: "Device"
@@ -16,25 +95,37 @@ Usage: #inline
 
 * id = "{{ deinstanceid }}"
 
-* status = #active {# always still active in our cases #}
+{# Device is assumed always still active in synthetic data #}
+* status = #active
 
+{# Patient link — associates the device with its owner #}
 * patient = Reference(urn:uuid:{{ patient.instanceid }}) "{{ patient.name }}"
 
+{#
+  UDI carrier — udiCarrier[0].id stores the UDI string.
+  Note: .id is the carrier record identifier; .deviceIdentifier would be the
+  UDI string per FHIR R4. Verify the DeviceEuEps profile element binding.
+#}
 * udiCarrier[0].id = "{{ device.uid }}"
 
+{# Device type code (conditional) — omitted when device.code is empty #}
 {% if device.code is not empty %}
 * type = {{ device.system }}#{{ device.code }} "{{ device.display }}"
 {% endif %}
 
-{# populate .text #}
+{# Inline literal narrative: display name + UDI #}
 * text.status = #generated
-* text.div = """
+* text.div    = """
 <div xmlns="http://www.w3.org/1999/xhtml">
-{{ device.display }} ({{ device.uid }}) 
+{{ device.display }} ({{ device.uid }})
 </div>
 """
 
-{# now the device use statement #}
+{#
+  ── Instance 2: DeviceUseStatement ──────────────────────────────────────────
+  The clinical statement of device use; links patient to device with optional
+  start date.
+#}
 Instance: {{ setInstance("Instance-DeviceUse-" ~ duinstanceid) }}
 InstanceOf: DeviceUseStatementEuEps
 Title: "Device Use"
@@ -43,7 +134,7 @@ Usage: #inline
 
 * id = "{{ duinstanceid }}"
 
-{# addign headers for HTML table #}
+{# HEAD bag: two-column table header #}
 {{ addHEAD_tr() }}
 {{ addHEAD_th("Device") }}
 {{ addHEAD_th("Date (since)") }}
@@ -51,14 +142,21 @@ Usage: #inline
 
 {{ addHTML_tr() }}
 
-* status = #active {# always still active in our cases #}
+{# All device uses are active (ongoing) in synthetic data #}
+* status = #active
 
-{# *** HTML td 1: device #}
+{# TD 1: device display name #}
 {{ addHTML_td(device.display) }}
 
-{# *** HTML td 2: date since #}
+{#
+  TD 2: use start date — absent-reason pattern.
+  When absent: data-absent-reason extension on timing (Timing data type).
+  When present: timingPeriod.start (Period data type).
+  Note: timing and timingPeriod are different FHIR elements — the branch
+  chooses between them depending on data availability.
+#}
 {% if device.start is empty %}
-* timing.extension.url = "http://hl7.org/fhir/StructureDefinition/data-absent-reason"
+* timing.extension.url       = "http://hl7.org/fhir/StructureDefinition/data-absent-reason"
 * timing.extension.valueCode = #unknown
 {{ addHTML_td("?") }}
 {% else %}
@@ -66,22 +164,26 @@ Usage: #inline
 {{ addHTML_tdnb(device.start|date('d-M-Y')) -}}
 {% endif %}
 
-* device = Reference(urn:uuid:{{ deinstanceid }}) "{{ device.display }}"
-
+{# References: device back to Instance 1; subject to Patient #}
+* device  = Reference(urn:uuid:{{ deinstanceid }}) "{{ device.display }}"
 * subject = Reference(urn:uuid:{{ patient.instanceid }}) "{{ patient.name }}"
 
 {{ addHTML_trend() -}}
 
-{# populate .text #}
+{#
+  ── FHIR narrative — body rows only (Pattern 1) ─────────────────────────────
+  emitHTML() only — HEAD bag not included in text.div. Column headers are
+  emitted exclusively in %%HEAD%% below.
+#}
 * text.status = #generated
-* text.div = """
+* text.div    = """
 <div xmlns="http://www.w3.org/1999/xhtml">
 <table class="hl7__ips">{{ emitHTML() | raw }}</table>
 </div>
 """
 
-%%HEAD%% {# tag required, content below maybe emtpy #}
+%%HEAD%% {# ── Section marker required by the FSH pre-processor ─────────────── #}
 {{ emitHEAD() | raw }}
 
-%%HTML%% {# tag required, content below maybe emtpy #}
+%%HTML%% {# ── Section marker required by the FSH pre-processor ─────────────── #}
 {{ emitHTML() | raw }}

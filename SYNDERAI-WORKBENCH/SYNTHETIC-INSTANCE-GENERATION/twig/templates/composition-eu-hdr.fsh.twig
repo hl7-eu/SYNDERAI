@@ -1,81 +1,217 @@
 {#
-  This is the TWIG file for the creation of an FSH instance including the HTML parts.
-  see README.md
-  
-  KH since 2026-03-01
+  ============================================================================
+  TEMPLATE: composition-eu-hdr_fsh.twig
+  ============================================================================
+  PURPOSE
+    Generates a FSH Composition instance conforming to the CompositionEuHdr
+    profile (HL7 Europe Hospital Discharge Report). Structurally very similar
+    to composition-eu-eps_fsh.twig but with four meaningful differences
+    described below.
+
+  PROFILE CONFORMANCE
+    InstanceOf: CompositionEuHdr
+    Fixed elements:
+      type.coding  = $loinc#34105-7 "Hospital Discharge summary"
+      status       = #final
+      title        = "Hospital Discharge Report"
+      confidentiality = #N
+
+  DIFFERENCES FROM composition-eu-eps_fsh.twig
+    See the full comparison table in composition-eu-eps_fsh.twig. The four
+    behavioural differences specific to this HDR template are:
+
+    1. CUSTODIAN VARIABLE
+       Uses `provider.instanceorganization` (not `provider.instanceroleorg`).
+       The variable name difference reflects a different field on the provider
+       object depending on the document context.
+
+    2. text.status = #empty POSITION — BEFORE THE SECTIONS LOOP
+       The Composition-level narrative is declared BEFORE the sections loop,
+       unlike EPS where it appears at the end. This has no effect on the FSH
+       output (SUSHI processes rules, not their order within the instance), but
+       it means the `text.*` rules appear in the compiled FSH before all
+       section rules, which may affect human readability of the output.
+
+    3. UNNAMED SECTION SUPPORT — CONDITIONAL SLICE NAME
+       Each section is checked for an empty slicename:
+         {% if slicename is empty %}
+         * section[+]
+         {% else %}
+         * section[{{ slicename }}]
+         {% endif %}
+       When `slicename` is an empty string key in the `sections` dict, an
+       unnamed append `[+]` is used. This allows some sections to be generic
+       (not constrained to a named slice) while others are profile-defined.
+       EPS always requires a named slice.
+
+    4. SECTION FSH RAW INJECTION — SECOND PASS LOOP
+       After the main sections loop, a second loop iterates over `sections`
+       again — this time as a simple value iteration (without a key variable)
+       — and injects any pre-built FSH strings stored on each section:
+         {% for section in sections %}
+         {% if section.fsh is not empty %}
+         {{ section.fsh | raw }}
+         {% endif %}
+         {% endfor %}
+       `section.fsh` is a pre-formatted FSH string (e.g. additional rules
+       that cannot be expressed through the standard entry loop) injected
+       verbatim with `| raw`. This allows sections to carry arbitrary FSH
+       content generated upstream by the PHP caller.
+       Note: the first loop uses `for slicename, section in sections` (key-value
+       form); the second uses `for section in sections` (value-only form). On a
+       PHP associative array, the value-only form iterates the values in
+       insertion order.
+
+    5. ENTRY SLICE VARIABLE NAME
+       The entry slice name local variable is `bundleentryslicename` (not
+       `sectionentryslicename` as in EPS). Both serve identical purposes and
+       produce identical FSH output — the difference is only in the Twig
+       variable name. This is a naming inconsistency between the two templates.
+
+  SECTION OBJECT STRUCTURE
+    Same as EPS, with the addition of:
+    ┌───────────────────────────────┬──────────┬──────────────────────────────────────────────┐
+    │ Field                         │ Type     │ Description                                  │
+    ├───────────────────────────────┼──────────┼──────────────────────────────────────────────┤
+    │ fsh                           │ string?  │ Optional pre-built FSH string to inject      │
+    │                               │          │ verbatim after the main sections loop.       │
+    │                               │          │ Used with \| raw. Not present in EPS.        │
+    └───────────────────────────────┴──────────┴──────────────────────────────────────────────┘
+    All other section fields (title, code, display, text, indicateEmptyListReason,
+    entries) are identical to the EPS structure.
+
+  ENTRY OBJECT STRUCTURE
+    Identical to EPS, except the local Twig variable for the slice name is
+    called `bundleentryslicename` instead of `sectionentryslicename`.
+
+  CONTEXT VARIABLES
+  ┌──────────────────────────────────┬──────────┬────────────────────────────────────────────────┐
+  │ Variable                         │ Type     │ Description                                    │
+  ├──────────────────────────────────┼──────────┼────────────────────────────────────────────────┤
+  │ composition.instanceid           │ string   │ UUID for the Composition resource.             │
+  │ composition.identifier           │ string   │ Business identifier value.                     │
+  │ composition.date                 │ date     │ Document date; filtered to ISO 8601 UTC.       │
+  │ patient.instanceid               │ string   │ UUID of the Patient resource.                  │
+  │ patient.name                     │ string   │ Full display name.                             │
+  │ patient.age                      │ string   │ Pre-computed age string for Description only.  │
+  │ provider.instancerole            │ string   │ UUID of the author PractitionerRole.           │
+  │ provider.instanceorganization    │ string   │ UUID of the custodian Organisation.            │
+  │                                  │          │ Note: NOT instanceroleorg (differs from EPS).  │
+  │ sections                         │ dict     │ Associative array: slicename → section object. │
+  │                                  │          │ Empty string key → unnamed [+] section.        │
+  │   [slicename].fsh                │ string?  │   Optional raw FSH string (HDR-specific).      │
+  │   [slicename].title              │ string   │   (all other fields same as EPS)               │
+  └──────────────────────────────────┴──────────┴────────────────────────────────────────────────┘
+
+  GLOBAL VARIABLES USED
+    HL7EUROPEEXAMPLESOID — OID root for the Composition identifier system URI.
+
+  CODESYSTEMS REFERENCED
+    $loinc          — 34105-7 "Hospital Discharge summary"
+    $list-empty-reason — #nilknown (empty section reason)
+
+  AUTHOR   KH
+  SINCE    2026-03-01
+  ============================================================================
 #}
 
-%%FSH%% {# tag required #}
+%%FSH%% {# ── Section marker required by the FSH pre-processor ─────────────── #}
+
 Instance: {{ setInstance("Instance-Composition-" ~ composition.instanceid) }}
 InstanceOf: CompositionEuHdr
 Title: "HL7 Europe Hospital Discharge Report (HDR) Composition"
+{# patientdisplay set inline between FSH header lines — see EPS template for full explanation #}
 {% set patientdisplay = patient.name ~ " (" ~ patient.age ~ " y/o) - synthetic data" %}
 Description: "Complete HL7 Europe Hospital Discharge Report (HDR) FHIR Composition example for {{ patientdisplay }}"
 Usage: #inline
 
-{# include synthetic data policy meta #}
+{# Inject synthetic-data governance meta tags #}
 {{ syntheticDataPolicyMeta() | raw }}
 
 * id = "{{ composition.instanceid }}"
 
-* identifier.system = "urn:oid:{{ HL7EUROPEEXAMPLESOID }}"
-* identifier.value = "{{ composition.identifier }}"
+{# Composition business identifier under the HL7 Europe OID namespace #}
+* identifier.system           = "urn:oid:{{ HL7EUROPEEXAMPLESOID }}"
+* identifier.value            = "{{ composition.identifier }}"
 * identifier.assigner.display = "HL7 Europe"
 
 * title = "Hospital Discharge Report"
-
 * status = #final
 
+{# Fixed LOINC type: Hospital Discharge summary #}
 * type.coding = $loinc#34105-7 "Hospital Discharge summary"
-* type.text = "Hospital Discharge Report"
+* type.text   = "Hospital Discharge Report"
 
 * subject = Reference(urn:uuid:{{ patient.instanceid }}) "{{ patient.name }}"
 
+{# Author: PractitionerRole (same variable as EPS) #}
 * author[+] = Reference(urn:uuid:{{ provider.instancerole }})
 
+{#
+  Custodian: uses `provider.instanceorganization` — differs from EPS which
+  uses `provider.instanceroleorg`. Different field name, same intent.
+#}
 * custodian[+] = Reference(urn:uuid:{{ provider.instanceorganization }})
 
+{# Date: same ISO 8601 UTC format as EPS #}
 * date = "{{ composition.date|date('Y-m-d\\TH:i:s\\Z') }}"
 
 * confidentiality = #N
 
-{# declare text as empty, it is not here #}
+{#
+  ── Composition-level narrative — placed BEFORE sections ─────────────────────
+  Differs from EPS where text.status = #empty appears at the end.
+  Position has no FSH/FHIR semantic effect; affects only output readability.
+#}
 * text.status = #empty
-* text.div = "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+* text.div    = "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
 
-{# emit sections #}
-
-{% set sectioncount = 0 %}
+{#
+  ══════════════════════════════════════════════════════════════════════════════
+  SECTIONS LOOP — key-value dict iteration (same pattern as EPS)
+  Additional HDR feature: conditional unnamed section support.
+  When slicename (the dict key) is an empty string, section[+] is used.
+  When slicename is non-empty, section[{{ slicename }}] is used.
+  ══════════════════════════════════════════════════════════════════════════════
+#}
+{% set sectioncount = 0 %} {# counter for debugging; not used in FSH output #}
 
 {% for slicename, section in sections %}
 
 {% set sectioncount = sectioncount + 1 %}
-//
 // section, slice {{ slicename }}
 //
+{#
+  Conditional slice: empty slicename → unnamed [+] append;
+  non-empty slicename → named slice. This allows generic sections alongside
+  profile-defined named ones, unlike EPS which always requires a named slice.
+#}
 {% if slicename is empty %}
 * section[+]
 {% else %}
 * section[{{ slicename }}]
 {% endif %}
   * title = "{{ section.title }}"
-  * code = {{ section.code }} "{{ section.display }}"
-{# populate .text #}
+  * code  = {{ section.code }} "{{ section.display }}"
   * text.status = #generated
-  * text.div = """
+  * text.div    = """
 <div xmlns="http://www.w3.org/1999/xhtml">
 {{ section.text | raw }}
 </div>
 """
 
-{# if we have an "empty list" indication, emit it "  * emptyReason = \$list-empty-reason#nilknown" #}
+{# Empty section sentinel — identical to EPS #}
 {% if section.indicateEmptyListReason is not empty and section.indicateEmptyListReason == "TRUE" %}
-  
+
   * emptyReason = $list-empty-reason#nilknown
 
 {% else %}
 
-{# emit entries within this section, no entries (for now) if emptyReason is present #}
+{#
+  Entries loop — same logic as EPS except local variable is named
+  `bundleentryslicename` (not `sectionentryslicename` as in EPS).
+  Both produce identical FSH output; the name difference is cosmetic.
+#}
 {% for entry in section.entries %}
 
 {% if entry.bundleentryslicename is empty %}
@@ -90,18 +226,29 @@ Usage: #inline
 
 {% endfor %} {# entries #}
 
-{% endif %} {# empty reason #}
+{% endif %} {# empty reason / entries #}
 
-{% endfor %} {# sections #}
+{% endfor %} {# sections — first pass: slice names + entries #}
 
-{# if 'fsh' of a section is set: emit it, it contains the entries FSH created earlier #}
+{#
+  ══════════════════════════════════════════════════════════════════════════════
+  SECTION FSH RAW INJECTION — second pass loop (HDR-only feature)
+  Iterates sections a second time as a simple value loop (no key variable)
+  to inject any pre-built FSH strings stored on each section object.
+  `section.fsh` is a pre-formatted FSH string produced upstream by the PHP
+  caller and injected verbatim with | raw.
+  Use case: FSH rules that cannot be expressed through the standard entry
+  loop pattern (e.g. deeply nested sub-elements, additional slice bindings).
+  ══════════════════════════════════════════════════════════════════════════════
+#}
 {% for section in sections %}
 {% if section.fsh is not empty %}
 {{ section.fsh | raw }}
 {% endif %}
-{% endfor %} {# sections again #}
+{% endfor %} {# sections — second pass: raw FSH injection #}
 
-%%HEAD%% {# tag required, content below maybe emtpy #}
+%%HEAD%% {# ── Section marker required by the FSH pre-processor — intentionally empty #}
 
-%%HTML%% {# tag required, content below maybe emtpy #}
+%%HTML%% {# ── Section marker required by the FSH pre-processor ─────────────── #}
 {{ emitHTML() | raw }}
+{# HTML bag is never populated in this template; emitHTML() returns empty string #}

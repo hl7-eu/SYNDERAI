@@ -1,11 +1,76 @@
 {#
-  This is the TWIG file for the creation of an FSH instance including the HTML parts.
-  see README.md
+  ============================================================================
+  TEMPLATE: familyhistory_fsh.twig
+  ============================================================================
+  PURPOSE
+    Generates a FSH FamilyMemberHistory instance conforming to the
+    FamilyMemberHistoryEuHdr profile (EU Hospital Discharge Report). Each
+    invocation represents a single family member's relevant health condition,
+    linking the relationship to the patient and the specific condition observed
+    in that family member.
 
-  KH since 2025-09-10
+  PROFILE CONFORMANCE
+    InstanceOf: FamilyMemberHistoryEuHdr
+    Must-support elements covered:
+      status, subject, relationship, condition[0].code
+
+  TWO-COLUMN HTML TABLE (with HEAD row)
+    Column 1 — Family member relationship display (always present)
+    Column 2 — Condition display                  (always present)
+    Both HEAD and HTML bags are flushed inside `text.div`, producing a fully
+    headed table in the inline FHIR narrative (Pattern 2).
+
+  MANDATORY FIELDS — NO CONDITIONAL GUARDS
+    Both `familyhistory.relationship` and `familyhistory.condition` are emitted
+    unconditionally. The template assumes the caller always supplies both.
+    If either is absent, the generated FSH will be incomplete and SUSHI
+    validation may fail.
+
+  CONDITION INDEXING — EXPLICIT [0]
+    A single condition per FamilyMemberHistory instance is expected. The
+    explicit `[0]` index is used:
+      * condition[0].code = ...
+    This template does not support multiple conditions per family member.
+    If multiple conditions are needed, separate invocations of this template
+    should be made for each.
+
+  STATUS — #completed
+    All synthetic family member history records are marked as `#completed`,
+    indicating the information is fully recorded.
+
+  CONTEXT VARIABLES
+  ┌──────────────────────────────────────┬──────────┬────────────────────────────────────────┐
+  │ Variable                             │ Type     │ Description                            │
+  ├──────────────────────────────────────┼──────────┼────────────────────────────────────────┤
+  │ instanceid                           │ string   │ Unique resource id; appended to        │
+  │                                      │          │ "Instance-FamilyMemberHistory-".       │
+  │ patient.instanceid                   │ string   │ UUID of the Patient resource.          │
+  │ patient.name                         │ string   │ Full display name for the subject      │
+  │                                      │          │ Reference.                             │
+  │ familyhistory.relationship.system    │ string   │ CodeSystem URI for the relationship    │
+  │                                      │          │ code (e.g. SNOMED CT, HL7 v3 RoleCode).│
+  │ familyhistory.relationship.code      │ string   │ Relationship concept code.             │
+  │ familyhistory.relationship.display   │ string   │ Relationship display text; used in FSH │
+  │                                      │          │ and HTML td 1.                         │
+  │ familyhistory.condition.system       │ string   │ CodeSystem URI for the condition code. │
+  │ familyhistory.condition.code         │ string   │ Condition concept code.                │
+  │ familyhistory.condition.display      │ string   │ Condition display text; used in FSH    │
+  │                                      │          │ and HTML td 2.                         │
+  └──────────────────────────────────────┴──────────┴────────────────────────────────────────┘
+
+  CODESYSTEMS REFERENCED
+    Relationship and condition codesystem URIs — caller-supplied via the
+    respective object fields. Common choices:
+      Relationship : HL7 v3 RoleCode, SNOMED CT
+      Condition    : SNOMED CT
+
+  AUTHOR   KH
+  SINCE    2025-09-10
+  ============================================================================
 #}
 
-%%FSH%% {# tag required #}
+%%FSH%% {# ── Section marker required by the FSH pre-processor ─────────────── #}
+
 Instance: {{ setInstance("Instance-FamilyMemberHistory-" ~ instanceid) }}
 InstanceOf: FamilyMemberHistoryEuHdr
 Title: "Family Member History"
@@ -14,7 +79,7 @@ Usage: #inline
 
 * id = "{{ instanceid }}"
 
-{# addign headers for HTML table #}
+{# HEAD bag: two-column table header #}
 {{ addHEAD_tr() }}
 {{ addHEAD_th("Family Member") }}
 {{ addHEAD_th("Condition") }}
@@ -22,28 +87,44 @@ Usage: #inline
 
 {{ addHTML_tr() }}
 
+{# All family member history records are fully recorded #}
 * status = #completed
 
+{# Patient reference — the proband whose family history this documents #}
 * subject = Reference(urn:uuid:{{ patient.instanceid }}) "{{ patient.name }}"
 
+{#
+  ── Relationship (td 1: always present) ────────────────────────────────────
+  Identifies which family member is described (e.g. father, mother, sibling).
+  No conditional guard — caller must always supply relationship data.
+#}
 * relationship = {{ familyhistory.relationship.system }}#{{ familyhistory.relationship.code }} "{{ familyhistory.relationship.display }}"
 {{ addHTML_td(familyhistory.relationship.display) }}
 
+{#
+  ── Condition (td 2: always present) ───────────────────────────────────────
+  The health condition observed in the family member. Explicit [0] index —
+  one condition per instance. No conditional guard.
+#}
 * condition[0].code = {{ familyhistory.condition.system }}#{{ familyhistory.condition.code }} "{{ familyhistory.condition.display }}"
 {{ addHTML_td(familyhistory.condition.display) }}
 
 {{ addHTML_trend() -}}
 
-{# populate .text #}
+{#
+  ── FHIR narrative — full headed table (Pattern 2) ──────────────────────────
+  Both emitHEAD() and emitHTML() are flushed inside text.div, producing a
+  complete table with the column header row in the inline narrative.
+#}
 * text.status = #generated
-* text.div = """
+* text.div    = """
 <div xmlns="http://www.w3.org/1999/xhtml">
 <table class="hl7__ips">{{ emitHEAD() | raw }}{{ emitHTML() | raw }}</table>
 </div>
 """
 
-%%HEAD%% {# tag required, content below maybe emtpy #}
+%%HEAD%% {# ── Section marker required by the FSH pre-processor ─────────────── #}
 {{ emitHEAD() | raw }}
 
-%%HTML%% {# tag required, content below maybe emtpy #}
+%%HTML%% {# ── Section marker required by the FSH pre-processor ─────────────── #}
 {{ emitHTML() | raw }}

@@ -1,11 +1,94 @@
 {#
-  This is the TWIG file for the creation of an FSH instance including the HTML parts.
-  see README.md
+  ============================================================================
+  TEMPLATE: diagnostic-report-lab-eu_fsh.twig
+  ============================================================================
+  PURPOSE
+    Generates a FSH DiagnosticReport instance conforming to the
+    DiagnosticReportLabEu profile (EU Laboratory Report). This resource
+    acts as the aggregating document-level record that ties together the
+    patient, specimens, and individual Observation results of a laboratory
+    report.
 
-  KH since 2025-09-14
+  PROFILE CONFORMANCE
+    InstanceOf: DiagnosticReportLabEu
+    Fixed elements:
+      category[studyType] = $loinc#26436-6 "Laboratory studies (set)"
+      code                = $loinc#11502-2 "Laboratory report"
+      status              = #registered
+
+  NO HTML OUTPUT
+    This template produces no HTML table rows. Both %%HEAD%% and %%HTML%%
+    sections use explicit `<!-- empty -->` HTML comment markers rather than
+    `emitHEAD()` / `emitHTML()` calls. The FSH narrative is set to
+    `text.status = #empty` (intentionally absent narrative).
+
+  TWO IDENTIFIER SLICES — BOTH UNDER HL7EUROPEEXAMPLESOID
+    Two separate identifier slices are emitted, both using the same OID
+    namespace (`HL7EUROPEEXAMPLESOID`) but carrying different values:
+      Slice 1 — `composition.identifier`: the identifier of the associated
+                Composition document.
+      Slice 2 — `diagnosticreport.identifier`: the DiagnosticReport's own
+                business identifier.
+    This pairing ensures the DiagnosticReport is cross-referenceable with
+    both the Composition it accompanies and its own record system.
+
+  R5 BACK-PORT EXTENSION — DiagnosticReportCompositionR5
+    FHIR R4 DiagnosticReport does not natively include a `composition`
+    element. A named back-port extension slice is used to carry this link:
+      * extension[DiagnosticReportCompositionR5].valueReference =
+          Reference(urn:uuid:{{ composition.instanceid }})
+    The bracket notation `[DiagnosticReportCompositionR5]` addresses a named
+    extension slice defined in the DiagnosticReportLabEu profile. This is
+    not a plain `extension[+]` append — the slice name must match the profile
+    definition exactly.
+
+  STATUS — #registered
+    The report status is hardcoded as `#registered` (report exists but
+    results are not yet finalised). This may be appropriate for the synthetic
+    pipeline's generation stage. Consider whether `#final` would be more
+    appropriate for completed synthetic reports.
+
+  SPECIMEN AND RESULT REFERENCES — LOOP PATTERNS
+    specimenids — array of UUID strings; each produces one specimen[+] Reference.
+    results     — array of objects each with an `.instanceid` field; each
+                  produces one result[+] Reference. Note the difference:
+                    specimenid is a plain UUID string ({{ s }})
+                    result is an object accessed via {{ r.instanceid }}
+
+  CONTEXT VARIABLES
+  ┌────────────────────────────────┬──────────┬────────────────────────────────────────────┐
+  │ Variable                       │ Type     │ Description                                │
+  ├────────────────────────────────┼──────────┼────────────────────────────────────────────┤
+  │ diagnosticreport.instanceid    │ string   │ UUID for the DiagnosticReport resource.    │
+  │ diagnosticreport.identifier    │ string   │ Business identifier value for the report   │
+  │                                │          │ (identifier slice 2).                      │
+  │ composition.instanceid         │ string   │ UUID of the associated Composition; used   │
+  │                                │          │ in the R5 back-port extension Reference.   │
+  │ composition.identifier         │ string   │ Composition business identifier value      │
+  │                                │          │ (identifier slice 1).                      │
+  │ patient.instanceid             │ string   │ UUID of the Patient resource.              │
+  │ patient.name                   │ string   │ Full display name for the subject Reference.│
+  │ specimenids                    │ string[] │ Array of Specimen resource UUIDs. One      │
+  │                                │          │ specimen[+] Reference per entry.           │
+  │ results                        │ object[] │ Array of Observation result objects. One   │
+  │                                │          │ result[+] Reference per entry.             │
+  │   [n].instanceid               │ string   │   UUID of the Observation resource.        │
+  └────────────────────────────────┴──────────┴────────────────────────────────────────────┘
+
+  GLOBAL VARIABLES USED
+    HL7EUROPEEXAMPLESOID — OID root for both identifier system URIs.
+
+  CODESYSTEMS REFERENCED
+    $loinc — LOINC#26436-6 "Laboratory studies (set)" (category)
+           — LOINC#11502-2 "Laboratory report" (code)
+
+  AUTHOR   KH
+  SINCE    2025-09-14
+  ============================================================================
 #}
 
-%%FSH%% {# tag required #}
+%%FSH%% {# ── Section marker required by the FSH pre-processor ─────────────── #}
+
 Instance: {{ setInstance("Instance-DiagnosticReport-" ~ diagnosticreport.instanceid) }}
 InstanceOf: DiagnosticReportLabEu
 Title: "Diagnostic Report"
@@ -14,37 +97,72 @@ Usage: #inline
 
 * id = "{{ diagnosticreport.instanceid }}"
 
-* identifier[+].system = "urn:oid:{{ HL7EUROPEEXAMPLESOID }}"
-* identifier[=].value = "{{ composition.identifier }}"
-* identifier[=].assigner.display = "HL7 Europe"
+{#
+  ── Two identifier slices — both under HL7EUROPEEXAMPLESOID OID ─────────────
+  Slice 1: Composition identifier — cross-references the accompanying document.
+  Slice 2: DiagnosticReport's own business identifier.
+  Both share the same OID namespace; different values distinguish them.
+#}
+* identifier[+].system             = "urn:oid:{{ HL7EUROPEEXAMPLESOID }}"
+* identifier[=].value              = "{{ composition.identifier }}"
+* identifier[=].assigner.display   = "HL7 Europe"
 
-* identifier[+].system = "urn:oid:{{ HL7EUROPEEXAMPLESOID }}"
-* identifier[=].value = "{{ diagnosticreport.identifier }}"
-* identifier[=].assigner.display = "HL7 Europe"
+* identifier[+].system             = "urn:oid:{{ HL7EUROPEEXAMPLESOID }}"
+* identifier[=].value              = "{{ diagnosticreport.identifier }}"
+* identifier[=].assigner.display   = "HL7 Europe"
 
+{#
+  ── R5 back-port extension — links DiagnosticReport to its Composition ───────
+  FHIR R4 DiagnosticReport lacks a native composition element. The
+  DiagnosticReportLabEu profile defines a named extension slice
+  [DiagnosticReportCompositionR5] for this purpose. The bracket notation
+  addresses the named slice — this is not a plain extension[+] append.
+#}
 * extension[DiagnosticReportCompositionR5].valueReference = Reference(urn:uuid:{{ composition.instanceid }})
-  
-* status = #registered
 
+{#
+  ── Fixed status and categorisation ─────────────────────────────────────────
+  status #registered indicates the report exists but is not yet finalised.
+  category[studyType] and code are fixed LOINC codes required by the profile.
+#}
+* status            = #registered
 * category[studyType] = $loinc#26436-6 "Laboratory studies (set)"
-* code = $loinc#11502-2 "Laboratory report"
+* code              = $loinc#11502-2 "Laboratory report"
 
+{#
+  ── Patient reference ───────────────────────────────────────────────────────
+#}
 * subject = Reference(urn:uuid:{{ patient.instanceid }}) "{{ patient.name }}"
 
+{#
+  ── Specimen references — plain UUID array ───────────────────────────────────
+  specimenids contains UUID strings directly (not objects). Each entry
+  is referenced as {{ s }} (no .instanceid property access).
+#}
 {% for s in specimenids %}
 * specimen[+] = Reference(urn:uuid:{{ s }})
 {% endfor %}
 
+{#
+  ── Result references — object array ────────────────────────────────────────
+  results contains objects with an .instanceid property (unlike specimenids).
+  Each entry is referenced as {{ r.instanceid }}.
+#}
 {% for r in results %}
 * result[+] = Reference(urn:uuid:{{ r.instanceid }})
 {% endfor %}
 
-{# declare text as empty, it is not here #}
+{#
+  ── Intentionally empty narrative ─────────────────────────────────────────────
+  The DiagnosticReport aggregates information from its referenced resources;
+  no standalone human-readable narrative is meaningful here.
+  text.status = #empty is the correct FHIR status for this case.
+#}
 * text.status = #empty
-* text.div = "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+* text.div    = "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
 
-%%HEAD%% {# tag required, content below maybe emtpy #}
+%%HEAD%% {# ── Section marker required by the FSH pre-processor ─────────────── #}
 <!-- empty -->
 
-%%HTML%% {# tag required, content below maybe emtpy #}
+%%HTML%% {# ── Section marker required by the FSH pre-processor ─────────────── #}
 <!-- empty -->

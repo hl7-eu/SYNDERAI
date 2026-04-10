@@ -1,36 +1,132 @@
 {#
-  This is the TWIG file for the creation of an FSH instance including the HTML parts.
-  see README.md
+  ============================================================================
+  TEMPLATE: provider-as-hospital_fsh.twig
+  ============================================================================
+  PURPOSE
+    Generates THREE FSH instances that together model a hospital acting as a
+    healthcare provider within the SYNDERAI pipeline:
 
-  KH since 2025-09-14
+      1. PractitionerRole  — binds a practitioner to the hospital organisation.
+      2. Practitioner      — the individual clinician working at the hospital.
+      3. Organization      — the hospital itself as a legal entity.
+
+    This template is typically invoked when a hospital needs to be represented
+    as an author, attester, or custodian of a clinical document (IPS/EPS).
+
+  PROFILE CONFORMANCE
+    PractitionerRole : PractitionerRoleEuCore
+    Practitioner     : PractitionerEuCore
+    Organization     : OrganizationEuCore
+
+  NO setInstance() CALLS
+    Unlike most other templates in this project, this template does NOT call
+    `setInstance()` for any of its three instances. Instance ids are
+    interpolated directly into the `Instance:` keyword line using `{{ }}`.
+    As a consequence, none of the instance names are registered in the
+    `twigit()` return array. Callers that need to reference these instances
+    by name must obtain the ids from the `hospital.*` input variables directly.
+
+  NO HTML OUTPUT
+    This template produces no HTML table rows and no HEAD rows. Both %%HEAD%%
+    and %%HTML%% sections are intentionally left empty. Each FSH instance
+    carries only a minimal plain-text `text.div` narrative for identification
+    purposes.
+
+  PRACTITIONER IDENTIFIER
+    A fresh UUID v4 is generated at render time via `getUUID()` and stored in
+    the local Twig variable `practitioneridentifier`. This is used as the
+    practitioner's identifier value within the HL7 Europe OID namespace
+    (`HL7EUROPEEXAMPLESOID`). The generated UUID is ephemeral — it is not
+    tracked across renders.
+
+  PRACTITIONER NAME FIELDS
+    `hospital.practitioner.prefix` is treated as an **array** in the `text.div`
+    narrative (joined with `|join(" ")`), but as a **scalar** in the FSH
+    `name.prefix` rule. If the source data supplies an array, only the FSH rule
+    would need adjustment; the narrative join handles multiple prefixes correctly.
+
+    `hospital.practitioner.given` is always treated as an **array** — it is
+    iterated with a `{% for g in ... %}` loop to emit one `name.given[+]` rule
+    per given name. Both prefix and family are individually conditional.
+
+  CONTEXT VARIABLES
+  ┌─────────────────────────────────────┬──────────┬────────────────────────────────────────┐
+  │ Variable                            │ Type     │ Description                            │
+  ├─────────────────────────────────────┼──────────┼────────────────────────────────────────┤
+  │ hospital.instancerole               │ string   │ UUID / id for the PractitionerRole     │
+  │                                     │          │ resource; used directly in Instance:.  │
+  │ hospital.instancepractitioner       │ string   │ UUID / id for the Practitioner         │
+  │                                     │          │ resource.                              │
+  │ hospital.instanceorganization       │ string   │ UUID / id for the Organization         │
+  │                                     │          │ resource.                              │
+  │ hospital.practitioner.prefix        │ string?  │ Name prefix (e.g. "Prof.", "Dr.");     │
+  │                                     │ string[] │ scalar in FSH, joined array in text.  │
+  │ hospital.practitioner.given         │ string[] │ Array of given names; one              │
+  │                                     │          │ name.given[+] rule per entry.          │
+  │ hospital.practitioner.family        │ string?  │ Family / surname.                      │
+  │ hospital.practitioner.email         │ string?  │ Optional email telecom.                │
+  │ hospital.practitioner.phone         │ string?  │ Optional phone telecom.                │
+  │ hospital.name                       │ string   │ Full hospital name for Organization.   │
+  │ hospital.street                     │ string?  │ Optional street address line.          │
+  │ hospital.address                    │ string?  │ Optional alternative address line;     │
+  │                                     │          │ see Address Field Duplication Note.    │
+  │ hospital.city                       │ string?  │ Optional city name.                    │
+  │ hospital.postcode                   │ string?  │ Optional postal code.                  │
+  │ hospital.countryname                │ string?  │ Optional full country name.            │
+  │ hospital.country                    │ string?  │ Optional country code / short name;    │
+  │                                     │          │ see Address Field Duplication Note.    │
+  └─────────────────────────────────────┴──────────┴────────────────────────────────────────┘
+
+  GLOBAL VARIABLES USED
+    HL7EUROPEEXAMPLESOID — OID root for the practitioner identifier system URI:
+                           "urn:oid:<HL7EUROPEEXAMPLESOID>"
+
+  AUTHOR   KH
+  SINCE    2025-09-14
+  ============================================================================
 #}
 
-%%FSH%% {# tag required #}
+%%FSH%% {# ── Section marker required by the FSH pre-processor ─────────────── #}
 
-{# hospital as practitioner role #}
+{#
+  ── Instance 1: PractitionerRole ────────────────────────────────────────────
+  Binds the practitioner to the hospital organisation. Both references use
+  urn:uuid: constructed from the respective instance id variables.
+  Note: Instance id is interpolated directly — setInstance() is not called.
+#}
 Instance: Instance-PractitionerRole-{{ hospital.instancerole }}
 InstanceOf: PractitionerRoleEuCore
 Usage: #inline
-* id = "{{ hospital.instancerole }}"
+* id           = "{{ hospital.instancerole }}"
 * practitioner = Reference(urn:uuid:{{ hospital.instancepractitioner }})
 * organization = Reference(urn:uuid:{{ hospital.instanceorganization }})
-{# populate .text #}
+{# Minimal plain-text narrative for identification in viewers #}
 * text.status = #generated
-* text.div = """
+* text.div    = """
 <div xmlns="http://www.w3.org/1999/xhtml">
 Hospital Role Id: {{ hospital.instancerole }}
 </div>
 """
 
-{# practitioner in hospital #}
+{#
+  ── Instance 2: Practitioner ─────────────────────────────────────────────────
+  The individual clinician at the hospital. A fresh UUID is generated for the
+  identifier value; it is scoped to this render and not tracked externally.
+  Name components (prefix, given names, family) and telecom entries are all
+  individually conditional.
+#}
 Instance: Instance-Practitioner-{{ hospital.instancepractitioner }}
 InstanceOf: PractitionerEuCore
 Usage: #inline
 * id = "{{ hospital.instancepractitioner }}"
-* identifier.system = "urn:oid:{{ HL7EUROPEEXAMPLESOID }}"
-{% set practitioneridentifier = getUUID() %}
-* identifier.value = "{{ practitioneridentifier }}"
+
+{# Practitioner identifier under the HL7 Europe OID namespace #}
+* identifier.system           = "urn:oid:{{ HL7EUROPEEXAMPLESOID }}"
+{% set practitioneridentifier = getUUID() %} {# Generate ephemeral UUID for this identifier #}
+* identifier.value            = "{{ practitioneridentifier }}"
 * identifier.assigner.display = "HL7 Europe"
+
+{# Name components — all individually optional #}
 {% if hospital.practitioner.prefix is not empty %}
 * name.prefix = "{{ hospital.practitioner.prefix }}"
 {% endif %}
@@ -40,33 +136,43 @@ Usage: #inline
 {% if hospital.practitioner.family is not empty %}
 * name.family = "{{ hospital.practitioner.family }}"
 {% endif %}
+
+{# Telecom — email and phone are independently optional #}
 {% if hospital.practitioner.email is not empty %}
 * telecom.system = #email
-* telecom.value = "{{ hospital.practitioner.email }}"
+* telecom.value  = "{{ hospital.practitioner.email }}"
 {% endif %}
 {% if hospital.practitioner.phone is not empty %}
 * telecom.system = #phone
-* telecom.value = "{{ hospital.practitioner.phone }}"
+* telecom.value  = "{{ hospital.practitioner.phone }}"
 {% endif %}
-{# populate .text #}
+
+{#
+  Narrative: assembles the full name from prefix (joined array), given names
+  (joined array), and family name. The |join(" ") filter handles the case
+  where prefix is supplied as an array of multiple titles.
+#}
 * text.status = #generated
-* text.div = """
+* text.div    = """
 <div xmlns="http://www.w3.org/1999/xhtml">
 Practitioner in Hospital: {{ hospital.practitioner.prefix|join(" ") ~ " " ~ (hospital.practitioner.given|join(" ")) ~ " " ~ hospital.practitioner.family }}
 </div>
 """
 
-{# hospital as organization #}
+{#
+  ── Instance 3: Organization ─────────────────────────────────────────────────
+  The hospital as a legal organisation. All address sub-elements are
+  individually conditional.
+#}
 Instance: Instance-Organization-{{ hospital.instanceorganization }}
 InstanceOf: OrganizationEuCore
 Usage: #inline
-* id = "{{ hospital.instanceorganization }}"
+* id   = "{{ hospital.instanceorganization }}"
 * name = "{{ hospital.name }}"
 
 {% if hospital.street is not empty %}
 * address.line = "{{ hospital.street }}"
-{% endif %}
-{% if hospital.address is not empty %}
+{% elseif hospital.address is not empty %}
 * address.line = "{{ hospital.address }}"
 {% endif %}
 {% if hospital.city is not empty %}
@@ -77,18 +183,20 @@ Usage: #inline
 {% endif %}
 {% if hospital.countryname is not empty %}
 * address.country = "{{ hospital.countryname }}"
-{% endif %}
-{% if hospital.country is not empty %}
+{% elseif hospital.country is not empty %}
 * address.country = "{{ hospital.country }}"
 {% endif %}
-{# populate .text #}
+
+{# Compact single-line narrative: name, postal code, city, country #}
 * text.status = #generated
-* text.div = """
+* text.div    = """
 <div xmlns="http://www.w3.org/1999/xhtml">
 Hospital: {{ hospital.name }}, {{ hospital.postcode }} {{ hospital.city }}, {{ hospital.country }}
 </div>
 """
 
-%%HEAD%% {# tag required, content below maybe emtpy #}
+%%HEAD%% {# ── Section marker required by the FSH pre-processor ─────────────── #}
+{# No HEAD output — this template produces no HTML table. #}
 
-%%HTML%% {# tag required, content below maybe emtpy #}
+%%HTML%% {# ── Section marker required by the FSH pre-processor ─────────────── #}
+{# No HTML output — this template produces no HTML table. #}

@@ -1,11 +1,113 @@
 {#
-  This is the TWIG file for the creation of an FSH instance including the HTML parts.
-  see README.md
+  ============================================================================
+  TEMPLATE: servicerequest-eu-lab_fsh.twig
+  ============================================================================
+  PURPOSE
+    Generates a FSH ServiceRequest instance conforming to the ServiceRequestLabEu
+    profile. This resource represents a laboratory test order, linking the
+    requesting practitioner, the patient, one or more specimen references, and
+    any currently active conditions that serve as clinical reasons for the order.
 
-  KH since 2025-09-08
+  PROFILE CONFORMANCE
+    InstanceOf: ServiceRequestLabEu
+    Canonical : (EU lab ServiceRequest profile, IHE/HL7 Europe)
+    Must-support elements covered:
+      identifier, status, intent, code (lab procedure), subject, requester,
+      specimen (array), reasonCode (from active conditions)
+
+  NO HTML OUTPUT
+    This template produces no HTML table rows and no HEAD rows. Both %%HEAD%%
+    and %%HTML%% sections are intentionally left empty. The FSH narrative is
+    set to `text.status = #empty` with a placeholder `text.div`, because a
+    ServiceRequest carries no clinically meaningful human-readable content
+    that is not already present on the referenced resources.
+
+  CONTEXT VARIABLES
+  ┌────────────────────────────┬────────────┬──────────────────────────────────┐
+  │ Variable                   │ Type       │ Description                      │
+  ├────────────────────────────┼────────────┼──────────────────────────────────┤
+  │ instanceid                 │ string     │ Unique resource id; appended to  │
+  │                            │            │ "Instance-ServiceRequest-" to    │
+  │                            │            │ form the FSH instance name.      │
+  │ srvqidentifier             │ string     │ Business identifier value for    │
+  │                            │            │ the order (system:               │
+  │                            │            │ http://example.org).             │
+  │ patient.instanceid         │ string     │ UUID of the Patient resource;    │
+  │                            │            │ used in the subject Reference.   │
+  │ patient.name               │ string     │ Full display name of the patient;│
+  │                            │            │ used as the Reference display.   │
+  │ requester.instancerole     │ string?    │ Optional UUID of the requesting  │
+  │                            │            │ PractitionerRole resource. When  │
+  │                            │            │ empty, the requester element is  │
+  │                            │            │ omitted entirely.                │
+  │ specimenids                │ string[]   │ Array of specimen resource UUIDs.│
+  │                            │            │ One specimen[+] Reference is     │
+  │                            │            │ emitted per entry. The caller    │
+  │                            │            │ must ensure these are deduplicated│
+  │                            │            │ (see note below).                │
+  │ conditions                 │ object[]   │ Array of condition records. Each  │
+  │                            │            │ entry may contribute a           │
+  │                            │            │ reasonCode[+] rule — but only    │
+  │                            │            │ when the condition is active      │
+  │                            │            │ (see Active-condition filter).   │
+  └────────────────────────────┴────────────┴──────────────────────────────────┘
+
+  CONDITION OBJECT STRUCTURE (one element of `conditions` array)
+  ┌────────────────────────────────┬──────────┬────────────────────────────────┐
+  │ Key                            │ Type     │ Description                    │
+  ├────────────────────────────────┼──────────┼────────────────────────────────┤
+  │ active                         │ string   │ Encoded activity string in the  │
+  │                                │          │ format "SYYYY-MM-DD" where S is │
+  │                                │          │ a single-character status flag:  │
+  │                                │          │   "1" = active condition        │
+  │                                │          │   "0" = inactive / resolved     │
+  │                                │          │ Only the first character is read │
+  │                                │          │ (via `slice(0, 1)`).            │
+  │ code.system                    │ string   │ FHIR CodeSystem URI (e.g. SCT). │
+  │ code.code                      │ string   │ Concept code.                   │
+  │ code.display                   │ string   │ Default display term.           │
+  │ code.preferredTerm             │ string?  │ Optional override for the       │
+  │                                │          │ display term; used in the FSH   │
+  │                                │          │ reasonCode display if it differs│
+  │                                │          │ from code.display.              │
+  └────────────────────────────────┴──────────┴────────────────────────────────┘
+
+  ACTIVE-CONDITION FILTER PATTERN
+    The `conditions` array may contain both active and inactive/historical
+    conditions. Only active ones are relevant as order reasons. Activity is
+    encoded in the first character of the `condition.active` string:
+
+      {% set activeflag = condition.active | slice(0, 1) %}
+      {% set active = activeflag == 1 %}
+
+    This extracts the leading status character before the date portion, then
+    tests for equality with the integer 1 (active). Inactive conditions are
+    skipped silently.
+
+  PREFERRED TERM LOGIC
+    For each active condition a display label is selected for reasonCode:
+      1. Default: `condition.code.display`
+      2. Override: `condition.code.preferredTerm` — used instead if it is
+         non-empty AND differs from `condition.code.display`.
+    This allows terminology servers to supply a locale-preferred label that
+    overrides the raw SNOMED/LOINC display string.
+
+  SPECIMEN DEDUPLICATION NOTE
+    Multiple LOINC panel codes in the same order can map to the same physical
+    specimen type. The caller is responsible for passing only unique specimen
+    UUIDs in `specimenids`. The template itself performs no deduplication.
+
+  CODESYSTEMS REFERENCED
+    $sct — SNOMED CT; 108252007 "Laboratory procedure" (fixed category code)
+    Condition codes: system URI and code are taken from `condition.code.*`
+
+  AUTHOR   KH
+  SINCE    2025-09-08
+  ============================================================================
 #}
 
-%%FSH%% {# tag required #}
+%%FSH%% {# ── Section marker required by the FSH pre-processor ─────────────── #}
+
 Instance: {{ setInstance("Instance-ServiceRequest-" ~ instanceid) }}
 InstanceOf: ServiceRequestLabEu
 Title: "ServiceRequest"
@@ -13,40 +115,72 @@ Description: "ServiceRequest"
 Usage: #inline
 * id = "{{ instanceid }}"
 
+{#
+  ── Business identifier ─────────────────────────────────────────────────────
+  An order-level identifier, distinct from the resource id. System is a
+  placeholder (http://example.org); real deployments should use a local OID
+  or namespace.
+#}
 * identifier.system = "http://example.org"
-* identifier.value = "{{ srvqidentifier }}"
+* identifier.value  = "{{ srvqidentifier }}"
 
+{#
+  ── Fixed status and intent ─────────────────────────────────────────────────
+  All generated lab orders are active (not yet fulfilled) and represent a
+  formal order (not a proposal or plan).
+#}
 * status = #active
-
 * intent = #order
 
-{# always category "Laboratory procedure"#}
+{#
+  ── Fixed category code ─────────────────────────────────────────────────────
+  All instances of this template represent a laboratory procedure order.
+  SCT#108252007 is used as the category code per the EU lab profile.
+#}
 * code = $sct#108252007 "Laboratory procedure"
 
+{#
+  ── Patient reference ───────────────────────────────────────────────────────
+  Links the order to the patient being processed.
+#}
 * subject = Reference(urn:uuid:{{ patient.instanceid }}) "{{ patient.name }}"
 
-{# requester #}
+{#
+  ── Requester reference (conditional) ──────────────────────────────────────
+  The requesting PractitionerRole is optional. When `requester.instancerole`
+  is empty (no practitioner is associated with the order), the element is
+  omitted, which is valid under the EU lab profile.
+#}
 {% if requester.instancerole is not empty %}
 * requester = Reference(urn:uuid:{{ requester.instancerole }})
 {% endif %}
 
 {#
-  add specimen references, note that the ids are associated by loinc system,
-  thus there maybe duplicate ids as two different loinc system may lead to the same specimen
-  parameter specimenids must contain only unique references
+  ── Specimen references ─────────────────────────────────────────────────────
+  One specimen[+] Reference is emitted per entry in `specimenids`. The caller
+  guarantees uniqueness; see the "Specimen deduplication" note in the file
+  header. Two different LOINC panels may share a specimen type and would
+  therefore share the same specimen resource UUID.
 #}
 {% for specimenid in specimenids %}
 * specimen[+] = Reference(urn:uuid:{{ specimenid }})
 {% endfor %}
 
 {#
-  add current conditions as reasons, if given
+  ── ReasonCode from active conditions ───────────────────────────────────────
+  Iterates over all conditions passed in. For each condition:
+    1. Extract the activity status flag from character 0 of condition.active
+       (format "SYYYY-MM-DD" where S is "1"=active, "0"=inactive).
+    2. Skip inactive conditions.
+    3. Determine the preferred display term (preferredTerm overrides display
+       when it is non-empty and different).
+    4. Emit one reasonCode[+] FSH rule per active condition.
 #}
 {% for condition in conditions %}
-{% set activeflag = condition.active | slice(0, 1) %} {# condition.active format is SYYYY-MM-DD with S status 1=active, 0=inactive #}
+{% set activeflag = condition.active | slice(0, 1) %} {# extract status char: "1" = active, "0" = inactive #}
 {% set active = activeflag == 1 %}
 {% if active %}
-{# condition#s preferred term #}
+{# Resolve preferred display term: use preferredTerm if present and distinct #}
 {% set preferred = condition.code.display %}
 {% if condition.code.preferredTerm is not empty %}
 {% if condition.code.display != condition.preferredTerm %}
@@ -59,10 +193,18 @@ Usage: #inline
 {% endif %}
 {% endfor %}
 
-{# declare text as empty, it is not here #}
+{#
+  ── Intentionally empty narrative ───────────────────────────────────────────
+  ServiceRequest carries no standalone human-readable narrative in this
+  pipeline; all relevant information is on the referenced Patient, Specimen,
+  and Condition resources. text.status = #empty is the correct FHIR status
+  for a resource that deliberately omits narrative content.
+#}
 * text.status = #empty
-* text.div = "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+* text.div    = "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
 
-%%HEAD%% {# tag required, content below maybe emtpy #}
+%%HEAD%% {# ── Section marker required by the FSH pre-processor ─────────────── #}
+{# No HEAD output — this template produces no HTML table. #}
 
-%%HTML%% {# tag required, content below maybe emtpy #}
+%%HTML%% {# ── Section marker required by the FSH pre-processor ─────────────── #}
+{# No HTML output — this template produces no HTML table. #}

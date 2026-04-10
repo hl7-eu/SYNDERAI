@@ -1,19 +1,89 @@
 {#
-  This is the TWIG file for the creation of an FSH instance including the HTML parts.
-  see README.md
-  
-  KH since 2025-09-02
+  ============================================================================
+  TEMPLATE: observation-resultslab-eu-lab_fsh.twig
+  ============================================================================
+  PURPOSE
+    A FRAME TEMPLATE that generates a FSH Observation instance conforming to
+    the ObservationResultsLaboratoryEu profile (EU Laboratory Report). It
+    provides the instance header and the fixed laboratory category, then
+    delegates all remaining body rules to the shared partial:
+
+      {% include 'observation-medical-test-body.fsh.twig' %}
+
+    This is the simpler of the two frame templates that include the shared
+    body partial — it has a single fixed category (laboratory) and no
+    conditional branching on observation type.
+
+  RELATIONSHIP TO observation-medical-test-result-eu_fsh.twig
+    Both templates include observation-medical-test-body.fsh.twig. The
+    differences are:
+
+    ┌────────────────────────────────┬────────────────────────────┬───────────────────────────────┐
+    │ Aspect                         │ resultslab-eu-lab          │ medical-test-result-eu        │
+    ├────────────────────────────────┼────────────────────────────┼───────────────────────────────┤
+    │ Profile                        │ ObservationResultsLaboratoryEu│ MedicalTestResultEuCore    │
+    │ Category                       │ Fixed: laboratory [slice]  │ Conditional on boolean flags  │
+    │ Category branching             │ None                       │ isVitaLSignCode / isImagingCode│
+    │                                │                            │ / isLaboratory / default      │
+    │ Performer display              │ Fixed: "Central European   │ Varies by category branch      │
+    │                                │  Laboratory"               │                               │
+    └────────────────────────────────┴────────────────────────────┴───────────────────────────────┘
+
+  PROFILE CONFORMANCE
+    InstanceOf: ObservationResultsLaboratoryEu
+
+  FIXED ELEMENTS (frame only)
+    category[laboratory].coding = $observation-category#laboratory
+    performer[+].display        = "The Central European Laboratory"
+    The performer Reference (to a fixed UUID) is commented out — retained
+    for future use when a real performer resource is available.
+
+  INCLUDE PATTERN
+    `{% include 'observation-medical-test-body.fsh.twig' %}` passes the full
+    current Twig variable context without restriction. All labresult.*
+    variables and instanceid must be supplied by the PHP caller. The included
+    partial also supplies the %%HEAD%% and %%HTML%% section markers.
+
+  CONTEXT VARIABLES
+  ┌──────────────────┬──────────┬──────────────────────────────────────────────────┐
+  │ Variable         │ Type     │ Description                                      │
+  ├──────────────────┼──────────┼──────────────────────────────────────────────────┤
+  │ instanceid       │ string   │ Resource id; used in setInstance() and in the    │
+  │                  │          │ included partial's * id rule.                    │
+  │ labresult.*      │ various  │ All lab result fields consumed by the included   │
+  │                  │          │ partial. See observation-medical-test-body_fsh   │
+  │                  │          │ .twig for the full variable contract.            │
+  └──────────────────┴──────────┴──────────────────────────────────────────────────┘
+
+  CODESYSTEMS REFERENCED (frame only)
+    $observation-category — #laboratory
+
+  AUTHOR   KH
+  SINCE    2025-09-02
+  ============================================================================
 #}
 
-%%FSH%% {# tag required #}
+%%FSH%% {# ── Section marker required by the FSH pre-processor ─────────────── #}
+
 Instance: {{ setInstance("Instance-Observation-" ~ instanceid) }}
 InstanceOf: ObservationResultsLaboratoryEu
 Title: "Observation Results Laboratory"
 Description: "Observation Results Laboratory"
 Usage: #inline
 
+{#
+  ── Fixed laboratory category ───────────────────────────────────────────────
+  Named [laboratory] slice is required by the ObservationResultsLaboratoryEu
+  profile. Performer display is hardcoded; the Reference is commented out
+  pending integration of real performer resources.
+#}
 * category[laboratory].coding = $observation-category#laboratory
-* performer[+].display = "The Central European Laboratory"
+* performer[+].display        = "The Central European Laboratory"
 {# * performer[=] = Reference(urn:uuid:e512e2e2-9600-4c69-a269-af3ab5421e09) #}
 
+{#
+  ── Include shared observation body ─────────────────────────────────────────
+  Supplies all remaining FSH rules, HTML bag operations, text.div, and the
+  %%HEAD%% / %%HTML%% section markers.
+#}
 {% include 'observation-medical-test-body.fsh.twig' %}

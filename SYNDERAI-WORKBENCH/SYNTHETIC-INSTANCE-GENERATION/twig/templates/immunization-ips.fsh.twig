@@ -1,11 +1,94 @@
 {#
-  This is the TWIG file for the creation of an FSH instance including the HTML parts.
-  see README.md
-  
-  KH since 2025-09-09
+  ============================================================================
+  TEMPLATE: immunization-ips_fsh.twig
+  ============================================================================
+  PURPOSE
+    Generates a FSH Immunization instance conforming to the ImmunizationEuCore
+    profile. Each invocation represents one vaccine administration, carrying
+    up to two codings from different code systems (SNOMED CT and ATC), plus
+    optional administration details (lot number, expiry date, body site,
+    route).
+
+  PROFILE CONFORMANCE
+    InstanceOf: ImmunizationEuCore
+    Must-support elements covered:
+      status, vaccineCode (multi-coding), patient, occurrenceDateTime,
+      lotNumber, expirationDate, site, route
+
+  TWO-COLUMN HTML TABLE
+    Column 1 — Vaccine display name (SNOMED preferred term; always present)
+    Column 2 — Administration date  (conditional; "?" if absent)
+
+  MULTI-CODING VACCINE CODE PATTERN
+    `vaccineCode` may carry up to two codings from different code systems,
+    each conditionally appended via `vaccineCode.coding[+]`:
+      Slice 1 — SNOMED CT (preferred; emitted when `immunization.snomed` is
+                present)
+      Slice 2 — ATC classification (emitted when `immunization.atc` is
+                present)
+    A third CVX (US vaccine code) coding block exists in the source but is
+    commented out and suppressed — CVX codes are no longer emitted.
+
+    `vaccineCode.text` is always set to `immunization.snomed.preferredTerm`
+    regardless of which codings are present. This is not guarded by a
+    conditional: the caller must always supply `immunization.snomed.preferredTerm`.
+
+  OCCURRENCE DATE — ABSENT HANDLING
+    When `immunization.date` is empty, the HTML cell shows "?" but NO FSH
+    rule is emitted for `occurrenceDateTime`, and no data-absent-reason
+    extension is added. This differs from other templates (e.g. procedure-eu)
+    where absence triggers an explicit extension rule. The FHIR validator will
+    require one of `occurrenceDateTime` or `occurrenceString` — callers must
+    ensure this is handled upstream when date is unknown.
+
+  OPTIONAL ELEMENTS (FSH only — no HTML representation)
+    `lotNumber`, `expirationDate`, `site`, `route` are all conditional and
+    appear in the FSH output only; they are not reflected in the HTML table.
+    - `site.coding` uses no index (single coding; FHIR allows this notation).
+    - `route.coding[0]` uses explicit [0] (single coding, explicit index).
+
+  CONTEXT VARIABLES
+  ┌──────────────────────────────────┬──────────┬──────────────────────────────────────────┐
+  │ Variable                         │ Type     │ Description                              │
+  ├──────────────────────────────────┼──────────┼──────────────────────────────────────────┤
+  │ instanceid                       │ string   │ Unique resource id.                      │
+  │ patient.instanceid               │ string   │ UUID of the Patient resource.            │
+  │ patient.name                     │ string   │ Full display name for the Reference.     │
+  │ immunization.snomed              │ object?  │ SNOMED CT vaccine coding (optional).     │
+  │   .code                          │ string   │   SNOMED CT concept code.                │
+  │   .display                       │ string   │   Concept display text.                  │
+  │   .preferredTerm                 │ string   │   Preferred term; used for text and HTML.│
+  │                                  │          │   Must always be supplied.               │
+  │ immunization.atc                 │ object?  │ ATC vaccine coding (optional).           │
+  │   .code                          │ string   │   ATC code.                              │
+  │   .display                       │ string   │   ATC display text.                      │
+  │ immunization.date                │ string?  │ ISO 8601 administration date. When empty,│
+  │                                  │          │ no FSH rule is emitted and HTML shows    │
+  │                                  │          │ "?". Must be FHIR dateTime-compatible.   │
+  │ immunization.lotNumber           │ string?  │ Optional vaccine lot / batch number.     │
+  │ immunization.expires             │ string?  │ Optional vaccine expiry date (ISO 8601). │
+  │ immunization.site                │ object?  │ Optional administration site.            │
+  │   .system                        │ string   │   CodeSystem URI.                        │
+  │   .code                          │ string   │   Site concept code.                     │
+  │   .display                       │ string   │   Site display text.                     │
+  │ immunization.route               │ object?  │ Optional administration route.           │
+  │   .system                        │ string   │   CodeSystem URI.                        │
+  │   .code                          │ string   │   Route concept code.                    │
+  │   .display                       │ string   │   Route display text.                    │
+  └──────────────────────────────────┴──────────┴──────────────────────────────────────────┘
+
+  CODESYSTEMS REFERENCED
+    $sct    — SNOMED CT (vaccine code, site, route)
+    $atc    — ATC classification system (vaccine code, alternative)
+    $cvx    — CVX (US vaccine codes) — commented out, not emitted
+
+  AUTHOR   KH
+  SINCE    2025-09-09
+  ============================================================================
 #}
 
-%%FSH%% {# tag required #}
+%%FSH%% {# ── Section marker required by the FSH pre-processor ─────────────── #}
+
 Instance: {{ setInstance("Instance-Immunization-" ~ instanceid) }}
 InstanceOf: ImmunizationEuCore
 Title: "Immunization"
@@ -14,9 +97,15 @@ Usage: #inline
 
 * id = "{{ instanceid }}"
 
+{#
+  ── Fixed status ────────────────────────────────────────────────────────────
+  All synthetic immunization records are completed administrations.
+#}
 * status = #completed
 
-{# addign headers for HTML table #}
+{#
+  ── HEAD bag: two-column table header ──────────────────────────────────────
+#}
 {{ addHEAD_tr() }}
 {{ addHEAD_th("Vaccine") }}
 {{ addHEAD_th("Date") }}
@@ -24,29 +113,55 @@ Usage: #inline
 
 {{ addHTML_tr() }}
 
-{# 
-  emit data of the Immunization
+{#
+  ── Vaccine code — multi-coding pattern ─────────────────────────────────────
+  Each code system contributes its own coding[+] slice, conditionally.
+  Both slices may be present simultaneously; neither is required individually.
+
+  Slice 1: SNOMED CT — preferred terminology; omitted when snomed is absent.
+  Slice 2: ATC classification — omitted when atc is absent.
+
+  CVX (US vaccine codes) was previously supported but is now disabled.
+  The commented-out block is retained for reference only.
 #}
 
-{# vaccineCode(s) #}
-
-{# add snomed if available #}
+{# Slice 1: SNOMED CT coding (preferred) #}
 {% if immunization.snomed is not empty %}
 * vaccineCode.coding[+] = $sct#{{ immunization.snomed.code }} "{{ immunization.snomed.display }}"
 {% endif %}
+
+{# Slice 2: ATC coding (alternative / additional) #}
 {% if immunization.atc is not empty %}
 * vaccineCode.coding[+] = $atc#{{ immunization.atc.code }} "{{ immunization.atc.display }}"
 {% endif %}
-{# do not emit cvx codes anymore
+
+{# CVX coding — disabled; retained for reference
 {% if immunization.cvx is not empty %}
 * vaccineCode.coding[+] = $cvx#{{ immunization.cvx.code }} "{{ immunization.cvx.display }}"
 {% endif %}
 #}
+
+{#
+  vaccineCode.text is always set to the SNOMED preferred term — no conditional.
+  The caller must always supply immunization.snomed.preferredTerm.
+  HTML td 1: same value.
+#}
 * vaccineCode.text = "{{ immunization.snomed.preferredTerm }}"
 {{ addHTML_td(immunization.snomed.preferredTerm) }}
 
+{#
+  ── Patient reference ───────────────────────────────────────────────────────
+#}
 * patient = Reference(urn:uuid:{{ patient.instanceid }}) "{{ patient.name }}"
 
+{#
+  ── Occurrence date (td 2: conditional) ────────────────────────────────────
+  When date is absent: HTML shows "?" and no FSH rule is emitted.
+  Note: no data-absent-reason extension is added — the FHIR validator requires
+  either occurrenceDateTime or occurrenceString; callers must handle unknown
+  dates upstream if strict validation is needed.
+  When date is present: ISO 8601 string in FSH; d-M-Y pill badge in HTML.
+#}
 {% if immunization.date is empty %}
 {{ addHTML_td("?") }}
 {% else %}
@@ -54,6 +169,15 @@ Usage: #inline
 {{ addHTML_tdnb(immunization.date|date('d-M-Y')) -}}
 {% endif %}
 
+{#
+  ── Optional administration details (FSH only; no HTML representation) ──────
+  All four elements are individually conditional. None contributes an HTML cell.
+
+  lotNumber    — vaccine batch / lot identifier
+  expirationDate — vaccine expiry date (ISO 8601)
+  site         — body site of administration (single coding, no index notation)
+  route        — administration route (explicit [0] index)
+#}
 {% if immunization.lotNumber is not empty %}
 * lotNumber = "{{ immunization.lotNumber }}"
 {% endif %}
@@ -62,25 +186,29 @@ Usage: #inline
 {% endif %}
 {% if immunization.site is not empty %}
 * site.coding = {{ immunization.site.system }}#{{ immunization.site.code }} "{{ immunization.site.display }}"
-* site.text =  "{{ immunization.site.display }}"
+* site.text   = "{{ immunization.site.display }}"
 {% endif %}
 {% if immunization.route is not empty %}
 * route.coding[0] = {{ immunization.route.system }}#{{ immunization.route.code }} "{{ immunization.route.display }}"
-* route.text =  "{{ immunization.route.display }}"
+* route.text      = "{{ immunization.route.display }}"
 {% endif %}
 
 {{ addHTML_trend() -}}
 
-{# populate .text #}
+{#
+  ── FHIR narrative ───────────────────────────────────────────────────────────
+  Only emitHTML() is flushed here — narrative carries body rows only.
+  The HEAD bag is emitted in %%HEAD%% for external consumers.
+#}
 * text.status = #generated
-* text.div = """
+* text.div    = """
 <div xmlns="http://www.w3.org/1999/xhtml">
 <table class="hl7__ips">{{ emitHTML() | raw }}</table>
 </div>
 """
 
-%%HEAD%% {# tag required, content below maybe emtpy #}
+%%HEAD%% {# ── Section marker required by the FSH pre-processor ─────────────── #}
 {{ emitHEAD() | raw }}
 
-%%HTML%% {# tag required, content below maybe emtpy #}
+%%HTML%% {# ── Section marker required by the FSH pre-processor ─────────────── #}
 {{ emitHTML() | raw }}

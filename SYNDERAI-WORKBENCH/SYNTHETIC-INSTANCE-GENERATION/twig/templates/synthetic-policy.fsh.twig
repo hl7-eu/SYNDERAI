@@ -1,116 +1,211 @@
 {#
-  This is the TWIG file for the creation of an FSH instance including the HTML parts.
-  see README.md
+  ============================================================================
+  TEMPLATE: synthetic-policy_fsh.twig
+  ============================================================================
+  PURPOSE
+    Defines the SYNDERAI synthetic-data governance example instances in FSH.
+    Unlike other templates in this directory, this template contains NO Twig
+    variable interpolation (no `{{ }}` expressions) — it is entirely static
+    FSH source. It is processed by the SYNDERAI pre-processor solely to strip
+    the section markers and pass the FSH to SUSHI.
 
-  KH since 2025-09-10
+    The template produces five example FSH instances that together demonstrate
+    and validate the synthetic-data tagging and provenance pattern used
+    throughout the SYNDERAI pipeline:
+
+      1. Patient-example-synth           — a synthetic Patient example, tagged
+                                           with HTEST and TRAIN security labels
+                                           and the #synthetic custom tag.
+      2. Device-simulator-1              — the SYNDERAI generator device that
+                                           "authored" the synthetic data (used
+                                           as Provenance.agent.who).
+      3. DocRef-Synthetic-Data-Policy    — a DocumentReference pointing to the
+                                           externally hosted synthetic-data
+                                           policy document.
+      4. Provenance-example-synth        — links the synthetic Patient to the
+                                           policy (DocRef) and the generator
+                                           (Device) via a Provenance resource.
+      5. Patient-example-synth-profiled  — an alternative Patient instance that
+                                           conforms to the SYNDERAI-SyntheticResource
+                                           profile, used to validate the metamodel.
+      6. Bundle-synthetic-showcase       — a collection Bundle that ties all the
+                                           above together for end-to-end testing.
+
+  RELATIONSHIP TO syntheticDataPolicyMeta()
+    The Twig function `syntheticDataPolicyMeta()` (used in other templates such
+    as patient-eu-core.fsh.twig) emits the meta.security and meta.tag rules
+    that are demonstrated statically on Patient-example-synth here. This
+    template therefore serves as the canonical reference for what that function
+    produces.
+
+  NO TWIG VARIABLES
+    This template contains no `{{ }}` expressions and no `{% %}` control
+    structures. All FSH content is literal. Twig processes it as a pass-through,
+    only stripping the section markers.
+
+  FSH COMMENTS
+    This template uses FSH line comments (` / / `) rather than Twig block comments
+    (`{ # # }`), because the content is static FSH. Both comment styles are valid
+    in this context — FSH comments appear in the output (for SUSHI), while Twig
+    comments are stripped before reaching SUSHI.
+
+  NO HTML OUTPUT
+    %%HEAD%% is empty. %%HTML%% calls `emitHTML() | raw` for completeness but
+    the bag is never populated, so the output is an empty string.
+
+  SECURITY LABELS USED
+    $ActReason — HL7 ActReason codesystem
+      #HTEST    — indicates health test data (not real clinical data)
+      #TRAIN    — indicates training data (intended for educational use)
+    synderai tag codesystem: https://synderai.net/fhir/CodeSystem/tags
+      #synthetic — marks the resource as synthetically generated
+
+  INSTANCE INVENTORY
+  ┌───────────────────────────────────┬──────────────────────┬────────────────────────────┐
+  │ Instance id                       │ FHIR resource type   │ Purpose                    │
+  ├───────────────────────────────────┼──────────────────────┼────────────────────────────┤
+  │ example-synth                     │ Patient              │ Synthetic patient example  │
+  │ simulator-1                       │ Device               │ SYNDERAI generator device  │
+  │ synthetic-data-policy             │ DocumentReference    │ Policy document reference  │
+  │ example-synth (Provenance)        │ Provenance           │ Data lineage / governance  │
+  │ example-synth-profiled            │ Patient              │ Profile conformance check  │
+  │ Bundle-synthetic-showcase         │ Bundle               │ Collection showcase bundle │
+  └───────────────────────────────────┴──────────────────────┴────────────────────────────┘
+
+  AUTHOR   KH
+  SINCE    2025-09-10
+  ============================================================================
 #}
 
-%%FSH%% {# tag required #}
+%%FSH%% {# ── Section marker required by the FSH pre-processor ─────────────── #}
 
-// ========================
-// Example Patient flagged as synthetic, conforming to the profile above
+// ============================================================
+// 1. Synthetic Patient example
+//    Demonstrates the security labels and custom tag that
+//    syntheticDataPolicyMeta() injects into every generated resource.
+// ============================================================
 Instance: Patient-example-synth
 InstanceOf: Patient
 Title: "Synthetic Patient Example"
 Usage: #example
-* meta.profile = "http://hl7.org/fhir/StructureDefinition/Patient" // normal Patient
+* meta.profile           = "http://hl7.org/fhir/StructureDefinition/Patient" // base Patient profile
 * meta.security[+].system = $ActReason
-* meta.security[=].code = #HTEST
+* meta.security[=].code   = #HTEST   // health test data — not clinical
 * meta.security[+].system = $ActReason
-* meta.security[=].code = #TRAIN
-* meta.tag[+].system = "https://synderai.net/fhir/CodeSystem/tags"
-* meta.tag[=].code = #synthetic
-* meta.tag[=].display = "Synthetic data"
-* id = "example-synth"
-* active = true
-* name[0].family = "Robot"
-* name[0].given[0] = "Ava"
-* gender = #female
-* birthDate = "1988-02-29"
+* meta.security[=].code   = #TRAIN   // training / educational use
+* meta.tag[+].system      = "https://synderai.net/fhir/CodeSystem/tags"
+* meta.tag[=].code        = #synthetic
+* meta.tag[=].display     = "Synthetic data"
+* id                      = "example-synth"
+* active                  = true
+* name[0].family          = "Robot"
+* name[0].given[0]        = "Ava"
+* gender                  = #female
+* birthDate               = "1988-02-29"
 
-// ========================
-// Example Device that generated the data (referenced by Provenance.agent.who)
+// ============================================================
+// 2. Generator Device
+//    Represents the SYNDERAI software that produced the synthetic
+//    data. Referenced as Provenance.agent.who in instance 4 below.
+// ============================================================
 Instance: Device-simulator-1
 InstanceOf: Device
 Title: "SYNDERAI Generator Device"
 Usage: #example
-* id = "simulator-1"
-* status = #active
-* distinctIdentifier = "synderai-gen-001"
-* deviceName[0].name = "SYNDERAI Synthetic Generator"
-* deviceName[0].type = #manufacturer-name
-* manufacturer = "SYNDERAI Project"
-* version[0].value = "1.2.0"
+* id                      = "simulator-1"
+* status                  = #active
+* distinctIdentifier      = "synderai-gen-001"
+* deviceName[0].name      = "SYNDERAI Synthetic Generator"
+* deviceName[0].type      = #manufacturer-name
+* manufacturer            = "SYNDERAI Project"
+* version[0].value        = "1.2.0"
 
-// ========================
-// DocumentReference publishing the Synthetic Data Policy (URL points to your site)
+// ============================================================
+// 3. Policy DocumentReference
+//    Points to the externally hosted Synthetic Data Policy document.
+//    Referenced as Provenance.entity.what in instance 4 below.
+//    The policy URL must resolve to a public Markdown document.
+// ============================================================
 Instance: DocRef-Synthetic-Data-Policy
 InstanceOf: DocumentReference
 Title: "Synthetic Data Policy (DocumentReference)"
 Usage: #example
-* id = "synthetic-data-policy"
-* status = #current
-* docStatus = #final
-* type.text = "Policy"
-* category[0].text = "Data Governance Policy"
-* date = "2025-10-01T00:00:00Z"
-* description = "Policy describing generation, reuse, privacy status, and limitations of synthetic data."
-* content[0].attachment.contentType = #text/markdown
-* content[0].attachment.url = "https://synderai.net/policy/synthetic-data-policy"
-* content[0].attachment.title = "Synthetic Data Generation and Use Policy v1.2 (2025-10-01)"
-* securityLabel[0].coding[0].system = $ActReason
-* securityLabel[0].coding[0].code = #HTEST
-* securityLabel[+].coding[0].system = $ActReason
-* securityLabel[=].coding[0].code = #TRAIN
-* meta.tag[0].system = "https://synderai.net/fhir/CodeSystem/tags"
-* meta.tag[0].code = #synthetic
+* id                                   = "synthetic-data-policy"
+* status                               = #current
+* docStatus                            = #final
+* type.text                            = "Policy"
+* category[0].text                     = "Data Governance Policy"
+* date                                 = "2025-10-01T00:00:00Z"
+* description                          = "Policy describing generation, reuse, privacy status, and limitations of synthetic data."
+* content[0].attachment.contentType    = #text/markdown
+* content[0].attachment.url            = "https://synderai.net/policy/synthetic-data-policy"
+* content[0].attachment.title          = "Synthetic Data Generation and Use Policy v1.2 (2025-10-01)"
+* securityLabel[0].coding[0].system    = $ActReason
+* securityLabel[0].coding[0].code      = #HTEST
+* securityLabel[+].coding[0].system    = $ActReason
+* securityLabel[=].coding[0].code      = #TRAIN
+* meta.tag[0].system                   = "https://synderai.net/fhir/CodeSystem/tags"
+* meta.tag[0].code                     = #synthetic
 
-// ========================
-// Provenance linking the synthetic Patient to the policy and the generator Device
+// ============================================================
+// 4. Provenance — data lineage record
+//    Links the synthetic Patient (target) to:
+//      • The policy document (entity.what → DocRef-Synthetic-Data-Policy)
+//      • The generator device (agent.who → Device-simulator-1)
+//    The policy URL in `policy[]` must match the DocumentReference URL.
+// ============================================================
 Instance: Provenance-example-synth
 InstanceOf: Provenance
 Title: "Provenance for Synthetic Patient"
 Usage: #example
-* target[0] = Reference(Patient-example-synth)
-* recorded = "2025-10-15T12:00:00Z"
-* activity.text = "Synthetic patient simulation"
-* policy[0] = "https://synderai.net/policy/synthetic-data-policy"
+* target[0]         = Reference(Patient-example-synth)
+* recorded          = "2025-10-15T12:00:00Z"
+* activity.text     = "Synthetic patient simulation"
+* policy[0]         = "https://synderai.net/policy/synthetic-data-policy"
 * agent[0].type.text = "author"
-* agent[0].who = Reference(Device-simulator-1)
-* reason[0].text = "Interoperability testing and training (non-clinical use)"
-* entity[0].role = #source
-* entity[0].what = Reference(DocRef-Synthetic-Data-Policy)
+* agent[0].who      = Reference(Device-simulator-1)
+* reason[0].text    = "Interoperability testing and training (non-clinical use)"
+* entity[0].role    = #source
+* entity[0].what    = Reference(DocRef-Synthetic-Data-Policy)
 
-// ========================
-// OPTIONAL: Mark the example Patient as conforming to the synthetic profile
+// ============================================================
+// 5. Profiled Patient (metamodel validation)
+//    Conforms to the SYNDERAI-SyntheticResource profile rather
+//    than the base Patient profile. Used to verify that the
+//    synthetic tagging StructureDefinition validates correctly.
+// ============================================================
 Instance: Patient-example-synth-profiled
 InstanceOf: SYNDERAI-SyntheticResource
 Title: "Patient flagged by Synthetic Profile (metamodel check)"
 Usage: #example
-* id = "example-synth-profiled"
-* meta.security[0].system = $ActReason
-* meta.security[0].code = #HTEST
-* meta.tag[0].system = "https://synderai.net/fhir/CodeSystem/tags"
-* meta.tag[0].code = #synthetic
+* id                        = "example-synth-profiled"
+* meta.security[0].system   = $ActReason
+* meta.security[0].code     = #HTEST
+* meta.tag[0].system        = "https://synderai.net/fhir/CodeSystem/tags"
+* meta.tag[0].code          = #synthetic
 
-// ========================
-// Bundle tying it together
+// ============================================================
+// 6. Bundle — showcase collection
+//    Ties all example instances together for end-to-end SUSHI
+//    compilation and validator testing.
+// ============================================================
 Instance: Bundle-synthetic-showcase
 InstanceOf: Bundle
 Title: "SYNDERAI Synthetic Showcase Bundle"
 Usage: #example
-* type = #collection
-* entry[0].fullUrl = "Patient/example-synth"
-* entry[0].resource = Patient-example-synth
-* entry[1].fullUrl = "Device/simulator-1"
-* entry[1].resource = Device-simulator-1
-* entry[2].fullUrl = "DocumentReference/synthetic-data-policy"
-* entry[2].resource = DocRef-Synthetic-Data-Policy
-* entry[3].fullUrl = "Provenance/example-synth"
-* entry[3].resource = Provenance-example-synth
+* type                       = #collection
+* entry[0].fullUrl           = "Patient/example-synth"
+* entry[0].resource          = Patient-example-synth
+* entry[1].fullUrl           = "Device/simulator-1"
+* entry[1].resource          = Device-simulator-1
+* entry[2].fullUrl           = "DocumentReference/synthetic-data-policy"
+* entry[2].resource          = DocRef-Synthetic-Data-Policy
+* entry[3].fullUrl           = "Provenance/example-synth"
+* entry[3].resource          = Provenance-example-synth
 
+%%HEAD%% {# ── Section marker required by the FSH pre-processor ─────────────── #}
+{# No HEAD output — this template produces no HTML table. #}
 
-%%HEAD%% {# tag required, content below maybe emtpy #}
-
-%%HTML%% {# tag required, content below maybe emtpy #}
+%%HTML%% {# ── Section marker required by the FSH pre-processor ─────────────── #}
 {{ emitHTML() | raw }}
+{# HTML bag is never populated in this static template; emitHTML() returns empty string. #}

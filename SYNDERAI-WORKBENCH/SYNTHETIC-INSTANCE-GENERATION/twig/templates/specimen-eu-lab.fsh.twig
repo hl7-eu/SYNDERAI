@@ -1,34 +1,110 @@
 {#
-  This is the TWIG file for the creation of an FSH instance including the HTML parts.
-  see README.md
+  ============================================================================
+  TEMPLATE: specimen-eu-lab_fsh.twig
+  ============================================================================
+  PURPOSE
+    Generates a FSH Specimen instance conforming to the SpecimenEu profile
+    (EU Laboratory Report profile). This resource represents a single physical
+    specimen collected from a patient, characterised by its SNOMED CT type
+    and the date/time of collection.
 
-  KH since 2025-09-08
+    One Specimen instance is typically generated per distinct specimen type
+    referenced by the associated ServiceRequest and DiagnosticReport. Multiple
+    lab panels that share the same specimen type will share the same Specimen
+    instance (deduplication is the caller's responsibility).
+
+  PROFILE CONFORMANCE
+    InstanceOf: SpecimenEu
+    Canonical : (EU Laboratory Specimen profile, HL7 Europe / IHE XpandH)
+    Must-support elements covered:
+      type (SNOMED CT code + display), collection.collectedDateTime
+
+  TWO-COLUMN HTML TABLE
+    Column 1 — Specimen type display name    (always present)
+    Column 2 — Collection date               (always present; formatted d-M-Y)
+
+  CSS CLASS NOTE
+    This template uses `hl7__eu__lab__report` as the table CSS class (rather
+    than the `hl7__ips` class used by IPS-context templates). This reflects
+    the EU Laboratory Report stylesheet, which applies different column widths
+    and typography appropriate for lab report rendering in the vi7eti viewer.
+
+  CONTEXT VARIABLES
+  ┌───────────────────┬──────────┬──────────────────────────────────────────────┐
+  │ Variable          │ Type     │ Description                                  │
+  ├───────────────────┼──────────┼──────────────────────────────────────────────┤
+  │ instanceid        │ string   │ Unique resource id; appended to              │
+  │                   │          │ "Instance-Specimen-" to form the FSH         │
+  │                   │          │ instance name.                               │
+  │ specimen.code     │ string   │ SNOMED CT concept code for the specimen type │
+  │                   │          │ (e.g. "122555007" for venous blood specimen).│
+  │                   │          │ Used directly in the $sct# code expression. │
+  │ specimen.display  │ string   │ Display name for the specimen type; used in  │
+  │                   │          │ the FSH type rule and in HTML td 1.          │
+  │ specimen.date     │ string   │ ISO 8601 dateTime of specimen collection;    │
+  │                   │          │ used as-is in the FSH rule and formatted     │
+  │                   │          │ d-M-Y for the HTML pill cell (td 2).         │
+  └───────────────────┴──────────┴──────────────────────────────────────────────┘
+
+  FSH ELEMENTS EMITTED
+    * type                        SNOMED CT specimen type code
+    * collection.collectedDateTime  ISO 8601 collection date/time
+
+  CODESYSTEMS REFERENCED
+    $sct — SNOMED CT; code taken from specimen.code (caller-supplied)
+
+  AUTHOR   KH
+  SINCE    2025-09-08
+  ============================================================================
 #}
 
-%%FSH%% {# tag required #}
+%%FSH%% {# ── Section marker required by the FSH pre-processor ─────────────── #}
+
 Instance: {{ setInstance("Instance-Specimen-" ~ instanceid) }}
 InstanceOf: SpecimenEu
 Title: "Specimen"
 Description: "Specimen"
 Usage: #inline
-* id = "{{ instanceid }}"
-* type = $sct#{{ specimen.code}} "{{ specimen.display }}"
+
+{#
+  ── Core specimen data ──────────────────────────────────────────────────────
+  Both elements are mandatory on this template: type identifies what was
+  collected, collectedDateTime records when it was collected.
+  The SNOMED CT code is interpolated directly into the $sct# code expression.
+#}
+* id                           = "{{ instanceid }}"
+* type                         = $sct#{{ specimen.code}} "{{ specimen.display }}"
 * collection.collectedDateTime = "{{ specimen.date }}"
 
-{# add HTML #}
+{#
+  ── HEAD bag: two-column table header ──────────────────────────────────────
+  Describes what type of specimen was collected and when.
+#}
 {{ addHEAD_tr() }}
 {{ addHEAD_th("Specimen") }}
 {{ addHEAD_th("Collection Date") }}
 {{ addHEAD_trend() -}}
 
+{#
+  ── HTML bag: single data row ───────────────────────────────────────────────
+  td 1: Specimen type display name — plain text cell.
+  td 2: Collection date — formatted as d-M-Y (e.g. "14-Mar-1978") in a
+        non-breaking pill badge via addHTML_tdnb.
+#}
 {{ addHTML_tr() }}
 {{ addHTML_td(specimen.display) }}
 {{ addHTML_tdnb(specimen.date|date('d-M-Y')) }}
 {{ addHTML_trend() -}}
 
-{# populate .text #}
+{#
+  ── FHIR narrative ───────────────────────────────────────────────────────────
+  Both HEAD and HTML bags are flushed inside text.div, producing a complete
+  table (header + data row) in the inline FHIR narrative.
+  Note: this template uses the hl7__eu__lab__report CSS class rather than
+  hl7__ips, as it targets the EU Laboratory Report stylesheet.
+#}
 * text.status = #generated
-* text.div = """
+* text.div    = """
 <div xmlns="http://www.w3.org/1999/xhtml">
 <table class="hl7__eu__lab__report">
 {{ emitHEAD() | raw }}
@@ -37,8 +113,8 @@ Usage: #inline
 </div>
 """
 
-%%HEAD%% {# tag required, content below maybe emtpy #}
+%%HEAD%% {# ── Section marker required by the FSH pre-processor ─────────────── #}
 {{ emitHEAD() | raw }}
 
-%%HTML%% {# tag required, content below maybe emtpy #}
+%%HTML%% {# ── Section marker required by the FSH pre-processor ─────────────── #}
 {{ emitHTML() | raw }}

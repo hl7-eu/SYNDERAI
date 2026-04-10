@@ -1,32 +1,122 @@
 {#
-  This is the TWIG file for the creation of an FSH instance including the HTML parts.
-  see README.md
+  ============================================================================
+  TEMPLATE: provider-as-primarycarephysician-eps_fsh.twig
+  ============================================================================
+  PURPOSE
+    Generates THREE FSH instances that model a primary care physician (GP)
+    acting as a healthcare provider in the EPS (European Patient Summary)
+    context:
 
-  KH since 2025-09-07
+      1. PractitionerRole  — binds the physician to their practice organisation.
+      2. Organization      — the practice or clinic the physician belongs to.
+      3. Practitioner      — the individual physician.
+
+    This template is the EPS-context counterpart of provider-as-hospital_fsh.twig,
+    using the same EU Core profiles but driven by `provider.*` variables rather
+    than `hospital.*`.
+
+  PROFILE CONFORMANCE
+    PractitionerRole : PractitionerRoleEuCore
+    Organization     : OrganizationEuCore
+    Practitioner     : PractitionerEuCore
+
+  PARTIAL setInstance() USE
+    Only the PractitionerRole instance is registered via `setInstance()`:
+      → "Instance-PractitionerRole-<provider.instancerole>"
+    The Organization and Practitioner instances use direct `{{ }}` interpolation
+    in the `Instance:` line and are NOT registered in the `twigit()` return array.
+    Callers that need to reference those instances must obtain their ids from the
+    `provider.*` input variables directly.
+
+  INSTANCE ORDER
+    The template emits instances in this order: PractitionerRole → Organization
+    → Practitioner. This means the PractitionerRole is declared before the
+    Organisation and Practitioner it references, which is valid in FSH (forward
+    references are resolved by SUSHI at compile time).
+
+  NARRATIVE PATTERN — INLINE SINGLE-CELL TABLE
+    Each instance carries an individually authored `text.div` using an inline
+    `<table class="hl7__ips"><tr><td>…</td></tr></table>` structure. This is
+    a direct HTML literal rather than the bag-based `emitHTML()` / `addHTML_td()`
+    pattern used by clinical-data templates. It is appropriate here because
+    each instance carries only a single identification string and no tabular
+    data is needed.
+
+  NO HTML TABLE OUTPUT
+    No `addHTML_tr()`, `addHTML_td()`, or `addHEAD_th()` calls are made.
+    Both %%HEAD%% and %%HTML%% sections are empty.
+
+  ORGANISATION IDENTIFIER
+    The Organisation carries a business identifier under the HL7 Europe OID
+    namespace (`HL7EUROPEEXAMPLESOID`). Unlike the Practitioner in
+    provider-as-hospital_fsh.twig, this identifier value is supplied by the
+    caller (`provider.orgidentifier`) rather than generated at render time.
+
+  ADDRESS — SINGLE LINE
+    The Organisation address uses a single `provider.address` line (not the
+    multi-field street1/street2/street3 pattern used on the Patient resource).
+    City, postal code, and country are individually conditional.
+
+  CONTEXT VARIABLES
+  ┌──────────────────────────────────┬──────────┬──────────────────────────────────────────┐
+  │ Variable                         │ Type     │ Description                              │
+  ├──────────────────────────────────┼──────────┼──────────────────────────────────────────┤
+  │ provider.instancerole            │ string   │ UUID / id for the PractitionerRole.      │
+  │                                  │          │ Registered via setInstance().            │
+  │ provider.instanceprovider        │ string   │ UUID / id for the Practitioner.          │
+  │ provider.instanceroleorg         │ string   │ UUID / id for the Organization.          │
+  │ provider.orgidentifier           │ string   │ Business identifier value for the        │
+  │                                  │          │ Organisation (under HL7EUROPEEXAMPLESOID).│
+  │ provider.providerorgname         │ string   │ Display name of the practice /           │
+  │                                  │          │ clinic Organisation.                     │
+  │ provider.address                 │ string?  │ Optional single-line street address.     │
+  │ provider.city                    │ string?  │ Optional city name.                      │
+  │ provider.postcode                │ string?  │ Optional postal code.                    │
+  │ provider.country                 │ string?  │ Optional country code or name.           │
+  │ provider.providernameprefix      │ string?  │ Optional name prefix (e.g. "Dr.").       │
+  │ provider.providernamegiven       │ string?  │ Optional given / first name.             │
+  │ provider.providernamefamily      │ string?  │ Optional family / last name.             │
+  └──────────────────────────────────┴──────────┴──────────────────────────────────────────┘
+
+  GLOBAL VARIABLES USED
+    HL7EUROPEEXAMPLESOID — OID root for the Organisation identifier system URI.
+
+  AUTHOR   KH
+  SINCE    2025-09-07
+  ============================================================================
 #}
 
-%%FSH%% {# tag required #}
+%%FSH%% {# ── Section marker required by the FSH pre-processor ─────────────── #}
 
-{# emit Practitioner Role #}
-{# ---------------------- #}
+{#
+  ── Instance 1: PractitionerRole ────────────────────────────────────────────
+  Registered via setInstance() — the only instance in this template that is
+  tracked in the twigit() return array. References the Practitioner and
+  Organisation by their ids (forward references resolved by SUSHI).
+#}
 Instance: {{ setInstance("Instance-PractitionerRole-" ~ provider.instancerole) }}
 InstanceOf: PractitionerRoleEuCore
 Title: "Practitioner Role (EPS) Provider"
 Description: "Practitioner Role Provider"
 Usage: #inline
-* id = "{{ provider.instancerole }}"
+* id           = "{{ provider.instancerole }}"
 * practitioner = Reference(urn:uuid:{{ provider.instanceprovider }})
 * organization = Reference(urn:uuid:{{ provider.instanceroleorg }})
-{# populate .text #}
+{# Inline single-cell narrative table — identifies the role by id #}
 * text.status = #generated
-* text.div = """
+* text.div    = """
 <div xmlns="http://www.w3.org/1999/xhtml">
 <table class="hl7__ips"><tr><td>Provider Role Id {{ provider.instancerole }}</td></tr></table>
 </div>
 """
 
-{# emit Organization #}
-{# ----------------- #}
+{#
+  ── Instance 2: Organization ─────────────────────────────────────────────────
+  The practice or clinic the physician belongs to. Identified by a caller-
+  supplied `orgidentifier` under the HL7 Europe OID namespace (not a generated
+  UUID). Address sub-elements are individually conditional.
+  Note: Instance id interpolated directly — NOT registered via setInstance().
+#}
 Instance: Instance-Organization-{{ provider.instanceroleorg }}
 InstanceOf: OrganizationEuCore
 Title: "Organization Provider"
@@ -34,12 +124,14 @@ Description: "Organization Provider"
 Usage: #inline
 * id = "{{ provider.instanceroleorg }}"
 
-* identifier.system = "urn:oid:{{ HL7EUROPEEXAMPLESOID }}"
-* identifier.value = "{{ provider.orgidentifier }}"
+{# Organisation business identifier under the HL7 Europe OID namespace #}
+* identifier.system           = "urn:oid:{{ HL7EUROPEEXAMPLESOID }}"
+* identifier.value            = "{{ provider.orgidentifier }}"
 * identifier.assigner.display = "HL7 Europe"
 
 * name = "{{ provider.providerorgname }}"
 
+{# Address — single line, individually conditional sub-elements #}
 {% if provider.address is not empty %}
 * address.line = "{{ provider.address }}"
 {% endif %}
@@ -52,23 +144,28 @@ Usage: #inline
 {% if provider.country is not empty %}
 * address.country = "{{ provider.country }}"
 {% endif %}
-{# populate .text #}
+
+{# Inline single-cell narrative table — shows the organisation name #}
 * text.status = #generated
-* text.div = """
+* text.div    = """
 <div xmlns="http://www.w3.org/1999/xhtml">
 <table class="hl7__ips"><tr><td>{{ provider.providerorgname }}</td></tr></table>
 </div>
 """
 
-
-{# emit Practitioner #}
-{# ----------------- #}
+{#
+  ── Instance 3: Practitioner ─────────────────────────────────────────────────
+  The individual primary care physician. All three name components are
+  individually conditional — none is mandatory at template level.
+  Note: Instance id interpolated directly — NOT registered via setInstance().
+#}
 Instance: Instance-Practitioner-{{ provider.instanceprovider }}
 InstanceOf: PractitionerEuCore
 Title: "Practitioner Provider"
 Description: "Practitioner Provider"
 Usage: #inline
 * id = "{{ provider.instanceprovider }}"
+
 {% if provider.providernameprefix is not empty %}
 * name.prefix = "{{ provider.providernameprefix }}"
 {% endif %}
@@ -78,14 +175,22 @@ Usage: #inline
 {% if provider.providernamefamily is not empty %}
 * name.family = "{{ provider.providernamefamily }}"
 {% endif %}
-{# populate .text #}
+
+{#
+  Inline single-cell narrative table — concatenates the three name parts.
+  Note: if any component is empty the concatenation will produce extra spaces.
+  Consider using the |trim filter or conditional concatenation if this is a
+  concern in downstream rendering.
+#}
 * text.status = #generated
-* text.div = """
+* text.div    = """
 <div xmlns="http://www.w3.org/1999/xhtml">
 <table class="hl7__ips"><tr><td>{{ provider.providernameprefix ~ " " ~ provider.providernamegiven ~ " " ~ provider.providernamefamily}}</td></tr></table>
 </div>
 """
 
-%%HEAD%% {# tag required, content below maybe emtpy #}
+%%HEAD%% {# ── Section marker required by the FSH pre-processor ─────────────── #}
+{# No HEAD output — this template produces no HTML table. #}
 
-%%HTML%% {# tag required, content below maybe emtpy #}
+%%HTML%% {# ── Section marker required by the FSH pre-processor ─────────────── #}
+{# No HTML output — this template produces no HTML table. #}

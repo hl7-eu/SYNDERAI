@@ -1,60 +1,166 @@
 {#
-  This is the TWIG file for the creation of an FSH instance including the HTML parts.
-  see README.md
+  ============================================================================
+  TEMPLATE: patient-eps_fsh.twig
+  ============================================================================
+  PURPOSE
+    Generates a FSH Patient instance conforming to the PatientEuEps profile
+    (European Patient Summary). This is the EPS-context counterpart of
+    patient-eu-core_fsh.twig — structurally very similar but targeting a
+    different profile with two meaningful behavioural differences in name
+    display and nationality handling.
 
-  KH since 2025-09-07
+  RELATIONSHIP TO patient-eu-core_fsh.twig
+    ┌──────────────────────────────────┬────────────────────────────┬────────────────────────────────┐
+    │ Aspect                           │ EU Core                    │ EU EPS (this file)             │
+    ├──────────────────────────────────┼────────────────────────────┼────────────────────────────────┤
+    │ Profile                          │ PatientEuCore              │ PatientEuEps                   │
+    │ HTML name (td 1)                 │ patient.name               │ patient.given|join(" ") ~      │
+    │                                  │ (pre-composed full name)   │ " " ~ patient.family           │
+    │ Nationality extension            │ Conditional on             │ Always emitted (no if-guard)   │
+    │                                  │ patient.countrycode        │                                │
+    │ Nationality text sub-extension   │ Absent                     │ Present: .text = countryname   │
+    │ HEAD table                       │ Empty (<!-- empty -->)      │ Empty (no emit call)           │
+    └──────────────────────────────────┴────────────────────────────┴────────────────────────────────┘
+
+  PROFILE CONFORMANCE
+    InstanceOf: PatientEuEps
+    Must-support elements covered:
+      identifier (ECI, optional MR), name, gender, birthDate,
+      address, telecom, patient-nationality extension (always)
+
+  THREE-COLUMN HTML TABLE (no HEAD row)
+    Column 1 — Full name, assembled from given names + family
+    Column 2 — Administrative gender code
+    Column 3 — Date of birth (formatted d-M-Y, plain cell not pill)
+
+  HTML NAME ASSEMBLY — JOIN PATTERN
+    Unlike patient-eu-core which uses the pre-composed `patient.name` field,
+    this template assembles the display name from its parts:
+      `patient.given|join(" ") ~ " " ~ patient.family`
+    This always produces "Given1 Given2 Family" regardless of what
+    `patient.name` contains. If `patient.given` is empty, a leading space
+    will precede the family name. The `|join(" ")` filter handles multiple
+    given names correctly.
+
+  BIRTHDATE — PLAIN CELL NOT PILL
+    HTML td 3 uses `addHTML_td()` (not `addHTML_tdnb()`), so the birth date
+    is rendered as a standard cell, not a non-breaking pill badge. This
+    contrasts with patient-eu-core which uses `addHTML_tdnb`.
+
+  NATIONALITY EXTENSION — ALWAYS EMITTED
+    In patient-eu-core the nationality extension block is conditional:
+      `{% if patient.countrycode is not empty %}`
+    In this EPS template the extension is emitted unconditionally — all EPS
+    patients are assumed to have a nationality. The caller must always supply
+    `patient.countrycode` and `patient.countryname`.
+
+    The extension also carries an additional sub-element not present in
+    the EU Core template:
+      `* extension[=].extension[=].valueCodeableConcept.text = "{{ patient.countryname }}"`
+    This adds the full country name as the text representation of the
+    nationality coding.
+
+  CONTEXT VARIABLES
+  ┌──────────────────────┬──────────┬──────────────────────────────────────────────────┐
+  │ Variable             │ Type     │ Description                                      │
+  ├──────────────────────┼──────────┼──────────────────────────────────────────────────┤
+  │ patient.instanceid   │ string   │ Unique resource id.                              │
+  │ patient.name         │ string   │ Pre-composed full name (FSH only in this tmpl).  │
+  │ patient.family       │ string   │ Family / surname.                                │
+  │ patient.given        │ string[] │ Array of given names; joined for HTML.           │
+  │ patient.gender       │ string   │ FHIR AdministrativeGender code.                  │
+  │ patient.birthdate    │ date     │ Date of birth (FHIR dateTime-compatible).        │
+  │ patient.eci          │ string   │ European Citizen Identifier.                     │
+  │ patient.match        │ string?  │ Optional external MR identifier.                 │
+  │ patient.localid      │ string?  │ Optional local MR identifier.                    │
+  │ patient.street1      │ string?  │ Optional address line 1.                         │
+  │ patient.street2      │ string?  │ Optional address line 2.                         │
+  │ patient.street3      │ string?  │ Optional address line 3.                         │
+  │ patient.postcode     │ string   │ Postal code.                                     │
+  │ patient.city         │ string   │ City name.                                       │
+  │ patient.countryname  │ string   │ Full country name — used in address and as       │
+  │                      │          │ nationality .text (always required).             │
+  │ patient.countrycode  │ string   │ ISO 3166-1 alpha-2 country code — always         │
+  │                      │          │ required (|upper applied; no conditional guard). │
+  │ patient.phone        │ string   │ Phone number.                                    │
+  └──────────────────────┴──────────┴──────────────────────────────────────────────────┘
+
+  CODESYSTEMS REFERENCED
+    $v2-0203          — HL7 v2 Table 0203; JHN (ECI), MR (local ids)
+    urn:iso:std:iso:3166 — ISO 3166-1 country codes (nationality extension)
+
+  AUTHOR   KH
+  SINCE    2025-09-07
+  ============================================================================
 #}
 
-%%FSH%% {# tag required #}
+%%FSH%% {# ── Section marker required by the FSH pre-processor ─────────────── #}
+
 Instance: {{ setInstance("Instance-Patient-" ~ patient.instanceid) }}
 InstanceOf: PatientEuEps
 Title: "Patient (EPS)"
 Description: "Patient {{ patient.name }} (Synthetic Data)"
 Usage: #inline
 
-{# include synthetic data policy meta #}
+{# Inject synthetic-data governance meta tags #}
 {{ syntheticDataPolicyMeta() | raw }}
 
 * id = "{{ patient.instanceid }}"
 
 {{ addHTML_tr() }}
 
-{# 
-  emit data of the identifiers
+{#
+  ── Identifiers ─────────────────────────────────────────────────────────────
+  Same three-slice pattern as patient-eu-core: ECI (always), match
+  (conditional), localid (conditional).
 #}
-
-* identifier[+].type = $v2-0203#JHN
+* identifier[+].type   = $v2-0203#JHN
 * identifier[=].system = "http://ec.europa.eu/identifier/eci"
-* identifier[=].value = "{{ patient.eci }}"
+* identifier[=].value  = "{{ patient.eci }}"
 
 {% if patient.match is not empty %}
-* identifier[+].type = $v2-0203#MR
+* identifier[+].type   = $v2-0203#MR
 * identifier[=].system = "http://local.setting.eu/identifier"
-* identifier[=].value = "{{ patient.match }}"
+* identifier[=].value  = "{{ patient.match }}"
 {% endif %}
 {% if patient.localid is not empty %}
-* identifier[+].type = $v2-0203#MR
+* identifier[+].type   = $v2-0203#MR
 * identifier[=].system = "http://local.setting.eu/identifier"
-* identifier[=].value = "{{ patient.localid }}"
+* identifier[=].value  = "{{ patient.localid }}"
 {% endif %}
 
-{# *** HTML td 1: name #}
+{#
+  ── Name (td 1) ──────────────────────────────────────────────────────────────
+  HTML name assembled from parts (given joined + family), not from patient.name.
+  FSH name rules identical to patient-eu-core.
+#}
 * name[+].family = "{{ patient.family }}"
 {% for g in patient.given %}
 * name[=].given[+] = "{{ g }}"
 {% endfor %}
 * name[=].text = "{{ patient.name }}"
+{# HTML: assemble "Given1 Given2 Family" from individual fields #}
 {{ addHTML_td(patient.given|join(" ") ~ " " ~ patient.family) }}
 
-{# *** HTML td 2: gender #}
+{#
+  ── Gender (td 2) ────────────────────────────────────────────────────────────
+#}
 * gender = #{{ patient.gender }}
 {{ addHTML_td(patient.gender) }}
 
-{# *** HTML td 3: birthdate #}
+{#
+  ── Birth date (td 3) ───────────────────────────────────────────────────────
+  Plain cell (addHTML_td), not a pill badge (addHTML_tdnb) — differs from
+  patient-eu-core which uses addHTML_tdnb for the birthdate cell.
+#}
 * birthDate = "{{patient.birthdate }}"
 {{ addHTML_td(patient.birthdate|date('d-M-Y')) }}
 
-* address[+].use = #home
+{#
+  ── Address ─────────────────────────────────────────────────────────────────
+  Same conditional street line pattern as patient-eu-core.
+#}
+* address[+].use  = #home
 * address[=].type = #physical
 {% if patient.street1 is not empty %}
 * address[=].line[+] = "{{ patient.street1 }}"
@@ -66,32 +172,45 @@ Usage: #inline
 * address[=].line[+] = "{{ patient.street3 }}"
 {% endif %}
 * address[=].postalCode = "{{ patient.postcode }}"
-* address[=].city = "{{ patient.city }}"
-* address[=].country = "{{ patient.countryname }}"
-
-* telecom[+].system = #phone
-* telecom[=].value = "{{ patient.phone }}"
+* address[=].city       = "{{ patient.city }}"
+* address[=].country    = "{{ patient.countryname }}"
 
 {#
-  if country is specifed use nationality as extension;
-  use 2-char nameset for that coded in ISO 3166 Part 1 Country Codes
+  ── Telecom ──────────────────────────────────────────────────────────────────
+#}
+* telecom[+].system = #phone
+* telecom[=].value  = "{{ patient.phone }}"
+
+{#
+  ── Nationality extension — ALWAYS EMITTED ──────────────────────────────────
+  Unlike patient-eu-core, there is no conditional guard on patient.countrycode.
+  All EPS patients must have a nationality; the caller must always supply both
+  patient.countrycode and patient.countryname.
+
+  Additional sub-element: valueCodeableConcept.text carries the full country
+  name (not present in patient-eu-core). This provides a human-readable label
+  alongside the ISO 3166-1 machine code.
 #}
 * extension[+].url = "http://hl7.org/fhir/StructureDefinition/patient-nationality"
-* extension[=].extension[+].url = "code" 
-* extension[=].extension[=].valueCodeableConcept = urn:iso:std:iso:3166#{{ patient.countrycode|upper }}
+* extension[=].extension[+].url = "code"
+* extension[=].extension[=].valueCodeableConcept      = urn:iso:std:iso:3166#{{ patient.countrycode|upper }}
 * extension[=].extension[=].valueCodeableConcept.text = "{{ patient.countryname }}"
 
 {{ addHTML_trend() -}}
 
-{# populate .text #}
+{#
+  ── FHIR narrative — body rows only ─────────────────────────────────────────
+  No HEAD bag populated — %%HEAD%% and %%HTML%% sections are both empty
+  of emit calls. The narrative table carries body rows without column headers.
+#}
 * text.status = #generated
-* text.div = """
+* text.div    = """
 <div xmlns="http://www.w3.org/1999/xhtml">
 <table class="hl7__ips">{{ emitHTML() | raw }}</table>
 </div>
 """
 
-%%HEAD%% {# tag required, content below maybe emtpy #}
+%%HEAD%% {# ── Section marker required by the FSH pre-processor — intentionally empty #}
 
-%%HTML%% {# tag required, content below maybe emtpy #}
+%%HTML%% {# ── Section marker required by the FSH pre-processor ─────────────── #}
 {{ emitHTML() | raw }}

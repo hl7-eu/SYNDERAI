@@ -1,11 +1,131 @@
 {#
-  This is the TWIG file for the creation of an FSH instance including the HTML parts.
-  see README.md
-  
-  KH since 2025-09-02
+  ============================================================================
+  TEMPLATE: vitalsigns_fsh.twig
+  ============================================================================
+  PURPOSE
+    Generates a FSH Observation instance conforming to the HL7 vital signs
+    profile. Each invocation produces one vital sign observation, which may
+    carry either:
+      (a) a single scalar measurement (valueQuantity), or
+      (b) a set of component measurements (e.g. systolic + diastolic for
+          blood pressure, expressed as Observation.component[]).
+
+  PROFILE CONFORMANCE
+    InstanceOf: http://hl7.org/fhir/StructureDefinition/vitalsigns
+    Category  : vital-signs (named slice [VSCat], from
+                http://terminology.hl7.org/CodeSystem/observation-category)
+    Status    : always #final for synthetic data
+
+  THREE-COLUMN HTML TABLE
+    Column 1 — Vital sign code display    (always present)
+    Column 2 — Observation date           (always present; formatted d-M-Y)
+    Column 3 — Measurement value(s)       (scalar or composite; "-" if absent)
+
+  MEASUREMENT VALUE LOGIC  (three-branch decision)
+    The template selects the representation for HTML td 3 and the FSH value
+    element through a cascading if/elseif/else:
+
+      Branch A — Scalar (valueQuantity):
+        Condition: `vital.value.scale == "numeric"` OR
+                   `vital.valueQuantity.scale == "numeric"`,
+                   AND the value field is non-empty.
+        Dual-path: both `vital.value.*` and `vital.valueQuantity.*` are
+                   consulted via the null-coalescing operator `??` so that
+                   the caller can supply either path.
+        FSH output: valueQuantity.value, .code, .system (UCUM), .unit
+        HTML output: "{value} {unit}" via addHTML_td
+
+      Branch B — Component (Observation.component[]):
+        Condition: `vital.component` is non-empty.
+        Loop over `vital.component`, emitting one component[+] (or a named
+        slice when `cmp.slice` is set) per entry. Each component carries
+        its own code and valueQuantity.
+        HTML output: composite string built by a second loop over the same
+                     components, joining values with " / " and appending the
+                     last component's unit: e.g. "120 / 80 mmHg".
+
+      Branch C — No value available:
+        HTML output: "-"
+        No FSH rule is emitted.
+
+  NULL-COALESCING OPERATOR (??)
+    The `??` operator returns the left operand when it is defined and non-null,
+    otherwise falls back to the right operand. This allows the template to
+    accept value data under either `vital.value.*` or `vital.valueQuantity.*`
+    without explicit conditional branches for each field:
+
+      {{ vital.value.value ?? vital.valueQuantity.value }}
+
+  |first FILTER
+    `vital.code` is an array of coding objects. `|first` extracts the first
+    element so that a single `{% set c = ... %}` variable can be used for all
+    subsequent code/system/display accesses, avoiding repeated array indexing.
+
+  NAMED COMPONENT SLICES
+    When a component carries a `cmp.slice` value, the template emits a named
+    slice reference rather than the append operator [+]:
+
+      Named:   * component[{{cmp.slice}}].code = ...
+      Indexed: * component[+].code = ...
+
+    Named slices are used when the IG defines specific slice discriminators
+    for component positions (e.g. `component[SystolicBP]` in a BP profile).
+    When `cmp.slice` is empty, [+] is used for generic sequential indexing.
+
+  HEAD SECTION NOTE
+    The %%HEAD%% section is intentionally empty. No `emitHEAD()` call is made
+    there, even though `addHEAD_th()` calls populate the HEAD bag. The HEAD
+    bag is instead flushed inside `text.div` only, giving the inline FHIR
+    narrative a complete table with headers. External consumers reading only
+    the %%HEAD%% section will receive no output for this template.
+
+  CONTEXT VARIABLES
+  ┌──────────────────────────────┬──────────┬──────────────────────────────────────┐
+  │ Variable                     │ Type     │ Description                          │
+  ├──────────────────────────────┼──────────┼──────────────────────────────────────┤
+  │ instanceid                   │ string   │ Unique resource id; appended to       │
+  │                              │          │ "Instance-Observation-" for the FSH  │
+  │                              │          │ instance name.                       │
+  │ patient.instanceid           │ string   │ UUID of the Patient resource.        │
+  │ patient.name                 │ string   │ Full display name for the subject    │
+  │                              │          │ Reference display string.            │
+  │ vital.code                   │ object[] │ Array of coding objects for the      │
+  │                              │          │ observation code. Only the first     │
+  │                              │          │ element is used (via `\|first`).     │
+  │   [0].system                 │ string   │   CodeSystem URI (e.g. LOINC).       │
+  │   [0].code                   │ string   │   Observation concept code.          │
+  │   [0].display                │ string   │   Display text for the vital sign.   │
+  │ vital.date                   │ string   │ ISO 8601 effective date/dateTime.    │
+  │                              │          │ Formatted d-M-Y in HTML.             │
+  │ vital.value  (or)            │ object?  │ Scalar value data (Branch A).        │
+  │ vital.valueQuantity          │ object?  │ Alternative path for scalar value;   │
+  │                              │          │ `??` coalesces both paths.           │
+  │   .scale                     │ string   │   "numeric" triggers Branch A.       │
+  │   .value                     │ number   │   Numeric measurement value.         │
+  │   .code                      │ string   │   UCUM unit code.                    │
+  │   .unit                      │ string   │   Human-readable unit string.        │
+  │ vital.component              │ object[] │ Array of component objects (Branch B)│
+  │   [n].code                   │ object[] │   Array of codings (first used).     │
+  │   [n].slice                  │ string?  │   Optional named slice identifier.   │
+  │   [n].value  (or)            │ object?  │   Component scalar value.            │
+  │   [n].valueQuantity          │ object?  │   Alternative path; `??` coalesces.  │
+  │     .value                   │ number   │     Numeric measurement value.       │
+  │     .code                    │ string   │     UCUM unit code.                  │
+  │     .unit                    │ string   │     Human-readable unit string.      │
+  └──────────────────────────────┴──────────┴──────────────────────────────────────┘
+
+  CODESYSTEMS REFERENCED
+    http://terminology.hl7.org/CodeSystem/observation-category — vital-signs
+    http://unitsofmeasure.org (UCUM) — for all valueQuantity.system rules
+    Observation code system — caller-supplied via vital.code[0].system
+
+  AUTHOR   KH
+  SINCE    2025-09-02
+  ============================================================================
 #}
 
-%%FSH%% {# tag required #}
+%%FSH%% {# ── Section marker required by the FSH pre-processor ─────────────── #}
+
 Instance: {{ setInstance("Instance-Observation-" ~ instanceid) }}
 InstanceOf: http://hl7.org/fhir/StructureDefinition/vitalsigns
 Title: "Vital Signs"
@@ -14,79 +134,138 @@ Usage: #inline
 
 * id = "{{ instanceid }}"
 
-{# addign headers for HTML table #}
+{#
+  ── HEAD bag: three-column table header ────────────────────────────────────
+  Flushed only inside text.div; %%HEAD%% section is empty for this template.
+#}
 {{ addHEAD_tr() }}
 {{ addHEAD_th("Vital Sign") }}
 {{ addHEAD_th("Date") }}
 {{ addHEAD_th("Measurement") }}
 {{ addHEAD_trend() -}}
 
+{#
+  ── Fixed status ────────────────────────────────────────────────────────────
+  All synthetic vital sign observations are final.
+#}
 * status = #final
 
+{#
+  ── Category: named slice [VSCat] ───────────────────────────────────────────
+  The vital signs profile requires the vital-signs category to be expressed
+  using the named slice [VSCat] rather than a generic [0] index. This matches
+  the slice discriminator defined in the HL7 vitalsigns profile.
+#}
 * category[VSCat].coding[0] = http://terminology.hl7.org/CodeSystem/observation-category#vital-signs "Vital Signs"
 
 {{ addHTML_tr() }}
 
-{# *** HTML td 1: code #}
+{#
+  ── Observation code (td 1) ─────────────────────────────────────────────────
+  `vital.code` is an array; |first extracts the first coding object. A local
+  variable `c` is set to avoid repeating `vital.code|first` across the three
+  sub-fields (system, code, display).
+#}
 {% set c = vital.code|first %}
 * code = {{ c.system }}#{{ c.code }} "{{ c.display }}"
 {{ addHTML_td(c.display) }}
 
+{#
+  ── Patient reference ───────────────────────────────────────────────────────
+#}
 * subject = Reference(urn:uuid:{{ patient.instanceid }}) "{{ patient.name }}"
 
-{# *** HTML td 2: date #}
+{#
+  ── Effective date (td 2) ───────────────────────────────────────────────────
+  Formatted d-M-Y (e.g. "14-Mar-1978") in the HTML cell.
+#}
 * effectiveDateTime = "{{ vital.date }}"
 {{ addHTML_td(vital.date|date('d-M-Y')) }}
 
-{# should have: * performer = Reference(urn:uuid:{practitionerrole-uuid}) "{practitioner-name}" #}
+{# performer could be added here when PractitionerRole instances are available:
+   * performer = Reference(urn:uuid:{practitionerrole-uuid}) "{practitioner-name}" #}
 
-{# *** HTML td 3: measurement, either single or components #}
+{#
+  ── Measurement value (td 3) — three branches ──────────────────────────────
+
+  Branch A: scalar valueQuantity
+    Triggered when scale == "numeric" on either vital.value or vital.valueQuantity
+    AND the value field is non-empty. The ?? operator coalesces both paths.
+    All four FHIR Quantity sub-elements are emitted. UCUM is always the system.
+#}
 {% if (vital.value.scale == "numeric" or vital.valueQuantity.scale == "numeric") and (vital.value.value is not empty or vital.valueQuantity.value is not empty) %}
-* valueQuantity.value = {{ vital.value.value ?? vital.valueQuantity.value }}
-* valueQuantity.code = #{{ vital.value.code ?? vital.valueQuantity.code }}
+* valueQuantity.value  = {{ vital.value.value ?? vital.valueQuantity.value }}
+* valueQuantity.code   = #{{ vital.value.code ?? vital.valueQuantity.code }}
 * valueQuantity.system = "http://unitsofmeasure.org"
-* valueQuantity.unit = "{{ vital.value.unit ?? vital.valueQuantity.unit }}"
+* valueQuantity.unit   = "{{ vital.value.unit ?? vital.valueQuantity.unit }}"
 {{ addHTML_td((vital.value.value ?? vital.valueQuantity.value) ~ " " ~ (vital.value.unit ?? vital.valueQuantity.unit)) }}
+
+{#
+  Branch B: component-based value (e.g. blood pressure)
+    Each entry in vital.component produces one component FSH slice.
+    When cmp.slice is set (named discriminator), it is used as the index;
+    otherwise [+]/[=] sequential indexing is used.
+    After all FSH rules are emitted, a second loop assembles the HTML
+    display string "value1 / value2 unit" using Twig's set-in-loop pattern.
+#}
 {% elseif vital.component is not empty %}
 {% for cmp in vital.component %}
 {% set c = cmp.code|first %}
-{# component with a slice? #}
+{# Named slice when available; generic append index otherwise #}
 {% if cmp.slice is not empty %}
 * component[{{cmp.slice}}].code = {{ c.system }}#{{ c.code }} "{{ c.display }}"
 {% else %}
 * component[+].code = {{ c.system }}#{{ c.code }} "{{ c.display }}"
 {% endif %}
-* component[=].valueQuantity.value = {{ cmp.value.value ?? cmp.valueQuantity.value }}
-* component[=].valueQuantity.code = #{{ cmp.value.code ?? cmp.valueQuantity.code }}
+* component[=].valueQuantity.value  = {{ cmp.value.value ?? cmp.valueQuantity.value }}
+* component[=].valueQuantity.code   = #{{ cmp.value.code ?? cmp.valueQuantity.code }}
 * component[=].valueQuantity.system = "http://unitsofmeasure.org"
-* component[=].valueQuantity.unit = "{{ cmp.value.unit ?? cmp.valueQuantity.unit }}"
-{% endfor %} {# c in vital.component #}
-{# build the component string as x/y unit #}
+* component[=].valueQuantity.unit   = "{{ cmp.value.unit ?? cmp.valueQuantity.unit }}"
+{% endfor %} {# end: cmp in vital.component — FSH rules #}
+
+{#
+  Build the composite HTML display string: "120 / 80 mmHg"
+  Two accumulators are maintained across the loop:
+    cvalue — concatenates numeric values separated by " / "
+    cunit  — captures the last component's unit (shared across components)
+  loop.last prevents a trailing " / " after the final value.
+#}
 {% set cvalue = "" %}
-{% set cunit = "" %}
+{% set cunit  = "" %}
 {% for cmp in vital.component %}
 {% set cvalue = cvalue ~ (cmp.value.value ?? cmp.valueQuantity.value) %}
 {% if not loop.last %}
 {% set cvalue = cvalue ~ " / " %}
 {% endif %}
 {% set cunit = cmp.value.unit %}
-{% endfor %}
+{% endfor %} {# end: cmp in vital.component — HTML string build #}
 {{ addHTML_td(cvalue ~ " " ~ cunit) }}
+
+{#
+  Branch C: no value available
+    No FSH rule is emitted. The HTML cell shows "-" as a placeholder.
+#}
 {% else %}
 {{ addHTML_td("-") }}
 {% endif %}
 
 {{ addHTML_trend() -}}
 
-{# populate .text #}
+{#
+  ── FHIR narrative ───────────────────────────────────────────────────────────
+  Both HEAD and HTML bags are flushed inside text.div so the inline narrative
+  includes the column header row as well as the data row. The %%HEAD%% section
+  below is intentionally empty — see HEAD Section Note in the file header.
+#}
 * text.status = #generated
-* text.div = """
+* text.div    = """
 <div xmlns="http://www.w3.org/1999/xhtml">
 <table class="hl7__ips">{{ emitHEAD() | raw }}{{ emitHTML() | raw }}</table>
 </div>
 """
 
-%%HEAD%% {# tag required, content below maybe emtpy #}
+%%HEAD%% {# ── Section marker required by the FSH pre-processor ─────────────── #}
+{# Intentionally empty: HEAD bag is flushed only inside text.div above. #}
 
-%%HTML%% {# tag required, content below maybe emtpy #}
+%%HTML%% {# ── Section marker required by the FSH pre-processor ─────────────── #}
 {{ emitHTML() | raw }}

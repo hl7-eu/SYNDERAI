@@ -1,34 +1,156 @@
 {#
-  This is the TWIG file for the creation of an FSH instance including the HTML parts.
-  see README.md
-  
-  KH since 2025-10-21
+  ============================================================================
+  TEMPLATE: medicationstatement-eu-core_fsh.twig
+  ============================================================================
+  PURPOSE
+    Generates FSH instances for a patient's medication record conforming to
+    the EU Core profiles. The template operates in one of two modes selected
+    by a top-level branch on whether `medication` is empty:
+
+      MODE A — No known medications:
+        A single MedicationStatement instance is emitted carrying the SNOMED
+        "No known medications" code. One HTML cell is produced. No Medication
+        instance is generated.
+
+      MODE B — Medication present:
+        TWO FSH instances are emitted in sequence:
+          1. Medication (MedicationEuCore)      — the drug itself
+          2. MedicationStatement (MedicationStatementEuCore) — the statement
+             linking patient, drug, dosage, and reason
+
+  PROFILE CONFORMANCE
+    Mode A  MedicationStatement : MedicationStatementEuCore
+    Mode B  Medication          : MedicationEuCore
+            MedicationStatement : MedicationStatementEuCore
+
+  TOP-LEVEL BRANCH PATTERN
+    The entire %%FSH%% body is wrapped in a single top-level `{% if medication
+    is empty %} … {% else %} … {% endif %}`. This is the most prominent use
+    of the "template-level conditional" pattern in the project — the number
+    and type of instances emitted depends entirely on whether the caller
+    supplies medication data.
+
+  MODE A — NO KNOWN MEDICATIONS
+    - Single MedicationStatement registered via setInstance().
+    - medicationCodeableConcept = $sct#787481004 "No known medications"
+    - effectivePeriod carries a data-absent-reason extension (no dates known).
+    - One HTML cell "No known medications" (no HEAD, no table structure).
+    - CSS class: hl7__ips first25 (narrow first column).
+
+  MODE B — MEDICATION INSTANCE (first)
+    Medication coding — mutually exclusive priority:
+      1. SNOMED CT (`medication.code.code`) — used when present.
+      2. RxNorm (`medication.rxnorm`) — used only when SNOMED is absent.
+    `code.text[=]` — when a preferredTerm exists, it is set on the code using
+      the [=] operator. Note: `[=]` on a non-repeating element like `.text`
+      is unconventional; SUSHI resolves this as addressing the last-opened
+      coding context. Callers should verify SUSHI compilation output.
+    `formdisplay` local variable — captures the manufactured dose form display
+      text (prefixed with ", ") for reuse in both the Medication text.div and
+      MedicationStatement HTML td 3. Empty string when no form is present.
+    `activeIngredient` — ingredient[0] with isActive = true; conditional.
+
+  MODE B — MEDICATION STATEMENT (second)
+    Five-column HTML table: Medication | Since | Form | Dosage | Reason
+
+    medicationReference — links to the Medication instance above by UUID.
+
+    TD 1 — Medication name with optional "as needed" suffix:
+      `medication.asNeeded` may be:
+        - "true" (string) → appends " - as needed" to the display name and
+          emits `dosage[+].asNeededBoolean = true`
+        - a CodeableConcept object (`.display`, `.system`, `.code`) → appends
+          " - <display>" and emits `dosage[+].asNeededCodeableConcept`
+
+    TD 4 — AI-generated dosage injection:
+      `medication.dosagefsh` is a pre-formatted FSH dosage string produced by
+      an AI system and injected using `| raw`. The `contdose` variable manages
+      the slice operator for any subsequent dosage rules:
+        - Initialised as "+" (new slice).
+        - Set to "=" after dosagefsh is emitted (continue the same slice).
+      This ensures `asNeeded` rules are appended to the same dosage slice
+      rather than opening a new one.
+      `medication.dosagedisplay` provides the human-readable dosage string for
+      HTML td 4.
+
+    TD 5 — Reason: `medication.reason.code` conditional; SCT coding.
+
+    narrative: emitHEAD() + emitHTML() both flushed inside text.div.
+    CSS class: hl7__ips first25.
+
+  CONTEXT VARIABLES
+  ┌────────────────────────────────┬──────────┬────────────────────────────────────────────────┐
+  │ Variable                       │ Type     │ Description                                    │
+  ├────────────────────────────────┼──────────┼────────────────────────────────────────────────┤
+  │ instanceid                     │ string   │ Resource id for the MedicationStatement.       │
+  │ druginstanceid                 │ string   │ Resource id for the Medication (Mode B only).  │
+  │ patient.instanceid             │ string   │ UUID of the Patient resource.                  │
+  │ patient.name                   │ string   │ Full display name.                             │
+  │ medication                     │ object?  │ Empty → Mode A. Non-empty → Mode B.           │
+  │   .code.code                   │ string?  │   SNOMED CT code (preferred over RxNorm).      │
+  │   .code.display                │ string   │   SNOMED display text.                         │
+  │   .code.preferredTerm          │ string?  │   Preferred display override for code.text.    │
+  │   .rxnorm.code                 │ string?  │   RxNorm code (used only when SNOMED absent).  │
+  │   .rxnorm.display              │ string   │   RxNorm display text.                         │
+  │   .start                       │ string?  │   ISO 8601 effectivePeriod start date.         │
+  │   .asNeeded                    │ mixed?   │   "true" (string) or CodeableConcept object.   │
+  │     .display                   │ string   │     Display when asNeeded is CodeableConcept.  │
+  │     .system                    │ string   │     System URI for CodeableConcept.            │
+  │     .code                      │ string   │     Code for CodeableConcept.                  │
+  │   .dosagefsh                   │ string?  │   Pre-formatted FSH dosage string (AI-gen).    │
+  │                                │          │   Injected with \| raw.                        │
+  │   .dosagedisplay               │ string?  │   Human-readable dosage for HTML td 4.         │
+  │   .reason.code                 │ string?  │   SNOMED code for the clinical reason.         │
+  │   .reason.display              │ string   │   Reason display text.                         │
+  │ manufacturedDoseForm           │ object?  │   Dose form for Medication.form.coding.        │
+  │   .code                        │ string   │   SNOMED CT code.                              │
+  │   .display                     │ string   │   Display text (also stored in formdisplay).   │
+  │ activeIngredient               │ object?  │   Active ingredient for ingredient[0].         │
+  │   .code                        │ string   │   SNOMED CT code.                              │
+  │   .display                     │ string   │   Ingredient display text.                     │
+  └────────────────────────────────┴──────────┴────────────────────────────────────────────────┘
+
+  CODESYSTEMS REFERENCED
+    $sct    — SNOMED CT; medication code, dose form, ingredient, reason,
+              "No known medications" (787481004)
+    $rxnorm — RxNorm; fallback medication code when SNOMED absent
+
+  AUTHOR   KH
+  SINCE    2025-10-21
+  ============================================================================
 #}
 
-%%FSH%% {# tag required #}
+%%FSH%% {# ── Section marker required by the FSH pre-processor ─────────────── #}
 
 {% if medication is empty %}
 
-{# no known Medication data, emit it and we are done #}
+{#
+  ══════════════════════════════════════════════════════════════════════════════
+  MODE A — NO KNOWN MEDICATIONS
+  Single MedicationStatement with the SNOMED "no known medications" sentinel.
+  ══════════════════════════════════════════════════════════════════════════════
+#}
 
 Instance: {{ setInstance("Instance-MedicationStatement-" ~ instanceid) }}
 InstanceOf: MedicationStatementEuCore
 Title: "MedicationStatement"
 Description: "MedicationStatement"
 Usage: #inline
-* id = "{{ instanceid }}"
+* id     = "{{ instanceid }}"
 * status = #active
+{# Fixed SNOMED code for "No known medications (situation)" #}
 * medicationCodeableConcept = $sct#787481004 "No known medications (situation)"
 * subject = Reference(urn:uuid:{{ patient.instanceid }}) "{{ patient.name }}"
-* effectivePeriod.extension.url = "http://hl7.org/fhir/StructureDefinition/data-absent-reason"
+{# No dates available — use data-absent-reason extension on effectivePeriod #}
+* effectivePeriod.extension.url       = "http://hl7.org/fhir/StructureDefinition/data-absent-reason"
 * effectivePeriod.extension.valueCode = #unknown
+{# Single HTML cell — no table structure needed for a sentinel value #}
 {{ addHTML_tr() }}
 {{ addHTML_td("No known medications") }}
 {{ addHTML_trend() -}}
-
-{# populate .text #}
+{# Narrative — body row only, no HEAD. hl7__ips first25 narrows the first column. #}
 * text.status = #generated
-* text.div = """
+* text.div    = """
 <div xmlns="http://www.w3.org/1999/xhtml">
 <table class="hl7__ips first25">{{ emitHTML() | raw }}</table>
 </div>
@@ -36,8 +158,19 @@ Usage: #inline
 
 {% else %}
 
-{# Medication first #}
+{#
+  ══════════════════════════════════════════════════════════════════════════════
+  MODE B — MEDICATION PRESENT
+  Instance 1: Medication (MedicationEuCore)
+  Instance 2: MedicationStatement (MedicationStatementEuCore)
+  ══════════════════════════════════════════════════════════════════════════════
+#}
 
+{#
+  ── Instance 1: Medication ───────────────────────────────────────────────────
+  The drug product itself. Registered separately so the MedicationStatement
+  can reference it by UUID.
+#}
 Instance: {{ setInstance("Instance-Medication-" ~ druginstanceid) }}
 InstanceOf: MedicationEuCore
 Title: "Medication"
@@ -46,49 +179,62 @@ Usage: #inline
 
 * id = "{{ druginstanceid }}"
 
-{# add snomed #}
+{#
+  Medication coding — mutually exclusive priority:
+    SNOMED CT (medication.code.code) is preferred.
+    RxNorm is emitted only when SNOMED is absent.
+  code.text[=] — sets the preferred term as the text representation of the
+    coding context opened by coding[+]. Note: [=] on a non-repeating element
+    is unconventional; verify SUSHI output if issues arise.
+#}
 {% if medication.code.code is not empty %}
-* code.coding[+] = $sct#{{ medication.code.code }} "{{ medication.code.display }}"
+* code.coding[+]  = $sct#{{ medication.code.code }} "{{ medication.code.display }}"
 {% if medication.code.preferredTerm is not empty %}
-{# use preferred term, if present emit as text #}
-* code.text[=] = "{{ medication.code.preferredTerm }}"
+* code.text[=]    = "{{ medication.code.preferredTerm }}"
 {% endif %}
 {% else %}
-{# rxnorm only if no snomed #}
+{# RxNorm fallback — used only when no SNOMED code is available #}
 {% if medication.rxnorm.code is not empty %}
 * code.coding[+] = $rxnorm#{{ medication.rxnorm.code }} "{{ medication.rxnorm.display }}"
 {% endif %}
 {% endif %}
 
-{# form #}
+{#
+  formdisplay — local variable capturing the dose form display string.
+  Initialised empty; set to ", <display>" when a dose form is present.
+  Reused in text.div (Medication narrative) and HTML td 3 (MedicationStatement).
+#}
 {% set formdisplay = "" %}
 {% if manufacturedDoseForm.code is not empty %}
 * form.coding = $sct#{{ manufacturedDoseForm.code }} "{{ manufacturedDoseForm.display }}"
 {% set formdisplay = ", " ~ manufacturedDoseForm.display %}
 {% endif %}
 
-{# activeIngredient #}
+{# Active ingredient — single ingredient[0] with isActive flag #}
 {% if activeIngredient.code is not empty %}
 * ingredient[0].itemCodeableConcept = $sct#{{ activeIngredient.code }} "{{ activeIngredient.display }}"
-* ingredient[0].isActive = true
+* ingredient[0].isActive            = true
 {% endif %}
 
-{# populate .text #}
+{# Minimal narrative: preferred term (or display) plus dose form #}
 * text.status = #generated
-* text.div = """
+* text.div    = """
 <div xmlns="http://www.w3.org/1999/xhtml">
 {{ medication.code.preferredTerm ?? medication.code.display }} {{ formdisplay }}
 </div>
 """
 
-{# finally MedicationStatement #}
+{#
+  ── Instance 2: MedicationStatement ─────────────────────────────────────────
+  Links the patient, the Medication above, the dosage, and the clinical reason.
+  Five-column HTML table: Medication | Since | Form | Dosage | Reason
+#}
 Instance: {{ setInstance("Instance-MedicationStatement-" ~ instanceid) }}
 InstanceOf: MedicationStatementEuCore
 Title: "MedicationStatement"
 Description: "MedicationStatement"
 Usage: #inline
 
-{# addign headers for HTML table #}
 {{ addHEAD_tr() }}
 {{ addHEAD_th("Medication") }}
 {{ addHEAD_th("Since") }}
@@ -97,17 +243,23 @@ Usage: #inline
 {{ addHEAD_th("Reason") }}
 {{ addHEAD_trend() -}}
 
-* id = "{{ instanceid }}"
-
+* id     = "{{ instanceid }}"
 * status = #active
 
 {{ addHTML_tr() }}
 
+{#
+  ── medicationReference + TD 1: medication name with optional "as needed" ───
+  The Reference display string uses the preferred term (or display fallback).
+
+  `medication.asNeeded` handling:
+    Case 1 — string "true": appends " - as needed" to the HTML display name.
+    Case 2 — CodeableConcept object: appends " - <display>" to the HTML name.
+  The `med` local variable accumulates the full display string for HTML td 1.
+#}
 * medicationReference = Reference(urn:uuid:{{ druginstanceid }}) "{{ medication.code.preferredTerm ?? medication.code.display }}"
-{# HTML td 1: add human text for medication name + optional "as needed" #}
 {% set med = medication.code.preferredTerm ?? medication.code.display %}
 {% if medication.asNeeded is not empty %}
-{# either "true" or a snomed code $sct#... #}
 {% if medication.asNeeded == "true" %}
 {% set med = med ~ " - as needed" %}
 {% endif %}
@@ -119,39 +271,55 @@ Usage: #inline
 
 * subject = Reference(urn:uuid:{{ patient.instanceid }}) "{{ patient.name }}"
 
+{#
+  ── TD 2: effective period start ────────────────────────────────────────────
+  Start date of the medication course; shows "-" if unknown.
+#}
 {% if medication.start is not empty %}
 * effectivePeriod.start = "{{ medication.start }}"
-{# HTML td 2: add human text for the start date #}
 {{ addHTML_tdnb(medication.start) }}
 {% else %}
 {{ addHTML_td("-") }}
 {% endif %}
 
+{#
+  ── TD 3: dose form ──────────────────────────────────────────────────────────
+  Populated from `formdisplay` set during the Medication instance above.
+  Shows "-" if no dose form was specified.
+#}
 {% if formdisplay is not empty %}
-{# HTML td 3: add human text for the form, determined above #}
 {{ addHTML_td(formdisplay) }}
 {% else %}
 {{ addHTML_td("-") }}
 {% endif %}
 
+{#
+  ── TD 4: AI-generated dosage + asNeeded FSH rules ─────────────────────────
+  `contdose` controls the dosage slice operator:
+    "+" → open a new dosage slice (initial state)
+    "=" → continue the slice opened by dosagefsh (set after injection)
+
+  `medication.dosagefsh` is raw FSH produced by an AI system — injected
+  directly with | raw. After injection, contdose switches to "=" so that
+  any subsequent asNeeded rule addresses the same slice.
+
+  `medication.dosagedisplay` provides the human-readable HTML cell value.
+#}
 {% set contdose = "+" %}
-{# add AI dosage if any #}
 {% if medication.dosagefsh is not empty %}
-{# ??? if (substr($dl, 0, 1) === '*') addFSH ($FSH, $dl); #}
 {{ medication.dosagefsh | raw }}
 {% set contdose = "=" %}
-{# HTML td 2: add dosage, returned already as fsh by AI #}
-{% endif %} {# asNeeded not empty #}
+{% endif %} {# dosagefsh not empty #}
 
+{# asNeeded FSH rules — emitted on the same dosage slice as dosagefsh #}
 {% if medication.asNeeded is not empty %}
-{# either "true" or a snomed code $sct#... #}
 {% if medication.asNeeded == "true" %}
 * dosage[{{ contdose }}].asNeededBoolean = true
 {% endif %}
 {% if medication.asNeeded.display is not empty %}
 * dosage[{{ contdose }}].asNeededCodeableConcept = {{ medication.asNeeded.system }}#{{ medication.asNeeded.code }} "{{ medication.asNeeded.display }}"
-{% endif %} 
-{% endif %}  {# medication.asNeeded not empty #}
+{% endif %}
+{% endif %} {# medication.asNeeded not empty #}
 
 {% if medication.dosagedisplay is not empty %}
 {{ addHTML_td(medication.dosagedisplay) }}
@@ -159,9 +327,12 @@ Usage: #inline
 {{ addHTML_td("-") }}
 {% endif %} {# dosagedisplay not empty #}
 
+{#
+  ── TD 5: reason ────────────────────────────────────────────────────────────
+  Clinical reason for the medication; SNOMED CT coding on reasonCode[0].
+#}
 {% if medication.reason.code is not empty %}
 * reasonCode[0].coding = $sct#{{ medication.reason.code }} "{{ medication.reason.display }}"
-{# HTML td 5: add human text for the reason #}
 {{ addHTML_td(medication.reason.display) }}
 {% else %}
 {{ addHTML_td("-") }}
@@ -169,18 +340,22 @@ Usage: #inline
 
 {{ addHTML_trend() -}}
 
-{# populate .text #}
+{#
+  ── FHIR narrative ───────────────────────────────────────────────────────────
+  Both HEAD and HTML bags flushed — full headed table in the narrative.
+  CSS class: hl7__ips first25 (first column constrained to ~25% width).
+#}
 * text.status = #generated
-* text.div = """
+* text.div    = """
 <div xmlns="http://www.w3.org/1999/xhtml">
 <table class="hl7__ips first25">{{ emitHEAD() | raw }} {{ emitHTML() | raw }}</table>
 </div>
 """
 
-{% endif %}
+{% endif %} {# medication is empty / not empty #}
 
-%%HEAD%% {# tag required, content below maybe emtpy #}
+%%HEAD%% {# ── Section marker required by the FSH pre-processor ─────────────── #}
 {{ emitHEAD() | raw }}
 
-%%HTML%% {# tag required, content below maybe emtpy #}
+%%HTML%% {# ── Section marker required by the FSH pre-processor ─────────────── #}
 {{ emitHTML() | raw }}

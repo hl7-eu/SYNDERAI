@@ -1,31 +1,138 @@
 {#
-  This is the TWIG file for the creation of an FSH instance including the HTML parts.
-  see README.md
+  ============================================================================
+  TEMPLATE: provider-as-requester-eu-lab_fsh.twig
+  ============================================================================
+  PURPOSE
+    Generates TWO active FSH instances that model the requesting provider for
+    a EU laboratory order:
 
-  KH since 2025-09-07
+      1. PractitionerRole  — the requester's role, linked to their organisation.
+      2. Organization      — the organisation on behalf of which the request
+                             is made.
+
+    A third instance (Practitioner) is defined in the template source but is
+    **commented out** and produces no output. See "Commented-out Practitioner"
+    section below.
+
+  PROFILE CONFORMANCE
+    PractitionerRole : PractitionerRoleEu   (EU lab profile variant; not EuCore)
+    Organization     : OrganizationEu       (EU lab profile variant; not EuCore)
+
+  CONTEXT — EU Lab vs EPS
+    This template targets the EU Laboratory Report context and therefore uses
+    the `PractitionerRoleEu` / `OrganizationEu` profiles rather than the
+    `*EuCore` profiles used by provider-as-primarycarephysician-eps_fsh.twig.
+    The requester is the clinician who ordered the lab tests, not the physician
+    responsible for the patient's overall care.
+
+  setInstance() USE
+    Only the PractitionerRole instance is registered via `setInstance()`:
+      → "Instance-PractitionerRole-<requester.instancerole>"
+    The Organization instance uses direct `{{ }}` interpolation and is NOT
+    registered in the `twigit()` return array.
+
+  ⚠  ADDRESS VARIABLE MISMATCH
+    The Organisation's address sub-elements are gated on `provider.*` variables
+    rather than `requester.*` variables:
+      {% if provider.address is not empty %}  ← uses `provider`, not `requester`
+      {% if provider.city    is not empty %}
+      …
+    This appears to be a copy-paste carry-over from
+    provider-as-primarycarephysician-eps_fsh.twig. If the `provider` context
+    object is populated alongside `requester` in the calling PHP code this will
+    work, but may produce unexpected results or empty address blocks if only
+    `requester.*` is supplied. This should be reviewed and potentially changed
+    to `requester.address`, `requester.city`, etc. if a separate address is
+    needed for the requesting organisation.
+
+  COMMENTED-OUT PRACTITIONER BLOCK
+    A Practitioner instance block is present in the source but fully suppressed
+    by wrapping it in Twig block comments (`{ # … # }`). The block is split across
+    two separate comment segments due to the presence of an inner `{ # … # }` tag
+    (Twig comments cannot be nested — the inner tag terminates the first outer
+    comment, so a second outer comment is opened immediately to continue the
+    suppression through to the closing `# }`):
+
+      Segment 1: {# } … { # populate .text # }   ← closed by inner tag's # }
+      Segment 2: {# } … # }                      ← closes remainder of block
+
+    The net effect is that the entire Practitioner block produces no output.
+    The commented-out block references `provider.*` variables (not `requester.*`)
+    and would need variable-name alignment before activation.
+    To reinstate the Practitioner instance, remove the outer comment delimiters
+    and verify all variable references.
+
+  NO HTML OUTPUT
+    Both %%HEAD%% and %%HTML%% sections are intentionally left empty.
+    Each active FSH instance carries only a minimal plain-text `text.div`.
+
+  ORGANISATION IDENTIFIER
+    The Organisation identifier is caller-supplied (`requester.orgidentifier`)
+    under the HL7 Europe OID namespace (`HL7EUROPEEXAMPLESOID`). No UUID is
+    generated for this identifier — it is a stable business id.
+
+  CONTEXT VARIABLES
+  ┌──────────────────────────────────┬──────────┬──────────────────────────────────────────┐
+  │ Variable                         │ Type     │ Description                              │
+  ├──────────────────────────────────┼──────────┼──────────────────────────────────────────┤
+  │ requester.instancerole           │ string   │ UUID / id for the PractitionerRole.      │
+  │                                  │          │ Registered via setInstance().            │
+  │ requester.instanceorg            │ string   │ UUID / id for the Organization.          │
+  │ requester.orgidentifier          │ string   │ Business identifier value for the        │
+  │                                  │          │ requesting Organisation (under            │
+  │                                  │          │ HL7EUROPEEXAMPLESOID).                   │
+  │ requester.orgname                │ string   │ Display name of the requesting           │
+  │                                  │          │ organisation.                            │
+  │ provider.address                 │ string?  │ Optional address line — note: address    │
+  │                                  │          │ fields use `provider.*` not `requester.*`│
+  │                                  │          │ (see Address Variable Mismatch above).   │
+  │ provider.city                    │ string?  │ Optional city name (same note).          │
+  │ provider.postcode                │ string?  │ Optional postal code (same note).        │
+  │ provider.country                 │ string?  │ Optional country (same note).            │
+  └──────────────────────────────────┴──────────┴──────────────────────────────────────────┘
+
+  GLOBAL VARIABLES USED
+    HL7EUROPEEXAMPLESOID — OID root for the Organisation identifier system URI.
+
+  AUTHOR   KH
+  SINCE    2025-09-07
+  ============================================================================
 #}
 
-%%FSH%% {# tag required #}
+%%FSH%% {# ── Section marker required by the FSH pre-processor ─────────────── #}
 
-{# emit Practitioner Role #}
-{# ---------------------- #}
+{#
+  ── Instance 1: PractitionerRole ────────────────────────────────────────────
+  The requester's role, linked to their organisation. No Practitioner reference
+  is included (the Practitioner instance is commented out; see file header).
+  Registered via setInstance() — the only tracked instance in this template.
+#}
 Instance: {{ setInstance("Instance-PractitionerRole-" ~ requester.instancerole) }}
 InstanceOf: PractitionerRoleEu
 Title: "Practitioner Role (EPS) Requester"
 Description: "Practitioner Role Requester"
 Usage: #inline
-* id = "{{ requester.instancerole }}"
+* id           = "{{ requester.instancerole }}"
 * organization = Reference(urn:uuid:{{ requester.instanceorg }})
-{# populate .text #}
+{# Minimal narrative — identifies the role by its id #}
 * text.status = #generated
-* text.div = """
+* text.div    = """
 <div xmlns="http://www.w3.org/1999/xhtml">
 Provider Role Id: {{ requester.instancerole }}
 </div>
 """
 
-{# emit Organization #}
-{# ----------------- #}
+{#
+  ── Instance 2: Organization ─────────────────────────────────────────────────
+  The requesting organisation — the practice or department that placed the lab
+  order. Identified by a caller-supplied business identifier (not a generated
+  UUID) under the HL7 Europe OID namespace.
+  Note: Instance id interpolated directly — NOT registered via setInstance().
+
+  ⚠ Address fields use `provider.*` variables — see "Address Variable Mismatch"
+    in the file header. Verify the calling context populates `provider.*` as
+    expected, or update to `requester.*` if separate address data is required.
+#}
 Instance: Instance-Organization-{{ requester.instanceorg }}
 InstanceOf: OrganizationEu
 Title: "Organization Requester"
@@ -33,12 +140,14 @@ Description: "Organization Requester"
 Usage: #inline
 * id = "{{ requester.instanceorg }}"
 
-* identifier.system = "urn:oid:{{ HL7EUROPEEXAMPLESOID }}"
-* identifier.value = "{{ requester.orgidentifier }}"
+{# Business identifier under the HL7 Europe OID namespace #}
+* identifier.system           = "urn:oid:{{ HL7EUROPEEXAMPLESOID }}"
+* identifier.value            = "{{ requester.orgidentifier }}"
 * identifier.assigner.display = "HL7 Europe"
 
 * name = "{{ requester.orgname }}"
 
+{# ⚠ Address gated on provider.* — see Address Variable Mismatch note #}
 {% if provider.address is not empty %}
 * address.line = "{{ provider.address }}"
 {% endif %}
@@ -52,18 +161,19 @@ Usage: #inline
 * address.country = "{{ provider.country }}"
 {% endif %}
 
-{# populate .text #}
+{# Minimal narrative — shows the requesting organisation name #}
 * text.status = #generated
-* text.div = """
+* text.div    = """
 <div xmlns="http://www.w3.org/1999/xhtml">
 Provider Organization: {{ requester.orgname }}
 </div>
 """
 
-{# emit Practitioner #}
-{# ----------------- #}
-{#}
-Instance: Instance-Practitioner
+{#
+  ── Instance 3: Practitioner (COMMENTED OUT) ────────────────────────────────
+  The block generates a PractitionerEu instance for the requesting physician.
+#}
+Instance: {{ setInstance("Instance-Practitioner-" ~ provider.instanceprovider) }}
 InstanceOf: PractitionerEu
 Title: "Practitioner Requester"
 Description: "Practitioner Requester"
@@ -73,15 +183,16 @@ Usage: #inline
 * name.given[+] ="{{ provider.providernamegiven }}"
 * name.family = "{{ provider.providernamefamily }}"
 {# populate .text #}
-{#}
+
 * text.status = #generated
-* text.div ="""
-<div xmlns="http://www.w3.org/1999/xhtml"
+* text.div =""""
+<div xmlns="http://www.w3.org/1999/xhtml">
 <table class="hl7__ips">{{ provider.providernameprefix ~ " " ~ provider.providernamegiven ~ " " ~ provider.providernamefamily }}</table>
 </div>
 """
-#}
 
-%%HEAD%% {# tag required, content below maybe emtpy #}
+%%HEAD%% {# ── Section marker required by the FSH pre-processor ─────────────── #}
+{# No HEAD output — this template produces no HTML table. #}
 
-%%HTML%% {# tag required, content below maybe emtpy #}
+%%HTML%% {# ── Section marker required by the FSH pre-processor ─────────────── #}
+{# No HTML output — this template produces no HTML table. #}

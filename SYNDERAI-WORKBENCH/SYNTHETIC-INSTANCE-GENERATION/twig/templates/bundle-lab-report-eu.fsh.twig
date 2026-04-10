@@ -1,11 +1,130 @@
 {#
-  This is the TWIG file for the creation of an FSH instance including the HTML parts.
-  see README.md
+  ============================================================================
+  TEMPLATE: bundle-lab-report-eu_fsh.twig
+  ============================================================================
+  PURPOSE
+    Generates the top-level FSH Bundle instance for a complete HL7 Europe
+    Laboratory Report (LAB) document. Unlike the EPS and HDR Bundle templates
+    which drive dynamic entries from a `sections` dict, this template uses an
+    explicit fixed structure with dedicated loops for specimens and observations,
+    reflecting the fixed schema of a laboratory report.
 
-  KH since 2025-09-14
+  PROFILE CONFORMANCE
+    InstanceOf: BundleLabReportEu
+    Fixed elements:
+      type = #document
+
+  USAGE: #example — NOT #inline
+    Same rationale as all Bundle templates. See bundle-eu-eps_fsh.twig.
+
+  KEY DIFFERENCES FROM EPS AND HDR BUNDLES
+    See the comparison table in bundle-eu-eps_fsh.twig. Specific to this template:
+
+    1. ADDITIONAL FIXED ENTRIES: diagnosticReport AND serviceRequest
+       The lab Bundle mandates two resources not present in EPS or HDR:
+         entry[diagnosticReport] — the DiagnosticReport aggregating results
+         entry[serviceRequest]   — the lab order that triggered the report
+       Both use single named slices (no [+]/[=]) — exactly one per document.
+       Note: slice names use camelCase capitalisation matching FHIR R4 resource
+       type names: `diagnosticReport`, `serviceRequest`, `practitionerRole`.
+       EPS and HDR use all-lowercase: `practitionerrole`, `organization`.
+
+    2. NO SECTIONS DICT LOOP
+       The EPS and HDR templates drive dynamic entries from the `sections`
+       associative dict. The Lab Bundle has a fixed structure — no sections
+       loop. Instead, dedicated loops handle the variable-length resource types:
+         {% for s in specimenids %}  → entry[specimen][+]
+         {% for r in results %}      → entry[observation][+]
+
+    3. INSTANCE NAME ASSEMBLY BY TEMPLATE (not entry.instance)
+       EPS and HDR rely on `entry.instance` (a pre-built FSH instance name
+       provided by the caller) for `.resource` values in the sections loop.
+       The Lab Bundle assembles all instance names directly in the template:
+         Instance-Specimen-{{ s }}           (from specimenids UUID string)
+         Instance-Observation-{{ r.instanceid }} (from results object)
+       This means the naming convention is enforced by this template, not the
+       caller — the caller must ensure upstream templates use matching names.
+
+    4. REQUESTER VARIABLES — FLAT NAMING (not nested objects)
+       EPS and HDR use nested object notation for provider resources:
+         provider.instancerole, hospital.instancerole
+       The Lab Bundle uses flat variable names for the requester:
+         requesterrole  — UUID of the requester PractitionerRole
+         requesterorg   — UUID of the requester Organisation
+       These correspond to the `requester.*` variables in servicerequest- and
+       provider-as-requester-eu-lab_fsh.twig but are passed as plain strings
+       rather than nested object properties.
+
+    5. FAKE ADD ONS ENTRIES — LABORATORY PROVIDER
+       Two additional entries for the laboratory provider are marked as
+       "FAKE ADD ONS" (mirroring the stub status of provider-as-laboratory_fsh.twig):
+         entry[practitionerRole][+] — laboratory.instancerole
+         entry[practitioner][+]     — laboratory.instancepractitioner
+       These reference the placeholder resources from the laboratory provider
+       template and should be replaced with real data when available.
+
+  NAMED ENTRY SLICE CAPITALISATION
+    The Lab Bundle profile uses camelCase slice names that match FHIR R4
+    resource type names:
+      diagnosticReport, serviceRequest, practitionerRole
+    This differs from the EPS Bundle which uses lowercase:
+      practitionerrole, organization
+    The capitalisation must exactly match the profile's slice discriminator
+    definitions — verify against the BundleLabReportEu StructureDefinition
+    if SUSHI validation errors arise.
+
+  SPECIMEN AND OBSERVATION LOOPS
+    specimenids — array of UUID strings (same as in servicerequest and
+                  diagnostic-report templates). Template builds the instance
+                  name as `Instance-Specimen-{{ s }}`.
+    results     — array of objects with `.instanceid`. Template builds the
+                  instance name as `Instance-Observation-{{ r.instanceid }}`.
+    Both loops produce named slices with [+]/[=] for the fullUrl/resource pair.
+
+  PROVENANCE TAIL
+    Identical to EPS and HDR: Device then Provenance as the final two
+    unnamed [+]/[=] entries.
+
+  CONTEXT VARIABLES
+  ┌──────────────────────────────────────┬──────────┬──────────────────────────────────────────────┐
+  │ Variable                             │ Type     │ Description                                  │
+  ├──────────────────────────────────────┼──────────┼──────────────────────────────────────────────┤
+  │ bundle.instanceid                    │ string   │ UUID for the Bundle resource.                │
+  │ bundle.identifier                    │ string   │ Business identifier value.                   │
+  │ composition.instanceid               │ string   │ UUID of the Composition resource.            │
+  │ composition.date                     │ string   │ FHIR dateTime string — no filter applied;    │
+  │                                      │          │ must be pre-formatted by the caller.         │
+  │ patient.instanceid                   │ string   │ UUID of the Patient resource.                │
+  │ patient.name                         │ string   │ Full display name (for patientdisplay only). │
+  │ patient.age                          │ string   │ Pre-computed age string (for Description).   │
+  │ diagnosticreport.instanceid          │ string   │ UUID of the DiagnosticReport resource.       │
+  │ servicerequest.instanceid            │ string   │ UUID of the ServiceRequest resource.         │
+  │ requesterrole                        │ string   │ UUID of the requester PractitionerRole.      │
+  │                                      │          │ Flat variable — not nested as requester.*.   │
+  │ requesterorg                         │ string   │ UUID of the requester Organisation.          │
+  │                                      │          │ Flat variable — not nested as requester.*.   │
+  │ specimenids                          │ string[] │ Array of Specimen resource UUIDs.            │
+  │                                      │          │ Instance name assembled by template.         │
+  │ results                              │ object[] │ Array of Observation result objects.         │
+  │   [n].instanceid                     │ string   │   UUID; instance name assembled by template. │
+  │ laboratory.instancerole              │ string   │ UUID of the laboratory PractitionerRole      │
+  │                                      │          │ (FAKE ADD ONS — placeholder).               │
+  │ laboratory.instancepractitioner      │ string   │ UUID of the laboratory Practitioner          │
+  │                                      │          │ (FAKE ADD ONS — placeholder).               │
+  │ provenance.deviceid                  │ string   │ UUID of the Device resource.                 │
+  │ provenance.provenanceid              │ string   │ UUID of the Provenance resource.             │
+  └──────────────────────────────────────┴──────────┴──────────────────────────────────────────────┘
+
+  GLOBAL VARIABLES USED
+    HL7EUROPEEXAMPLESOID — OID root for the Bundle identifier system URI.
+
+  AUTHOR   KH
+  SINCE    2025-09-14
+  ============================================================================
 #}
 
-%%FSH%% {# tag required #}
+%%FSH%% {# ── Section marker required by the FSH pre-processor ─────────────── #}
+
 Instance: {{ setInstance("Instance-Bundle-" ~ bundle.instanceid) }}
 InstanceOf: BundleLabReportEu
 Title: "HL7 Europe Laboratory Report (LAB) Bundle"
@@ -15,57 +134,98 @@ Usage: #example
 
 * id = "{{ bundle.instanceid }}"
 
-* identifier.system = "urn:oid:{{ HL7EUROPEEXAMPLESOID }}"
-* identifier.value = "{{ bundle.identifier }}"
+* identifier.system           = "urn:oid:{{ HL7EUROPEEXAMPLESOID }}"
+* identifier.value            = "{{ bundle.identifier }}"
 * identifier.assigner.display = "HL7 Europe"
 
 * type = #document
 
-* timestamp = "{{ composition.date }}"
+{#
+  Timestamp — NO date filter applied. Caller must supply a pre-formatted
+  FHIR dateTime string. Differs from EPS/HDR which apply the datetime filter.
+#}
+* timestamp = "{{ composition.date|date('Y-m-d\\TH:i:s\\Z')}}"
 
-* entry[composition].fullUrl = "urn:uuid:{{ composition.instanceid }}"
-* entry[composition].resource = Instance-Composition-{{ composition.instanceid }}
+{#
+  ── Fixed mandatory entries — single-slice ──────────────────────────────────
+  Note: slice names use camelCase (diagnosticReport, serviceRequest,
+  practitionerRole) matching FHIR R4 resource type names. EPS/HDR use
+  lowercase (practitionerrole). Must match the profile's slice discriminators.
+#}
+* entry[composition].fullUrl       = "urn:uuid:{{ composition.instanceid }}"
+* entry[composition].resource      = Instance-Composition-{{ composition.instanceid }}
 
-* entry[diagnosticReport].fullUrl = "urn:uuid:{{ diagnosticreport.instanceid }}"
+{# Lab-specific: aggregating DiagnosticReport (not present in EPS/HDR) #}
+* entry[diagnosticReport].fullUrl  = "urn:uuid:{{ diagnosticreport.instanceid }}"
 * entry[diagnosticReport].resource = Instance-DiagnosticReport-{{ diagnosticreport.instanceid }}
 
-* entry[patient].fullUrl = "urn:uuid:{{ patient.instanceid }}"
-* entry[patient].resource = Instance-Patient-{{ patient.instanceid }}
+* entry[patient].fullUrl           = "urn:uuid:{{ patient.instanceid }}"
+* entry[patient].resource          = Instance-Patient-{{ patient.instanceid }}
 
-* entry[serviceRequest].fullUrl = "urn:uuid:{{ servicerequest.instanceid }}"
-* entry[serviceRequest].resource = Instance-ServiceRequest-{{ servicerequest.instanceid }}
+{# Lab-specific: the ServiceRequest (lab order) that triggered the report #}
+* entry[serviceRequest].fullUrl    = "urn:uuid:{{ servicerequest.instanceid }}"
+* entry[serviceRequest].resource   = Instance-ServiceRequest-{{ servicerequest.instanceid }}
 
-* entry[practitionerRole][+].fullUrl = "urn:uuid:{{ requesterrole }}"
+{#
+  ── Requester entries — named multi-slices ───────────────────────────────────
+  Note flat variable names: requesterrole and requesterorg (not nested objects).
+  These correspond to requester.instancerole / requester.instanceorg in the
+  upstream templates but are passed as plain strings to this Bundle template.
+#}
+* entry[practitionerRole][+].fullUrl  = "urn:uuid:{{ requesterrole }}"
 * entry[practitionerRole][=].resource = Instance-PractitionerRole-{{ requesterrole }}
 
-* entry[organization][+].fullUrl = "urn:uuid:{{ requesterorg }}"
+* entry[organization][+].fullUrl  = "urn:uuid:{{ requesterorg }}"
 * entry[organization][=].resource = Instance-Organization-{{ requesterorg }}
 
+{#
+  ══════════════════════════════════════════════════════════════════════════════
+  SPECIMEN ENTRIES — loop over plain UUID array
+  specimenids is an array of UUID strings (not objects).
+  Instance name assembled by template: Instance-Specimen-{{ s }}.
+  ══════════════════════════════════════════════════════════════════════════════
+#}
 {% for s in specimenids %}
-* entry[specimen][+].fullUrl = "urn:uuid:{{ s }}"
+* entry[specimen][+].fullUrl  = "urn:uuid:{{ s }}"
 * entry[specimen][=].resource = Instance-Specimen-{{ s }}
 {% endfor %}
 
+{#
+  ══════════════════════════════════════════════════════════════════════════════
+  OBSERVATION ENTRIES — loop over results object array
+  results contains objects with .instanceid (same array as in the Composition
+  and DiagnosticReport templates).
+  Instance name assembled by template: Instance-Observation-{{ r.instanceid }}.
+  ══════════════════════════════════════════════════════════════════════════════
+#}
 {% for r in results %}
-* entry[observation][+].fullUrl = "urn:uuid:{{ r.instanceid }}"
+* entry[observation][+].fullUrl  = "urn:uuid:{{ r.instanceid }}"
 * entry[observation][=].resource = Instance-Observation-{{ r.instanceid }}
 {% endfor %}
 
-{# add procenance and device #}
-* entry[+].fullUrl = "urn:uuid:{{ provenance.deviceid }}"
+{#
+  ── Provenance tail — always last, unnamed slices (identical to EPS/HDR) ─────
+#}
+* entry[+].fullUrl  = "urn:uuid:{{ provenance.deviceid }}"
 * entry[=].resource = Instance-Device-{{ provenance.deviceid }}
-* entry[+].fullUrl = "urn:uuid:{{ provenance.provenanceid }}"
+* entry[+].fullUrl  = "urn:uuid:{{ provenance.provenanceid }}"
 * entry[=].resource = Instance-Provenance-{{ provenance.provenanceid }}
 
+{#
+  ── FAKE ADD ONS — laboratory provider entries ────────────────────────────────
+  These placeholder entries reference the stub resources from
+  provider-as-laboratory_fsh.twig. Marked FAKE ADD ONS in the original source.
+  Replace with real laboratory provider data when available.
+#}
 {# FAKE ADD ONS - the laboratory organization and provider = legal attester #}
-* entry[practitionerRole][+].fullUrl = "urn:uuid:{{ laboratory.instancerole }}"
+* entry[practitionerRole][+].fullUrl  = "urn:uuid:{{ laboratory.instancerole }}"
 * entry[practitionerRole][=].resource = Instance-PractitionerRole-{{ laboratory.instancerole }}
-* entry[practitioner][+].fullUrl = "urn:uuid:{{ laboratory.instancepractitioner }}"
-* entry[practitioner][=].resource = Instance-Practitioner-{{ laboratory.instancepractitioner }}
+* entry[practitioner][+].fullUrl      = "urn:uuid:{{ laboratory.instancepractitioner }}"
+* entry[practitioner][=].resource     = Instance-Practitioner-{{ laboratory.instancepractitioner }}
 {# FAKE ADD ONS #}
 
-%%HEAD%% {# tag required, content below maybe emtpy #}
+%%HEAD%% {# ── Section marker required by the FSH pre-processor ─────────────── #}
 <!-- empty -->
 
-%%HTML%% {# tag required, content below maybe emtpy #}
+%%HTML%% {# ── Section marker required by the FSH pre-processor ─────────────── #}
 <!-- empty -->

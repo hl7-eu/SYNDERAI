@@ -1,16 +1,137 @@
 {#
-  This is the TWIG file for the creation of an FSH instance part including the HTML parts.
-  see README.md
+  ============================================================================
+  TEMPLATE: observation-medical-test-body_fsh.twig
+  ============================================================================
+  PURPOSE
+    A PARTIAL TEMPLATE — a reusable body fragment included by frame templates
+    using Twig's `{% include %}` directive. It must never be rendered
+    standalone; it is always embedded inside another template that supplies
+    the `Instance:` header and the observation category.
 
-  This is included by other frame twigs about observations
-  
-  KH since 2025-09-02
+    Currently included by:
+      observation-resultslab-eu-lab_fsh.twig   (EU lab Observation)
+      observation-medical-test-result-eu_fsh.twig (MedicalTestResultEuCore)
+
+  PARTIAL TEMPLATE STRUCTURE
+    This file does NOT begin with a `%%FSH%%` marker. It starts directly with
+    FSH body rules (`* id = ...`) and HTML bag calls, continuing the FSH
+    instance opened by the including template. The including template provides:
+      - The `%%FSH%%` section marker
+      - The `Instance:` / `InstanceOf:` / `Usage:` header
+      - The observation `category` coding
+    This partial then provides everything from `* id` onward.
+
+    The file ends with its own `%%HEAD%%` and `%%HTML%%` markers, which
+    effectively close the section structure for the combined output.
+    `%%HEAD%%` is empty; `%%HTML%%` emits the body rows.
+
+  FOUR-COLUMN HTML TABLE
+    Column 1 — Test code display                   (always present)
+    Column 2 — Observation value or "L"/"H" flag   (conditional on value type)
+    Column 3 — Reference range or interpretation   (conditional)
+    Column 4 — Unit                                (conditional on Quantity)
+
+    The column 2 header is dynamic: `addHEAD_th(labresult.report|date('d-M-Y'))`
+    — the report date is used as the column header, not a static label.
+
+  VALUE TYPE BRANCHING — Quantity vs CodeableConcept
+    The template handles two FHIR value types using separate conditional blocks:
+
+    QUANTITY BRANCH (labresult.value.type == "Quantity" OR labresult.valueQuantity present):
+      Dual data path via ?? operator: labresult.value.* OR labresult.valueQuantity.*
+      Note on variable naming — the mapping to FHIR Quantity sub-elements is:
+        * valueQuantity.value  ← labresult.value.value  (numeric measurement)
+        * valueQuantity.unit   ← labresult.value.code   (human-readable unit string)
+        * valueQuantity.code   ← labresult.value.unit   (machine UCUM code)
+        * valueQuantity.system ← labresult.value.system (UCUM system URI)
+      The `.code` and `.unit` variable names are swapped relative to FHIR's
+      Quantity element names — verify source data mapping when integrating.
+
+      Fallback: when value fields are empty but labresult.valueString is set,
+      `valueString` is emitted instead of valueQuantity sub-elements.
+
+      Reference range: when both .low and .high are present, a referenceRange[+]
+      slice is emitted, and the value is compared numerically with Twig's `<`
+      and `>` operators to derive an interpretation code (L / H) and HTML cell.
+
+      Reference range text fallback: when only .text is set, a text-only
+      referenceRange is emitted.
+
+    CODEABLE CONCEPT BRANCH (labresult.value.type == "CodeableConcept" OR
+      labresult.valueCodeableConcept present):
+      valueCodeableConcept emitted from either value.* or valueCodeableConcept.*
+      via ?? operator.
+
+  EFFECTIVE DATE — DUAL RULE NOTE
+    Two effectiveDateTime rules may both be emitted for the same resource:
+      1. `{% if labresult.effective is not empty %}` — conditional on .effective
+      2. Always-emitted: `"{{ labresult.date|date('Y-m-d') }}"` (no condition)
+    If both `labresult.effective` and `labresult.date` are supplied, two
+    `* effectiveDateTime` rules will appear in the FSH output — SUSHI will
+    accept the last one. In practice, callers should supply only one.
+
+  BODY SITE AND SPECIMEN
+    Both are conditional:
+      bodySite[+] — when labresult.site is non-empty.
+      specimen    — Reference to a Specimen resource by UUID when labresult.specimenid
+                    is non-empty.
+
+  CSS CLASS
+    Uses `hl7__eu__lab__report` — the EU Laboratory Report stylesheet.
+
+  CONTEXT VARIABLES  (all supplied by the including template's caller)
+  ┌────────────────────────────────────┬──────────┬────────────────────────────────────────────┐
+  │ Variable                           │ Type     │ Description                                │
+  ├────────────────────────────────────┼──────────┼────────────────────────────────────────────┤
+  │ instanceid                         │ string   │ Resource id (from including template).     │
+  │ labresult.report                   │ date     │ Report date; used as HTML column 2 header. │
+  │ labresult.subject                  │ string   │ UUID of the subject Patient.               │
+  │ labresult.subjectname              │ string   │ Subject display name.                      │
+  │ labresult.code                     │ object[] │ Array of codings; only first is used.      │
+  │   [0].system                       │ string   │   CodeSystem URI.                          │
+  │   [0].code                         │ string   │   Observation concept code.                │
+  │   [0].display                      │ string   │   Display text for column 1.               │
+  │ labresult.effective                │ string?  │ Optional ISO 8601 effective date/time.     │
+  │ labresult.date                     │ date     │ Report date; always emitted as             │
+  │                                    │          │ effectiveDateTime (YYYY-MM-DD via filter). │
+  │ labresult.value                    │ object?  │ Value as Quantity sub-object.              │
+  │   .type                            │ string   │   "Quantity" or "CodeableConcept".         │
+  │   .value                           │ number   │   Numeric measurement.                     │
+  │   .code                            │ string   │   Human-readable unit string (see note).   │
+  │   .unit                            │ string   │   UCUM unit code (see note).               │
+  │   .system                          │ string   │   System URI (usually UCUM).               │
+  │   .display                         │ string   │   Display when type is CodeableConcept.    │
+  │ labresult.valueQuantity            │ object?  │ Alternative Quantity path (same sub-fields)│
+  │ labresult.valueCodeableConcept     │ object?  │ Alternative CC path.                       │
+  │   .system / .code / .display       │ string   │   CC coding fields.                        │
+  │ labresult.valueString              │ string?  │ Fallback plain string value.               │
+  │ labresult.reference.low            │ number?  │ Lower bound of reference range.            │
+  │ labresult.reference.high           │ number?  │ Upper bound of reference range.            │
+  │ labresult.reference.text           │ string?  │ Text reference range (when no low/high).   │
+  │ labresult.reference.unit           │ string   │ UCUM unit code for reference range.        │
+  │ labresult.site                     │ object?  │ Optional body site.                        │
+  │   .system / .code / .display       │ string   │   Site coding fields.                      │
+  │ labresult.specimenid               │ string?  │ Optional UUID of the Specimen resource.    │
+  └────────────────────────────────────┴──────────┴────────────────────────────────────────────┘
+
+  AUTHOR   KH
+  SINCE    2025-09-02
+  ============================================================================
 #}
 
-
+{#
+  ── Resource id ─────────────────────────────────────────────────────────────
+  The Instance: header is provided by the including template. This partial
+  begins with the id rule.
+#}
 * id = "{{ instanceid }}"
 
-{# addign headers for HTML table #}
+{#
+  ── HEAD bag: four-column table header ─────────────────────────────────────
+  Column 2 header is dynamic — the report date, formatted d-M-Y.
+  This is the only template in the project where a HEAD column label is a
+  data value rather than a static string.
+#}
 {{ addHEAD_tr() }}
 {{ addHEAD_th("Test") }}
 {{ addHEAD_th(labresult.report|date('d-M-Y')) }}
@@ -20,45 +141,78 @@
 
 {{ addHTML_tr() }}
 
+{#
+  ── Fixed status ────────────────────────────────────────────────────────────
+#}
 * status = #final
 
-{# we may have more than 1 code which is legal but HL7 EU HDR only want exactly 1..1, take the first #}
-{# so if labresult.code is an array instead of iterating with for c in labresult.code use code[0] #}
-{# if it is a simple value just use that #}
+{#
+  ── Observation code (td 1) ─────────────────────────────────────────────────
+  labresult.code is an array; |first extracts the first coding. The code
+  element uses [+]/[=] indexing (code is repeatable in FHIR Observation),
+  with .text set alongside the coding.
+#}
+{# Use first coding only — HL7 EU HDR requires exactly 1..1 code #}
 {% set c = labresult.code|first %}
 * code[+].coding = {{ c.system }}#{{ c.code }} "{{ c.display }}"
-* code[=].text = "{{ c.display }}"
+* code[=].text   = "{{ c.display }}"
 {{ addHTML_td(c.display) }}
 
-{# * method = $sct#70621000052105 "Spectrophotometric technique" #}
-
-* subject = Reference(urn:uuid:{{ labresult.subject }}) "{{ labresult.subjectname }}"
-
+{#
+  ── Effective date — dual rule note ────────────────────────────────────────
+  Rule 1 (conditional): labresult.effective — emitted only when non-empty.
+  Rule 2 (always):      labresult.date formatted as YYYY-MM-DD — always emitted.
+  When both are present, two effectiveDateTime rules appear in FSH; SUSHI
+  uses the last. Callers should supply only one of the two fields.
+#}
 {% if labresult.effective is not empty %}
 * effectiveDateTime = "{{ labresult.effective }}"
 {% endif %}
-{% if labresult.date is not empty %}
-{% endif %}
 * effectiveDateTime = "{{ labresult.date|date('Y-m-d') }}"
 
-{% if labresult.value.type == "Quantity" or labresult.valueQuantity is not empty %}
+{#
+  ── Patient reference ───────────────────────────────────────────────────────
+#}
+* subject = Reference(urn:uuid:{{ labresult.subject }}) "{{ labresult.subjectname }}"
 
-{# if the value is contained in value.value or valueQuantity.value emit them as proper quantities #}
-{# if the valueString is just a plain string (no array) express it as .text #}
+{#
+  ══════════════════════════════════════════════════════════════════════════════
+  VALUE TYPE BRANCH A — Quantity
+  ══════════════════════════════════════════════════════════════════════════════
+  Triggered by type == "Quantity" or non-empty valueQuantity.
+  ?? coalesces the two data paths (value.* vs valueQuantity.*).
+
+  Variable name mapping note:
+    FHIR Quantity.unit (display string) ← labresult.value.code
+    FHIR Quantity.code (UCUM code)      ← labresult.value.unit
+  The source variable names (.code / .unit) are swapped relative to FHIR's
+  element names — this reflects the upstream data model, not an error.
+#}
+{% if labresult.value.type == "Quantity" or labresult.valueQuantity is not empty %}
+# value as Quantity
+
 {% if labresult.value.value is not empty or labresult.valueQuantity.value is not empty %}
-* valueQuantity.value = {{ labresult.value.value ?? labresult.valueQuantity.value }}
-* valueQuantity.unit = "{{ labresult.value.code ?? labresult.valueQuantity.code }}"
-* valueQuantity.code = #{{ labresult.value.unit ?? labresult.valueQuantity.unit }}
+{# Numeric quantity value #}
+* valueQuantity.value  = {{ labresult.value.value ?? labresult.valueQuantity.value }}
+* valueQuantity.unit   = "{{ labresult.value.code ?? labresult.valueQuantity.code }}"
+* valueQuantity.code   = #{{ labresult.value.unit ?? labresult.valueQuantity.unit }}
 * valueQuantity.system = ${{ labresult.value.system ?? labresult.valueQuantity.system }}
 {% elseif labresult.valueString is not empty %}
+{# Fallback: plain string value when no numeric quantity is available #}
 * valueString = {{ labresult.valueString }}
 {% endif %}
 
 {{ addHTML_td(labresult.value.value ?? labresult.valueQuantity.value) }}
 
+{#
+  Reference range with interpretation — both low and high must be present.
+  The Twig < and > operators compare the observation value numerically with
+  the range boundaries and derive an HL7 interpretation code (L or H).
+  When the value is within range, an empty cell is shown (no interpretation).
+#}
 {% if labresult.reference.low is not empty and labresult.reference.high is not empty %}
 
-* referenceRange[+].low = {{ labresult.reference.low }} ${{ labresult.value.system }}#{{ labresult.reference.unit }}
+* referenceRange[+].low  = {{ labresult.reference.low }} ${{ labresult.value.system }}#{{ labresult.reference.unit }}
 * referenceRange[=].high = {{ labresult.reference.high }} ${{ labresult.value.system }}#{{ labresult.reference.unit }}
 
 {{ addHTML_td(labresult.reference.low ~ " - " ~ labresult.reference.high) }}
@@ -73,48 +227,66 @@
 {{ addHTML_td("") }}
 {% endif %}
 
-{{ addHTML_td(labresult.value.unit ?? labresult.valueQuantity.unit)}}
+{{ addHTML_td(labresult.value.unit ?? labresult.valueQuantity.unit) }}
 
-{# if if lr.low or high #}
 {% elseif labresult.reference.text is not empty %}
+{# Text-only reference range — no numeric bounds available #}
 * referenceRange[+].text = "{{ labresult.reference.text }}"
 {{ addHTML_td(labresult.reference.text) }}
 {{ addHTML_td("-") }}
-{% endif %} {# if if lr.low or high or lr.text #}
+{% endif %} {# reference range #}
 
 {% endif %} {# Quantity #}
 
+{#
+  ══════════════════════════════════════════════════════════════════════════════
+  VALUE TYPE BRANCH B — CodeableConcept
+  ══════════════════════════════════════════════════════════════════════════════
+  Triggered by type == "CodeableConcept" or non-empty valueCodeableConcept.
+  ?? coalesces the two data paths (value.* vs valueCodeableConcept.*).
+#}
 {% if labresult.value.type == "CodeableConcept" or labresult.valueCodeableConcept is not empty %}
+# value as CodeableConcept
 
 * valueCodeableConcept = {{ labresult.value.system ?? labresult.valueCodeableConcept.system }}#{{ labresult.value.code ?? labresult.valueCodeableConcept.code }} "{{ labresult.value.display ?? labresult.valueCodeableConcept.display }}"
 {{ addHTML_td(labresult.valueCodeableConcept.display) }}
 
 {% if labresult.reference.low is not empty and labresult.reference.high is not empty %}
-* referenceRange[+].low = "{{ labresult.reference.low }}"
+* referenceRange[+].low  = "{{ labresult.reference.low }}"
 * referenceRange[=].high = "{{ labresult.reference.high }}"
 {% endif %}
 
 {% endif %} {# CodeableConcept #}
 
+{#
+  ── Body site (conditional; FSH only) ──────────────────────────────────────
+#}
 {% if labresult.site is not empty %}
 * bodySite[+] = {{ labresult.site.system }}#{{ labresult.site.code }} "{{ labresult.site.display }}"
 {% endif %}
 
+{#
+  ── Specimen reference (conditional) ───────────────────────────────────────
+#}
 {% if labresult.specimenid is not empty %}
 * specimen = Reference(urn:uuid:{{ labresult.specimenid }})
 {% endif %}
 
 {{ addHTML_trend() -}}
 
-{# populate .text #}
+{#
+  ── FHIR narrative ───────────────────────────────────────────────────────────
+  Both HEAD and HTML bags flushed — full headed table including the dynamic
+  date column header. CSS class: hl7__eu__lab__report.
+#}
 * text.status = #generated
-* text.div = """
+* text.div    = """
 <div xmlns="http://www.w3.org/1999/xhtml">
 <table class="hl7__eu__lab__report">{{ emitHEAD() | raw }}{{ emitHTML() | raw }}</table>
 </div>
 """
 
-%%HEAD%% {# tag required, content below maybe emtpy #}
+%%HEAD%% {# ── Section marker — HEAD section intentionally empty for this partial ─ #}
 
-%%HTML%% {# tag required, content below maybe emtpy #}
+%%HTML%% {# ── Section marker required by the FSH pre-processor ─────────────── #}
 {{ emitHTML() | raw }}

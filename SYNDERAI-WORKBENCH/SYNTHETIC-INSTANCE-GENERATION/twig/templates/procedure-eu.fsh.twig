@@ -1,11 +1,116 @@
 {#
-  This is the TWIG file for the creation of an FSH instance including the HTML parts.
-  see README.md
+  ============================================================================
+  TEMPLATE: procedure-eu_fsh.twig
+  ============================================================================
+  PURPOSE
+    Generates a FSH Procedure instance conforming to the ProcedureEuCore
+    profile. Each invocation represents a single clinical procedure performed
+    on the patient, optionally qualified by a body site and a clinical reason.
 
-  KH since 2025-09-02
+  PROFILE CONFORMANCE
+    InstanceOf: ProcedureEuCore
+    Canonical : (EU Core Procedure profile, HL7 Europe)
+    Must-support elements covered:
+      status, code (SNOMED CT), performedDateTime (or absent-reason),
+      reasonCode, bodySite, subject
+
+  THREE-COLUMN HTML TABLE
+    Column 1 — Procedure display name (+ optional body site on second line)
+    Column 2 — Performed date  (conditional; "?" if absent)
+    Column 3 — Reason code display (conditional; "-" if absent)
+
+  NARRATIVE NOTE
+    `emitHTML()` is flushed inside `text.div` so the inline FHIR narrative
+    carries the data rows. However `emitHEAD()` is NOT called inside
+    `text.div` — the narrative table therefore contains body rows only,
+    without a column header row. The HEAD bag is emitted exclusively in the
+    %%HEAD%% section for external consumers.
+
+  PROCEDURE CODE DISPLAY — PREFERRED TERM + BODY SITE COMPOSITION
+    The text shown in HTML td 1 is assembled in two steps:
+
+      Step 1 — preferred term:
+        `procedure.code.preferredTerm ?? procedure.code.display`
+        The null-coalescing operator selects `preferredTerm` when available,
+        falling back to `display`. This allows a locale-preferred SNOMED label
+        to override the raw concept display string.
+
+      Step 2 — body site suffix (conditional):
+        When `procedure.site.code` is non-empty, the site display is appended
+        with an HTML `<br/>` separator:
+          "<preferred term><br/><site display>"
+        This composite string is passed directly to `addHTML_td()`. The `<br/>`
+        is rendered as a line break inside the HTML cell; it does NOT appear
+        in the FSH output. The body site itself is also emitted separately as
+        a `bodySite[+]` FSH rule.
+
+  FSH CODE NOTATION
+    This template uses explicit `[0]` indexing rather than the `[+]`/`[=]`
+    pattern for `code.coding` and `reasonCode.coding`, since exactly one
+    coding per element is expected:
+      * code.coding[0]       = ...
+      * reasonCode.coding[0] = ...
+
+  PERFORMED DATE — ABSENT-REASON PATTERN
+    When `procedure.date` is empty, a FHIR data-absent-reason extension is
+    emitted on `performedDateTime` rather than omitting the element:
+      * performedDateTime.extension.url       = ".../data-absent-reason"
+      * performedDateTime.extension.valueCode = #unknown
+    The HTML cell shows "?" to signal the gap to human readers.
+
+  CONTEXT VARIABLES
+  ┌──────────────────────────────┬──────────┬──────────────────────────────────────┐
+  │ Variable                     │ Type     │ Description                          │
+  ├──────────────────────────────┼──────────┼──────────────────────────────────────┤
+  │ instanceid                   │ string   │ Unique resource id; appended to       │
+  │                              │          │ "Instance-Procedure-" for the FSH    │
+  │                              │          │ instance name.                       │
+  │ patient.instanceid           │ string   │ UUID of the Patient resource for the  │
+  │                              │          │ subject Reference.                   │
+  │ patient.name                 │ string   │ Full display name for the subject     │
+  │                              │          │ Reference display string.            │
+  │ procedure.code               │ object?  │ Optional procedure code object.       │
+  │   .system                    │ string   │   CodeSystem URI (e.g. SNOMED CT).   │
+  │   .code                      │ string   │   Concept code.                      │
+  │   .display                   │ string   │   Default display term.              │
+  │   .preferredTerm             │ string?  │   Preferred display override; used   │
+  │                              │          │   via ?? fallback to .display.       │
+  │ procedure.date               │ string?  │ Optional ISO 8601 performedDateTime. │
+  │                              │          │ When empty, data-absent-reason is    │
+  │                              │          │ emitted instead.                     │
+  │ procedure.reason             │ object?  │ Optional clinical reason object.     │
+  │   .system                    │ string   │   CodeSystem URI.                    │
+  │   .code                      │ string   │   Reason concept code (emptiness     │
+  │                              │          │   tested via procedure.reason.code). │
+  │   .display                   │ string   │   Reason display text.               │
+  │ procedure.site               │ object?  │ Optional body site object.           │
+  │   .system                    │ string   │   CodeSystem URI.                    │
+  │   .code                      │ string   │   Site concept code (emptiness       │
+  │                              │          │   tested to gate both HTML and FSH). │
+  │   .display                   │ string   │   Site display text; appended to     │
+  │                              │          │   td 1 after a `<br/>` separator.    │
+  └──────────────────────────────┴──────────┴──────────────────────────────────────┘
+
+  FSH ELEMENTS EMITTED
+    * status                       always #completed
+    * code.coding[0]               procedure type (when code is present)
+    * performedDateTime            ISO 8601 date (when present)
+    * performedDateTime.extension  data-absent-reason (when date is absent)
+    * reasonCode.coding[0]         clinical reason (when present)
+    * bodySite[+].coding           body site (when site.code is present)
+    * subject                      Reference to the patient
+
+  CODESYSTEMS REFERENCED
+    Procedure code, reason, and body site system URIs are caller-supplied
+    via the respective object fields.
+
+  AUTHOR   KH
+  SINCE    2025-09-02
+  ============================================================================
 #}
 
-%%FSH%% {# tag required #}
+%%FSH%% {# ── Section marker required by the FSH pre-processor ─────────────── #}
+
 Instance: {{ setInstance("Instance-Procedure-" ~ instanceid) }}
 InstanceOf: ProcedureEuCore
 Title: "Procedure (EU Core)"
@@ -14,7 +119,11 @@ Usage: #inline
 
 * id = "{{ instanceid }}"
 
-{# addign headers for HTML table #}
+{#
+  ── HEAD bag: three-column table header ────────────────────────────────────
+  Note: flushed only in %%HEAD%%, NOT inside text.div — the inline narrative
+  carries body rows only (no headers). See "Narrative Note" in the header.
+#}
 {{ addHEAD_tr() }}
 {{ addHEAD_th("Procedure") }}
 {{ addHEAD_th("Date") }}
@@ -23,12 +132,26 @@ Usage: #inline
 
 {{ addHTML_tr() }}
 
+{#
+  ── Fixed status ────────────────────────────────────────────────────────────
+  All synthetic procedures are marked as completed.
+#}
 * status = #completed
 
-{# *** HTML td 1: iterate code[0] #}
+{#
+  ── Procedure code (td 1: conditional) ──────────────────────────────────────
+  When code is present:
+    - FSH: code.coding[0] with system, code, display (explicit [0] index;
+           exactly one coding per procedure code is expected).
+    - HTML: preferred term resolved via ?? operator, with optional body site
+            appended as a second line using a raw <br/> HTML tag.
+  When code is absent: HTML cell shows "-", no FSH rule emitted.
+#}
 {% if procedure.code is not empty %}
 * code.coding[0] = {{ procedure.code.system }}#{{ procedure.code.code }} "{{ procedure.code.display }}"
+{# Resolve display: preferredTerm overrides display when available #}
 {% set dp = procedure.code.preferredTerm ?? procedure.code.display %}
+{# Append body site display as a second line when site data is present #}
 {% if procedure.site.code is not empty %}
 {% set dp = dp ~ "<br/>" ~ procedure.site.display %}
 {% endif %}
@@ -37,9 +160,15 @@ Usage: #inline
 {{ addHTML_td("-") }}
 {% endif %}
 
-{# *** HTML td 2: date #}
+{#
+  ── Performed date (td 2: conditional) ─────────────────────────────────────
+  When date is absent: emit a data-absent-reason extension on performedDateTime
+  (FHIR R4 pattern for unknown dates); HTML cell shows "?".
+  When date is present: emit the ISO 8601 string in FSH; show formatted
+  d-M-Y date (e.g. "14-Mar-1978") as a pill badge in the HTML cell.
+#}
 {% if procedure.date is empty %}
-* performedDateTime.extension.url = "http://hl7.org/fhir/StructureDefinition/data-absent-reason"
+* performedDateTime.extension.url       = "http://hl7.org/fhir/StructureDefinition/data-absent-reason"
 * performedDateTime.extension.valueCode = #unknown
 {{ addHTML_td("?") }}
 {% else %}
@@ -47,7 +176,12 @@ Usage: #inline
 {{ addHTML_tdnb(procedure.date|date('d-M-Y')) }}
 {% endif %}
 
-{# *** HTML td 3: reason #}
+{#
+  ── Reason code (td 3: conditional) ────────────────────────────────────────
+  Conditioned on procedure.reason.code (the code sub-field, not reason itself)
+  being non-empty. FSH uses explicit [0] index; one reason coding per procedure.
+  HTML cell shows the display text as a plain cell (not a pill badge).
+#}
 {% if procedure.reason.code is empty %}
 {{ addHTML_td("-") }}
 {% else %}
@@ -55,24 +189,37 @@ Usage: #inline
 {{ addHTML_td(procedure.reason.display) }}
 {% endif %}
 
+{#
+  ── Body site (FSH only, no additional HTML cell) ───────────────────────────
+  When site.code is non-empty, a bodySite[+] coding rule is emitted. The site
+  display is already incorporated into td 1 above (as a <br/>-separated suffix
+  on the procedure cell), so no additional HTML cell is produced here.
+#}
 {% if procedure.site.code is not empty %}
 * bodySite[+].coding = {{ procedure.site.system }}#{{ procedure.site.code }} "{{ procedure.site.display }}"
 {% endif %}
 
+{#
+  ── Patient reference ───────────────────────────────────────────────────────
+#}
 * subject = Reference(urn:uuid:{{ patient.instanceid }}) "{{ patient.name }}"
 
 {{ addHTML_trend() -}}
 
-{# populate .text #}
+{#
+  ── FHIR narrative ───────────────────────────────────────────────────────────
+  Only emitHTML() is called here — no emitHEAD(). The narrative table
+  therefore contains data rows only, without column headers.
+#}
 * text.status = #generated
-* text.div = """
+* text.div    = """
 <div xmlns="http://www.w3.org/1999/xhtml">
 <table class="hl7__ips">{{ emitHTML() | raw }}</table>
 </div>
 """
 
-%%HEAD%% {# tag required, content below maybe emtpy #}
+%%HEAD%% {# ── Section marker required by the FSH pre-processor ─────────────── #}
 {{ emitHEAD() | raw }}
 
-%%HTML%% {# tag required, content below maybe emtpy #}
+%%HTML%% {# ── Section marker required by the FSH pre-processor ─────────────── #}
 {{ emitHTML() | raw }}

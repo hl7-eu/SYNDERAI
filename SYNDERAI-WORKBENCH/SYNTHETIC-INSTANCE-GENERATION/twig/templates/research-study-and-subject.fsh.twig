@@ -1,25 +1,110 @@
 {#
-  This is the TWIG file for the creation of an FSH instance including the HTML parts.
-  see README.md
-  
-  KH since 2026-02-26 
-  
-  used for extra addtions for the IPS/EPS Research information when a patient is part of a study, contains
-  information about the ResearchStudy
-  information about the patient as a ResearchSubject
+  ============================================================================
+  TEMPLATE: research-study-and-subject_fsh.twig
+  ============================================================================
+  PURPOSE
+    Generates TWO FSH instances in a single template pass:
+
+      1. ResearchStudy  — a largely static description of the EU BEUDIS
+                          clinical trial (fictitious study used for synthetic
+                          data generation).
+      2. ResearchSubject — links the patient being processed to the above
+                           study, with their ECI as the participant identifier.
+
+    This template is used to attach IPS/EPS Research Study information to a
+    patient record when the patient is enrolled in a study. Both instances are
+    emitted contiguously in the %%FSH%% section and registered separately via
+    two `setInstance()` calls.
+
+  PROFILE CONFORMANCE
+    ResearchStudy  : base FHIR R4 ResearchStudy resource (no additional profile)
+    ResearchSubject: base FHIR R4 ResearchSubject resource (no additional profile)
+
+  TWO-INSTANCE PATTERN
+    This template calls `setInstance()` twice. Both returned names are collected
+    into the `twigit()` return array in call order:
+      index 0 → "Instance-ResearchStudy-<researchstudyinstanceid>"
+      index 1 → "Instance-ResearchSubject-<researchsubjectinstanceid>"
+    The ResearchSubject references the ResearchStudy by a `urn:uuid:` reference
+    constructed from `researchstudyinstanceid`.
+
+  STATIC VS DYNAMIC CONTENT
+    The ResearchStudy body is intentionally largely hardcoded — it describes
+    a single fictitious study ("BEUDIS") used across all synthetic patients.
+    Only the instance id (`researchstudyinstanceid`) is dynamic.
+    The ResearchSubject body is dynamic: the patient's ECI is embedded and the
+    study reference is constructed from the study instance id.
+
+  HTML NARRATIVE PATTERN  ← differs from other templates
+    The HTML bag and HEAD bag are built inside the ResearchStudy block (before
+    it ends) but are emitted inside the ResearchSubject's `text.div`. This
+    means BOTH bags are flushed together in the second instance's narrative,
+    producing a single combined table that covers both resources.
+
+    In `text.div` of ResearchSubject:
+      {{ emitHEAD() | raw }} {{ emitHTML() | raw }}
+    Note: `emitHEAD()` is called here (not only in %%HEAD%%) so the narrative
+    table includes the column headers inline.
+
+  CONTEXT VARIABLES
+  ┌────────────────────────────┬──────────┬────────────────────────────────────┐
+  │ Variable                   │ Type     │ Description                        │
+  ├────────────────────────────┼──────────┼────────────────────────────────────┤
+  │ researchstudyinstanceid    │ string   │ Unique id for the ResearchStudy    │
+  │                            │          │ resource. Used to compose the FSH  │
+  │                            │          │ instance name and the urn:uuid:    │
+  │                            │          │ reference in ResearchSubject.      │
+  │ researchsubjectinstanceid  │ string   │ Unique id for the ResearchSubject  │
+  │                            │          │ resource.                          │
+  │ patient.eci                │ string   │ European Citizen Identifier of the │
+  │                            │          │ patient, used as the participant   │
+  │                            │          │ identifier (type PT, system ECI).  │
+  └────────────────────────────┴──────────┴────────────────────────────────────┘
+
+  CODESYSTEMS REFERENCED
+    $sct       — SNOMED CT; condition code 44054006 "Diabetes mellitus type 2"
+    $v2-0203   — HL7 v2 Table 0203 identifier type; PT = Patient (participant)
+    (ISO 3166-1 RegionCode #EUR is used directly as a FHIR code for `location`)
+
+  STATIC STUDY DATA (hardcoded for the BEUDIS fictitious study)
+    Identifier : FBEUDIS7395z67927  (system: https://clinicaltrials.eu)
+    Title      : "The Big EU Diabetis Study (BEUDIS) Phase 4"
+    Purpose    : #treatment
+    Phase      : #phase-4
+    Condition  : SCT#44054006  Diabetes mellitus type 2
+    Status     : #active
+    Location   : #EUR
+
+  STATIC SUBJECT DATA (hardcoded UUID for participant slot)
+    Identifier : 40f978c4-0d32-422e-bc07-5f99db9c27c7
+                 (secondary, system: https://beudis.eu)
+    Status     : #candidate
+
+  AUTHOR   KH
+  SINCE    2026-02-26
+  ============================================================================
 #}
 
-%%FSH%% {# tag required #}
+%%FSH%% {# ── Section marker required by the FSH pre-processor ─────────────── #}
 
-{# ResearchStudy first #}
-
+{#
+  ── ResearchStudy instance ──────────────────────────────────────────────────
+  Emitted first. The body is intentionally static — all synthetic patients
+  reference the same BEUDIS study description.
+  Only the instance id is dynamic (injected via researchstudyinstanceid).
+#}
 Instance: {{ setInstance("Instance-ResearchStudy-" ~ researchstudyinstanceid) }}
 InstanceOf: ResearchStudy
 Title: "ResearchStudy"
 Description: "ResearchStudy Information"
 Usage: #inline
 
-{# some HTML representation #}
+{#
+  ── HEAD bag: table column headers ─────────────────────────────────────────
+  Two columns: study title and status. Emitted here so they sit logically
+  alongside the study block, even though they are flushed in the
+  ResearchSubject's text.div and in %%HEAD%% below.
+#}
 {{ addHEAD_tr() }}
 {{ addHEAD_th("Participant in Study") }}
 {{ addHEAD_th("Status") }}
@@ -27,34 +112,55 @@ Usage: #inline
 
 * id = "{{ researchstudyinstanceid }}"
 
-{# Business Identifier for study #}
-* identifier[+].use = #official
+{#
+  ── Business identifier ─────────────────────────────────────────────────────
+  Official trial registration number on https://clinicaltrials.eu.
+  This is static for the BEUDIS study.
+#}
+* identifier[+].use    = #official
 * identifier[=].system = "https://clinicaltrials.eu"
-* identifier[=].value = "FBEUDIS7395z67927"
+* identifier[=].value  = "FBEUDIS7395z67927"
 
-{# Name for this study #}
-* title = "The Big EU Diabetis Study (BEUDIS) Phase 4"
-* description = """
+{#
+  ── Study metadata (all static for BEUDIS) ──────────────────────────────────
+  The multi-line `description` uses FSH's triple-quote syntax and includes
+  Markdown bold formatting, which is valid within FSH string values.
+#}
+* title              = "The Big EU Diabetis Study (BEUDIS) Phase 4"
+* description        = """
 This fictous study aims on treating **Diabetis Type 2** patients in the European Union with a brand new drug called "Combattente"
 """
 * primaryPurposeType = #treatment
-* phase = #phase-4
+* phase              = #phase-4
 
 * condition = $sct#44054006 "Diabetes mellitus type 2 (disorder)"
 
-* status = #active
+* status   = #active
 
+{#
+  ── Location: EU region ─────────────────────────────────────────────────────
+  ISO 3166-1 region code #EUR flags this as a European-region study.
+#}
 * location = #EUR
 
-{# populate .text #}
+{#
+  ── ResearchStudy narrative ─────────────────────────────────────────────────
+  A placeholder narrative ("tbd") is used here because the study description
+  is static and its full human-readable form is deferred. The ResearchSubject
+  carries the combined HTML table narrative for both instances.
+#}
 * text.status = #generated
-* text.div = """
+* text.div    = """
 <div xmlns="http://www.w3.org/1999/xhtml">
 tbd
 </div>
 """
 
-{# finally ResearchSubject #}
+{#
+  ── ResearchSubject instance ────────────────────────────────────────────────
+  Emitted second, in the same %%FSH%% section. Links the patient to the study
+  above via a urn:uuid: Reference. The patient is identified by their ECI.
+#}
 Instance: {{ setInstance("Instance-ResearchSubject-" ~ researchsubjectinstanceid) }}
 InstanceOf: ResearchSubject
 Title: "ResearchSubject"
@@ -63,30 +169,53 @@ Usage: #inline
 
 * id = "{{ researchsubjectinstanceid }}"
 
-{# Business Identifier for research subject in a study #}
-* identifier[+].use = #secondary
+{#
+  ── Secondary participant identifier ───────────────────────────────────────
+  A study-internal UUID assigned to the participant slot within BEUDIS.
+  Typed #secondary as it is a local study number rather than a national id.
+#}
+* identifier[+].use    = #secondary
 * identifier[=].system = "https://beudis.eu"
-* identifier[=].value = "40f978c4-0d32-422e-bc07-5f99db9c27c7"
+* identifier[=].value  = "40f978c4-0d32-422e-bc07-5f99db9c27c7"
 
 * status = #candidate
 
+{#
+  ── Back-reference to the ResearchStudy ────────────────────────────────────
+  Uses the same researchstudyinstanceid that was set in the Instance above,
+  constructing a urn:uuid: reference to link subject → study within the Bundle.
+#}
 * study = Reference(urn:uuid:{{ researchstudyinstanceid }})
 
-* individual[+].type = $v2-0203#PT
-* individual[+].use = #official
+{#
+  ── Patient identifier on the subject record ───────────────────────────────
+  Two individual[] slices: the identifier type (PT = Patient) and the ECI.
+  Note: [+] is used for both the type slice and the system/value pair, each
+  as separate slices of `individual`. This establishes the patient's ECI as
+  the participant identifier in the study.
+#}
+* individual[+].type   = $v2-0203#PT
+* individual[+].use    = #official
 * individual[=].system = "http://ec.europa.eu/identifier/eci"
-* individual[=].value = "{{ patient.eci }}"
+* individual[=].value  = "{{ patient.eci }}"
 
-{# populate .text #}
+{#
+  ── Combined HTML narrative ──────────────────────────────────────────────────
+  Unusually, both emitHEAD() and emitHTML() are flushed inside this second
+  instance's text.div — not the first. This produces a single table in the
+  ResearchSubject narrative that covers the study participation information.
+  The hl7__ips first25 CSS classes are applied: first25 constrains the width
+  of the first column to 25% in the vi7eti stylesheet.
+#}
 * text.status = #generated
-* text.div = """
+* text.div    = """
 <div xmlns="http://www.w3.org/1999/xhtml">
 <table class="hl7__ips first25">{{ emitHEAD() | raw }} {{ emitHTML() | raw }}</table>
 </div>
 """
 
-%%HEAD%% {# tag required, content below maybe emtpy #}
+%%HEAD%% {# ── Section marker required by the FSH pre-processor ─────────────── #}
 {{ emitHEAD() | raw }}
 
-%%HTML%% {# tag required, content below maybe emtpy #}
+%%HTML%% {# ── Section marker required by the FSH pre-processor ─────────────── #}
 {{ emitHTML() | raw }}

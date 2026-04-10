@@ -1,11 +1,162 @@
 {#
-  This is the TWIG file for the creation of an FSH instance including the HTML parts.
-  see README.md
-  
-  KH since 2025-10-22
+  ============================================================================
+  TEMPLATE: allergy-intolerance-eu-core_fsh.twig
+  ============================================================================
+  PURPOSE
+    Generates a FSH AllergyIntolerance instance conforming to the
+    AllergyIntoleranceEuCore profile. Each invocation represents either a
+    known allergy or intolerance, or a sentinel "no known allergies" record
+    when no allergy data is available.
+
+  PROFILE CONFORMANCE
+    InstanceOf: AllergyIntoleranceEuCore
+    Must-support elements covered (Mode B):
+      code (SNOMED + preferred text), clinicalStatus, verificationStatus,
+      type, category, patient, onsetDateTime (or absent-reason),
+      reaction[].manifestation, reaction[].severity
+
+  TWO-MODE PATTERN — `is empty` TEST
+    The top-level branch tests `{% if allergyintolerance is empty %}`.
+    Note: `is empty` (not `is null`) — triggers for null, empty string,
+    and empty array alike. Callers may pass any of these to trigger Mode A.
+
+  MODE A — NO KNOWN ALLERGY/INTOLERANCE (allergyintolerance is empty)
+
+    ⚠ BUG — MISSING NARRATIVE: Mode A emits no `* text.status` or
+    `* text.div` rule. The sentinel FSH instance therefore lacks the required
+    FHIR narrative element, which will cause FHIR validator warnings. The
+    `text.status = #generated` and `text.div` block that follows the sections
+    loop is inside the `{% else %}` branch (Mode B only). Fix: add a
+    `text.status = #generated` and minimal `text.div` to Mode A.
+
+    A sentinel FSH instance is emitted carrying:
+      code.coding[0]       = $sct#716186003 "No known allergy (situation)"
+      onsetDateTime        → data-absent-reason #unknown
+      clinicalStatus       = $allergyintolerance-clinical#active
+      verificationStatus   = $allergyintolerance-verification#confirmed
+    The sentinel `clinicalStatus` is set to #active even though no allergy
+    exists — this satisfies the profile's cardinality requirement for the
+    status element.
+    A single HTML cell "No known allergies or intolerances" is emitted.
+    No HEAD row is produced (see "HEAD bag placement" below).
+
+  MODE B — ALLERGY/INTOLERANCE DATA PRESENT
+
+    HEAD BAG PLACEMENT — INSIDE {% else %} ONLY
+      Unlike most templates where HEAD calls are unconditional, all
+      `addHEAD_th()` calls in this template sit inside the `{% else %}`
+      branch. This means:
+        Mode A → HEAD bag empty → %%HEAD%% section is empty string
+        Mode B → 5-column HEAD row populated
+      When Mode A is rendered, callers consuming %%HEAD%% will receive an
+      empty string. External table renderers must handle this gracefully.
+
+    FIVE-COLUMN HTML TABLE (Mode B only):
+      Column 1 — Allergy/Intolerance name (preferred term or display)
+      Column 2 — Onset date (pill badge or "?")
+      Column 3 — Clinical status ("active" / "inactive")
+      Column 4 — Category (allergy category code or "?")
+      Column 5 — Reaction(s) combined display
+
+    SNOMED CODING — CONDITIONAL [+]
+      The SNOMED code is emitted only when `allergyintolerance.snomed.code`
+      is non-empty, using `coding[+]` (append, not explicit [0]):
+        * code.coding[+] = $sct#...
+      This means a second coding could theoretically be added by subsequent
+      rules; the [+] form leaves the slice open.
+
+    CODE TEXT / TD 1 — PREFERRED TERM OR DISPLAY
+      Both the FSH `code.text` and HTML td 1 use the same two-branch logic:
+        preferredTerm (if non-empty) → used in both FSH and HTML
+        snomed.display (fallback)    → used in both FSH and HTML
+      Unlike some other templates, there is no additional check that
+      preferredTerm differs from display before using it.
+
+    CLINICAL STATUS — DERIVED FROM END DATE
+      Rather than reading an explicit status field, clinical activity is
+      inferred from the presence or absence of an end date:
+        end is empty   → clinicalStatus = #active
+        end is present → clinicalStatus = #inactive
+      This is a heuristic — an ended allergy is assumed resolved/inactive.
+
+    VERIFICATION STATUS — ALWAYS CONFIRMED
+      `* verificationStatus.coding = $allergyintolerance-verification#confirmed`
+      is emitted unconditionally for all Mode B instances. The sentinel (Mode A)
+      also carries `#confirmed`.
+
+    TYPE AND CATEGORY — RAW CODE VALUES
+      Both use the FSH short code form with a `#` prefix embedded in the template:
+        * type     = #{{ allergyintolerance.type }}
+        * category = #{{ allergyintolerance.category }}
+      The caller supplies the raw code value without `#`; the template adds it.
+
+    REACTIONS — TWO FIXED SLOTS
+      Up to two reactions are supported via separate `reaction1` and `reaction2`
+      object fields (not an array). Each is individually conditional on its
+      `.code` field:
+        reaction[+].manifestation.coding[0] = $sct#code "display"
+        reaction[=].severity = #severity
+      The `| lower` filter normalises the severity value to lower-case
+      regardless of how the caller supplies it (e.g. "Mild" → "mild").
+
+    REACTION HTML SEPARATOR — ENTITY-ENCODED `<br>`
+      When both reactions are present, the HTML td 5 combines their display
+      strings with:
+        `&lt;br> &lt;/br>`
+      These are HTML entity references. In the rendered XHTML the entities
+      will display as literal text `<br> </br>` rather than producing a
+      visual line break. To produce an actual line break in the table cell,
+      use `<br/>` (unencoded) instead. This appears to be an unintended
+      encoding.
+
+    NARRATIVE — FULL HEADED TABLE (Pattern 2, Mode B only)
+      Both emitHEAD() and emitHTML() are flushed inside text.div — a complete
+      table with header row in the inline narrative. Mode A has no narrative
+      at all (see bug note above).
+
+  CONTEXT VARIABLES
+  ┌──────────────────────────────────────────┬──────────┬────────────────────────────────────────────┐
+  │ Variable                                 │ Type     │ Description                                │
+  ├──────────────────────────────────────────┼──────────┼────────────────────────────────────────────┤
+  │ instanceid                               │ string   │ Unique resource id.                        │
+  │ patient.instanceid                       │ string   │ UUID of the Patient resource.              │
+  │ patient.name                             │ string   │ Full display name for the patient Ref.     │
+  │ allergyintolerance                       │ object?  │ Empty/null → Mode A. Non-empty → Mode B.  │
+  │   .snomed.code                           │ string?  │   SNOMED CT code (conditional).            │
+  │   .snomed.display                        │ string   │   SNOMED display text.                     │
+  │   .preferredTerm                         │ string?  │   Preferred display override for code.text │
+  │                                          │          │   and HTML td 1. Used unconditionally when │
+  │                                          │          │   non-empty.                               │
+  │   .start                                 │ string?  │   ISO 8601 onset date. When empty,        │
+  │                                          │          │   data-absent-reason emitted.              │
+  │   .end                                   │ string?  │   ISO 8601 abatement date. Presence        │
+  │                                          │          │   determines clinicalStatus (#active /     │
+  │                                          │          │   #inactive).                              │
+  │   .type                                  │ string?  │   FHIR AllergyIntolerance type code        │
+  │                                          │          │   (e.g. "allergy", "intolerance").         │
+  │                                          │          │   Template adds `#` prefix.                │
+  │   .category                              │ string?  │   FHIR category code (e.g. "food",         │
+  │                                          │          │   "medication"). Template adds `#` prefix. │
+  │   .reaction1                             │ object?  │   First reaction (optional).               │
+  │     .code                                │ string   │     SNOMED CT code.                        │
+  │     .display                             │ string   │     Reaction display text.                 │
+  │     .severity                            │ string?  │     Severity code; | lower applied.        │
+  │   .reaction2                             │ object?  │     Second reaction (optional; same        │
+  │                                          │          │     structure as reaction1).               │
+  └──────────────────────────────────────────┴──────────┴────────────────────────────────────────────┘
+
+  CODESYSTEMS REFERENCED
+    $sct                              — SNOMED CT; sentinel code 716186003, condition codes
+    $allergyintolerance-clinical      — #active, #inactive
+    $allergyintolerance-verification  — #confirmed
+
+  AUTHOR   KH
+  SINCE    2025-10-22
+  ============================================================================
 #}
 
-%%FSH%% {# tag required #}
+%%FSH%% {# ── Section marker required by the FSH pre-processor ─────────────── #}
+
 Instance: {{ setInstance("Instance-AllergyIntolerance-" ~ instanceid) }}
 InstanceOf: AllergyIntoleranceEuCore
 Title: "AllergyIntolerance"
@@ -15,24 +166,38 @@ Usage: #inline
 * id = "{{ instanceid }}"
 
 {% if allergyintolerance is empty %}
-
-{# no known Allergy/Intolerance data, emit it and we are done #}
-
-* code.coding[0] = $sct#716186003 "No known allergy (situation)"
-* patient = Reference(urn:uuid:{{ patient.instanceid }}) "{{ patient.name }}"
-* onsetDateTime.extension.url = "http://hl7.org/fhir/StructureDefinition/data-absent-reason"
-* onsetDateTime.extension.valueCode = #unknown
-* clinicalStatus.coding = $allergyintolerance-clinical#active
-* verificationStatus = $allergyintolerance-verification#confirmed
+{#
+  ══════════════════════════════════════════════════════════════════════════════
+  MODE A — NO KNOWN ALLERGY/INTOLERANCE
+  `is empty` catches null, empty string, and empty array.
+  Emits a SNOMED sentinel code and data-absent-reason on onsetDateTime.
+  clinicalStatus is set to #active to satisfy profile cardinality.
+  ⚠ No text.status / text.div is emitted here — the narrative is missing.
+    Add text.status = #generated and a text.div to correct this.
+  ══════════════════════════════════════════════════════════════════════════════
+#}
+* code.coding[0]                     = $sct#716186003 "No known allergy (situation)"
+* patient                            = Reference(urn:uuid:{{ patient.instanceid }}) "{{ patient.name }}"
+* onsetDateTime.extension.url        = "http://hl7.org/fhir/StructureDefinition/data-absent-reason"
+* onsetDateTime.extension.valueCode  = #unknown
+{# clinicalStatus #active required by profile even for a "no known allergy" sentinel #}
+* clinicalStatus.coding              = $allergyintolerance-clinical#active
+* verificationStatus                 = $allergyintolerance-verification#confirmed
+{# Single HTML cell — no table structure or HEAD row for the sentinel #}
 {{ addHTML_tr() }}
 {{ addHTML_td("No known allergies or intolerances") }}
 {{ addHTML_trend() -}}
 
 {% else %}
+{#
+  ══════════════════════════════════════════════════════════════════════════════
+  MODE B — ALLERGY/INTOLERANCE DATA PRESENT
+  HEAD bag calls are HERE inside {% else %} — not unconditional.
+  Mode A therefore produces an empty HEAD bag (no HEAD row emitted at all).
+  ══════════════════════════════════════════════════════════════════════════════
+#}
 
-{# emit the known Allergy/Intolerance #}
-
-{# addign headers for HTML table #}
+{# Five-column HEAD row — only populated when allergyintolerance is non-empty #}
 {{ addHEAD_tr() }}
 {{ addHEAD_th("Allergy/Intolerance") }}
 {{ addHEAD_th("Onset Date") }}
@@ -43,63 +208,95 @@ Usage: #inline
 
 {{ addHTML_tr() }}
 
-{# add snomed #}
+{#
+  ── SNOMED code (conditional) ───────────────────────────────────────────────
+  [+] append used — leaves room for additional codings if needed.
+#}
 {% if allergyintolerance.snomed.code is not empty %}
 * code.coding[+] = $sct#{{ allergyintolerance.snomed.code }} "{{ allergyintolerance.snomed.display }}"
 {% endif %}
 
+{#
+  ── TD 1: allergy/intolerance name ─────────────────────────────────────────
+  preferredTerm used unconditionally when non-empty (no further diff-check).
+  Same value used for both FSH code.text and HTML td 1.
+#}
 {% if allergyintolerance.preferredTerm is not empty %}
 * code.text = "{{ allergyintolerance.preferredTerm }}"
-{# HTML td 1: add human text for allergy/intolerance name #}
 {{ addHTML_td(allergyintolerance.preferredTerm) }}
 {% else %}
 * code.text = "{{ allergyintolerance.snomed.display }}"
 {{ addHTML_td(allergyintolerance.snomed.display) }}
 {% endif %}
 
+{#
+  ── TD 2: onset date ────────────────────────────────────────────────────────
+  Present: onsetDateTime + pill badge.
+  Absent: data-absent-reason extension + "?" cell.
+#}
 {% if allergyintolerance.start is not empty %}
 * onsetDateTime = "{{ allergyintolerance.start }}"
-{# HTML td 2: add human text for the start date #}
 {{ addHTML_tdnb(allergyintolerance.start) }}
 {% else %}
-* onsetDateTime.extension.url = "http://hl7.org/fhir/StructureDefinition/data-absent-reason"
+* onsetDateTime.extension.url       = "http://hl7.org/fhir/StructureDefinition/data-absent-reason"
 * onsetDateTime.extension.valueCode = #unknown
 {{ addHTML_td("?") }}
 {% endif %}
 
+{#
+  ── TD 3: clinical status — inferred from end date ──────────────────────────
+  No explicit status field: active = no end date; inactive = end date present.
+#}
 {% if allergyintolerance.end is empty %}
 * clinicalStatus.coding = $allergyintolerance-clinical#active
-{# HTML td 3: add human text for active/inactive #}
 {{ addHTML_td("active") }}
 {% else %}
 * clinicalStatus.coding = $allergyintolerance-clinical#inactive
 {{ addHTML_td("inactive") }}
 {% endif %}
 
+{# verificationStatus always confirmed in Mode B #}
 * verificationStatus.coding = $allergyintolerance-verification#confirmed
 
-{# add type #}
+{#
+  ── Type (FSH only) ──────────────────────────────────────────────────────────
+  Template adds `#` prefix; caller supplies the bare code value.
+#}
 {% if allergyintolerance.type is not empty %}
 * type = #{{ allergyintolerance.type }}
 {% endif %}
 
-{# add category #}
+{#
+  ── TD 4: category ─────────────────────────────────────────────────────────
+  Template adds `#` prefix; caller supplies the bare code value.
+  "?" shown in HTML when category is absent; no FSH rule emitted.
+#}
 {% if allergyintolerance.category is not empty %}
 * category = #{{ allergyintolerance.category }}
-{# HTML td 4: add human text for category/type #}
 {{ addHTML_td(allergyintolerance.category) }}
 {% else %}
 {{ addHTML_td("?") }}
 {% endif %}
 
-{# add reaction 1 + 2 (optionals) #}
+{#
+  ── TD 5: reactions — two fixed slots ───────────────────────────────────────
+  reaction1 and reaction2 are separate object fields (not an array). Each is
+  individually conditional on its .code being non-empty.
+
+  manifestation.coding[0] — explicit [0] on manifestation (one coding per reaction).
+  severity — | lower filter normalises case (e.g. "Mild" → "mild").
+
+  humantextreactions accumulates the HTML display string for td 5.
+  Separator between reactions: `&lt;br> &lt;/br>` — HTML entity-encoded.
+  ⚠ This renders as the literal text `<br> </br>` in the browser, not a
+    visual line break. Use `<br/>` (unencoded) to produce an actual break.
+#}
 {% set humantextreactions = "" %}
 {% if allergyintolerance.reaction1.code is not empty %}
 * reaction[+].manifestation.coding[0] = $sct#{{ allergyintolerance.reaction1.code }} "{{ allergyintolerance.reaction1.display }}"
 {% if allergyintolerance.reaction1.severity is not empty %}
 * reaction[=].severity = #{{ allergyintolerance.reaction1.severity | lower }}
 {% endif %}
-{# HTML td 5: add human text for reaction 1 #}
 {% set humantextreactions = allergyintolerance.reaction1.display %}
 {% endif %}
 {% if allergyintolerance.reaction2.code is not empty %}
@@ -107,27 +304,33 @@ Usage: #inline
 {% if allergyintolerance.reaction2.severity is not empty %}
 * reaction[=].severity = #{{ allergyintolerance.reaction2.severity | lower }}
 {% endif %}
-{# HTML td 5: add human text for reaction 2 #}
+{# ⚠ &lt;br> &lt;/br> encodes as literal text, not a visual line break #}
 {% set humantextreactions = humantextreactions ~ "&lt;br> &lt;/br>" ~ allergyintolerance.reaction2.display %}
 {% endif %}
 {{ addHTML_td(humantextreactions) }}
 
+{# Patient reference — placed after reaction blocks #}
 * patient = Reference(urn:uuid:{{ patient.instanceid }}) "{{ patient.name }}"
 
 {{ addHTML_trend() -}}
 
-{# populate .text #}
+{#
+  ── FHIR narrative — full headed table (Pattern 2) ──────────────────────────
+  Both emitHEAD() and emitHTML() flushed. Mode A has no text.div at all
+  (see bug note in file header).
+#}
 * text.status = #generated
-* text.div = """
+* text.div    = """
 <div xmlns="http://www.w3.org/1999/xhtml">
 <table class="hl7__ips">{{ emitHEAD() | raw }} {{ emitHTML() | raw }}</table>
 </div>
 """
 
-{% endif %}
+{% endif %} {# allergyintolerance is empty / not empty #}
 
-%%HEAD%% {# tag required, content below maybe emtpy #}
+%%HEAD%% {# ── Section marker required by the FSH pre-processor ─────────────── #}
 {{ emitHEAD() | raw }}
+{# Mode A: HEAD bag empty — emits empty string. Mode B: 5-column HEAD row. #}
 
-%%HTML%% {# tag required, content below maybe emtpy #}
+%%HTML%% {# ── Section marker required by the FSH pre-processor ─────────────── #}
 {{ emitHTML() | raw }}

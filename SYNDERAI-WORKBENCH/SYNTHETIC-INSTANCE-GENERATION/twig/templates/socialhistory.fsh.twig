@@ -1,10 +1,79 @@
 {#
-  This is the TWIG file for the creation of an FSH instance including the HTML parts.
-  see README.md
-  
-  KH since 2025-09-26
+  ============================================================================
+  TEMPLATE: socialhistory_fsh.twig
+  ============================================================================
+  PURPOSE
+    Generates a FSH Observation instance representing a single social history
+    finding (e.g. smoking status, alcohol use, occupation, housing situation).
+    The Observation uses the `social-history` category code and may carry an
+    effective date, a coded value, and a free-text note — all optional.
+
+  PROFILE CONFORMANCE
+    InstanceOf: Observation (base FHIR R4 — no additional EU profile applied)
+    Category  : social-history (from http://terminology.hl7.org/CodeSystem/observation-category)
+    Status    : always #final for synthetic data
+
+  FOUR-COLUMN HTML TABLE
+    All four columns are always present in the HTML output; optional columns
+    fall back to a "-" placeholder when no data is available:
+      Column 1 — Social History code display    (always present)
+      Column 2 — effectiveDateTime              (optional; "-" if absent)
+      Column 3 — valueCodeableConcept display   (optional; "-" if absent)
+      Column 4 — Note text                      (optional; "-" if absent)
+
+    The HEAD bag is flushed inside `text.div` (alongside `emitHTML()`) so that
+    the inline FHIR narrative table includes column headers.
+
+  CONTEXT VARIABLES
+  ┌────────────────────────────────────┬──────────┬──────────────────────────────────────┐
+  │ Variable                           │ Type     │ Description                          │
+  ├────────────────────────────────────┼──────────┼──────────────────────────────────────┤
+  │ instanceid                         │ string   │ Unique resource id; appended to       │
+  │                                    │          │ "Instance-Observation-" to form the  │
+  │                                    │          │ FSH instance name.                   │
+  │ patient.instanceid                 │ string   │ UUID of the Patient resource for the  │
+  │                                    │          │ subject Reference.                   │
+  │ patient.name                       │ string   │ Full display name for the subject     │
+  │                                    │          │ Reference display string.            │
+  │ socialhistory.code.system          │ string   │ CodeSystem URI for the observation    │
+  │                                    │          │ code (e.g. SNOMED CT, LOINC).        │
+  │ socialhistory.code.code            │ string   │ Concept code identifying the type of  │
+  │                                    │          │ social history observation.           │
+  │ socialhistory.code.display         │ string   │ Display text for the observation code;│
+  │                                    │          │ used in the FSH rule and HTML td 1.  │
+  │ socialhistory.effectiveDateTime    │ string?  │ Optional ISO 8601 date/dateTime of    │
+  │                                    │          │ the observation. Formatted d-M-Y in  │
+  │                                    │          │ the HTML cell via the |date filter.  │
+  │ socialhistory.valueCodeableConcept │ object?  │ Optional coded result value.          │
+  │   .system                          │ string   │   CodeSystem URI for the value code.  │
+  │   .code                            │ string   │   Value concept code.                 │
+  │   .display                         │ string   │   Value display text (used in HTML).  │
+  │ socialhistory.note                 │ string?  │ Optional free-text note, stored in    │
+  │                                    │          │ note[0].text. Also shown in HTML td 4.│
+  └────────────────────────────────────┴──────────┴──────────────────────────────────────┘
+
+  FSH ELEMENTS EMITTED
+    * status                   always #final
+    * category[0]              social-history observation category
+    * subject                  Reference to the patient
+    * code                     observation type from socialhistory.code.*
+    * effectiveDateTime        when present (conditional)
+    * valueCodeableConcept     when present (conditional)
+    * note[0].text             when present (conditional)
+
+  CODESYSTEMS REFERENCED
+    $observation-category — http://terminology.hl7.org/CodeSystem/observation-category
+                            code: social-history
+    Observation code and value systems — taken directly from context variables
+                            (caller supplies system URI + code + display).
+
+  AUTHOR   KH
+  SINCE    2025-09-26
+  ============================================================================
 #}
-%%FSH%% {# tag required #}
+
+%%FSH%% {# ── Section marker required by the FSH pre-processor ─────────────── #}
+
 Instance: {{ setInstance("Instance-Observation-" ~ instanceid) }}
 InstanceOf: Observation
 Title: "Social History"
@@ -13,7 +82,12 @@ Usage: #inline
 
 * id = "{{ instanceid }}"
 
-{# addign headers for HTML table #}
+{#
+  ── HEAD bag: four-column table header ─────────────────────────────────────
+  Columns correspond to: observation type | date | coded value | free text note.
+  The HEAD bag is also flushed inside text.div so the inline narrative carries
+  the headers.
+#}
 {{ addHEAD_tr() }}
 {{ addHEAD_th("Social History") }}
 {{ addHEAD_th("Date") }}
@@ -23,15 +97,38 @@ Usage: #inline
 
 {{ addHTML_tr() }}
 
+{#
+  ── Fixed status ────────────────────────────────────────────────────────────
+  All synthetic social history observations are final.
+#}
 * status = #final
 
+{#
+  ── Category ────────────────────────────────────────────────────────────────
+  Typed as social-history. The category[0] index notation (rather than [+])
+  is used because there is always exactly one category for this template.
+#}
 * category[0] = $observation-category#social-history "Social History"
 
+{#
+  ── Patient reference ───────────────────────────────────────────────────────
+#}
 * subject = Reference(urn:uuid:{{ patient.instanceid }}) "{{ patient.name }}"
 
+{#
+  ── Observation code (td 1: always present) ─────────────────────────────────
+  The observation type code is mandatory. The system, code, and display are
+  supplied by the caller via the socialhistory.code object.
+#}
 * code = {{ socialhistory.code.system }}#{{ socialhistory.code.code }} "{{ socialhistory.code.display }}"
 {{ addHTML_td(socialhistory.code.display) }}
 
+{#
+  ── Effective date (td 2: conditional) ─────────────────────────────────────
+  If effectiveDateTime is absent, the HTML cell shows "-" and no FSH rule
+  is emitted. When present, the date is shown in d-M-Y format in the HTML
+  cell (e.g. "14-Mar-1978") and as the raw FHIR dateTime in FSH.
+#}
 {% if socialhistory.effectiveDateTime is empty %}
 {{ addHTML_td("-") }}
 {% else %}
@@ -39,6 +136,13 @@ Usage: #inline
 {{ addHTML_tdnb(socialhistory.effectiveDateTime|date('d-M-Y')) }}
 {% endif %}
 
+{#
+  ── Coded value (td 3: conditional) ────────────────────────────────────────
+  A valueCodeableConcept is the most common result type for social history
+  observations (e.g. "Current every day smoker", "Occasional drinker").
+  If absent, no FSH rule is emitted and the HTML cell shows "-".
+  The display text is rendered as a pill badge (addHTML_tdnb).
+#}
 {% if socialhistory.valueCodeableConcept is empty %}
 {{ addHTML_td("-") }}
 {% else %}
@@ -46,6 +150,12 @@ Usage: #inline
 {{ addHTML_tdnb(socialhistory.valueCodeableConcept.display) }}
 {% endif %}
 
+{#
+  ── Note / annotation (td 4: conditional) ──────────────────────────────────
+  An optional free-text annotation stored in note[0].text. Index [0] is used
+  (not [+]) because at most one note is expected per social history observation.
+  If absent, no FSH rule is emitted and the HTML cell shows "-".
+#}
 {% if socialhistory.note is empty %}
 {{ addHTML_td("-") }}
 {% else %}
@@ -55,16 +165,20 @@ Usage: #inline
 
 {{ addHTML_trend() -}}
 
-{# populate .text #}
+{#
+  ── FHIR narrative ───────────────────────────────────────────────────────────
+  Both HEAD and HTML bags are flushed here so the inline narrative includes
+  the column header row followed by the data row.
+#}
 * text.status = #generated
-* text.div = """
+* text.div    = """
 <div xmlns="http://www.w3.org/1999/xhtml">
 <table class="hl7__ips">{{ emitHEAD() | raw }}{{ emitHTML() | raw }}</table>
 </div>
 """
 
-%%HEAD%% {# tag required, content below maybe emtpy #}
+%%HEAD%% {# ── Section marker required by the FSH pre-processor ─────────────── #}
 {{ emitHEAD() | raw }}
 
-%%HTML%% {# tag required, content below maybe emtpy #}
+%%HTML%% {# ── Section marker required by the FSH pre-processor ─────────────── #}
 {{ emitHTML() | raw }}

@@ -1,11 +1,111 @@
 {#
-  This is the TWIG file for the creation of an FSH instance including the HTML parts.
-  see README.md
+  ============================================================================
+  TEMPLATE: encounter-eu-hdr_fsh.twig
+  ============================================================================
+  PURPOSE
+    Generates a FSH Encounter instance conforming to the EncounterEuHdr
+    profile (EU Hospital Discharge Report). Captures an inpatient encounter
+    with the hospital, the responsible practitioner, the encounter period,
+    clinical reasons, and service type.
 
-  KH since 2025-09-07, 2026-03-17
+  PROFILE CONFORMANCE
+    InstanceOf: EncounterEuHdr
+    Fixed elements:
+      status : #completed (using full URI notation — see below)
+      class  : $v3-ActCode#IMP (inpatient)
+
+  THREE-COLUMN HTML TABLE
+    Column 1 — Location (hospital name, city, country)
+    Column 2 — Encounter period (start – end date range, or single date)
+    Column 3 — Reason(s) as an HTML `<ul><li>` list
+
+  STATUS — FULL URI NOTATION
+    Uniquely among the templates, encounter status uses a full URI rather than
+    the short `#code` form:
+      * status = http://hl7.org/fhir/encounter-status#completed "completed"
+    This is valid FSH but differs from the `* status = #completed` pattern
+    used by all other templates. It may be required by the EncounterEuHdr
+    profile's binding strength or was an early authoring choice.
+
+  DATE RESOLUTION — DUAL FIELD NAMES WITH ?? COALESCING
+    Encounter periods may be supplied under two different field name conventions
+    in the source data. The template resolves this with chained ?? operators:
+      {% set theStart = encounter.start ?? encounter.episodestart ?? null %}
+      {% set theEnd   = encounter.end   ?? encounter.episodeend   ?? null %}
+    This allows the caller to supply either `start`/`end` or
+    `episodestart`/`episodeend` — whichever is non-null is used.
+
+  SINGLE-DATE VS DATE-RANGE DISPLAY (HTML only)
+    When theStart equals theEnd (same-day encounter), the HTML cell shows a
+    single date. Otherwise a "start - end" range is shown.
+
+  REASON COLUMN — HTML LIST ACCUMULATION PATTERN
+    The encounter reasons are rendered as an HTML `<ul><li>` list in HTML
+    column 3. A local variable `rea` is built by string accumulation across
+    the reasonCode loop:
+      {% set rea = "<ul>" %}
+      {% for r in encounter.reason %}
+      * reasonCode[+] = {{ r.system }}#{{ r.code }} "{{ r.display }}"
+      {% set rea = rea ~ "<li>" ~ r.display ~ "</li>" %}
+      {% endfor %}
+      {% set rea = rea ~ "</ul>" %}
+      {{ addHTML_td(rea) }}
+    The HTML markup is passed as a raw string into addHTML_td() — the caller
+    must ensure the vi7eti/SYNDERAI stylesheet renders `<ul>/<li>` correctly
+    inside a table cell, and that addHTML_td() does not HTML-escape the tags.
+
+  PARTICIPANT AND SERVICE PROVIDER — BOTH CONDITIONAL
+    serviceProvider references `hospital.instanceorganization` (conditional).
+    participant[0] references `hospital.instancepractitioner` (conditional).
+    Both use the same `hospital.*` variables as provider-as-hospital_fsh.twig,
+    implying that template must be invoked before this one in the same bundle.
+    participant[0].period.end is additionally conditional on `encounter.end`.
+
+  SERVICE TYPE — LOOP
+    `encounter.service` is an array; each entry produces one `serviceType[+]`
+    CodeableConcept.
+
+  CONTEXT VARIABLES
+  ┌───────────────────────────────┬──────────┬──────────────────────────────────────────────┐
+  │ Variable                      │ Type     │ Description                                  │
+  ├───────────────────────────────┼──────────┼──────────────────────────────────────────────┤
+  │ encounter.instanceid          │ string   │ Unique resource id.                          │
+  │ encounter.start               │ string?  │ ISO 8601 period start (primary field name).  │
+  │ encounter.episodestart        │ string?  │ ISO 8601 period start (alternate field name).│
+  │ encounter.end                 │ string?  │ ISO 8601 period end (primary field name).    │
+  │ encounter.episodeend          │ string?  │ ISO 8601 period end (alternate field name).  │
+  │ encounter.reason              │ object[] │ Array of reason objects.                     │
+  │   [n].system                  │ string   │   CodeSystem URI.                            │
+  │   [n].code                    │ string   │   Reason concept code.                       │
+  │   [n].display                 │ string   │   Reason display text (also in HTML list).   │
+  │ encounter.service             │ object[] │ Array of service type objects.               │
+  │   [n].system                  │ string   │   CodeSystem URI.                            │
+  │   [n].code                    │ string   │   Service type code.                         │
+  │   [n].display                 │ string   │   Service type display text.                 │
+  │ hospital.instanceorganization │ string?  │ UUID of the hospital Organisation resource.  │
+  │                               │          │ When present, emits serviceProvider.         │
+  │ hospital.instancepractitioner │ string?  │ UUID of the Practitioner resource. When      │
+  │                               │          │ present, emits participant[0].               │
+  │ hospital.name                 │ string   │ Hospital display name for HTML td 1.         │
+  │ hospital.city                 │ string   │ City for HTML td 1.                          │
+  │ hospital.country              │ string   │ Country for HTML td 1.                       │
+  │ patient.instanceid            │ string   │ UUID of the Patient resource.                │
+  │ patient.name                  │ string   │ Full display name for the subject Reference. │
+  └───────────────────────────────┴──────────┴──────────────────────────────────────────────┘
+
+  CODESYSTEMS REFERENCED
+    http://hl7.org/fhir/encounter-status — #completed (full URI notation)
+    $v3-ActCode                          — #IMP (inpatient encounter class)
+    $v3-ParticipationType                — #PPRF "primary performer"
+    Reason and service type codesystem URIs — caller-supplied
+
+  AUTHOR   KH
+  SINCE    2025-09-07, 2026-03-17
+  ============================================================================
 #}
 
-%%FSH%% {# tag required #}
+%%FSH%% {# ── Section marker required by the FSH pre-processor ─────────────── #}
+
 Instance: {{ setInstance("Instance-Encounter-" ~ encounter.instanceid) }}
 InstanceOf: EncounterEuHdr
 Title: "Encounter (HDR)"
@@ -14,7 +114,7 @@ Usage: #inline
 
 * id = "{{ encounter.instanceid }}"
 
-{# addign headers for HTML table #}
+{# HEAD bag: three-column table header #}
 {{ addHEAD_tr() }}
 {{ addHEAD_th("Location") }}
 {{ addHEAD_th("Period") }}
@@ -23,17 +123,28 @@ Usage: #inline
 
 {{ addHTML_tr() }}
 
+{#
+  ── Fixed status and class ───────────────────────────────────────────────────
+  Note: status uses full URI notation (unique among all templates).
+  class #IMP = inpatient encounter.
+#}
 * status = http://hl7.org/fhir/encounter-status#completed "completed"
-* class = $v3-ActCode#IMP
+* class  = $v3-ActCode#IMP
 
+{#
+  ── Service provider and participant (both conditional) ──────────────────────
+  serviceProvider: hospital Organisation — emitted when instanceorganization is set.
+  participant[0]: primary performer (Practitioner) — emitted when instancepractitioner
+  is set. participant[0].period.end is additionally conditional on encounter.end.
+  Both reference resources generated by provider-as-hospital_fsh.twig.
+#}
 {% if hospital.instanceorganization is not empty %}
-{# serviceProvider shall be an organization = hospital #}
 * serviceProvider = Reference(urn:uuid:{{ hospital.instanceorganization }})
 {% endif %}
+{# HTML td 1: location string assembled from hospital fields #}
 {{ addHTML_td(hospital.name  ~ ", " ~ hospital.city ~ ", " ~ hospital.country) }}
 
 {% if hospital.instancepractitioner is not empty %}
-{# primary performer is a participant individual = practitioner role in that hospital #}
 * participant[0].type = $v3-ParticipationType#PPRF "primary performer"
 {% if encounter.end is not empty %}
 * participant[0].period.end = "{{ encounter.end }}"
@@ -41,55 +152,77 @@ Usage: #inline
 * participant[0].individual = Reference(urn:uuid:{{ hospital.instancepractitioner }})
 {% endif %}
 
-{# start and end dates with "start" and "end" or with "episodestart" and "episodeend" #}
+{#
+  ── Period — dual field name resolution with ?? coalescing ───────────────────
+  theStart and theEnd each resolve from two possible source field names.
+  The caller may supply either encounter.start/end or encounter.episodestart/end.
+#}
 {% set theStart = encounter.start ?? encounter.episodestart ?? null %}
-{% set theEnd = encounter.end ?? encounter.episodeend ?? null %}
+{% set theEnd   = encounter.end   ?? encounter.episodeend   ?? null %}
 {% if theStart is not empty %}
-* period.start = "{{ encounter.start }}{{ encounter.episodestart }}"
+* period.start = "{{ theStart }}"
 {% endif %}
 {% if theEnd is not empty %}
-* period.start = "{{ encounter.end }}{{ encounter.episodeend }}"
+* period.start = "{{ theEnd }}"
 {% endif %}
-{# html gen #}
+
+{#
+  ── HTML td 2: period display ────────────────────────────────────────────────
+  Single date when start == end; "start - end" range otherwise.
+#}
 {% if theStart is not empty or theEnd is not empty %}
 {% if theStart == theEnd %}
-{{ addHTML_td( theEnd|date('d-m-Y') ) }}
+{{ addHTML_td( theEnd|date('d-M-Y') ) }}
 {% else %}
-{{ addHTML_td( theStart|date('d-m-Y') ~ " - " ~ theEnd|date('d-m-Y') ) }}
+{{ addHTML_td( theStart|date('d-M-Y') ~ " - " ~ theEnd|date('d-M-Y') ) }}
 {% endif %}
 {% else %}
 {{ addHTML_td( " ? ") }}
 {% endif %}
 
-* subject = Reference({{ patient.instanceid }}) "{{ patient.name }}"
+{#
+  ── Subject reference ────────────────────────────────────────────────────────
+#}
+* subject = Reference(urn:uuid:{{ patient.instanceid }}) "{{ patient.name }}"
 
-{# reason for encounter #}
+{#
+  ── Reason codes + HTML list accumulation ────────────────────────────────────
+  FSH: one reasonCode[+] rule per reason (system#code "display").
+  HTML: a <ul><li> list is built by string accumulation into the `rea` variable,
+  then passed to addHTML_td(). The HTML markup is embedded as a raw string —
+  ensure the stylesheet and addHTML_td() render it unescaped.
+#}
 {% set rea = "<ul>" %}
 {% for r in encounter.reason %}
 * reasonCode[+] = {{ r.system }}#{{ r.code }} "{{ r.display }}"
-{# add also the HTML rendition of the reason #}
 {% set rea = rea ~ "<li>" ~ r.display ~ "</li>" %}
 {% endfor %}
 {% set rea = rea ~ "</ul>" %}
 {{ addHTML_td(rea) }}
 
-{# service type for encounter #}
+{#
+  ── Service type — loop ─────────────────────────────────────────────────────
+  One serviceType[+] CodeableConcept per entry in encounter.service.
+#}
 {% for s in encounter.service %}
 * serviceType[+] = {{ s.system }}#{{ s.code }} "{{ s.display }}"
 {% endfor %}
 
 {{ addHTML_trend() -}}
 
-{# populate .text #}
+{#
+  ── FHIR narrative — body rows only (Pattern 1) ─────────────────────────────
+  emitHTML() only — HEAD bag not flushed inside text.div.
+#}
 * text.status = #generated
-* text.div = """
+* text.div    = """
 <div xmlns="http://www.w3.org/1999/xhtml">
 <table class="hl7__ips">{{ emitHTML() | raw }}</table>
 </div>
 """
 
-%%HEAD%% {# tag required, content below maybe emtpy #}
+%%HEAD%% {# ── Section marker required by the FSH pre-processor ─────────────── #}
 {{ emitHEAD() | raw }}
 
-%%HTML%% {# tag required, content below maybe emtpy #}
+%%HTML%% {# ── Section marker required by the FSH pre-processor ─────────────── #}
 {{ emitHTML() | raw }}

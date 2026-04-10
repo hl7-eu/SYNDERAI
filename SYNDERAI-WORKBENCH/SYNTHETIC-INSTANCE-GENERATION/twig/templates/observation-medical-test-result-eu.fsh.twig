@@ -1,35 +1,129 @@
 {#
-  This is the TWIG file for the creation of an FSH instance including the HTML parts.
-  see README.md
-  
-  KH since 2026-03-01
+  ============================================================================
+  TEMPLATE: observation-medical-test-result-eu_fsh.twig
+  ============================================================================
+  PURPOSE
+    A FRAME TEMPLATE that generates a FSH Observation instance conforming to
+    the MedicalTestResultEuCore profile. It handles the instance header and
+    category selection, then delegates all remaining body rules (id, code,
+    value, reference range, narrative, etc.) to the shared partial:
+
+      {% include 'observation-medical-test-body.fsh.twig' %}
+
+    The %%HEAD%% and %%HTML%% section markers, as well as the narrative
+    (`text.div`) and all HTML bag operations, are provided by the included
+    partial — this frame contributes only the FSH instance header and the
+    category/performer block.
+
+  PROFILE CONFORMANCE
+    InstanceOf: MedicalTestResultEuCore
+
+  CATEGORY SELECTION — BOOLEAN FLAG BRANCHING
+    The observation category and performer are determined by three boolean
+    flags passed from the PHP caller. The flags are mutually exclusive:
+
+    ┌─────────────────┬──────────────────────────────────────────────────────────┐
+    │ Flag            │ Category slice and performer display                     │
+    ├─────────────────┼──────────────────────────────────────────────────────────┤
+    │ isVitaLSignCode │ category[VSCat].coding = vital-signs                    │
+    │                 │ performer: "The Central European Examiners"             │
+    │ isImagingCode   │ category.coding = imaging                               │
+    │                 │ performer: "The Central European Radiology"             │
+    │ isLaboratory    │ category[laboratory].coding = laboratory                │
+    │                 │ performer: "The Central European Laboratory"            │
+    │ (else / default)│ category.coding = laboratory (same as isLaboratory)    │
+    │                 │ performer: "The Central European Laboratory"            │
+    └─────────────────┴──────────────────────────────────────────────────────────┘
+
+    Named category slices:
+      [VSCat]       — vital signs slice name (matches HL7 vitalsigns profile)
+      [laboratory]  — laboratory slice name (matches EU lab profile)
+    Imaging uses no named slice (plain `category.coding`).
+
+  PERFORMER — PLACEHOLDER DISPLAY STRINGS
+    All four branches emit a hardcoded `performer[+].display` string. A
+    commented-out `performer[=]` reference line (to a fixed UUID) is present
+    in each branch — retained for future use when real performer resources
+    are available:
+      { # * performer[=] = Reference(urn:uuid:e512e2e2-...) # }
+
+  INCLUDE PATTERN
+    The `{% include %}` statement passes the current Twig variable context
+    automatically — all variables available in this frame (instanceid,
+    labresult.*, etc.) are accessible inside the included partial without
+    explicit `with` passing.
+
+  CONTEXT VARIABLES
+  ┌──────────────────┬──────────┬──────────────────────────────────────────────────┐
+  │ Variable         │ Type     │ Description                                      │
+  ├──────────────────┼──────────┼──────────────────────────────────────────────────┤
+  │ instanceid       │ string   │ Resource id; passed to setInstance() here and    │
+  │                  │          │ used as * id in the included partial.            │
+  │ isVitaLSignCode  │ bool     │ True when the observation code is a vital sign.  │
+  │ isImagingCode    │ bool     │ True when the observation code is an imaging     │
+  │                  │          │ study result.                                    │
+  │ isLaboratory     │ bool     │ True when the observation is a lab result.       │
+  │ labresult.*      │ various  │ All labresult fields — passed through to the     │
+  │                  │          │ included partial. See observation-medical-test-  │
+  │                  │          │ body_fsh.twig for the full variable contract.    │
+  └──────────────────┴──────────┴──────────────────────────────────────────────────┘
+
+  CODESYSTEMS REFERENCED (category)
+    $observation-category — http://terminology.hl7.org/CodeSystem/observation-category
+      Codes: vital-signs, imaging, laboratory
+
+  AUTHOR   KH
+  SINCE    2026-03-01
+  ============================================================================
 #}
 
-%%FSH%% {# tag required #}
+%%FSH%% {# ── Section marker required by the FSH pre-processor ─────────────── #}
+
 Instance: {{ setInstance("Instance-Observation-" ~ instanceid) }}
 InstanceOf: MedicalTestResultEuCore
 Title: "Medical Test Results"
 Description: "Medical Test Results"
 Usage: #inline
 
-{# special handling of category.coding, see also https://github.com/hl7-eu/SYNDERAI/issues/100 #}
+{#
+  ── Category and performer selection ───────────────────────────────────────
+  Mutually exclusive boolean flags determine the observation category slice
+  and the hardcoded performer display string.
+
+  Note on performer references: the commented-out performer[=] Reference lines
+  contain a fixed placeholder UUID and are retained for when real performer
+  resources are wired into the pipeline.
+#}
 {% if isVitaLSignCode %}
+{# Vital sign: named [VSCat] slice; examiner performer #}
 * category[VSCat].coding = $observation-category#vital-signs
-* performer[+].display = "The Central European Examiners"
+* performer[+].display   = "The Central European Examiners"
 {# * performer[=] = Reference(urn:uuid:e512e2e2-9600-4c69-a269-af3ab5421e09) #}
+
 {% elseif isImagingCode %}
-* category.coding = $observation-category#imaging
+{# Imaging: no named slice; radiology performer #}
+* category.coding      = $observation-category#imaging
 * performer[+].display = "The Central European Radiology"
 {# * performer[=] = Reference(urn:uuid:e512e2e2-9600-4c69-a269-af3ab5421e09) #}
+
 {% elseif isLaboratory %}
+{# Laboratory: named [laboratory] slice; lab performer #}
 * category[laboratory].coding = $observation-category#laboratory
-* performer[+].display = "The Central European Laboratory"
+* performer[+].display        = "The Central European Laboratory"
 {# * performer[=] = Reference(urn:uuid:e512e2e2-9600-4c69-a269-af3ab5421e09) #}
+
 {% else %}
-* category.coding = $observation-category#laboratory
+{# Default — same as laboratory branch when no flag is set #}
+* category.coding      = $observation-category#laboratory
 * performer[+].display = "The Central European Laboratory"
 {# * performer[=] = Reference(urn:uuid:e512e2e2-9600-4c69-a269-af3ab5421e09) #}
 {% endif %}
 
+{#
+  ── Include shared observation body ─────────────────────────────────────────
+  Delegates all remaining FSH rules (id, code, effectiveDateTime, value,
+  referenceRange, bodySite, specimen, text.div) and all HTML bag operations
+  to the shared partial. The %%HEAD%% and %%HTML%% section markers are also
+  provided by the partial.
+#}
 {% include 'observation-medical-test-body.fsh.twig' %}
-

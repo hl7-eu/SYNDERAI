@@ -1,45 +1,129 @@
 {#
-  This is the TWIG file for the creation of an FSH instance including the HTML parts.
-  see README.md
+  ============================================================================
+  TEMPLATE: observation-tobaccouse_fsh.twig
+  ============================================================================
+  PURPOSE
+    Generates a FSH Observation instance representing a tobacco use
+    observation (base FHIR R4 Observation — no additional EU profile). Each
+    invocation captures a single tobacco use finding with a coded observation
+    type and a coded result value.
 
-  KH since 2026-03-24
+  PROFILE CONFORMANCE
+    InstanceOf: Observation (base FHIR R4)
+    Status: always #final
+
+  TWO-COLUMN HTML TABLE (no HEAD row)
+    Column 1 — Tobacco use concept display  (`tobaccouse.display`)
+    Column 2 — Result value code            (`tobaccouse.valueCodeableConcept.code`)
+    No `addHEAD_th()` calls — %%HEAD%% is empty.
+
+  HTML DISPLAY FIELD CHOICES
+    TD 1 uses `tobaccouse.display` (a top-level display field), NOT
+    `tobaccouse.code.display`. This may be a different, pre-formatted
+    string rather than the raw coding display.
+
+    TD 2 uses `tobaccouse.valueCodeableConcept.code` (the code itself),
+    NOT the `.display` field. The cell therefore shows a coded value
+    (e.g. "77176002") rather than a human-readable label. This may be
+    intentional for compact rendering or a field-selection oversight —
+    consider whether `.display` would be more appropriate for human readers.
+
+  FSH VALUE ELEMENT
+    `valueCodeableConcept.coding` (not `valueCodeableConcept` directly) —
+    the coding sub-element is addressed explicitly. This differs from some
+    other templates that set the CodeableConcept at the top level.
+
+  LEADING WHITESPACE TRIM  `{{-`
+    Both `addHTML_td()` calls use `{{-` (leading trim) rather than the
+    standard `{{ ... }}` form. This removes whitespace/newlines before the
+    expression output and is consistent with observation-pregnancy-status
+    in the same project.
+
+  EFFECTIVE DATE — CONDITIONAL
+    `tobaccouse.effective` is optional. When empty, no `effectiveDateTime`
+    rule is emitted and no HTML representation is added. No data-absent-reason
+    extension is applied.
+
+  CONTEXT VARIABLES
+  ┌────────────────────────────────────────────┬──────────┬──────────────────────────────────────────┐
+  │ Variable                                   │ Type     │ Description                              │
+  ├────────────────────────────────────────────┼──────────┼──────────────────────────────────────────┤
+  │ instanceid                                 │ string   │ Unique resource id.                      │
+  │ patient.instanceid                         │ string   │ UUID of the Patient resource.            │
+  │ patient.name                               │ string   │ Full display name for Reference.         │
+  │ tobaccouse.code.system                     │ string   │ CodeSystem URI for the observation type. │
+  │ tobaccouse.code.code                       │ string   │ Observation concept code.                │
+  │ tobaccouse.code.display                    │ string   │ Observation type display (in FSH only).  │
+  │ tobaccouse.display                         │ string   │ Pre-formatted display label for HTML td 1│
+  │                                            │          │ (may differ from tobaccouse.code.display).│
+  │ tobaccouse.effective                       │ string?  │ Optional ISO 8601 effective date/time.   │
+  │ tobaccouse.valueCodeableConcept.system     │ string   │ CodeSystem URI for the result value.     │
+  │ tobaccouse.valueCodeableConcept.code       │ string   │ Result code; shown in HTML td 2.         │
+  │ tobaccouse.valueCodeableConcept.display    │ string   │ Result display (used in FSH only).       │
+  └────────────────────────────────────────────┴──────────┴──────────────────────────────────────────┘
+
+  AUTHOR   KH
+  SINCE    2026-03-24
+  ============================================================================
 #}
 
-%%FSH%% {# tag required #}
+%%FSH%% {# ── Section marker required by the FSH pre-processor ─────────────── #}
+
 Instance: {{ setInstance("Instance-Observation-" ~ instanceid) }}
 InstanceOf: Observation
 Title: "Observation Tobacco Use"
 Description: "Observation Tobacco Use"
 Usage: #inline
 
-* id = "{{ instanceid }}"
-
+* id     = "{{ instanceid }}"
 * status = #final
 
 {{ addHTML_tr() }}
 
+{#
+  ── Observation code (td 1) ─────────────────────────────────────────────────
+  FSH: system#code "display" from tobaccouse.code.* fields.
+  HTML: tobaccouse.display (top-level field, may differ from code.display).
+  Leading whitespace trim ({{-) suppresses preceding newline.
+#}
 * code = {{ tobaccouse.code.system }}#{{ tobaccouse.code.code }} "{{ tobaccouse.code.display }}"
 {{- addHTML_td(tobaccouse.display) }}
 
+{#
+  ── Effective date (conditional) ────────────────────────────────────────────
+  No FSH rule emitted when absent; no data-absent-reason extension added.
+#}
 {% if tobaccouse.effective is not empty %}
 * effectiveDateTime = "{{ tobaccouse.effective }}"
 {% endif %}
 
+{#
+  ── Result value (td 2) ─────────────────────────────────────────────────────
+  FSH: valueCodeableConcept.coding (sub-element addressed explicitly).
+  HTML: shows the code value (not the display string) — see note above.
+  Leading whitespace trim ({{-) applied.
+#}
 * valueCodeableConcept.coding = {{ tobaccouse.valueCodeableConcept.system }}#{{ tobaccouse.valueCodeableConcept.code }} "{{ tobaccouse.valueCodeableConcept.display }}"
 {{- addHTML_td(tobaccouse.valueCodeableConcept.code) }}
 
+{#
+  ── Patient reference ───────────────────────────────────────────────────────
+#}
 * subject = Reference(urn:uuid:{{ patient.instanceid }}) "{{ patient.name }}"
 
 {{ addHTML_trend() -}}
 
+{#
+  ── FHIR narrative — body rows only (no HEAD) ──────────────────────────────
+#}
 * text.status = #generated
-* text.div = """
+* text.div    = """
 <div xmlns="http://www.w3.org/1999/xhtml">
 <table class="hl7__ips">{{ emitHTML() | raw }}</table>
 </div>
 """
 
-%%HEAD%% {# tag required, content below maybe emtpy #}
+%%HEAD%% {# ── Section marker required by the FSH pre-processor — intentionally empty #}
 
-%%HTML%% {# tag required, content below maybe emtpy #}
+%%HTML%% {# ── Section marker required by the FSH pre-processor ─────────────── #}
 {{ emitHTML() | raw }}

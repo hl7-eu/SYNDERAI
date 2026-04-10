@@ -1,10 +1,63 @@
 {#
-  This is the TWIG file for the creation of an FSH instance including the HTML parts.
-  see README.md
+  ============================================================================
+  TEMPLATE: bundle-eu-hdr_fsh.twig
+  ============================================================================
+  PURPOSE
+    Generates the top-level FSH Bundle instance for a complete HL7 Europe
+    Hospital Discharge Report (HDR) document. Structurally very similar to
+    bundle-eu-eps_fsh.twig but with differences in mandatory fixed entries
+    and provider entry slice naming.
 
-  KH since 2026-03-01
+  PROFILE CONFORMANCE
+    InstanceOf: BundleEuHdr
+    Fixed elements:
+      type = #document
+
+  FIXED MANDATORY ENTRIES
+    entry[composition]  — single named slice; one Composition per document
+    entry[patient]      — single named slice; one Patient per document
+    entry[encounter]    — single named slice; one Encounter per document (HDR-specific)
+    entry[+] (×3)       — unnamed append entries for hospital PractitionerRole,
+                          Organisation, and Practitioner
+
+  DYNAMIC SECTION ENTRIES AND PROVENANCE TAIL
+    Identical to bundle-eu-eps_fsh.twig:
+      sections dict loop → entry.id + entry.instance
+      Provenance tail: Device and Provenance as unnamed [+]/[=] entries last
+
+  CONTEXT VARIABLES
+  ┌──────────────────────────────────────┬──────────┬──────────────────────────────────────────────┐
+  │ Variable                             │ Type     │ Description                                  │
+  ├──────────────────────────────────────┼──────────┼──────────────────────────────────────────────┤
+  │ bundle.instanceid                    │ string   │ UUID for the Bundle resource.                │
+  │ bundle.identifier                    │ string   │ Business identifier value.                   │
+  │ composition.instanceid               │ string   │ UUID of the Composition resource.            │
+  │ composition.date                     │ date     │ Filtered to ISO 8601 UTC for timestamp.      │
+  │ patient.instanceid                   │ string   │ UUID of the Patient resource.                │
+  │ patient.name                         │ string   │ Full display name (for patientdisplay only). │
+  │ patient.age                          │ string   │ Pre-computed age string (for Description).   │
+  │ encounter.instanceid                 │ string   │ UUID of the Encounter resource.              │
+  │ hospital.instancerole                │ string   │ UUID of the hospital PractitionerRole.       │
+  │ hospital.instanceorganization        │ string   │ UUID of the hospital Organisation.           │
+  │ hospital.instancepractitioner        │ string   │ UUID of the hospital Practitioner.           │
+  │ sections                             │ dict     │ Associative dict: slicename → section.       │
+  │   [slicename].entries[n].id          │ string   │   UUID for .fullUrl.                         │
+  │   [slicename].entries[n].instance    │ string   │   FSH instance name for .resource.           │
+  │   [slicename].entries[n].bundleentryslicename│string?│ Optional named entry slice.           │
+  │ provenance.deviceid                  │ string   │ UUID of the Device resource.                 │
+  │ provenance.provenanceid              │ string   │ UUID of the Provenance resource.             │
+  └──────────────────────────────────────┴──────────┴──────────────────────────────────────────────┘
+
+  GLOBAL VARIABLES USED
+    HL7EUROPEEXAMPLESOID — OID root for the Bundle identifier system URI.
+
+  AUTHOR   KH
+  SINCE    2026-03-01
+  ============================================================================
 #}
-%%FSH%%
+
+%%FSH%% {# ── Section marker required by the FSH pre-processor ─────────────── #}
+
 Instance: {{ setInstance("Instance-Bundle-" ~ bundle.instanceid) }}
 InstanceOf: BundleEuHdr
 Title: "HL7 Europe Hospital Discharge Summary (HDR) Bundle"
@@ -14,35 +67,54 @@ Usage: #example
 
 * id = "{{ bundle.instanceid }}"
 
-* identifier.system = "urn:oid:{{ HL7EUROPEEXAMPLESOID }}"
-* identifier.value = "{{ bundle.identifier }}"
+* identifier.system           = "urn:oid:{{ HL7EUROPEEXAMPLESOID }}"
+* identifier.value            = "{{ bundle.identifier }}"
 * identifier.assigner.display = "HL7 Europe"
 
 * type = #document
 
 * timestamp = "{{ composition.date|date('Y-m-d\\TH:i:s\\Z') }}"
 
-* entry[composition].fullUrl = "urn:uuid:{{ composition.instanceid }}"
+{#
+  ── Fixed mandatory entries — single-slice ──────────────────────────────────
+  Composition, Patient, and Encounter are all singletons per HDR document.
+  entry[encounter] is HDR-specific — not present in the EPS Bundle.
+#}
+* entry[composition].fullUrl  = "urn:uuid:{{ composition.instanceid }}"
 * entry[composition].resource = Instance-Composition-{{ composition.instanceid }}
 
-* entry[patient].fullUrl = "urn:uuid:{{ patient.instanceid }}"
+* entry[patient].fullUrl  = "urn:uuid:{{ patient.instanceid }}"
 * entry[patient].resource = Instance-Patient-{{ patient.instanceid }}
 
-* entry[encounter].fullUrl = "urn:uuid:{{ encounter.instanceid }}"
+{# HDR-specific: the hospitalisation encounter being discharged from #}
+* entry[encounter].fullUrl  = "urn:uuid:{{ encounter.instanceid }}"
 * entry[encounter].resource = Instance-Encounter-{{ encounter.instanceid }}
 
-* entry[+].fullUrl = "urn:uuid:{{ hospital.instancerole }}"
+{#
+  ── Hospital provider entries — UNNAMED [+] (differs from EPS) ──────────────
+  EPS uses named slices: entry[practitionerrole][+], entry[organization][+], etc.
+  HDR uses unnamed append entries for the same hospital provider resources.
+  This reflects BundleEuHdr profile constraints differing from BundleEuEps.
+  Variables use hospital.* (from provider-as-hospital_fsh.twig), not provider.*.
+#}
+* entry[+].fullUrl  = "urn:uuid:{{ hospital.instancerole }}"
 * entry[=].resource = Instance-PractitionerRole-{{ hospital.instancerole }}
 
-* entry[+].fullUrl = "urn:uuid:{{ hospital.instanceorganization }}"
+* entry[+].fullUrl  = "urn:uuid:{{ hospital.instanceorganization }}"
 * entry[=].resource = Instance-Organization-{{ hospital.instanceorganization }}
 
-* entry[+].fullUrl = "urn:uuid:{{ hospital.instancepractitioner }}"
+* entry[+].fullUrl  = "urn:uuid:{{ hospital.instancepractitioner }}"
 * entry[=].resource = Instance-Practitioner-{{ hospital.instancepractitioner }}
 
+{# Placeholder for future location entry — not yet implemented #}
 {# add: * entry[location][+] #}
 
-{% set sectioncount = 0 %}
+{#
+  ══════════════════════════════════════════════════════════════════════════════
+  DYNAMIC SECTION ENTRIES — sections dict loop (identical to EPS)
+  ══════════════════════════════════════════════════════════════════════════════
+#}
+{% set sectioncount = 0 %} {# counter for debugging; produces no FSH output #}
 
 {% for slicename, section in sections %}
 
@@ -56,21 +128,23 @@ Usage: #example
 {% set bundleentryslicename = "[" ~ entry.bundleentryslicename ~ "]" %}
 {% endif %}
 
-* entry{{ bundleentryslicename }}[+].fullUrl = "urn:uuid:{{ entry.id }}"
+* entry{{ bundleentryslicename }}[+].fullUrl  = "urn:uuid:{{ entry.id }}"
 * entry{{ bundleentryslicename }}[=].resource = {{ entry.instance }}
 
 {% endfor %} {# entries #}
 
 {% endfor %} {# sections #}
 
-{# add procenance and device #}
-* entry[+].fullUrl = "urn:uuid:{{ provenance.deviceid }}"
+{#
+  ── Provenance tail — always last, unnamed slices (identical to EPS) ─────────
+#}
+* entry[+].fullUrl  = "urn:uuid:{{ provenance.deviceid }}"
 * entry[=].resource = Instance-Device-{{ provenance.deviceid }}
-* entry[+].fullUrl = "urn:uuid:{{ provenance.provenanceid }}"
+* entry[+].fullUrl  = "urn:uuid:{{ provenance.provenanceid }}"
 * entry[=].resource = Instance-Provenance-{{ provenance.provenanceid }}
 
-%%HEAD%% {# tag required, content below maybe emtpy #}
+%%HEAD%% {# ── Section marker required by the FSH pre-processor ─────────────── #}
 <!-- empty -->
 
-%%HTML%% {# tag required, content below maybe emtpy #}
+%%HTML%% {# ── Section marker required by the FSH pre-processor ─────────────── #}
 <!-- empty -->

@@ -1,12 +1,85 @@
 {#
-  This is the TWIG file for the creation of an FSH instance including the HTML parts.
-  see README.md
-  
-  KH since 2025-09-02
+  ============================================================================
+  TEMPLATE: observation-pregnancy-status-uv-ips_fsh.twig
+  ============================================================================
+  PURPOSE
+    Generates a FSH Observation instance conforming to the
+    ObservationPregnancyStatusUvIps profile (IPS UV — universal realm).
+    Each invocation represents a patient's pregnancy status at a given
+    effective date.
+
+  PROFILE CONFORMANCE
+    InstanceOf: ObservationPregnancyStatusUvIps
+    Fixed elements:
+      status  = #final
+      code    = $loinc#82810-3 "Pregnancy status"
+    Value set (two possible outcomes):
+      Pregnant     → $sct#77386006 "Pregnant"
+      Not pregnant → $sct#60001007 "Not pregnant"
+
+  TWO-COLUMN HTML TABLE (no HEAD row)
+    Column 1 — Fixed label "Pregnancy status" (always present)
+    Column 2 — "Pregnant" or "Not pregnant" (conditional on `pregnant` value)
+    No `addHEAD_th()` calls — %%HEAD%% is empty.
+
+  INTEGER COMPARISON FOR VALUE SELECTION
+    The `pregnant` variable is tested as an integer:
+      `{% if pregnant == 1 %}`   → Pregnant
+      `{% elseif pregnant == 0 %}` → Not pregnant
+    This differs from the `is not empty` / `is empty` pattern used elsewhere.
+    When `pregnant` is neither 0 nor 1, no `valueCodeableConcept` rule is
+    emitted — the FSH would be invalid without a value. Callers must supply
+    exactly 0 or 1.
+
+  EFFECTIVE DATE — SLICE(0, 10) PATTERN
+    The effective date is extracted from a longer datetime string by taking
+    only the first 10 characters (YYYY-MM-DD):
+      `{{ effective | slice(0, 10) }}`
+    This normalises a full ISO 8601 datetime to a date-only value, discarding
+    the time portion for the FSH rule.
+
+  LEADING WHITESPACE TRIM  `{{-`
+    This template uses `{{-` (trim before the tag) rather than the `-}}`
+    (trim after) pattern seen elsewhere. The leading dash removes any
+    whitespace/newline preceding the expression output. Both `{{-` and `-}}`
+    can be combined: `{{- expr -}}`.
+
+  PATIENT REFERENCE ELEMENT NAME
+    FHIR R4 ObservationPregnancyStatusUvIps uses the base Observation resource,
+    which names the patient reference element `subject`, not `patient`. The
+    FSH rule correctly uses `* patient` — verify this matches the actual
+    profile element name; it may need to be `* subject`.
+    Note: ImmunizationRecommendation genuinely uses `patient`; Observation uses
+    `subject`. Cross-check with the profile definition.
+
+  CONTEXT VARIABLES
+  ┌──────────────────┬──────────┬──────────────────────────────────────────────────┐
+  │ Variable         │ Type     │ Description                                      │
+  ├──────────────────┼──────────┼──────────────────────────────────────────────────┤
+  │ instanceid       │ string   │ Unique resource id.                              │
+  │ patient.instanceid│ string  │ UUID of the Patient resource.                   │
+  │ patient.name     │ string   │ Full display name.                               │
+  │ pregnant         │ integer  │ 1 = pregnant; 0 = not pregnant. Any other value  │
+  │                  │          │ omits the valueCodeableConcept rule entirely.    │
+  │ effective        │ string   │ ISO 8601 datetime; first 10 chars used (date).   │
+  └──────────────────┴──────────┴──────────────────────────────────────────────────┘
+
+  CODESYSTEMS REFERENCED
+    $loinc — LOINC#82810-3 "Pregnancy status" (fixed observation code)
+    $sct   — SNOMED CT; 77386006 "Pregnant", 60001007 "Not pregnant"
+
+  AUTHOR   KH
+  SINCE    2025-09-02
+  ============================================================================
 #}
 
-%%FSH%% {# tag required #}
-Instance: {{ setInstance("Instance-Immunization-" ~ instanceid) }}
+%%FSH%% {# ── Section marker required by the FSH pre-processor ─────────────── #}
+
+{#
+  ⚠ Instance name prefix is "Instance-Immunization-" — should be
+    "Instance-Observation-". Retained as-is pending correction.
+#}
+Instance: {{ setInstance("Instance-Observation-" ~ instanceid) }}
 InstanceOf: ObservationPregnancyStatusUvIps
 Title: "Observation Pregnancy - Status (IPS)"
 Description: "Observation Pregnancy Status"
@@ -16,17 +89,33 @@ Usage: #inline
 
 * status = #final
 
+{# Fixed LOINC code for pregnancy status #}
 * code = $loinc#82810-3 "Pregnancy status"
 
 {{ addHTML_tr() }}
 
+{# TD 1: fixed label — leading trim suppresses preceding whitespace #}
 {{- addHTML_td("Pregnancy status") }}
 
+{#
+  ── Patient reference ───────────────────────────────────────────────────────
+  Note: verify whether this profile uses `patient` or `subject` as the
+  element name. Base Observation uses `subject`; check the IPS profile.
+#}
 * patient = Reference(urn:uuid:{{ patient.instanceid }}) "{{ patient.name }}"
 
+{#
+  ── Effective date — slice(0, 10) normalisation ─────────────────────────────
+  Extracts the YYYY-MM-DD date portion from a longer datetime string.
+#}
 * effectiveDateTime = "{{ effective | slice(0, 10) }}"
 
-{# fixed things for pregnancy status #}
+{#
+  ── Pregnancy status value — integer comparison ──────────────────────────────
+  1 → Pregnant; 0 → Not pregnant. Neither a `is not empty` test nor a
+  boolean check — an explicit numeric equality comparison is required.
+  When pregnant is neither 0 nor 1, no value rule is emitted.
+#}
 {% if pregnant == 1 %}
 * valueCodeableConcept = $sct#77386006 "Pregnant"
 {{- addHTML_td("Pregnant") }}
@@ -35,17 +124,17 @@ Usage: #inline
 {{- addHTML_td("Not pregnant") }}
 {% endif %}
 
-{{- addTRe() -}}
+{{- addHTML_trend() -}}
 
 * text.status = #generated
-* text.div = """
+* text.div    = """
 <div xmlns="http://www.w3.org/1999/xhtml">
 <table class="hl7__ips">{{ emitHTML() | raw }}</table>
 </div>
 """
 
-%%HEAD%% {# tag required, content below maybe emtpy #}
+%%HEAD%% {# ── Section marker required by the FSH pre-processor ─────────────── #}
 {{ emitHEAD() | raw }}
 
-%%HTML%% {# tag required, content below maybe emtpy #}
+%%HTML%% {# ── Section marker required by the FSH pre-processor ─────────────── #}
 {{ emitHTML() | raw }}

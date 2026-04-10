@@ -1,11 +1,108 @@
 {#
-  This is the TWIG file for the creation of an FSH instance including the HTML parts.
-  see README.md
+  ============================================================================
+  TEMPLATE: device-and-provenance_fsh.twig
+  ============================================================================
+  PURPOSE
+    Generates TWO FSH instances that establish the data-provenance chain for
+    every SYNDERAI synthetic resource bundle:
 
-  KH since 2025-10-17
+      1. Device      — the SYNDERAI generator software that produced the
+                       synthetic data. Mostly static; only the device id
+                       is dynamic.
+      2. Provenance  — links all generated resources in the bundle back to
+                       the Device and to the published synthetic-data policy.
+
+    This template is the RUNTIME counterpart of the static examples in
+    synthetic-policy_fsh.twig. Where that file contains fixed showcase
+    instances for validation and documentation purposes (Usage: #example),
+    this template is invoked once per bundle generation and produces the
+    actual inline provenance record embedded in a real (synthetic) patient
+    bundle (Usage: #inline).
+
+  PROFILE CONFORMANCE
+    Device     : base FHIR R4 Device (no additional profile)
+    Provenance : base FHIR R4 Provenance (no additional profile)
+
+  NO HTML OUTPUT
+    Neither HTML nor HEAD bags are used. Both %%HEAD%% and %%HTML%% sections
+    are intentionally empty. Each instance carries only a brief plain-text
+    `text.div` narrative.
+
+  DEVICE INSTANCE — MOSTLY STATIC
+    All Device fields except `id` are hardcoded constants describing the
+    SYNDERAI generator:
+      distinctIdentifier : "synderai-generator-50"
+      deviceName[0]      : "SYNDERAI Synthetic Generator" (#manufacturer-name)
+      manufacturer       : "SYNDERAI Project"
+      version[0].value   : "5.0"
+    Only `provenance.deviceid` is dynamic. This means the same Device
+    description is produced for every bundle; version updates require
+    editing the template directly.
+
+  PROVENANCE TARGETS — LOOP PATTERN
+    The Provenance records which resources it attests. `provenance.targets`
+    is an array of UUID strings; each produces one `target[+]` Reference:
+      {% for t in provenance.targets %}
+      * target[+] = Reference(urn:uuid:{{ t }})
+      {% endfor %}
+    Callers must supply every resource UUID that should be covered by this
+    provenance record.
+
+  CODESYSTEM FULL URI NOTATION
+    This template uses full URI codesystem notation rather than the `$alias#code`
+    shorthand used by most other templates:
+      activity.coding  = http://…/v3-DataOperation#CREATE
+      agent[0].type    = http://…/provenance-participant-type#author
+      reason[0].coding = http://…/v3-ActReason#TRAIN
+    This is valid FSH and produces identical FHIR output to the alias form,
+    but differs stylistically from the `$sct#`, `$loinc#` notation elsewhere.
+    SUSHI must have these codesystems defined or be able to resolve them.
+
+  FIXED POLICY AND REASON
+    * policy[0]        — URL of the published SYNDERAI synthetic-data policy
+    * reason[0].coding — #TRAIN "training" (interoperability testing)
+    * activity.coding  — #CREATE "create"
+    All three are hardcoded and describe every SYNDERAI synthetic bundle
+    uniformly.
+
+  RELATIONSHIP TO synthetic-policy_fsh.twig
+    synthetic-policy_fsh.twig defines static EXAMPLE instances (Usage: #example)
+    for validation. This template defines INLINE instances (Usage: #inline)
+    embedded in real generated bundles. The Device in both files describes the
+    same generator software but with different instance ids and version strings.
+
+  CONTEXT VARIABLES
+  ┌───────────────────────────┬──────────┬──────────────────────────────────────────────┐
+  │ Variable                  │ Type     │ Description                                  │
+  ├───────────────────────────┼──────────┼──────────────────────────────────────────────┤
+  │ provenance.deviceid       │ string   │ UUID for the Device resource. Used in both   │
+  │                           │          │ the Device instance id and the Provenance    │
+  │                           │          │ agent.who Reference.                         │
+  │ provenance.provenanceid   │ string   │ UUID for the Provenance resource.            │
+  │ provenance.date           │ string   │ ISO 8601 dateTime when the data was recorded │
+  │                           │          │ (Provenance.recorded).                       │
+  │ provenance.targets        │ string[] │ Array of UUIDs of all resources attested by  │
+  │                           │          │ this Provenance. One target[+] Reference is  │
+  │                           │          │ emitted per entry.                           │
+  └───────────────────────────┴──────────┴──────────────────────────────────────────────┘
+
+  CODESYSTEMS REFERENCED (full URIs — no $ aliases)
+    http://terminology.hl7.org/CodeSystem/v3-DataOperation          — #CREATE
+    http://terminology.hl7.org/CodeSystem/provenance-participant-type — #author
+    http://terminology.hl7.org/CodeSystem/v3-ActReason              — #TRAIN
+
+  AUTHOR   KH
+  SINCE    2025-10-17
+  ============================================================================
 #}
 
-%%FSH%% {# tag required #}
+%%FSH%% {# ── Section marker required by the FSH pre-processor ─────────────── #}
+
+{#
+  ── Instance 1: Device ───────────────────────────────────────────────────────
+  Describes the SYNDERAI generator software. All fields except id are static
+  constants. To update the version or identifier, edit this template directly.
+#}
 Instance: {{ setInstance("Instance-Device-" ~ provenance.deviceid) }}
 InstanceOf: Device
 Title: "SYNDERAI Synthetic Generator Device"
@@ -14,21 +111,29 @@ Usage: #inline
 
 * id = "{{ provenance.deviceid }}"
 
-* status = #active
+{# Static device descriptor — same for every generated bundle #}
+* status             = #active
 * distinctIdentifier = "synderai-generator-50"
 * deviceName[0].name = "SYNDERAI Synthetic Generator"
 * deviceName[0].type = #manufacturer-name
-* manufacturer = "SYNDERAI Project"
-* version[0].value = "5.0"
+* manufacturer       = "SYNDERAI Project"
+* version[0].value   = "5.0"
 
-{# populate .text #}
+{# Minimal identification narrative #}
 * text.status = #generated
-* text.div = """
+* text.div    = """
 <div xmlns="http://www.w3.org/1999/xhtml">
 SYNDERAI Synthetic Generator v5.0
 </div>
 """
 
+{#
+  ── Instance 2: Provenance ───────────────────────────────────────────────────
+  Links every resource in the bundle to the Device above and to the published
+  synthetic-data policy. provenance.targets drives the target[+] loop.
+
+  Note: full URI codesystem notation is used here — see file header.
+#}
 Instance: {{ setInstance("Instance-Provenance-" ~ provenance.provenanceid) }}
 InstanceOf: Provenance
 Title: "Provenance for SYNDERAI Synthetic Example Data Resource"
@@ -37,29 +142,41 @@ Usage: #inline
 
 * id = "{{ provenance.provenanceid }}"
 
-{# add all target references #}
+{#
+  Target resources — one Reference per UUID in provenance.targets.
+  All resource UUIDs that this Provenance attests must be supplied by the caller.
+#}
 {% for t in provenance.targets %}
 * target[+] = Reference(urn:uuid:{{ t }})
 {% endfor %}
 
-* recorded = "{{ provenance.date }}"
-* activity.coding = http://terminology.hl7.org/CodeSystem/v3-DataOperation#CREATE "create"
-* activity.text = "Synthetic Example Data Generation"
-* policy[0] = "https://synderai.net/synderai-synthetic-data-policy"
-* agent[0].type.coding = http://terminology.hl7.org/CodeSystem/provenance-participant-type#author "Author"
-* agent[0].type.text = "author"
-* agent[0].who = Reference(urn:uuid:{{ provenance.deviceid }})
-* reason[0].coding = http://terminology.hl7.org/CodeSystem/v3-ActReason#TRAIN "training"
-* reason[0].text = "Interoperability Testing and Training (non-clinical use)"
+{# Timestamp of data generation #}
+* recorded         = "{{ provenance.date }}"
 
-{# populate .text #}
+{# Fixed activity: data creation event #}
+* activity.coding  = http://terminology.hl7.org/CodeSystem/v3-DataOperation#CREATE "create"
+* activity.text    = "Synthetic Example Data Generation"
+
+{# Fixed policy URL — points to the published synthetic-data policy document #}
+* policy[0]        = "https://synderai.net/synderai-synthetic-data-policy"
+
+{# Agent: the SYNDERAI generator Device is the author of the synthetic data #}
+* agent[0].type.coding = http://terminology.hl7.org/CodeSystem/provenance-participant-type#author "Author"
+* agent[0].type.text   = "author"
+* agent[0].who         = Reference(urn:uuid:{{ provenance.deviceid }})
+
+{# Fixed reason: interoperability testing and training (non-clinical use) #}
+* reason[0].coding = http://terminology.hl7.org/CodeSystem/v3-ActReason#TRAIN "training"
+* reason[0].text   = "Interoperability Testing and Training (non-clinical use)"
+
+{# Minimal identification narrative #}
 * text.status = #generated
-* text.div = """
+* text.div    = """
 <div xmlns="http://www.w3.org/1999/xhtml">
 Provenance for SYNDERAI Synthetic Example Data Resource
 </div>
 """
 
-%%HEAD%% {# tag required, content below maybe emtpy #}
+%%HEAD%% {# ── Section marker required by the FSH pre-processor — intentionally empty #}
 
-%%HTML%% {# tag required, content below maybe emtpy #}
+%%HTML%% {# ── Section marker required by the FSH pre-processor — intentionally empty #}

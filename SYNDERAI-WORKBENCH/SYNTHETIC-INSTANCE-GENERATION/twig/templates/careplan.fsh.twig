@@ -1,11 +1,172 @@
 {#
-  This is the TWIG file for the creation of an FSH instance including the HTML parts.
-  see README.md
+  ============================================================================
+  TEMPLATE: careplan_fsh.twig
+  ============================================================================
+  PURPOSE
+    Generates a FSH CarePlan instance (base FHIR R4 — no additional EU profile)
+    plus zero or more FSH Goal instances for each goal linked to the plan.
+    This is the only template in the project that emits Goal instances as
+    secondary FSH output appended after the primary instance's text.div.
 
-  KH since 2025-09-10
+  PROFILE CONFORMANCE
+    CarePlan : base FHIR R4 CarePlan (no additional profile)
+    Goal     : base FHIR R4 Goal (no additional profile)
+    Fixed elements:
+      status       = #active
+      intent       = #plan
+      category     = $sct#734163000 "Care plan (record artifact)"
+
+  MULTI-INSTANCE OUTPUT STRUCTURE
+    The %%FSH%% section emits:
+      1. One CarePlan instance (registered via setInstance())
+      2. Zero or more Goal instances (one per entry in `goals`; NOT registered
+         via setInstance() — direct id interpolation used)
+    The Goal instances appear after the CarePlan's text.div, still within
+    the %%FSH%% section. SUSHI processes all instances regardless of order.
+
+  THREE-COLUMN HTML TABLE
+    Column 1 — Activity description (preferred term or display)
+    Column 2 — Care plan start date (pill badge or "-")
+    Column 3 — Clinical reason for the care plan
+
+  doNotPerform — ROW TRUNCATION FLAG
+    When `careplan.activity.doNotPerform` is non-empty, the activity is marked
+    as not to be performed:
+      * activity.detail.doNotPerform = true
+    In this case, HTML cells 2 and 3 (start date and reason) are NOT emitted.
+    The HTML row will contain only cell 1 (the activity name), producing a
+    row with fewer cells than the 3-column header. Callers using this flag
+    should ensure their stylesheet handles short rows gracefully.
+
+  RAW CODE VALUES — CALLER SUPPLIES # PREFIX
+    Two FSH rules receive values without a `#` prefix in the template:
+      * activity.detail.status = {{ careplan.status }}
+      * activity.detail.kind   = {{ careplan.kind }}
+    The fallback values DO use the `#` prefix:
+      * activity.detail.status = #unknown
+      * activity.detail.kind   = #Appointment
+    This means the caller must supply status and kind values WITH the leading
+    `#` (e.g. `#not-started`, `#Appointment`) when providing data. Omitting
+    the `#` will produce invalid FSH. This is unlike most other templates
+    where the `#` is embedded in the template itself.
+
+  ACTIVITY DETAIL DESCRIPTION — CONDITIONAL
+    When `careplan.activity.preferredTerm` is non-empty:
+      - FSH: `* activity.detail.description = "{{ careplan.activity.preferredTerm }}"`
+      - HTML td 1: preferredTerm value
+    When empty:
+      - No `activity.detail.description` rule is emitted
+      - HTML td 1: `careplan.activity.display` value
+    This means description is only set on the FHIR resource when a preferred
+    term is available.
+
+  CARE PLAN CATEGORY — COMMENTED-OUT ALTERNATIVE
+    A commented-out FSH `//` line documents a previously considered but
+    incorrect category code:
+      // wrong: http://…/care-plan-category#assess-plan "Assessment and Plan"
+    The correct code used is $sct#734163000 "Care plan (record artifact)".
+    FSH `//` comments survive into the SUSHI output (unlike Twig `{ # # }`).
+
+  GOALS — TWO-PASS PATTERN
+    Goals are processed in two separate loops over the `goals` array:
+
+    PASS 1 (before text.div) — HTML accumulation + FSH goal references:
+      Each goal contributes:
+        1. A `goal[+] = Reference(urn:uuid:{{ g.instanceid }})` FSH rule on
+           the CarePlan.
+        2. An `<li>` element appended to the `got` accumulator variable.
+      The `| escape` filter is applied to `g.description` when building the
+      `<li>` HTML: `g.description | escape`. This prevents XSS by converting
+      special characters (`<`, `>`, `&`, etc.) to HTML entities before they
+      are embedded in the markup string.
+      When any goals are present (`got` is non-empty), a second HTML table row
+      is added below the activity row:
+        Row 2: `<ul>` + escaped goal list + `</ul>` | raw (td 1), empty td 2, empty td 3
+      The `| raw` on `addHTML_td("…" ~ got | raw ~ "…")` prevents double-
+      escaping — the individual items were already escaped by `| escape`, so
+      the assembled HTML string must be passed through raw.
+
+    PASS 2 (after text.div) — Goal FSH instances:
+      A second `{% for g in goals %}` loop emits a complete FSH Goal instance
+      per goal:
+        Instance: Instance-Goal-{{ g.instanceid }}
+        InstanceOf: Goal
+        Title: "{{ g.title }}"
+        Description: "{{ g.description }}"
+        Usage: #inline
+        * id = "{{ g.instanceid }}"
+        * lifecycleStatus = #active
+        * description.text = "{{ g.description }}"
+        * subject = Reference(urn:uuid:{{ patient.instanceid }}) "{{ patient.name }}"
+        {{ g.fsh | raw }}
+      These Goal instances:
+        - Are NOT registered via setInstance() — direct id interpolation used.
+        - Will not appear in the twigit() return array.
+        - Carry `g.fsh | raw` — a pre-built FSH string for additional goal
+          properties (e.g. target, note, expressedBy) produced upstream.
+        - Are appended after the CarePlan's text.div, still within %%FSH%%.
+
+  NARRATIVE — FULL HEADED TABLE (Pattern 2)
+    Both emitHEAD() and emitHTML() flushed inside text.div.
+    CSS class: `hl7__ips first25` (first column constrained to ~25% width).
+
+  `| escape` / `| raw` PAIR PATTERN
+    This is the only template in the project that uses `| escape` on user-
+    supplied content before embedding it in an HTML string accumulator.
+    The pattern is:
+      1. `| escape` on individual values when building the accumulator string
+         → converts `<`, `>`, `&` etc. to HTML entities (XSS-safe)
+      2. `| raw` when emitting the assembled string
+         → prevents Twig from double-escaping the already-safe entities
+    This pattern should be applied wherever user-supplied content is embedded
+    in raw HTML string accumulators across the project.
+
+  CONTEXT VARIABLES
+  ┌──────────────────────────────────────┬──────────┬────────────────────────────────────────────┐
+  │ Variable                             │ Type     │ Description                                │
+  ├──────────────────────────────────────┼──────────┼────────────────────────────────────────────┤
+  │ instanceid                           │ string   │ Unique resource id for the CarePlan.       │
+  │ patient.instanceid                   │ string   │ UUID of the Patient resource.              │
+  │ patient.name                         │ string   │ Full display name.                         │
+  │ careplan.status                      │ string?  │ FSH activity status code WITH `#` prefix   │
+  │                                      │          │ (e.g. "#not-started"). When empty,         │
+  │                                      │          │ `#unknown` is used as fallback.            │
+  │ careplan.kind                        │ string?  │ FSH activity kind code WITH `#` prefix     │
+  │                                      │          │ (e.g. "#Appointment"). When empty,         │
+  │                                      │          │ `#Appointment` is used as fallback.        │
+  │ careplan.activity.system             │ string   │ CodeSystem URI for the activity code.      │
+  │ careplan.activity.code               │ string?  │ Activity concept code (conditional).       │
+  │ careplan.activity.display            │ string   │ Activity display text; used in HTML td 1   │
+  │                                      │          │ when preferredTerm is absent.              │
+  │ careplan.activity.preferredTerm      │ string?  │ Preferred display override; when non-empty,│
+  │                                      │          │ sets activity.detail.description AND       │
+  │                                      │          │ populates HTML td 1.                       │
+  │ careplan.activity.doNotPerform       │ string?  │ When non-empty, emits doNotPerform = true  │
+  │                                      │          │ and suppresses HTML cells 2 and 3.         │
+  │ careplan.start                       │ string?  │ ISO 8601 care plan start date.             │
+  │ careplan.reason.system               │ string   │ CodeSystem URI for the reason code.        │
+  │ careplan.reason.code                 │ string?  │ Clinical reason concept code (conditional).│
+  │ careplan.reason.display              │ string   │ Reason display text for HTML td 3.         │
+  │ goals                                │ object[] │ Array of goal objects (may be empty).      │
+  │   [n].instanceid                     │ string   │   UUID for the Goal resource.              │
+  │   [n].title                          │ string   │   Goal title (FSH Title keyword).          │
+  │   [n].description                    │ string   │   Goal description; | escape applied in    │
+  │                                      │          │   HTML; used raw in FSH description.text. │
+  │   [n].fsh                            │ string?  │   Pre-built FSH string for additional      │
+  │                                      │          │   Goal properties; injected with \| raw.   │
+  └──────────────────────────────────────┴──────────┴────────────────────────────────────────────┘
+
+  CODESYSTEMS REFERENCED
+    $sct — 734163000 "Care plan (record artifact)" (category)
+    Activity, reason codesystem URIs — caller-supplied
+
+  AUTHOR   KH
+  SINCE    2025-09-10
+  ============================================================================
 #}
 
-%%FSH%% {# tag required #}
+%%FSH%% {# ── Section marker required by the FSH pre-processor ─────────────── #}
+
 Instance: {{ setInstance("Instance-CarePlan-" ~ instanceid) }}
 InstanceOf: CarePlan
 Title: "CarePlan"
@@ -14,7 +175,7 @@ Usage: #inline
 
 * id = "{{ instanceid }}"
 
-{# addign headers for HTML table #}
+{# HEAD bag: three-column table header #}
 {{ addHEAD_tr() }}
 {{ addHEAD_th("Active Planned Care / Goals") }}
 {{ addHEAD_th("Start Date") }}
@@ -23,24 +184,42 @@ Usage: #inline
 
 {{ addHTML_tr() }}
 
+{# Fixed status and intent #}
 * status = #active
 * intent = #plan
 
 * subject = Reference(urn:uuid:{{ patient.instanceid }}) "{{ patient.name }}"
 
-{# wrong: http://terminology.hl7.org/CodeSystem/care-plan-category#assess-plan "Assessment and Plan" #}
+{#
+  Fixed category: SNOMED "Care plan (record artifact)".
+  The FSH // comment below documents a previously considered (incorrect) code.
+  FSH // comments survive into the SUSHI output unlike Twig {# #} comments.
+#}
+// wrong: http://terminology.hl7.org/CodeSystem/care-plan-category#assess-plan "Assessment and Plan"
 * category.coding = $sct#734163000 "Care plan (record artifact)"
 
+{#
+  ── Activity status ──────────────────────────────────────────────────────────
+  ⚠ careplan.status must include the `#` prefix (e.g. "#not-started").
+  The template does not add `#` — unlike most other coded fields.
+  Fallback: #unknown when status is empty.
+#}
 {% if careplan.status is empty %}
 * activity.detail.status = #unknown
 {% else %}
 * activity.detail.status = {{ careplan.status }}
 {% endif %}
 
+{# Activity code (conditional) #}
 {% if careplan.activity.code is not empty %}
 * activity.detail.code.coding = {{ careplan.activity.system }}#{{ careplan.activity.code }} "{{ careplan.activity.display }}"
 {% endif %}
 
+{#
+  ── TD 1: activity description ───────────────────────────────────────────────
+  When preferredTerm is non-empty: sets activity.detail.description AND uses it
+  in HTML. When empty: HTML uses display but no description rule is emitted.
+#}
 {% if careplan.activity.preferredTerm is not empty %}
 * activity.detail.description = "{{ careplan.activity.preferredTerm }}"
 {{ addHTML_td(careplan.activity.preferredTerm) }}
@@ -48,16 +227,30 @@ Usage: #inline
 {{ addHTML_td(careplan.activity.display) }}
 {% endif %}
 
+{#
+  ── Activity kind ────────────────────────────────────────────────────────────
+  ⚠ careplan.kind must include the `#` prefix (e.g. "#Appointment").
+  Fallback: #Appointment when kind is empty.
+#}
 {% if careplan.kind is empty %}
 * activity.detail.kind = #Appointment
 {% else %}
 * activity.detail.kind = {{ careplan.kind }}
 {% endif %}
 
+{#
+  ── doNotPerform gate ────────────────────────────────────────────────────────
+  When set, marks the activity as not to be performed and skips HTML cells
+  2 and 3. The row will have fewer cells than the 3-column header.
+  When absent, normal start date and reason rules + HTML cells 2 and 3 follow.
+#}
 {% if careplan.activity.doNotPerform is not empty %}
 * activity.detail.doNotPerform = true
+{# HTML cells 2 and 3 are suppressed when doNotPerform is set #}
+
 {% else %}
 
+{# TD 2: start date (conditional) #}
 {% if careplan.start is not empty %}
 * period.start = "{{ careplan.start }}"
 {{ addHTML_tdnb(careplan.start|date('d-M-Y')) }}
@@ -65,6 +258,7 @@ Usage: #inline
 {{ addHTML_tdnb("-") }}
 {% endif %}
 
+{# TD 3: clinical reason (conditional) #}
 {% if careplan.reason.code is empty %}
 {{ addHTML_td("-") }}
 {% else %}
@@ -72,20 +266,34 @@ Usage: #inline
 {{ addHTML_td(careplan.reason.display) }}
 {% endif %}
 
-{% endif %}
+{% endif %} {# doNotPerform #}
 
 {{ addHTML_trend() -}}
 
-{# second row with optional goals #}
+{#
+  ══════════════════════════════════════════════════════════════════════════════
+  GOALS — PASS 1: FSH references on CarePlan + HTML list accumulation
+  Builds:
+    - goal[+] References on the CarePlan
+    - `got` HTML list string using | escape on each description (XSS-safe)
+  ══════════════════════════════════════════════════════════════════════════════
+#}
 {% set got = "" %}
 {% for g in goals %}
 * goal[+] = Reference(urn:uuid:{{ g.instanceid }})
-{# add also the HTML rendition of the goals #}
+{#
+  | escape converts special chars to HTML entities before embedding in the
+  accumulator string, preventing XSS if descriptions contain < > & etc.
+#}
 {% set got = got ~ "<li>" ~ g.description | escape ~ "</li>" %}
 {% endfor %}
 
+{#
+  Optional second HTML row for goals.
+  | raw on the assembled `got` string prevents double-escaping — items were
+  already escaped individually above. The empty cells fill columns 2 and 3.
+#}
 {% if got is not empty %}
-{# add the second row with goals #}
 {{ addHTML_tr() }}
 {{ addHTML_td("<ul>" ~ got | raw ~ "</ul>") }}
 {{ addHTML_td("") }}
@@ -93,32 +301,43 @@ Usage: #inline
 {{ addHTML_trend() -}}
 {% endif %}
 
-{# populate .text #}
+{#
+  ── FHIR narrative — full headed table (Pattern 2) ──────────────────────────
+  CSS class: hl7__ips first25 (first column constrained to ~25% width).
+#}
 * text.status = #generated
-* text.div = """
+* text.div    = """
 <div xmlns="http://www.w3.org/1999/xhtml">
 <table class="hl7__ips first25">{{ emitHEAD() | raw }}{{ emitHTML() | raw }}</table>
 </div>
 """
 
-{# emit all goals as part of the FSH for care plans #}
+{#
+  ══════════════════════════════════════════════════════════════════════════════
+  GOALS — PASS 2: Goal FSH instances (appended after CarePlan text.div)
+  One Goal instance per entry in `goals`. All within the %%FSH%% section.
+  NOT registered via setInstance() — direct id interpolation used.
+  g.fsh | raw injects pre-built FSH properties produced upstream by the caller.
+  ══════════════════════════════════════════════════════════════════════════════
+#}
 {% for g in goals %}
 Instance: Instance-Goal-{{ g.instanceid }}
 InstanceOf: Goal
 Title: "{{ g.title }}"
 Description: "{{ g.description}}"
 Usage: #inline
-* id = "{{ g.instanceid }}"
-* lifecycleStatus = #active
+* id               = "{{ g.instanceid }}"
+* lifecycleStatus  = #active
 * description.text = "{{ g.description}}"
-* subject = Reference(urn:uuid:{{ patient.instanceid }}) "{{ patient.name }}"
+* subject          = Reference(urn:uuid:{{ patient.instanceid }}) "{{ patient.name }}"
 
+{# Pre-built FSH string for additional Goal properties (targets, notes, etc.) #}
 {{ g.fsh | raw }}
 
 {% endfor %}
 
-%%HEAD%% {# tag required, content below maybe emtpy #}
+%%HEAD%% {# ── Section marker required by the FSH pre-processor ─────────────── #}
 {{ emitHEAD() | raw }}
 
-%%HTML%% {# tag required, content below maybe emtpy #}
+%%HTML%% {# ── Section marker required by the FSH pre-processor ─────────────── #}
 {{ emitHTML() | raw }}

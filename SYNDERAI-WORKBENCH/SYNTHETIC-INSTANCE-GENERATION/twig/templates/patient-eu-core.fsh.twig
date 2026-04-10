@@ -1,44 +1,188 @@
 {#
-  This is the TWIG file for the creation of an FSH instance including the HTML parts.
-  see README.md
+  ============================================================================
+  TEMPLATE: patient.fsh.twig
+  ============================================================================
+  PURPOSE
+    Generates a FHIR Shorthand (FSH) instance for a single Patient resource
+    conforming to the PatientEuCore profile (IPS / EU Patient profile).
+    The output is structured in three tagged sections consumed by the FSH
+    pre-processor:
 
-  KH since 2025-09-07
+      %%FSH%%   – the FSH instance body (FHIR resource definition)
+      %%HEAD%%  – optional header injection (currently empty)
+      %%HTML%%  – standalone HTML fragment for embedding in reports / viewers
+
+    The template also populates Patient.text.div with an inline XHTML narrative
+    table, as required by FHIR's human-readability rule (§ 2.4.1).
+
+  PROFILE CONFORMANCE
+    InstanceOf: PatientEuCore
+    Canonical: https://hl7.eu/fhir/StructureDefinition/patient-eu-ips
+    Must-support elements covered:
+      identifier (ECI, optional MR), name, gender, birthDate,
+      address, telecom, nationality (extension)
+
+  CONTEXT VARIABLE  –  `patient`  (object / associative array)
+  ┌─────────────────┬──────────┬──────────────────────────────────────────────┐
+  │ Key             │ Type     │ Description                                  │
+  ├─────────────────┼──────────┼──────────────────────────────────────────────┤
+  │ instanceid      │ string   │ Unique resource id; appended to              │
+  │                 │          │ "Instance-Patient-" to form the FSH id       │
+  │ name            │ string   │ Full display name (text)                     │
+  │ family          │ string   │ Family / last name                           │
+  │ given           │ string[] │ Array of given / first names                 │
+  │ gender          │ string   │ FHIR AdministrativeGender code               │
+  │                 │          │ (male | female | other | unknown)            │
+  │ birthdate       │ date     │ Date of birth, FHIR dateTime-compatible;     │
+  │                 │          │ rendered as YYYY-MM-DD in FSH,               │
+  │                 │          │ d-M-Y (e.g. 14-Mar-1978) in HTML             │
+  │ eci             │ string   │ European Citizen Identifier value            │
+  │ match           │ string   │ Optional: external MR / match identifier     │
+  │ localid         │ string   │ Optional: local MR identifier                │
+  │ street1         │ string   │ Optional: address line 1                     │
+  │ street2         │ string   │ Optional: address line 2                     │
+  │ street3         │ string   │ Optional: address line 3                     │
+  │ postcode        │ string   │ Postal code                                  │
+  │ city            │ string   │ City name                                    │
+  │ countryname     │ string   │ Full country name                            │
+  │ countrycode     │ string   │ ISO 3166-1 alpha-2 country code;             │
+  │                 │          │ rendered upper-case via |upper filter        │
+  │ phone           │ string   │ Phone number (telecom.system = #phone)       │
+  └─────────────────┴──────────┴──────────────────────────────────────────────┘
+
+  CUSTOM FUNCTIONS  (provided by the host rendering environment)
+  ┌───────────────────────────┬──────────────────────────────────────────────┐
+  │ Function                  │ Behaviour                                    │
+  ├───────────────────────────┼──────────────────────────────────────────────┤
+  │ setInstance(id)           │ Registers the FSH instance id with the       │
+  │                           │ pre-processor and returns it for inline       │
+  │                           │ output. Must be the first statement in the   │
+  │                           │ Instance block.                              │
+  │ syntheticDataPolicyMeta() │ Returns FSH meta / tag statements that mark  │
+  │                           │ the resource as synthetic (policy tagging).  │
+  │                           │ Output is raw FSH; |raw filter suppresses    │
+  │                           │ HTML escaping.                               │
+  │ addHTML_tr()              │ Opens a new HTML <tr> row in the internal    │
+  │                           │ narrative table builder (stateful call).     │
+  │ addHTML_td(value)         │ Appends a <td> with the given value to the   │
+  │                           │ current row. Calls are positional:           │
+  │                           │   td 1 → name, td 2 → gender,               │
+  │                           │   td 3 → birthdate                           │
+  │ addHTML_trend()           │ Closes the current <tr> row in the builder.  │
+  │ emitHTML()                │ Serialises the fully assembled HTML table    │
+  │                           │ rows to a string. Called twice:              │
+  │                           │   1. inside Patient.text.div (FHIR          │
+  │                           │      narrative, wrapped in <table>)          │
+  │                           │   2. in the %%HTML%% section (standalone    │
+  │                           │      fragment). Both calls use |raw.         │
+  └───────────────────────────┴──────────────────────────────────────────────┘
+
+  FSH CODESYSTEMS REFERENCED
+    $v2-0203   – HL7 v2 Table 0203 "Identifier Type"
+                 Used codes: JHN (Jurisdictional Health Number → ECI),
+                             MR  (Medical Record Number → local ids)
+    urn:iso:std:iso:3166  – ISO 3166-1 country codes (nationality extension)
+
+  FHIR EXTENSIONS USED
+    http://hl7.org/fhir/StructureDefinition/patient-nationality
+      Sub-extensions:
+        code  →  valueCodeableConcept coded with ISO 3166-1
+
+  OUTPUT SECTIONS
+    %%FSH%%   Full FSH Patient instance, ready for sushi compilation.
+    %%HEAD%%  Intentionally empty; placeholder for future header directives.
+    %%HTML%%  Standalone emitted HTML fragment (no wrapping <table> tag here;
+              caller is expected to provide the table context).
+
+  NOTES
+    • The FSH rule index operator [+] appends a new array slice;
+      [=] addresses the slice most recently opened by [+].
+    • All three address-line fields (street1–3) are optional and omitted from
+      output when empty, preventing empty FSH string rules.
+    • The nationality extension block is also fully conditional on
+      patient.countrycode being non-empty.
+    • The |upper filter on countrycode normalises input regardless of the
+      case supplied by the data source (ISO 3166-1 codes are upper-case by
+      convention).
+    • The {{- / -}} whitespace-control trim operators should be applied around
+      addHTML_trend() to avoid spurious blank lines in the FSH output.
+
+  AUTHOR    KH
+  SINCE     2025-09-07
+  ============================================================================
 #}
 
-%%FSH%% {# tag required #}
+%%FSH%% {# ── Section marker required by the FSH pre-processor ────────────── #}
+
+{#
+  ── FSH instance header ────────────────────────────────────────────────────
+  setInstance() registers the id "Instance-Patient-<instanceid>" and returns
+  it so it appears inline as the FSH Instance keyword value.
+#}
 Instance: {{ setInstance("Instance-Patient-" ~ patient.instanceid) }}
 InstanceOf: PatientEuCore
 Title: "Patient (EU Core)"
 Description: "Patient {{ patient.name }} (Synthetic Data)"
 Usage: #inline
 
-{# include synthetic data policy meta #}
+{#
+  ── Synthetic-data policy meta ─────────────────────────────────────────────
+  Injects FSH meta statements (tags / security labels) that identify this
+  resource as synthetically generated, satisfying data-governance policy.
+  |raw prevents double-escaping of the FSH output.
+#}
 {{ syntheticDataPolicyMeta() | raw }}
 
 * id = "{{ patient.instanceid }}"
 
+{#
+  ── Open HTML narrative row ─────────────────────────────────────────────────
+  Signals the HTML builder to start a new <tr>. The three addHTML_td() calls
+  below will populate its cells (name / gender / birthdate).
+#}
 {{ addHTML_tr() }}
 
-{# 
-  emit data of the identifiers
+{#
+  ── Identifiers ────────────────────────────────────────────────────────────
+  Slice 1 (always present): European Citizen Identifier (ECI)
+    type JHN – Jurisdictional Health Number
+    system: EU ECI namespace
 #}
-
 * identifier[+].type = $v2-0203#JHN
 * identifier[=].system = "http://ec.europa.eu/identifier/eci"
 * identifier[=].value = "{{ patient.eci }}"
 
+{#
+  Slice 2 (conditional): External match / cross-reference identifier.
+  Only emitted when patient.match is non-empty. Typed as MR (Medical Record).
+#}
 {% if patient.match is not empty %}
 * identifier[+].type = $v2-0203#MR
 * identifier[=].system = "http://local.setting.eu/identifier"
 * identifier[=].value = "{{ patient.match }}"
 {% endif %}
+
+{#
+  Slice 3 (conditional): Local system identifier.
+  Only emitted when patient.localid is non-empty. Also typed MR.
+  Note: match and localid may both be present simultaneously, producing
+  two MR identifier slices with different values.
+#}
 {% if patient.localid is not empty %}
 * identifier[+].type = $v2-0203#MR
 * identifier[=].system = "http://local.setting.eu/identifier"
 * identifier[=].value = "{{ patient.localid }}"
 {% endif %}
 
-{# *** HTML td 1: name #}
+{#
+  ── Name ───────────────────────────────────────────────────────────────────
+  Emits a single HumanName slice with:
+    family  – surname
+    given   – one FSH given[+] rule per entry in the patient.given array
+    text    – full pre-composed display string (required by EU Core profile)
+
+  HTML narrative: td 1 carries the full display name.
+#}
 * name[+].family = "{{ patient.family }}"
 {% for g in patient.given %}
 * name[=].given[+] = "{{ g }}"
@@ -46,14 +190,30 @@ Usage: #inline
 * name[=].text = "{{ patient.name }}"
 {{ addHTML_td(patient.name) }}
 
-{# *** HTML td 2: gender #}
+{#
+  ── Gender ─────────────────────────────────────────────────────────────────
+  FHIR code from AdministrativeGender valueset, rendered as FSH code (#...).
+  HTML narrative: td 2.
+#}
 * gender = #{{ patient.gender }}
 {{ addHTML_td(patient.gender) }}
 
-{# *** HTML td 3: birthdate #}
+{#
+  ── Birth date ─────────────────────────────────────────────────────────────
+  FSH value: ISO 8601 date string from patient.birthdate (no filter applied –
+             the value is expected to be FHIR-compatible already, e.g. 1978-03-14).
+  HTML value: formatted as d-M-Y (e.g. 14-Mar-1978) for human readability.
+  HTML narrative: td 3.
+#}
 * birthDate = "{{patient.birthdate }}"
 {{ addHTML_td(patient.birthdate|date('d-M-Y')) }}
 
+{#
+  ── Address ────────────────────────────────────────────────────────────────
+  Single address slice, use=home, type=physical.
+  Street lines 1–3 are each conditional; omitted when empty to prevent
+  blank FSH string values. postalCode, city, and country are always emitted.
+#}
 * address[+].use = #home
 * address[=].type = #physical
 {% if patient.street1 is not empty %}
@@ -69,22 +229,49 @@ Usage: #inline
 * address[=].city = "{{ patient.city }}"
 * address[=].country = "{{ patient.countryname }}"
 
+{#
+  ── Telecom ────────────────────────────────────────────────────────────────
+  Single phone contact point. Extend here if email or fax are required.
+#}
 * telecom[+].system = #phone
 * telecom[=].value = "{{ patient.phone }}"
 
 {#
-  if country is specifed use nationality as extension;
-  use 2-char nameset for that coded in ISO 3166 Part 1 Country Codes
+  ── Nationality extension (conditional) ────────────────────────────────────
+  Uses the HL7 patient-nationality extension (complex extension with a
+  nested "code" sub-extension carrying an ISO 3166-1 CodeableConcept).
+
+  Only emitted when patient.countrycode is non-empty.
+  The |upper filter normalises the code to upper-case regardless of the
+  casing provided by the data source (ISO 3166-1 mandates upper-case).
+
+  Extension structure:
+    extension[+].url = patient-nationality (parent)
+      extension[+].url = "code"            (child)
+        .valueCodeableConcept = iso:3166#<CC>
 #}
 {% if patient.countrycode is not empty %}
 * extension[+].url = "http://hl7.org/fhir/StructureDefinition/patient-nationality"
-* extension[=].extension[+].url = "code" 
+* extension[=].extension[+].url = "code"
 * extension[=].extension[=].valueCodeableConcept = urn:iso:std:iso:3166#{{ patient.countrycode|upper }}
 {% endif %}
 
+{#
+  ── Close HTML narrative row ────────────────────────────────────────────────
+  Signals the HTML builder to close the current <tr>. The trailing dash (-})
+  strips the trailing newline so the FSH output stays clean.
+#}
 {{ addHTML_trend() -}}
 
-{# populate .text #}
+{#
+  ── FHIR narrative (Patient.text) ──────────────────────────────────────────
+  FHIR requires human-readable text in .text.div (status #generated means
+  the narrative is fully derived from structured data – no manual edits).
+  emitHTML() serialises the rows accumulated by addHTML_tr/td/trend above
+  into a complete XHTML table body. The <table> wrapper uses the hl7__ips
+  CSS class conventional for IPS viewers.
+  |raw prevents Twig from HTML-escaping the already-valid XHTML markup.
+#}
 * text.status = #generated
 * text.div = """
 <div xmlns="http://www.w3.org/1999/xhtml">
@@ -92,8 +279,16 @@ Usage: #inline
 </div>
 """
 
-%%HEAD%% {# tag required, content below maybe emtpy #}
+%%HEAD%% {# ── Section marker required by the FSH pre-processor ────────────── #}
 <!-- empty -->
+{# No header directives are needed for this resource type at this time. #}
 
-%%HTML%% {# tag required, content below maybe emtpy #}
+%%HTML%% {# ── Section marker required by the FSH pre-processor ────────────── #}
+{#
+  Standalone HTML fragment output.
+  emitHTML() is called a second time here to produce the same table rows
+  for contexts where only the HTML section is consumed (e.g. a report viewer
+  that does not process FSH). The caller is responsible for providing the
+  surrounding <table> element; this section emits rows only.
+#}
 {{ emitHTML() | raw }}

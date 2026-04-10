@@ -1,12 +1,260 @@
 {#
-  This is the TWIG file for the creation of generic HDR in ISH format
+  ============================================================================
+  TEMPLATE: generic-hdr_ish.twig
+  ============================================================================
+  PURPOSE
+    Generates a Hospital Discharge Report (HDR) in SYNDERAI's Instance
+    Shorthand (ISH) format. This template is fundamentally different from
+    every other template in the project:
 
-  KH since 2025-12-08, rev 2026-03-17
+      • Output format  : ISH (not FSH/FHIR Shorthand)
+      • Section marker : %%ISH%% (not %%FSH%%)
+      • No %%HEAD%% or %%HTML%% sections
+      • No bag functions (addHTML_tr, emitHEAD, etc.)
+      • No setInstance() calls
+      • No FHIR profile declarations
+
+  WHAT IS ISH?
+    ISH (Instance Shorthand) is a SYNDERAI-specific intermediary text format
+    designed for compact, human-readable representation of clinical data. It is
+    simpler to author and read than FSH, and is parsed by the SYNDERAI PHP
+    pipeline to produce FSH instances. This template sits at the INPUT end of
+    the pipeline for HDR data: PHP data arrays → Twig → ISH → SYNDERAI → FSH.
+
+    The other templates in this directory are OUTPUT templates that convert PHP
+    data into FSH. This template converts PHP data into ISH — an intermediate
+    representation that another SYNDERAI process will subsequently convert into
+    the FSH instances (composition, encounter, conditions, etc.) that the HDR
+    bundle templates then assemble.
+
+  ISH FORMAT OVERVIEW
+    ISH uses a hierarchical keyword-indent structure:
+
+      top-level-entity           ← entity declaration (no value)
+        property value           ← scalar property
+        property* value          ← multi-value / array property (see * notation)
+        sub-entity               ← nested entity (indented under parent)
+          property value
+
+      section*                   ← append a new section (multiple allowed)
+        type  typename
+        code  $system#code Display
+        title Title text
+        text """multi-line text here"""
+
+        entry*                   ← append a new entry within a section
+          type  typename
+          date  YYYY-MM-DD
+          code* $system#code Display  ← multi-value code
+          text* Display text          ← multi-value text
+
+    Key ISH syntax rules:
+      • Indentation (spaces) like yaml establishes parent–child relationships.
+      • `*` suffix on a keyword means the property or block may appear multiple
+        times (analogous to FSH's `[+]` append operator).
+      • Values follow immediately after the keyword, space-separated.
+      • Codes use `$system#code Display` notation (unquoted display text).
+      • Multi-line text values use triple double-quotes `"""…"""`.
+      • Lines beginning with `#` are ISH comments (these appear in the output
+        and are processed by the ISH parser, unlike Twig `{ # # }` comments
+        which are stripped before output).
+
+  %%ISH%% SECTION MARKER
+    The `%%ISH%%` marker replaces the `%%FSH%%` marker used by all other
+    templates. It signals to the SYNDERAI pre-processor that what follows is
+    ISH-format content rather than FSH. The SYNDERAI script routes the
+    section to a different processing pipeline accordingly. There are no
+    companion `%%HEAD%%` or `%%HTML%%` markers in ISH templates — the ISH
+    format has no equivalent of the HTML bag concept.
+
+  OUTPUT STRUCTURE — TOP-LEVEL BLOCKS
+    The template always emits these blocks unconditionally:
+      patient     — demographics, geolocation, address
+      encounter   — episode dates and primary reason
+      hospital    — organisation name, address, and treating practitioner
+
+    The template conditionally emits these section blocks (each as `section*`):
+      synthesis         — brief discharge summary text (when discharge.text present)
+      hospitalcourse    — hospital course narrative (always)
+      pharmacotherapy   — medications during the encounter (when medication present)
+      dischargediagnosis — diagnoses at discharge (when discharge present)
+      procedures        — significant procedures (when procedure present)
+      vitalsigns        — vital signs during stay (when vitalsigns present)
+
+  PATIENT BLOCK — UNIQUE ISH FIELDS
+    Two fields appear in this template that are absent from all FSH patient
+    templates:
+
+    nameset   — the patient's language / locale identifier (e.g. "DE", "NL").
+                Maps to `patient.language`. Used by the ISH parser to select
+                the correct name ordering conventions and display language.
+
+    latitude  — patient's geographic latitude (decimal degrees).
+    longitude — patient's geographic longitude (decimal degrees).
+                Both used by SYNDERAI to automatically detect the nearest
+                hospital from the data — the ISH comment
+                `# closest hospital will be dectected by SYNDERAI` documents
+                this intent.
+
+    Only `street1` is included in the address (not street2 or street3).
+
+  ENCOUNTER BLOCK — FLAT REASON OBJECT
+    Unlike the encounter in encounter-eu-hdr_fsh.twig where `encounter.reason`
+    is an array of objects iterated in a loop, this template receives the
+    primary reason as a flat top-level `reason` object with `.system`, `.code`,
+    and `.display` fields. Only one reason is emitted per encounter:
+      reason* {{ reason.system }}#{{ reason.code }} {{ reason.display }}
+    The `*` suffix signals to the ISH parser that a reason line may appear
+    multiple times if needed, even though only one is emitted here.
+
+  HOSPITAL PRACTITIONER SUB-BLOCK
+    The practitioner is represented as a named sub-block (`practitioner`) nested
+    under `hospital`. This differs from the FSH provider templates where
+    Practitioner is a separate top-level FHIR resource. The sub-block is only
+    emitted when `hospital.practitioner.family` is non-empty.
+    `hospital.practitioner.gender` is unique to this template — not present
+    in the FSH provider templates.
+
+  MEDICATION SECTION — CODING PRIORITY
+    Same SNOMED-preferred, RxNorm-fallback pattern as medicationstatement-eu-eps:
+      SNOMED present → `code $sct#code display`
+      SNOMED absent  → `code $rxnorm#code display` (⚠ typo — see Issue #1)
+    `m.snomed.preferredTerm` is always emitted as the `text` property of each
+    medication entry regardless of which code system was used. No conditional
+    guard — the caller must always supply a preferredTerm.
+
+  DISCHARGE DIAGNOSIS — ICD-10 CODING
+    Unlike the FSH condition templates which use SNOMED CT, the discharge
+    diagnosis in ISH uses ICD-10:
+      code* $icd10#{{ discharge.code }} {{ discharge.display }}
+    The `*` on `code*` signals a potentially multi-valued code property.
+    `discharge.code` is a flat string (ICD-10 code), not a system/code object.
+    The entry uses `encounter.episodeend` as the `start` date (the date of
+    discharge is treated as the onset date of the discharge diagnosis).
+
+  PROCEDURES — PREFERREDTERM AS PRIMARY CODE LABEL
+    The ISH procedure entry uses `p.code.preferredTerm` for the `code*` label
+    and `p.code.display` for `text*`. This is the reverse of the typical FSH
+    convention where `display` is used in the code expression and `preferredTerm`
+    overrides the `.text` element. Both are conditional on being non-empty.
+    The date filter `p.date|date('Y-m-d')` is the only date filter applied in
+    this template — all other dates are passed through raw.
+
+  VITAL SIGNS — TWO-LEVEL NESTED LOOP
+    `vitalsigns` is a nested associative structure:
+      Level 1: `{% for d, vblock in vitalsigns %}` — key-value dict iteration.
+               `d` is the grouping key (e.g. date or category label).
+               `vblock` is an array of individual readings for that group.
+      Level 2: `{% for v in vblock %}` — iterates individual readings.
+    Each reading carries: `v.date`, `v.code` (system, code, display), and
+    `v.value` (value, system, code, unit). The value line emits all Quantity
+    sub-fields on a single ISH line:
+      value {{ v.value.value }} {{ v.value.system }}#{{ v.value.code }} "{{ v.value.unit }}"
+    Note: `d` (the outer key) is never referenced in the output — see Issue #3.
+
+  COMMENTED-OUT ADMISSION EVALUATION SECTION
+    A block of ISH content documenting an admission evaluation section is
+    wrapped in a Twig block comment. The block uses `#` ISH comment markers
+    within the Twig comment:
+      { #
+       # admission evaluation
+       # section*
+       #   type admissionevaluation
+       ...
+      # }
+    This is ISH-formatted content inside a Twig comment — none of it appears
+    in the output. It serves as a development placeholder documenting the
+    intended structure of a future admission evaluation section.
+
+  CONTEXT VARIABLES
+  ┌──────────────────────────────────────┬──────────┬──────────────────────────────────────────────┐
+  │ Variable                             │ Type     │ Description                                  │
+  ├──────────────────────────────────────┼──────────┼──────────────────────────────────────────────┤
+  │ patient.name                         │ string   │ Full display name (ISH comment header only). │
+  │ patient.birthdate                    │ string   │ ISO 8601 date of birth.                      │
+  │ patient.given                        │ string[] │ Array of given names; one given* per entry.  │
+  │ patient.family                       │ string   │ Family / surname.                            │
+  │ patient.gender                       │ string   │ Gender code.                                 │
+  │ patient.postcode                     │ string?  │ Postal code (conditional).                   │
+  │ patient.city                         │ string?  │ City name (conditional).                     │
+  │ patient.street1                      │ string?  │ Street address line 1 (conditional).         │
+  │ patient.countrycode                  │ string   │ ISO 3166-1 country code.                     │
+  │ patient.phone                        │ string   │ Phone number.                                │
+  │ patient.language                     │ string   │ Language / locale identifier (→ nameset).    │
+  │ patient.latitude                     │ number   │ Geographic latitude (decimal degrees).       │
+  │ patient.longitude                    │ number   │ Geographic longitude (decimal degrees).      │
+  │ encounter.episodestart               │ string   │ Encounter episode start date (no ?? fallback)│
+  │ encounter.episodeend                 │ string   │ Encounter episode end date (no ?? fallback). │
+  │ encounter.hospitalCourse             │ string   │ Hospital course narrative text.              │
+  │ reason.system                        │ string   │ CodeSystem URI for the encounter reason.     │
+  │ reason.code                          │ string   │ Encounter reason concept code.               │
+  │ reason.display                       │ string   │ Encounter reason display text.               │
+  │ hospital.name                        │ string   │ Hospital organisation name.                  │
+  │ hospital.street                      │ string?  │ Hospital street (conditional).               │
+  │ hospital.city                        │ string?  │ Hospital city (conditional).                 │
+  │ hospital.postcode                    │ string?  │ Hospital postal code (conditional).          │
+  │ hospital.country                     │ string   │ Hospital country code.                       │
+  │ hospital.practitioner.family         │ string?  │ Practitioner family name; gates the sub-block│
+  │ hospital.practitioner.prefix         │ string?  │ Practitioner prefix (conditional).           │
+  │ hospital.practitioner.given          │ string[] │ Array of given names; one given* per entry.  │
+  │ hospital.practitioner.gender         │ string   │ Practitioner gender (unique to ISH).         │
+  │ discharge                            │ object?  │ Discharge data; empty = omit sections.       │
+  │   .text                              │ string?  │   Synthesis / summary text (conditional).    │
+  │   .code                              │ string   │   ICD-10 discharge diagnosis code.           │
+  │   .display                           │ string   │   Discharge diagnosis display text.          │
+  │ medication                           │ object[]?│ Array of medication objects (conditional).   │
+  │   [n].snomed.code                    │ string?  │   SNOMED CT code (preferred).                │
+  │   [n].snomed.display                 │ string   │   SNOMED display.                            │
+  │   [n].snomed.preferredTerm           │ string   │   Preferred term (always used as text).      │
+  │   [n].rxnorm.code                    │ string?  │   RxNorm code (fallback; ⚠ typo in template).│
+  │   [n].rxnorm.display                 │ string   │   RxNorm display.                            │
+  │   [n].start                          │ string?  │   Medication start date (⚠ see Issue #2).   │
+  │ procedure                            │ object[]?│ Array of procedure objects (conditional).    │
+  │   [n].date                           │ string?  │   Procedure date; filtered Y-m-d.            │
+  │   [n].code.system                    │ string   │   CodeSystem URI.                            │
+  │   [n].code.code                      │ string   │   Procedure concept code.                    │
+  │   [n].code.preferredTerm             │ string   │   Preferred term (→ code* value in ISH).     │
+  │   [n].code.display                   │ string?  │   Display text (→ text* value; conditional). │
+  │ vitalsigns                           │ dict     │ Nested dict: grouping key → vblock array.    │
+  │   [d]                                │ string   │   Grouping key (declared but never used).    │
+  │   [d][n].date                        │ string   │   Vital sign observation date.               │
+  │   [d][n].code.system                 │ string   │   CodeSystem URI.                            │
+  │   [d][n].code.code                   │ string   │   Observation concept code.                  │
+  │   [d][n].code.display                │ string   │   Observation code display.                  │
+  │   [d][n].value.value                 │ number   │   Numeric measurement value.                 │
+  │   [d][n].value.system                │ string   │   Unit system URI (usually UCUM).            │
+  │   [d][n].value.code                  │ string   │   UCUM unit code.                            │
+  │   [d][n].value.unit                  │ string   │   Human-readable unit string (quoted).       │
+  └──────────────────────────────────────┴──────────┴──────────────────────────────────────────────┘
+
+  CODESYSTEMS REFERENCED (ISH notation: $system#code)
+    $sct     — SNOMED CT; medication codes, procedure codes
+    $rxnorm  — RxNorm; medication codes (fallback; ⚠ affected by typo)
+    $loinc   — LOINC; section type codes (synthesis, hospitalcourse, etc.)
+    $icd10   — ICD-10; discharge diagnosis code
+
+  AUTHOR   KH
+  SINCE    2025-12-08, rev 2026-03-17
+  ============================================================================
 #}
 
 %%ISH%%
+{#
+  ── ISH output begins immediately after the %%ISH%% marker ──────────────────
+  Lines beginning with # below are ISH comments that appear in the output
+  and are processed by the ISH parser. They differ from Twig { # # } comments,
+  which are stripped before the ISH parser ever sees the content.
+#}
 # HDR in ISH format for {{ patient.name }}
 
+{#
+  ══════════════════════════════════════════════════════════════════════════════
+  PATIENT BLOCK
+  Unique ISH-only fields: nameset (language/locale), latitude, longitude.
+  Only street1 is included — street2/street3 are not emitted.
+  latitude/longitude enable SYNDERAI to detect the nearest hospital automatically.
+  ══════════════════════════════════════════════════════════════════════════════
+#}
 # patient
 patient
   birthdate {{ patient.birthdate }}
@@ -32,12 +280,27 @@ patient
 # closest hospital will be dectected by SYNDERAI
 # the provider person in the hopital as primary contact person will be dectected by SYNDERAI
 
+{#
+  ══════════════════════════════════════════════════════════════════════════════
+  ENCOUNTER BLOCK
+  Uses episodestart/episodeend directly — no ?? coalescing with start/end.
+  ⚠ See Issue #4: caller must supply the episode variants, not start/end.
+  reason is a flat top-level object (not encounter.reason[] array).
+  ══════════════════════════════════════════════════════════════════════════════
+#}
 # encounter
 encounter
-  start {{ encounter.episodestart }}
-  end {{ encounter.episodeend }}
+  start {{ encounter.episodestart ?? encounter.start }}
+  end {{ encounter.episodeend ?? encounter.end }}
   reason* {{ reason.system }}#{{ reason.code }} {{ reason.display }}
 
+{#
+  ══════════════════════════════════════════════════════════════════════════════
+  HOSPITAL BLOCK
+  Practitioner sub-block gated on hospital.practitioner.family being non-empty.
+  hospital.practitioner.gender is unique to this ISH template.
+  ══════════════════════════════════════════════════════════════════════════════
+#}
 # hospital
 hospital
   name {{ hospital.name }}
@@ -64,6 +327,14 @@ hospital
 {% endif %}
 
 {#
+  ── Commented-out admission evaluation section ───────────────────────────────
+  ISH-formatted content inside a Twig comment — not emitted.
+  Documents the intended structure for a future admission evaluation section.
+  Lines use # (ISH comment style) within the Twig { # ... # } block.
+  Note: Twig comments cannot be nested, so the inner { # populate ... # } style
+  is not used here — plain # markers are used instead.
+#}
+{#
  # admission evaluation
  # section*
  #   type admissionevaluation
@@ -72,6 +343,13 @@ hospital
  #   text """TEXT"""
  #}
 
+{#
+  ══════════════════════════════════════════════════════════════════════════════
+  SYNTHESIS SECTION (conditional on discharge.text)
+  Brief discharge summary text. The ISH comment lines within this block
+  appear in the output when discharge.text is present.
+  ══════════════════════════════════════════════════════════════════════════════
+#}
 {% if discharge.text is not empty %}
 # Synthesis
 # short discharge summary text of this encounter episode
@@ -83,12 +361,26 @@ section*
   text """{{ discharge.text }}"""
 {% endif %}
 
+{#
+  ══════════════════════════════════════════════════════════════════════════════
+  HOSPITAL COURSE SECTION (always emitted)
+  encounter.hospitalCourse is a required field — no conditional guard.
+  ══════════════════════════════════════════════════════════════════════════════
+#}
 # Hospital Course
 section*
   type hospitalcourse
   code $loinc#8648-8 Hospital course note
   text """{{ encounter.hospitalCourse }}"""
 
+{#
+  ══════════════════════════════════════════════════════════════════════════════
+  PHARMACOTHERAPY SECTION (conditional on medication being non-empty)
+  Each medication produces one entry* block.
+
+  Coding priority: SNOMED preferred; RxNorm fallback (when SNOMED absent).
+  ══════════════════════════════════════════════════════════════════════════════
+#}
 {% if medication is not empty %}
 # medications associated with this encounter episode
 section*
@@ -97,24 +389,33 @@ section*
   title Medications
 {% for m in medication %}
   entry*
-    type pharmacotherapy
-    start 2025-04-03
+    type medication
 {% if m.start is not empty %}
     start {{ m.start }}
 {% endif %}
-{# add snomed #}
+{# SNOMED preferred; RxNorm fallback #}
 {% if m.snomed.code is not empty %}
     code $sct#{{ m.snomed.code }} {{ m.snomed.display }}
 {% else %}
-{# rxnorm only if no snomed #}
+{# RxNorm fallback — ⚠ typo: medmication should be medication #}
 {% if m.rxnorm.code is not empty %}
-    code $rxnorm#{{ medmication.rxnorm.code }} {{ m.rxnorm.display }}
+    code $rxnorm#{{ m.rxnorm.code }} {{ m.rxnorm.display }}
 {% endif %}
 {% endif %}
+{% if m.snomed.preferredTerm is not empty %}
     text {{ m.snomed.preferredTerm }}
+{% endif %}
 {% endfor %} {# medication loop #}
 {% endif %}  {# if medications at all #}
 
+{#
+  ══════════════════════════════════════════════════════════════════════════════
+  DISCHARGE DIAGNOSIS SECTION (conditional on discharge being non-empty)
+  Uses ICD-10 coding ($icd10), not SNOMED CT — different from FSH condition
+  templates. encounter.episodeend is used as the condition start date.
+  discharge.code is a flat string (not a system/code object).
+  ══════════════════════════════════════════════════════════════════════════════
+#}
 {% if discharge is not empty %}
 # discharge diagnoses of this encounter episode
 section*
@@ -127,6 +428,16 @@ section*
     code* $icd10#{{ discharge.code }} {{ discharge.display }}
 {% endif %}
 
+{#
+  ══════════════════════════════════════════════════════════════════════════════
+  PROCEDURES SECTION (conditional on procedure being non-empty)
+  p.code.preferredTerm → code* value (primary identifier in ISH)
+  p.code.display       → text* value (descriptive label; conditional)
+  Note: preferredTerm and display roles are REVERSED relative to FSH convention
+  where display appears in the code expression and preferredTerm overrides text.
+  The |date('Y-m-d') filter is the only date filter in this template.
+  ══════════════════════════════════════════════════════════════════════════════
+#}
 {% if procedure is not empty %}
 # significant sectionSignificantProcedures
 section*
@@ -147,19 +458,28 @@ section*
 {% endfor %} {# procedure loop #}
 {% endif %}  {# if procedures at all #}
 
+{#
+  ══════════════════════════════════════════════════════════════════════════════
+  VITAL SIGNS SECTION (conditional on vitalsigns being non-empty)
+  vitalsigns is a two-level nested structure:
+    Level 1: {% for vblock in vitalsigns %} — key-value dict
+             `vblock` is an array of readings.
+    Level 2: {% for v in vblock %} — individual readings.
+  Value line: all Quantity sub-fields on one ISH line, unit in double-quotes.
+  ══════════════════════════════════════════════════════════════════════════════
+#}
 {% if vitalsigns is not empty %}
 # vital signs
 section*
-  type sectionVitalSigns
+  type vitalsigns
   code $loinc#8716-3 Vital signs note
   title Vital Signs during Stay
-{% for d, vblock in vitalsigns %}
+{% for vblock in vitalsigns %}
 {% for v in vblock %}
   entry*
     type vitalsign
     date {{ v.date }}
     code* {{ v.code.system }}#{{ v.code.code }} {{ v.code.display }}
-    {# if numeric #}
     value {{ v.value.value }} {{ v.value.system }}#{{ v.value.code }} "{{ v.value.unit }}"
 {% endfor %} {# vitalsigns loop #}
 {% endfor %} {# vblock loop #}

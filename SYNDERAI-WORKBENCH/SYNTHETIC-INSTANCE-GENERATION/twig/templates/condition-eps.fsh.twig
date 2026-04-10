@@ -1,11 +1,152 @@
 {#
-  This is the TWIG file for the creation of an FSH instance including the HTML parts.
-  see README.md
+  ============================================================================
+  TEMPLATE: condition-eps_fsh.twig
+  ============================================================================
+  PURPOSE
+    Generates a FSH Condition instance conforming to the ConditionOblEuEps
+    profile (EPS Condition with Obligations). Each invocation represents one
+    clinical problem or diagnosis on the patient's problem list, or a sentinel
+    "no known problems" record when the patient has no conditions.
 
-  KH since 2025-09-02
+  PROFILE CONFORMANCE
+    InstanceOf: ConditionOblEuEps
+    Must-support elements covered:
+      category, code (with preferred text), clinicalStatus,
+      onsetDateTime (or absent-reason), abatementDateTime, subject, asserter
+
+  RELATIONSHIP TO condition-eu_fsh.twig
+    Both templates share the active/inactive logic and the three-column HTML
+    pattern. Key differences are documented in the comparison table below.
+
+    ┌──────────────────────────────────┬──────────────────────┬────────────────────────┐
+    │ Aspect                           │ condition-eps        │ condition-eu           │
+    ├──────────────────────────────────┼──────────────────────┼────────────────────────┤
+    │ Profile                          │ ConditionOblEuEps    │ ConditionEuCore        │
+    │ Null test operator               │ is null (strict)     │ is not null (inverse)  │
+    │ No-condition output              │ Full sentinel FSH    │ Empty HTML row only    │
+    │ addHTML_tr() placement           │ Inside {% else %}    │ Before {% if %}        │
+    │ addHTML_trend() placement        │ Inside {% else %}    │ After {% endif %}      │
+    │ Categories emitted               │ One                  │ Two                    │
+    │ condition.code structure         │ Single object only   │ Array-or-object        │
+    │ preferred term override          │ Only if differs from │ Unconditionally        │
+    │                                  │ .display             │ when non-empty         │
+    │ clinicalStatus rule              │ Emitted              │ Not emitted            │
+    │ abatementDateTime guard          │ end + inactive both  │ end non-empty only     │
+    └──────────────────────────────────┴──────────────────────┴────────────────────────┘
+
+  TWO-MODE PATTERN — `is null` STRICT TEST
+    The top-level branch tests `{% if condition is null %}`.
+    Note: `is null` is a strict null check, distinct from `is empty`:
+      - `is null`  → true only for PHP null / Twig null (not for empty string
+                     or empty array)
+      - `is empty` → true for null, empty string, empty array, and zero
+    The caller must pass a PHP null (not an empty array or "") to trigger
+    Mode A.
+
+  MODE A — NO KNOWN CONDITION (condition is null)
+    A sentinel FSH instance is emitted carrying:
+      code.coding[0] = $sct#160245001 "No current problems or disability (situation)"
+      onsetDateTime.extension → data-absent-reason #unknown
+    A single HTML cell "No known problems or disabilities" is emitted.
+    No category or clinicalStatus rule is included in the sentinel.
+
+  MODE B — CONDITION DATA PRESENT (condition is not null)
+
+    PRE-CALCULATIONS (two local variables):
+      activeflag — first character of condition.active (format "SYYYY-MM-DD")
+                   extracted via |slice(0, 1); "1" = active, "0" = inactive.
+      inactive   — boolean: `activeflag == 0` (integer equality).
+      preferred  — display label: uses condition.code.preferredTerm if it is
+                   non-empty AND differs from condition.code.display. This
+                   two-condition guard prevents the preferred term from being
+                   set when it is identical to the default display, which
+                   differs from condition-eu which overrides unconditionally.
+
+    CATEGORY
+      A single category is emitted:
+        * category = $condition-category#problem-list-item "Problem List Item"
+      This is the EPS problem-list focus; encounter-diagnosis is not added
+      (unlike condition-eu which emits both categories).
+
+    CODE
+      code.coding[0] uses explicit [0] index (one coding per condition).
+      code.text is set to the resolved preferred term.
+
+    THREE-COLUMN HTML TABLE (no HEAD)
+      TD 1 — Condition display: `addHTML_tdgray` when inactive, `addHTML_td`
+              when active. `clinicalStatus` is emitted immediately after the
+              TD 1 cell call — co-located with the activity state.
+      TD 2 — Onset / period: absent-reason "?" when start is empty; otherwise
+              formats `hperiod` as a local variable:
+                start date alone         : "d-M-Y"
+                start + end (inactive)   : "d-M-Y - d-M-Y"
+              Note: abatementDateTime is only emitted when BOTH condition.end
+              is non-empty AND the condition is inactive. An active condition
+              with an end date will not emit abatementDateTime.
+      TD 3 — Status label: "inactive" (gray) or "active" (normal cell).
+
+    clinicalStatus PLACEMENT
+      Unlike most FSH rules which appear before or after all HTML calls,
+      clinicalStatus is emitted inside the TD 1 conditional block, immediately
+      after `addHTML_td[gray]()`. This co-locates the FSH rule with the
+      visual state it expresses:
+        {% if inactive %}
+        {{ addHTML_tdgray(preferred) }}
+        * clinicalStatus = $condition-clinical#inactive
+        {% else %}
+        {{ addHTML_td(preferred) }}
+        * clinicalStatus = $condition-clinical#active
+        {% endif %}
+
+    ASSERTER (conditional)
+      When `asserter` is non-empty, a Reference to the asserter's role
+      resource is emitted. The `asserter` object carries `.instancerole`
+      (UUID) and `.name` (display string). This links the condition to the
+      clinician who asserted it, typically a PractitionerRole instance.
+
+  NARRATIVE — BODY ROWS ONLY (Pattern 1)
+    Only emitHTML() is flushed inside text.div — no HEAD in the narrative.
+    %%HEAD%% is empty (no addHEAD_th calls are made anywhere in this template).
+
+  CONTEXT VARIABLES
+  ┌──────────────────────────────────┬──────────┬────────────────────────────────────────────┐
+  │ Variable                         │ Type     │ Description                                │
+  ├──────────────────────────────────┼──────────┼────────────────────────────────────────────┤
+  │ instanceid                       │ string   │ Unique resource id.                        │
+  │ patient.instanceid               │ string   │ UUID of the Patient resource.              │
+  │ patient.name                     │ string   │ Full display name for the subject Ref.     │
+  │ condition                        │ object?  │ null → Mode A. Non-null → Mode B.         │
+  │   .active                        │ string   │   Activity string "SYYYY-MM-DD"; first     │
+  │                                  │          │   char is "1" (active) or "0" (inactive).  │
+  │   .code.system                   │ string   │   CodeSystem URI for the condition code.   │
+  │   .code.code                     │ string   │   Condition concept code.                  │
+  │   .code.display                  │ string   │   Default display text.                    │
+  │   .code.preferredTerm            │ string?  │   Preferred display override. Used only    │
+  │                                  │          │   when non-empty AND different from        │
+  │                                  │          │   .code.display.                           │
+  │   .start                         │ string?  │   ISO 8601 onset date. When empty,        │
+  │                                  │          │   data-absent-reason is emitted.           │
+  │   .end                           │ string?  │   ISO 8601 abatement date. Emitted as     │
+  │                                  │          │   abatementDateTime only when non-empty    │
+  │                                  │          │   AND the condition is inactive.           │
+  │ asserter                         │ object?  │   Optional asserter (clinician who        │
+  │   .instancerole                  │ string   │   asserted the condition).                 │
+  │   .name                          │ string   │   Asserter display name.                   │
+  └──────────────────────────────────┴──────────┴────────────────────────────────────────────┘
+
+  CODESYSTEMS REFERENCED
+    $sct                — SNOMED CT; 160245001 "No current problems" (sentinel),
+                          condition codes (caller-supplied)
+    $condition-category — problem-list-item
+    $condition-clinical — #active, #inactive
+
+  AUTHOR   KH
+  SINCE    2025-09-02
+  ============================================================================
 #}
 
-%%FSH%% {# tag required #}
+%%FSH%% {# ── Section marker required by the FSH pre-processor ─────────────── #}
+
 Instance: {{ setInstance("Instance-Condition-" ~ instanceid) }}
 InstanceOf: ConditionOblEuEps
 Title: "Condition Obligations (EPS)"
@@ -15,41 +156,66 @@ Usage: #inline
 * id = "{{ instanceid }}"
 
 {% if condition is null %}
-{# 
-  no known Condition data, emit it and we are done
+{#
+  ══════════════════════════════════════════════════════════════════════════════
+  MODE A — NO KNOWN CONDITION
+  `is null` is a strict null check — the caller must pass PHP null, not an
+  empty array or empty string, to reach this branch.
+  A full sentinel FSH instance is emitted carrying the SNOMED "no current
+  problems" code, plus a data-absent-reason on onsetDateTime.
+  ══════════════════════════════════════════════════════════════════════════════
 #}
 * code.coding[0] = $sct#160245001 "No current problems or disability (situation)"
-* subject = Reference(urn:uuid:{{ patient.instanceid }}) "{{ patient.name }}"
-* onsetDateTime.extension.url = "http://hl7.org/fhir/StructureDefinition/data-absent-reason"
+* subject        = Reference(urn:uuid:{{ patient.instanceid }}) "{{ patient.name }}"
+{# No onset date known — signal absence with data-absent-reason extension #}
+* onsetDateTime.extension.url       = "http://hl7.org/fhir/StructureDefinition/data-absent-reason"
 * onsetDateTime.extension.valueCode = #unknown
+{# Single HTML cell — no table structure needed for a sentinel value #}
 {{ addHTML_tr() }}
-{{ addHTML_td("No known problems or disabilities") }}  {# *** HTML td 1-n: add human text for no problems or disabilities #}    
+{{ addHTML_td("No known problems or disabilities") }}
 {{ addHTML_trend() -}}
 
 {% else %}
-{# 
-  emit data of the Condition
+{#
+  ══════════════════════════════════════════════════════════════════════════════
+  MODE B — CONDITION DATA PRESENT
+  ══════════════════════════════════════════════════════════════════════════════
 #}
 
 {{ addHTML_tr() }}
 
-{# precalculations #}
-{# condition inactive? #}
-{% set activeflag = condition.active | slice(0, 1) %} {# condition.active format is SYYYY-MM-DD with S status 1=active, 0=inactive #}
-{% set inactive = activeflag == 0 %}
-{# condition#s preferred term #}
-{% set preferred = condition.code.display %}
+{#
+  ── Pre-calculations ─────────────────────────────────────────────────────────
+  activeflag: extracts the first character of condition.active ("SYYYY-MM-DD")
+              to determine the activity state. "1" = active, "0" = inactive.
+  inactive:   boolean flag for use in conditional branches below.
+  preferred:  resolves the display label — uses preferredTerm only when it is
+              non-empty AND different from condition.code.display. This two-
+              condition guard differs from condition-eu which overrides
+              unconditionally when preferredTerm is non-empty.
+#}
+{% set activeflag = condition.active | slice(0, 1) %} {# "1" = active, "0" = inactive #}
+{% set inactive   = activeflag == 0 %}
+{% set preferred  = condition.code.display %}
 {% if condition.code.preferredTerm is not empty %}
 {% if condition.code.display != condition.code.preferredTerm %}
 {% set preferred = condition.code.preferredTerm %}
 {% endif %}
 {% endif %}
 
+{# Category: EPS problem list only (no encounter-diagnosis, unlike condition-eu) #}
 * category = $condition-category#problem-list-item "Problem List Item"
-* code.coding[0] = {{ condition.code.system }}#{{ condition.code.code }} "{{ condition.code.display }}"
-* code.text = "{{ preferred }}"
 
-{# *** HTML td 1: condition #}
+{# Code: explicit [0] index — one coding per condition #}
+* code.coding[0] = {{ condition.code.system }}#{{ condition.code.code }} "{{ condition.code.display }}"
+* code.text      = "{{ preferred }}"
+
+{#
+  ── TD 1: condition name + clinicalStatus ───────────────────────────────────
+  Cell style reflects activity state: gray for inactive, normal for active.
+  clinicalStatus FSH rule is co-located here — emitted immediately after the
+  HTML cell call that reflects the same state.
+#}
 {% if inactive %}
 {{ addHTML_tdgray(preferred) }}
 * clinicalStatus = $condition-clinical#inactive
@@ -58,9 +224,20 @@ Usage: #inline
 * clinicalStatus = $condition-clinical#active
 {% endif %}
 
-{# *** HTML td 2: onset date / period or unknown #}
+{#
+  ── TD 2: onset / period ────────────────────────────────────────────────────
+  When start is absent: data-absent-reason extension on onsetDateTime; "?" in HTML.
+  When start is present:
+    - onsetDateTime is always emitted.
+    - hperiod local variable accumulates the HTML date string.
+    - abatementDateTime is only added when BOTH condition.end is non-empty AND
+      the condition is inactive. An active condition with an end date does NOT
+      emit abatementDateTime (differs from condition-eu which emits whenever
+      end is non-empty, regardless of active state).
+    - hperiod extends to "start - end" when abatement is emitted.
+#}
 {% if condition.start is empty %}
-* onsetDateTime.extension.url = "http://hl7.org/fhir/StructureDefinition/data-absent-reason"
+* onsetDateTime.extension.url       = "http://hl7.org/fhir/StructureDefinition/data-absent-reason"
 * onsetDateTime.extension.valueCode = #unknown
 {{ addHTML_td("?") }}
 {% else %}
@@ -73,32 +250,44 @@ Usage: #inline
 {{ addHTML_tdnb(hperiod) -}}
 {% endif %}
 
-{# *** HTML td 3: status #}
+{#
+  ── TD 3: active / inactive label ───────────────────────────────────────────
+  Gray cell for inactive; normal cell for active.
+#}
 {% if inactive %}
 {{ addHTML_tdgray("inactive") -}}
 {% else %}
 {{ addHTML_td("active") }}
 {% endif %}
 
+{# Patient reference #}
 * subject = Reference(urn:uuid:{{ patient.instanceid }}) "{{ patient.name }}"
 
+{#
+  ── Asserter (conditional) ───────────────────────────────────────────────────
+  References the PractitionerRole resource of the clinician who asserted the
+  condition. Requires asserter.instancerole (UUID) and asserter.name (display).
+#}
 {% if asserter is not empty %}
 * asserter = Reference(urn:uuid:{{ asserter.instancerole }}) "{{ asserter.name }}"
 {% endif %}
 
 {{ addHTML_trend() -}}
 
-{% endif %}
+{% endif %} {# condition is null / not null #}
 
-{# populate .text #}
+{#
+  ── FHIR narrative — body rows only (Pattern 1) ─────────────────────────────
+  emitHTML() only — no HEAD bag populated, %%HEAD%% is empty.
+#}
 * text.status = #generated
-* text.div = """
+* text.div    = """
 <div xmlns="http://www.w3.org/1999/xhtml">
 <table class="hl7__ips">{{ emitHTML() | raw }}</table>
 </div>
 """
 
-%%HEAD%% {# tag required, content below maybe emtpy #}
+%%HEAD%% {# ── Section marker required by the FSH pre-processor — intentionally empty #}
 
-%%HTML%% {# tag required, content below maybe emtpy #}
+%%HTML%% {# ── Section marker required by the FSH pre-processor ─────────────── #}
 {{ emitHTML() | raw }}
