@@ -670,6 +670,33 @@ if ($CURRENTMENU['menu'] === 'index') {
     $content = str_replace("%%DOWNLOADLIST%%", $strlist, $content);
     $OUT = str_replace("%%HEADER%%",           "",    $content);
 
+} elseif (preg_match('/^dashboard\/*/', $CURRENTMENU['menu'])) {
+    // -------------------------------------------------------------------------
+    // DASHBOARDS PAGE
+    // Show dashboard with statistics about conditions, medications and 
+    // care plans with the most recent EPS package 
+    // -------------------------------------------------------------------------
+    $package = basename($CURRENTMENU['menu']);
+    // 2do CHECK of package name exist
+
+    $content = str_replace("%%BACKGROUNDIMG%%", "page-image", $content);
+
+    $tmp = file_get_contents('tmpl/dashboards.html');
+    $tmp = str_replace("%%TEASER%%", SYNDERAITEASER, $tmp);
+
+    /* get the dashboard fragment file from package
+    $dashboards = "<ul>";
+    $dashboards .= "<li><table><tr><td><i class=\"mdi mdi-view-dashboard-variant green\"></i></td>";
+    $dashboards .= "<td class=\"dashboard-info\"><strong>Conditions</strong><p/>Dashboard over all conditions of the EPS patients.";
+    $dashboards .= "</td></tr></table></li></ul>";
+    */
+
+    $dashboards = file_get_contents("examples/EPS/2.0.0+20260318/condition_dashboard_fragment.html");
+
+    $content = str_replace("%%MAIN%%", $tmp, $content);
+    $content = str_replace("%%DASHBOARDS%%", $dashboards, $content);
+    $OUT = str_replace("%%HEADER%%", "", $content);
+
 } else {
 
     // -------------------------------------------------------------------------

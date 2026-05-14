@@ -34,6 +34,11 @@ $MENU = [
         "file" => "-"
     ],
     [
+        "title" => "Dashboards",
+        "menu" => "dashboards",
+        "file" => "-"
+    ],
+    [
         "title" => "Downloads",
         "menu" => "downloads",
         "file" => "-"
