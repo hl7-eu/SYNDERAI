@@ -99,12 +99,12 @@ InstanceOf: PractitionerRoleEuCore
 Title: "Practitioner Role (EPS) Provider"
 Description: "Practitioner Role Provider"
 Usage: #inline
-* id           = "{{ provider.instancerole }}"
+* id = "{{ provider.instancerole }}"
 * practitioner = Reference(urn:uuid:{{ provider.instanceprovider }})
 * organization = Reference(urn:uuid:{{ provider.instanceroleorg }})
 {# Inline single-cell narrative table — identifies the role by id #}
 * text.status = #generated
-* text.div    = """
+* text.div = """
 <div xmlns="http://www.w3.org/1999/xhtml">
 <table class="hl7__ips"><tr><td>Provider Role Id {{ provider.instancerole }}</td></tr></table>
 </div>
@@ -125,8 +125,8 @@ Usage: #inline
 * id = "{{ provider.instanceroleorg }}"
 
 {# Organisation business identifier under the HL7 Europe OID namespace #}
-* identifier.system           = "urn:oid:{{ HL7EUROPEEXAMPLESOID }}"
-* identifier.value            = "{{ provider.orgidentifier }}"
+* identifier.system = "urn:oid:{{ HL7EUROPEEXAMPLESOID }}"
+* identifier.value = "{{ provider.orgidentifier }}"
 * identifier.assigner.display = "HL7 Europe"
 
 * name = "{{ provider.providerorgname }}"
@@ -147,7 +147,7 @@ Usage: #inline
 
 {# Inline single-cell narrative table — shows the organisation name #}
 * text.status = #generated
-* text.div    = """
+* text.div = """
 <div xmlns="http://www.w3.org/1999/xhtml">
 <table class="hl7__ips"><tr><td>{{ provider.providerorgname }}</td></tr></table>
 </div>
@@ -183,7 +183,7 @@ Usage: #inline
   concern in downstream rendering.
 #}
 * text.status = #generated
-* text.div    = """
+* text.div = """
 <div xmlns="http://www.w3.org/1999/xhtml">
 <table class="hl7__ips"><tr><td>{{ provider.providernameprefix ~ " " ~ provider.providernamegiven ~ " " ~ provider.providernamefamily}}</td></tr></table>
 </div>

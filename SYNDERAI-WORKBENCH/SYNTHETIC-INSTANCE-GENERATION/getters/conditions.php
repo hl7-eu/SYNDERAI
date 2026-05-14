@@ -51,8 +51,8 @@ if ($PROCESSISH) {
       $item = explode(",", $buffer);
       // var_dump($item);exit;
       // take condition if active
-      $snomed = trim($item[4]);
-      $display = trim($item[5]);
+      $snomed = trim($item[5]);
+      $display = trim($item[6]);
 
       // last minute corrections: tweak some codes
       if ($snomed === "15777000") {
@@ -61,7 +61,8 @@ if ($PROCESSISH) {
       }
 
       $snomedproperties = get_SNOMED_properties($snomed, $display);
-      if ($snomedproperties["code"] !== $snomed) $snomed = $snomedproperties["code"]; // this is a replacement
+      if ($snomedproperties["code"] !== $snomed && strlen($snomedproperties["code"]) > 0)
+        $snomed = $snomedproperties["code"]; // this is a replacement
       $display = strlen($snomedproperties['fullySpecifiedName']) > 0 ? $snomedproperties['fullySpecifiedName'] : $display;
       if (str_contains($display . " " . $snomedproperties['fullySpecifiedName'], "(disorder)")) {
         $active = strlen(trim($item[1])) === 0 ? '1' : '0';

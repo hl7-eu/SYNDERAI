@@ -166,9 +166,9 @@ Usage: #inline
   ══════════════════════════════════════════════════════════════════════════════
 #}
 * code.coding[0] = $sct#160245001 "No current problems or disability (situation)"
-* subject        = Reference(urn:uuid:{{ patient.instanceid }}) "{{ patient.name }}"
+* subject = Reference(urn:uuid:{{ patient.instanceid }}) "{{ patient.name }}"
 {# No onset date known — signal absence with data-absent-reason extension #}
-* onsetDateTime.extension.url       = "http://hl7.org/fhir/StructureDefinition/data-absent-reason"
+* onsetDateTime.extension.url = "http://hl7.org/fhir/StructureDefinition/data-absent-reason"
 * onsetDateTime.extension.valueCode = #unknown
 {# Single HTML cell — no table structure needed for a sentinel value #}
 {{ addHTML_tr() }}
@@ -195,8 +195,8 @@ Usage: #inline
               unconditionally when preferredTerm is non-empty.
 #}
 {% set activeflag = condition.active | slice(0, 1) %} {# "1" = active, "0" = inactive #}
-{% set inactive   = activeflag == 0 %}
-{% set preferred  = condition.code.display %}
+{% set inactive = activeflag == 0 %}
+{% set preferred = condition.code.display %}
 {% if condition.code.preferredTerm is not empty %}
 {% if condition.code.display != condition.code.preferredTerm %}
 {% set preferred = condition.code.preferredTerm %}
@@ -208,7 +208,7 @@ Usage: #inline
 
 {# Code: explicit [0] index — one coding per condition #}
 * code.coding[0] = {{ condition.code.system }}#{{ condition.code.code }} "{{ condition.code.display }}"
-* code.text      = "{{ preferred }}"
+* code.text = "{{ preferred }}"
 
 {#
   ── TD 1: condition name + clinicalStatus ───────────────────────────────────
@@ -237,7 +237,7 @@ Usage: #inline
     - hperiod extends to "start - end" when abatement is emitted.
 #}
 {% if condition.start is empty %}
-* onsetDateTime.extension.url       = "http://hl7.org/fhir/StructureDefinition/data-absent-reason"
+* onsetDateTime.extension.url = "http://hl7.org/fhir/StructureDefinition/data-absent-reason"
 * onsetDateTime.extension.valueCode = #unknown
 {{ addHTML_td("?") }}
 {% else %}
@@ -281,7 +281,7 @@ Usage: #inline
   emitHTML() only — no HEAD bag populated, %%HEAD%% is empty.
 #}
 * text.status = #generated
-* text.div    = """
+* text.div = """
 <div xmlns="http://www.w3.org/1999/xhtml">
 <table class="hl7__ips">{{ emitHTML() | raw }}</table>
 </div>

@@ -112,16 +112,16 @@ Usage: #inline
 * id = "{{ provenance.deviceid }}"
 
 {# Static device descriptor — same for every generated bundle #}
-* status             = #active
+* status = #active
 * distinctIdentifier = "synderai-generator-50"
 * deviceName[0].name = "SYNDERAI Synthetic Generator"
 * deviceName[0].type = #manufacturer-name
-* manufacturer       = "SYNDERAI Project"
-* version[0].value   = "5.0"
+* manufacturer = "SYNDERAI Project"
+* version[0].value = "5.0"
 
 {# Minimal identification narrative #}
 * text.status = #generated
-* text.div    = """
+* text.div = """
 <div xmlns="http://www.w3.org/1999/xhtml">
 SYNDERAI Synthetic Generator v5.0
 </div>
@@ -151,27 +151,27 @@ Usage: #inline
 {% endfor %}
 
 {# Timestamp of data generation #}
-* recorded         = "{{ provenance.date }}"
+* recorded = "{{ provenance.date }}"
 
 {# Fixed activity: data creation event #}
-* activity.coding  = http://terminology.hl7.org/CodeSystem/v3-DataOperation#CREATE "create"
-* activity.text    = "Synthetic Example Data Generation"
+* activity.coding = http://terminology.hl7.org/CodeSystem/v3-DataOperation#CREATE "create"
+* activity.text = "Synthetic Example Data Generation"
 
 {# Fixed policy URL — points to the published synthetic-data policy document #}
-* policy[0]        = "https://synderai.net/synderai-synthetic-data-policy"
+* policy[0] = "https://synderai.net/synderai-synthetic-data-policy"
 
 {# Agent: the SYNDERAI generator Device is the author of the synthetic data #}
 * agent[0].type.coding = http://terminology.hl7.org/CodeSystem/provenance-participant-type#author "Author"
-* agent[0].type.text   = "author"
-* agent[0].who         = Reference(urn:uuid:{{ provenance.deviceid }})
+* agent[0].type.text = "author"
+* agent[0].who = Reference(urn:uuid:{{ provenance.deviceid }})
 
 {# Fixed reason: interoperability testing and training (non-clinical use) #}
 * reason[0].coding = http://terminology.hl7.org/CodeSystem/v3-ActReason#TRAIN "training"
-* reason[0].text   = "Interoperability Testing and Training (non-clinical use)"
+* reason[0].text = "Interoperability Testing and Training (non-clinical use)"
 
 {# Minimal identification narrative #}
 * text.status = #generated
-* text.div    = """
+* text.div = """
 <div xmlns="http://www.w3.org/1999/xhtml">
 Provenance for SYNDERAI Synthetic Example Data Resource
 </div>

@@ -235,8 +235,8 @@ Usage: #inline
 * id = "{{ composition.instanceid }}"
 
 {# Composition business identifier under the HL7 Europe OID namespace #}
-* identifier.system           = "urn:oid:{{ HL7EUROPEEXAMPLESOID }}"
-* identifier.value            = "{{ composition.identifier }}"
+* identifier.system = "urn:oid:{{ HL7EUROPEEXAMPLESOID }}"
+* identifier.value = "{{ composition.identifier }}"
 * identifier.assigner.display = "HL7 Europe"
 
 * status = #final
@@ -249,7 +249,7 @@ Usage: #inline
 
 {# Fixed LOINC type: Laboratory report #}
 * type.coding = $loinc#11502-2 "Laboratory report"
-* type.text   = "Laboratory Report"
+* type.text = "Laboratory Report"
 
 * subject = Reference(urn:uuid:{{ patient.instanceid }}) "{{ patient.name }}"
 
@@ -270,7 +270,7 @@ Usage: #inline
 #}
 * section[lab-subsections]
   * title = "Laboratory Report"
-  * code  = $loinc#26436-6 "Laboratory studies (set)"
+  * code = $loinc#26436-6 "Laboratory studies (set)"
   * code.text = "Laboratory studies"
 
 {#
@@ -300,9 +300,9 @@ Usage: #inline
 {% set sectioncount = sectioncount + 1 %}
 
 {# Sub-section appended under lab-subsections using [+]/[=] #}
-  * section[+].title              = "{{ catvalue[0] }}"
-  * section[=].code.coding[+]    = $loinc#{{ catvalue[1] }} "{{ catvalue[2] }}"
-  * section[=].code.text         = "{{ catvalue[0] }}"
+  * section[+].title = "{{ catvalue[0] }}"
+  * section[=].code.coding[+] = $loinc#{{ catvalue[1] }} "{{ catvalue[2] }}"
+  * section[=].code.text = "{{ catvalue[0] }}"
 
 {#
   ── Results loop for this category ───────────────────────────────────────────
@@ -312,17 +312,17 @@ Usage: #inline
   reportdate captures the first result's report date for the column header.
 #}
 {% set sectiontext = "" %}
-{% set reportdate  = "Result" %} {# fallback label when no result yet seen #}
+{% set reportdate = "Result" %} {# fallback label when no result yet seen #}
 
 {% for r in results %}
 
 {% if (r.data.lnclass == catkey) %}
 
 {# Initialise per-row display variables #}
-{% set lvalue     = "" %}
-{% set lunit      = "" %}
+{% set lvalue = "" %}
+{% set lunit = "" %}
 {% set lreference = "" %}
-{% set cdisplay   = r.data.code.display %}
+{% set cdisplay = r.data.code.display %}
 
 {#
   ── Quantity value processing ──────────────────────────────────────────────
@@ -419,9 +419,9 @@ Usage: #inline
 {# Always named slice — no conditional unnamed [+] option (differs from HDR) #}
 * section[{{ slicename }}]
   * title = "{{ section.title }}"
-  * code  = {{ section.code }} "{{ section.display }}"
+  * code = {{ section.code }} "{{ section.display }}"
   * text.status = #generated
-  * text.div    = """
+  * text.div = """
 <div xmlns="http://www.w3.org/1999/xhtml">
 {{ section.text | raw }}
 </div>
@@ -455,7 +455,7 @@ Usage: #inline
   ── Composition-level narrative — placed at the end (same position as EPS) ───
 #}
 * text.status = #empty
-* text.div    = "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+* text.div = "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
 
 %%HEAD%% {# ── Section marker required by the FSH pre-processor — intentionally empty #}
 

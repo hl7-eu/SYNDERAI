@@ -42,9 +42,9 @@ function getClinicalStoryCandidatesWithMatchingPreselections($preselarr) {
 
     global $INPATIENTENCOUNTERS;
 
+    $founde = [];   // candidates matching inpatient filter
     $foundd = [];   // candidates matching diagnosis filter
     $foundm = [];   // candidates matching medication filter
-    $founde = [];   // candidates matching inpatient filter
 
     // ------------------------------------------------------------------
     // Filter I: inpatient encounters
@@ -52,7 +52,7 @@ function getClinicalStoryCandidatesWithMatchingPreselections($preselarr) {
     if ($preselarr->inpatient === TRUE) {
         lognl(2, "...... Finding clinical stories that have encounters with 'appropriate' admission reasons and discharge information");
         foreach ($INPATIENTENCOUNTERS as $c) {
-            $founde[] = $c["candid"];
+            $founde[$c["candid"]] = $c["candid"];
         }
     }
 
@@ -137,14 +137,17 @@ function getClinicalStoryCandidatesWithMatchingPreselections($preselarr) {
 
     $found = NULL;
     foreach ($tmp as $key => $value) {
-        $iscandid = isset($preselarr->diagnosis)  ? str_contains($value, "D") : TRUE;
+        $iscandid = isset($preselarr->diagnosis) ? str_contains($value, "D") : TRUE;
         if ($iscandid) $iscandid = isset($preselarr->medication) ? str_contains($value, "M") : TRUE;
-        if ($iscandid) $iscandid = isset($preselarr->inpatient)  ? str_contains($value, "I") : FALSE;
+        if ($iscandid) $iscandid = isset($preselarr->inpatient)  ? str_contains($value, "I") : TRUE;
         if ($iscandid) $found[] = $key;
     }
+    // make the found list unique
+    $found = array_unique($found);
 
     if ($found) {
         lognl(2, "...... Combined catches: " . count($found) . "\n");
+        // var_dump($found);
     }
 
     return $found;

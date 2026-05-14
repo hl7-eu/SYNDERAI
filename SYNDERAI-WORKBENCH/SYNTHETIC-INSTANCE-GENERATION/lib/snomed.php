@@ -79,7 +79,7 @@
  *                - "manufacturedDoseFormDisplay"  Dose-form human-readable label.
  *                All values are empty strings when the concept cannot be resolved.
  */
-function get_SNOMED_properties($c, $hint = "no hints") {
+function get_SNOMED_properties(string $c, string $hint = "no hints") {
 
     // Canonical empty result — returned whenever resolution is not possible
     $EMPTYPROPERTIES = [
@@ -183,7 +183,7 @@ function get_SNOMED_properties($c, $hint = "no hints") {
         $response = curl_exec($curl);
         $code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
     }
-
+    
     if (200 === $code) {
         $xml = simplexml_load_string($response);
 

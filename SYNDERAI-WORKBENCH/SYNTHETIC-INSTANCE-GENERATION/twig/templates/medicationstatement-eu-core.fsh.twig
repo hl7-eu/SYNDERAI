@@ -136,13 +136,13 @@ InstanceOf: MedicationStatementEuCore
 Title: "MedicationStatement"
 Description: "MedicationStatement"
 Usage: #inline
-* id     = "{{ instanceid }}"
+* id = "{{ instanceid }}"
 * status = #active
 {# Fixed SNOMED code for "No known medications (situation)" #}
 * medicationCodeableConcept = $sct#787481004 "No known medications (situation)"
 * subject = Reference(urn:uuid:{{ patient.instanceid }}) "{{ patient.name }}"
 {# No dates available — use data-absent-reason extension on effectivePeriod #}
-* effectivePeriod.extension.url       = "http://hl7.org/fhir/StructureDefinition/data-absent-reason"
+* effectivePeriod.extension.url = "http://hl7.org/fhir/StructureDefinition/data-absent-reason"
 * effectivePeriod.extension.valueCode = #unknown
 {# Single HTML cell — no table structure needed for a sentinel value #}
 {{ addHTML_tr() }}
@@ -150,7 +150,7 @@ Usage: #inline
 {{ addHTML_trend() -}}
 {# Narrative — body row only, no HEAD. hl7__ips first25 narrows the first column. #}
 * text.status = #generated
-* text.div    = """
+* text.div = """
 <div xmlns="http://www.w3.org/1999/xhtml">
 <table class="hl7__ips first25">{{ emitHTML() | raw }}</table>
 </div>
@@ -188,9 +188,9 @@ Usage: #inline
     is unconventional; verify SUSHI output if issues arise.
 #}
 {% if medication.code.code is not empty %}
-* code.coding[+]  = $sct#{{ medication.code.code }} "{{ medication.code.display }}"
+* code.coding[+] = $sct#{{ medication.code.code }} "{{ medication.code.display }}"
 {% if medication.code.preferredTerm is not empty %}
-* code.text[=]    = "{{ medication.code.preferredTerm }}"
+* code.text[=] = "{{ medication.code.preferredTerm }}"
 {% endif %}
 {% else %}
 {# RxNorm fallback — used only when no SNOMED code is available #}
@@ -213,12 +213,12 @@ Usage: #inline
 {# Active ingredient — single ingredient[0] with isActive flag #}
 {% if activeIngredient.code is not empty %}
 * ingredient[0].itemCodeableConcept = $sct#{{ activeIngredient.code }} "{{ activeIngredient.display }}"
-* ingredient[0].isActive            = true
+* ingredient[0].isActive = true
 {% endif %}
 
 {# Minimal narrative: preferred term (or display) plus dose form #}
 * text.status = #generated
-* text.div    = """
+* text.div = """
 <div xmlns="http://www.w3.org/1999/xhtml">
 {{ medication.code.preferredTerm ?? medication.code.display }} {{ formdisplay }}
 </div>
@@ -243,7 +243,7 @@ Usage: #inline
 {{ addHEAD_th("Reason") }}
 {{ addHEAD_trend() -}}
 
-* id     = "{{ instanceid }}"
+* id = "{{ instanceid }}"
 * status = #active
 
 {{ addHTML_tr() }}
@@ -346,7 +346,7 @@ Usage: #inline
   CSS class: hl7__ips first25 (first column constrained to ~25% width).
 #}
 * text.status = #generated
-* text.div    = """
+* text.div = """
 <div xmlns="http://www.w3.org/1999/xhtml">
 <table class="hl7__ips first25">{{ emitHEAD() | raw }} {{ emitHTML() | raw }}</table>
 </div>

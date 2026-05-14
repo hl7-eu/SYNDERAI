@@ -168,7 +168,7 @@ Usage: #inline
   d-M-Y date (e.g. "14-Mar-1978") as a pill badge in the HTML cell.
 #}
 {% if procedure.date is empty %}
-* performedDateTime.extension.url       = "http://hl7.org/fhir/StructureDefinition/data-absent-reason"
+* performedDateTime.extension.url = "http://hl7.org/fhir/StructureDefinition/data-absent-reason"
 * performedDateTime.extension.valueCode = #unknown
 {{ addHTML_td("?") }}
 {% else %}
@@ -212,7 +212,7 @@ Usage: #inline
   therefore contains data rows only, without column headers.
 #}
 * text.status = #generated
-* text.div    = """
+* text.div = """
 <div xmlns="http://www.w3.org/1999/xhtml">
 <table class="hl7__ips">{{ emitHTML() | raw }}</table>
 </div>

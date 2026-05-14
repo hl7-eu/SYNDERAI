@@ -21,7 +21,8 @@ $EXTRADISCHARGE["Awaiting transplantation of kidney (situation)"] = [ "text" => 
 $EXTRADISCHARGE["Abnormal findings diagnostic imaging heart+coronary circulation (finding)"] =  [ "text" => "Coronary artery disease confirmed on imaging, management plan established|R93.1|Abnormal findings on diagnostic imaging of heart and coronary circulation"];
 $EXTRADISCHARGE["Abnormal findings diagnostic imaging heart+coronary circulat (finding)"] =  [ "text" => "Coronary artery disease confirmed on imaging, management plan established|R93.1|Abnormal findings on diagnostic imaging of heart and coronary circulation"];
 $EXTRADISCHARGE["Meningomyelocele (disorder)"] =  [ "text" => "Meningomyelocele, surgical repair performed and neurological status assessed|Q05.9|Spina bifida, unspecified"];
-$EXTRADISCHARGE["Preinfarction syndrome (disorder)"] = [ "text" => "Unstable angina, medically stabilised and coronary intervention performed|I20.0|Unstable angina"];
+$EXTRADISCHARGE["Preinfarction syndrome (disorder)"] = ["text" => "Unstable angina, medically stabilised and coronary intervention performed|I20.0|Unstable angina"];
+$EXTRADISCHARGE["Leukemia  disease (disorder)"] = ["text" => "Leukemia disease, chemotherapy planned|C95|Leukemia of unspecified cell type"];
 
 /*
  * first get all typical-inpatient-adm+discharge-diagnoses (in MAPPINGS) 
@@ -32,20 +33,26 @@ $EXTRADISCHARGE["Preinfarction syndrome (disorder)"] = [ "text" => "Unstable ang
  */
 lognl(1, "... load typical inpatient admission and discharge diagnoses\n");
 $handle = fopen(MAPPINGS . "/typical-inpatient-adm+discharge-diagnoses.csv","r");
-$APPROPRIATEREASONS = array();
+$APPROPRIATEREASONS = [];
 while (($buffer = fgetcsv($handle, 10000, ";", '"', '\\')) !== FALSE) {
   $reasoncode = trim($buffer[0]);
-  $APPROPRIATEREASONS[$reasoncode] = [
-    "reason" => [
-      "code" => $reasoncode,
-      "display" => trim($buffer[1])
-    ],
-    "discharge" => [
-      "text" => trim($buffer[2]),
-      "code" => trim($buffer[3]),   // icd10 code
-      "display" => trim($buffer[4]),
-    ]
-  ];
+  $synthesistext = trim($buffer[2]);
+  if (strlen($reasoncode) > 0 and strlen($synthesistext) > 0) {
+    $APPROPRIATEREASONS[$reasoncode] = [
+      "reason" => [
+        "code" => $reasoncode,          // snomed code
+        "display" => trim($buffer[1])   // snomed display
+      ],
+      "discharge" => [
+        "text" => $synthesistext,       // short synthesis text
+        "code" => trim($buffer[3]),     // icd10 code
+        "display" => trim($buffer[4]),  // icd10 display
+      ]
+    ];
+  } else {
+    if (strlen($reasoncode) > 0)
+      lognlsev(3, WARN, "Admission/Discharge code $reasoncode has no synthesis.");
+  }
 }
 
 /* 
@@ -113,6 +120,13 @@ if (!$ok) {
         }
       }
 
+      $dischargeextrainfo = NULL;
+      if (isset($APPROPRIATEREASONS[$reasoncode]["discharge"])) {
+        $dischargeextrainfo = $APPROPRIATEREASONS[$reasoncode]["discharge"];
+        if (isset($extraappropriatereason["discharge"])) {
+          $dischargeextrainfo = $extraappropriatereason["discharge"];
+        }
+      }
       $INPATIENTENCOUNTERS[] = array_merge([
         "encounterid" => $eid,
         "candid" => trim($buffer[3]),
@@ -124,15 +138,13 @@ if (!$ok) {
         "reason" => [
           "code" => $reasoncode,
           "system" => "\$sct",
-          "display" => trim($buffer[14])
+          "display" => $reasondisplay
         ],
         "start" => substr(trim($buffer[1]), 0, 10),
         "end" => substr(trim($buffer[2]), 0, 10),
         "startexact" => trim($buffer[1]),
         "endexact" => trim($buffer[2]),
-        "discharge" => isset($APPROPRIATEREASONS[$reasoncode]["discharge"]) ? 
-          $APPROPRIATEREASONS[$reasoncode]["discharge"] : 
-          (isset($extraappropriatereason["discharge"]) ? $extraappropriatereason["discharge"] : NULL)
+        "discharge" => $dischargeextrainfo
       ]);
     }
 

@@ -97,24 +97,24 @@ Usage: #inline
 {% if isVitaLSignCode %}
 {# Vital sign: named [VSCat] slice; examiner performer #}
 * category[VSCat].coding = $observation-category#vital-signs
-* performer[+].display   = "The Central European Examiners"
+* performer[+].display = "The Central European Examiners"
 {# * performer[=] = Reference(urn:uuid:e512e2e2-9600-4c69-a269-af3ab5421e09) #}
 
 {% elseif isImagingCode %}
 {# Imaging: no named slice; radiology performer #}
-* category.coding      = $observation-category#imaging
+* category.coding = $observation-category#imaging
 * performer[+].display = "The Central European Radiology"
 {# * performer[=] = Reference(urn:uuid:e512e2e2-9600-4c69-a269-af3ab5421e09) #}
 
 {% elseif isLaboratory %}
 {# Laboratory: named [laboratory] slice; lab performer #}
 * category[laboratory].coding = $observation-category#laboratory
-* performer[+].display        = "The Central European Laboratory"
+* performer[+].display = "The Central European Laboratory"
 {# * performer[=] = Reference(urn:uuid:e512e2e2-9600-4c69-a269-af3ab5421e09) #}
 
 {% else %}
 {# Default — same as laboratory branch when no flag is set #}
-* category.coding      = $observation-category#laboratory
+* category.coding = $observation-category#laboratory
 * performer[+].display = "The Central European Laboratory"
 {# * performer[=] = Reference(urn:uuid:e512e2e2-9600-4c69-a269-af3ab5421e09) #}
 {% endif %}

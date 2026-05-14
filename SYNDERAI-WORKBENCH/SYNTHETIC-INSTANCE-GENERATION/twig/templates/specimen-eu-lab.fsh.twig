@@ -72,8 +72,8 @@ Usage: #inline
   collected, collectedDateTime records when it was collected.
   The SNOMED CT code is interpolated directly into the $sct# code expression.
 #}
-* id                           = "{{ instanceid }}"
-* type                         = $sct#{{ specimen.code}} "{{ specimen.display }}"
+* id = "{{ instanceid }}"
+* type = $sct#{{ specimen.code}} "{{ specimen.display }}"
 * collection.collectedDateTime = "{{ specimen.date }}"
 
 {#
@@ -104,7 +104,7 @@ Usage: #inline
   hl7__ips, as it targets the EU Laboratory Report stylesheet.
 #}
 * text.status = #generated
-* text.div    = """
+* text.div = """
 <div xmlns="http://www.w3.org/1999/xhtml">
 <table class="hl7__eu__lab__report">
 {{ emitHEAD() | raw }}

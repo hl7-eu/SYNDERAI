@@ -84,11 +84,11 @@
 Instance: Instance-PractitionerRole-{{ laboratory.instancerole }}
 InstanceOf: PractitionerRoleEu
 Usage: #inline
-* id           = "{{ laboratory.instancerole }}"
+* id = "{{ laboratory.instancerole }}"
 * practitioner = Reference(urn:uuid:{{ laboratory.instancepractitioner }})
 {# Minimal narrative — dynamic content limited to the role id #}
 * text.status = #generated
-* text.div    = """
+* text.div = """
 <div xmlns="http://www.w3.org/1999/xhtml">
 Laboratory Role Id: {{ laboratory.instancerole }}
 </div>
@@ -110,26 +110,26 @@ Usage: #inline
 * id = "{{ laboratory.instancepractitioner }}"
 
 {# Practitioner identifier under the HL7 Europe OID namespace #}
-* identifier.system           = "urn:oid:{{ HL7EUROPEEXAMPLESOID }}"
+* identifier.system = "urn:oid:{{ HL7EUROPEEXAMPLESOID }}"
 {% set practitioneridentifier = getUUID() %} {# Generate ephemeral UUID for this identifier #}
-* identifier.value            = "{{ practitioneridentifier }}"
+* identifier.value = "{{ practitioneridentifier }}"
 * identifier.assigner.display = "HL7 Europe"
 
 {# Hardcoded stub name — to be replaced with dynamic values #}
-* name.prefix    = "dr"
-* name.given[+]  = "Ex"
-* name.family    = "Ample"
+* name.prefix = "dr"
+* name.given[+] = "Ex"
+* name.family = "Ample"
 
 {# Hardcoded stub address — fictitious Brussels laboratory location #}
-* address.line[+]    = "Laboratoire Central Européenne"
-* address.line[+]    = "Boulevard du Jardin Botanique 32"
+* address.line[+] = "Laboratoire Central Européenne"
+* address.line[+] = "Boulevard du Jardin Botanique 32"
 * address.postalCode = "1000"
-* address.city       = "Brussels"
-* address.country    = "Belgium"
+* address.city = "Brussels"
+* address.country = "Belgium"
 
 {# Narrative reflects the hardcoded address #}
 * text.status = #generated
-* text.div    = """
+* text.div = """
 <div xmlns="http://www.w3.org/1999/xhtml">
 Laboratory: Laboratoire Central Européenne, 1000 Brussels, Belgium
 </div>

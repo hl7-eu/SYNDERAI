@@ -67,8 +67,8 @@ Usage: #example
 
 * id = "{{ bundle.instanceid }}"
 
-* identifier.system           = "urn:oid:{{ HL7EUROPEEXAMPLESOID }}"
-* identifier.value            = "{{ bundle.identifier }}"
+* identifier.system = "urn:oid:{{ HL7EUROPEEXAMPLESOID }}"
+* identifier.value = "{{ bundle.identifier }}"
 * identifier.assigner.display = "HL7 Europe"
 
 * type = #document
@@ -80,14 +80,14 @@ Usage: #example
   Composition, Patient, and Encounter are all singletons per HDR document.
   entry[encounter] is HDR-specific — not present in the EPS Bundle.
 #}
-* entry[composition].fullUrl  = "urn:uuid:{{ composition.instanceid }}"
+* entry[composition].fullUrl = "urn:uuid:{{ composition.instanceid }}"
 * entry[composition].resource = Instance-Composition-{{ composition.instanceid }}
 
-* entry[patient].fullUrl  = "urn:uuid:{{ patient.instanceid }}"
+* entry[patient].fullUrl = "urn:uuid:{{ patient.instanceid }}"
 * entry[patient].resource = Instance-Patient-{{ patient.instanceid }}
 
 {# HDR-specific: the hospitalisation encounter being discharged from #}
-* entry[encounter].fullUrl  = "urn:uuid:{{ encounter.instanceid }}"
+* entry[encounter].fullUrl = "urn:uuid:{{ encounter.instanceid }}"
 * entry[encounter].resource = Instance-Encounter-{{ encounter.instanceid }}
 
 {#
@@ -97,13 +97,13 @@ Usage: #example
   This reflects BundleEuHdr profile constraints differing from BundleEuEps.
   Variables use hospital.* (from provider-as-hospital_fsh.twig), not provider.*.
 #}
-* entry[+].fullUrl  = "urn:uuid:{{ hospital.instancerole }}"
+* entry[+].fullUrl = "urn:uuid:{{ hospital.instancerole }}"
 * entry[=].resource = Instance-PractitionerRole-{{ hospital.instancerole }}
 
-* entry[+].fullUrl  = "urn:uuid:{{ hospital.instanceorganization }}"
+* entry[+].fullUrl = "urn:uuid:{{ hospital.instanceorganization }}"
 * entry[=].resource = Instance-Organization-{{ hospital.instanceorganization }}
 
-* entry[+].fullUrl  = "urn:uuid:{{ hospital.instancepractitioner }}"
+* entry[+].fullUrl = "urn:uuid:{{ hospital.instancepractitioner }}"
 * entry[=].resource = Instance-Practitioner-{{ hospital.instancepractitioner }}
 
 {# Placeholder for future location entry — not yet implemented #}
@@ -128,7 +128,7 @@ Usage: #example
 {% set bundleentryslicename = "[" ~ entry.bundleentryslicename ~ "]" %}
 {% endif %}
 
-* entry{{ bundleentryslicename }}[+].fullUrl  = "urn:uuid:{{ entry.id }}"
+* entry{{ bundleentryslicename }}[+].fullUrl = "urn:uuid:{{ entry.id }}"
 * entry{{ bundleentryslicename }}[=].resource = {{ entry.instance }}
 
 {% endfor %} {# entries #}
@@ -138,9 +138,9 @@ Usage: #example
 {#
   ── Provenance tail — always last, unnamed slices (identical to EPS) ─────────
 #}
-* entry[+].fullUrl  = "urn:uuid:{{ provenance.deviceid }}"
+* entry[+].fullUrl = "urn:uuid:{{ provenance.deviceid }}"
 * entry[=].resource = Instance-Device-{{ provenance.deviceid }}
-* entry[+].fullUrl  = "urn:uuid:{{ provenance.provenanceid }}"
+* entry[+].fullUrl = "urn:uuid:{{ provenance.provenanceid }}"
 * entry[=].resource = Instance-Provenance-{{ provenance.provenanceid }}
 
 %%HEAD%% {# ── Section marker required by the FSH pre-processor ─────────────── #}

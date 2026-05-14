@@ -129,7 +129,7 @@ Usage: #inline
   class #IMP = inpatient encounter.
 #}
 * status = http://hl7.org/fhir/encounter-status#completed "completed"
-* class  = $v3-ActCode#IMP
+* class = $v3-ActCode#IMP
 
 {#
   ── Service provider and participant (both conditional) ──────────────────────
@@ -158,7 +158,7 @@ Usage: #inline
   The caller may supply either encounter.start/end or encounter.episodestart/end.
 #}
 {% set theStart = encounter.start ?? encounter.episodestart ?? null %}
-{% set theEnd   = encounter.end   ?? encounter.episodeend   ?? null %}
+{% set theEnd = encounter.end   ?? encounter.episodeend   ?? null %}
 {% if theStart is not empty %}
 * period.start = "{{ theStart }}"
 {% endif %}
@@ -215,7 +215,7 @@ Usage: #inline
   emitHTML() only — HEAD bag not flushed inside text.div.
 #}
 * text.status = #generated
-* text.div    = """
+* text.div = """
 <div xmlns="http://www.w3.org/1999/xhtml">
 <table class="hl7__ips">{{ emitHTML() | raw }}</table>
 </div>

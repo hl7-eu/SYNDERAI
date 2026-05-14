@@ -134,8 +134,8 @@ Usage: #example
 
 * id = "{{ bundle.instanceid }}"
 
-* identifier.system           = "urn:oid:{{ HL7EUROPEEXAMPLESOID }}"
-* identifier.value            = "{{ bundle.identifier }}"
+* identifier.system = "urn:oid:{{ HL7EUROPEEXAMPLESOID }}"
+* identifier.value = "{{ bundle.identifier }}"
 * identifier.assigner.display = "HL7 Europe"
 
 * type = #document
@@ -152,19 +152,19 @@ Usage: #example
   practitionerRole) matching FHIR R4 resource type names. EPS/HDR use
   lowercase (practitionerrole). Must match the profile's slice discriminators.
 #}
-* entry[composition].fullUrl       = "urn:uuid:{{ composition.instanceid }}"
-* entry[composition].resource      = Instance-Composition-{{ composition.instanceid }}
+* entry[composition].fullUrl = "urn:uuid:{{ composition.instanceid }}"
+* entry[composition].resource = Instance-Composition-{{ composition.instanceid }}
 
 {# Lab-specific: aggregating DiagnosticReport (not present in EPS/HDR) #}
-* entry[diagnosticReport].fullUrl  = "urn:uuid:{{ diagnosticreport.instanceid }}"
+* entry[diagnosticReport].fullUrl = "urn:uuid:{{ diagnosticreport.instanceid }}"
 * entry[diagnosticReport].resource = Instance-DiagnosticReport-{{ diagnosticreport.instanceid }}
 
-* entry[patient].fullUrl           = "urn:uuid:{{ patient.instanceid }}"
-* entry[patient].resource          = Instance-Patient-{{ patient.instanceid }}
+* entry[patient].fullUrl = "urn:uuid:{{ patient.instanceid }}"
+* entry[patient].resource = Instance-Patient-{{ patient.instanceid }}
 
 {# Lab-specific: the ServiceRequest (lab order) that triggered the report #}
-* entry[serviceRequest].fullUrl    = "urn:uuid:{{ servicerequest.instanceid }}"
-* entry[serviceRequest].resource   = Instance-ServiceRequest-{{ servicerequest.instanceid }}
+* entry[serviceRequest].fullUrl = "urn:uuid:{{ servicerequest.instanceid }}"
+* entry[serviceRequest].resource = Instance-ServiceRequest-{{ servicerequest.instanceid }}
 
 {#
   ── Requester entries — named multi-slices ───────────────────────────────────
@@ -172,10 +172,10 @@ Usage: #example
   These correspond to requester.instancerole / requester.instanceorg in the
   upstream templates but are passed as plain strings to this Bundle template.
 #}
-* entry[practitionerRole][+].fullUrl  = "urn:uuid:{{ requesterrole }}"
+* entry[practitionerRole][+].fullUrl = "urn:uuid:{{ requesterrole }}"
 * entry[practitionerRole][=].resource = Instance-PractitionerRole-{{ requesterrole }}
 
-* entry[organization][+].fullUrl  = "urn:uuid:{{ requesterorg }}"
+* entry[organization][+].fullUrl = "urn:uuid:{{ requesterorg }}"
 * entry[organization][=].resource = Instance-Organization-{{ requesterorg }}
 
 {#
@@ -186,7 +186,7 @@ Usage: #example
   ══════════════════════════════════════════════════════════════════════════════
 #}
 {% for s in specimenids %}
-* entry[specimen][+].fullUrl  = "urn:uuid:{{ s }}"
+* entry[specimen][+].fullUrl = "urn:uuid:{{ s }}"
 * entry[specimen][=].resource = Instance-Specimen-{{ s }}
 {% endfor %}
 
@@ -199,16 +199,16 @@ Usage: #example
   ══════════════════════════════════════════════════════════════════════════════
 #}
 {% for r in results %}
-* entry[observation][+].fullUrl  = "urn:uuid:{{ r.instanceid }}"
+* entry[observation][+].fullUrl = "urn:uuid:{{ r.instanceid }}"
 * entry[observation][=].resource = Instance-Observation-{{ r.instanceid }}
 {% endfor %}
 
 {#
   ── Provenance tail — always last, unnamed slices (identical to EPS/HDR) ─────
 #}
-* entry[+].fullUrl  = "urn:uuid:{{ provenance.deviceid }}"
+* entry[+].fullUrl = "urn:uuid:{{ provenance.deviceid }}"
 * entry[=].resource = Instance-Device-{{ provenance.deviceid }}
-* entry[+].fullUrl  = "urn:uuid:{{ provenance.provenanceid }}"
+* entry[+].fullUrl = "urn:uuid:{{ provenance.provenanceid }}"
 * entry[=].resource = Instance-Provenance-{{ provenance.provenanceid }}
 
 {#
@@ -218,10 +218,10 @@ Usage: #example
   Replace with real laboratory provider data when available.
 #}
 {# FAKE ADD ONS - the laboratory organization and provider = legal attester #}
-* entry[practitionerRole][+].fullUrl  = "urn:uuid:{{ laboratory.instancerole }}"
+* entry[practitionerRole][+].fullUrl = "urn:uuid:{{ laboratory.instancerole }}"
 * entry[practitionerRole][=].resource = Instance-PractitionerRole-{{ laboratory.instancerole }}
-* entry[practitioner][+].fullUrl      = "urn:uuid:{{ laboratory.instancepractitioner }}"
-* entry[practitioner][=].resource     = Instance-Practitioner-{{ laboratory.instancepractitioner }}
+* entry[practitioner][+].fullUrl = "urn:uuid:{{ laboratory.instancepractitioner }}"
+* entry[practitioner][=].resource = Instance-Practitioner-{{ laboratory.instancepractitioner }}
 {# FAKE ADD ONS #}
 
 %%HEAD%% {# ── Section marker required by the FSH pre-processor ─────────────── #}

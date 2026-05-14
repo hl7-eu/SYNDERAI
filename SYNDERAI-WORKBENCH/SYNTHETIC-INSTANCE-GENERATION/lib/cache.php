@@ -55,7 +55,7 @@ function toCACHE($type, $key, $content) {
     $cachedir = "cache/$type";
 
     if (!is_dir($cachedir)) {
-        echo "+++ create cache dir $cachedir in order to use the cache\n";
+        lognlsev(1, ERROR, "+++ please create cache dir $cachedir in order to use the cache");
     } else {
         file_put_contents("$cachedir/$key", $content);
     }

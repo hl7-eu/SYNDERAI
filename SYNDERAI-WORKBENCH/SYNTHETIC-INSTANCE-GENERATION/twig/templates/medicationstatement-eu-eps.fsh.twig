@@ -107,17 +107,17 @@ InstanceOf: MedicationStatementEuEps
 Title: "MedicationStatement"
 Description: "MedicationStatement"
 Usage: #inline
-* id     = "{{ instanceid }}"
+* id = "{{ instanceid }}"
 * status = #active
 * medicationCodeableConcept = $sct#787481004 "No known medications (situation)"
 * subject = Reference(urn:uuid:{{ patient.instanceid }}) "{{ patient.name }}"
-* effectivePeriod.extension.url       = "http://hl7.org/fhir/StructureDefinition/data-absent-reason"
+* effectivePeriod.extension.url = "http://hl7.org/fhir/StructureDefinition/data-absent-reason"
 * effectivePeriod.extension.valueCode = #unknown
 {{ addHTML_tr() }}
 {{ addHTML_td("No known medications") }}
 {{ addHTML_trend() -}}
 * text.status = #generated
-* text.div    = """
+* text.div = """
 <div xmlns="http://www.w3.org/1999/xhtml">
 <table class="hl7__ips first25">{{ emitHTML() | raw }}</table>
 </div>
@@ -170,11 +170,11 @@ Usage: #inline
 
 {% if activeIngredient.code is not empty %}
 * ingredient[0].itemCodeableConcept = $sct#{{ activeIngredient.code }} "{{ activeIngredient.display }}"
-* ingredient[0].isActive            = true
+* ingredient[0].isActive = true
 {% endif %}
 
 * text.status = #generated
-* text.div    = """
+* text.div = """
 <div xmlns="http://www.w3.org/1999/xhtml">
 {{ medication.snomed.preferredTerm }} {{ formdisplay }}
 </div>
@@ -199,7 +199,7 @@ Usage: #inline
 {{ addHEAD_th("Reason") }}
 {{ addHEAD_trend() -}}
 
-* id     = "{{ instanceid }}"
+* id = "{{ instanceid }}"
 * status = #active
 
 {{ addHTML_tr() }}
@@ -247,7 +247,7 @@ Usage: #inline
 {{ addHTML_trend() -}}
 
 * text.status = #generated
-* text.div    = """
+* text.div = """
 <div xmlns="http://www.w3.org/1999/xhtml">
 <table class="hl7__ips first25">{{ emitHEAD() | raw }} {{ emitHTML() | raw }}</table>
 </div>

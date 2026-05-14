@@ -142,8 +142,8 @@ Usage: #example
 * id = "{{ bundle.instanceid }}"
 
 {# Bundle business identifier under the HL7 Europe OID namespace #}
-* identifier.system           = "urn:oid:{{ HL7EUROPEEXAMPLESOID }}"
-* identifier.value            = "{{ bundle.identifier }}"
+* identifier.system = "urn:oid:{{ HL7EUROPEEXAMPLESOID }}"
+* identifier.value = "{{ bundle.identifier }}"
 * identifier.assigner.display = "HL7 Europe"
 
 {# All document bundles carry type = #document #}
@@ -160,10 +160,10 @@ Usage: #example
   Exactly one Composition and one Patient per EPS document.
   .resource = FSH instance name (not UUID). SUSHI resolves this at build time.
 #}
-* entry[composition].fullUrl  = "urn:uuid:{{ composition.instanceid }}"
+* entry[composition].fullUrl = "urn:uuid:{{ composition.instanceid }}"
 * entry[composition].resource = Instance-Composition-{{ composition.instanceid }}
 
-* entry[patient].fullUrl  = "urn:uuid:{{ patient.instanceid }}"
+* entry[patient].fullUrl = "urn:uuid:{{ patient.instanceid }}"
 * entry[patient].resource = Instance-Patient-{{ patient.instanceid }}
 
 {#
@@ -172,13 +172,13 @@ Usage: #example
   [+] opens a new slice; [=] addresses the same slice for the .resource rule.
   All three reference resources from provider-as-primarycarephysician-eps_fsh.twig.
 #}
-* entry[practitionerrole][+].fullUrl  = "urn:uuid:{{ provider.instancerole }}"
+* entry[practitionerrole][+].fullUrl = "urn:uuid:{{ provider.instancerole }}"
 * entry[practitionerrole][=].resource = Instance-PractitionerRole-{{ provider.instancerole }}
 
-* entry[organization][+].fullUrl  = "urn:uuid:{{ provider.instanceroleorg }}"
+* entry[organization][+].fullUrl = "urn:uuid:{{ provider.instanceroleorg }}"
 * entry[organization][=].resource = Instance-Organization-{{ provider.instanceroleorg }}
 
-* entry[practitioner][+].fullUrl  = "urn:uuid:{{ provider.instanceprovider }}"
+* entry[practitioner][+].fullUrl = "urn:uuid:{{ provider.instanceprovider }}"
 * entry[practitioner][=].resource = Instance-Practitioner-{{ provider.instanceprovider }}
 
 {#
@@ -205,7 +205,7 @@ Usage: #example
 {% set bundleentryslicename = "[" ~ entry.bundleentryslicename ~ "]" %}
 {% endif %}
 
-* entry{{ bundleentryslicename }}[+].fullUrl  = "urn:uuid:{{ entry.id }}"
+* entry{{ bundleentryslicename }}[+].fullUrl = "urn:uuid:{{ entry.id }}"
 * entry{{ bundleentryslicename }}[=].resource = {{ entry.instance }}
 
 {% endfor %} {# entries #}
@@ -218,9 +218,9 @@ Usage: #example
   Unnamed [+]/[=] used — the BundleEuEps profile has no named slices for these.
   This identical two-entry tail appears in all three Bundle templates.
 #}
-* entry[+].fullUrl  = "urn:uuid:{{ provenance.deviceid }}"
+* entry[+].fullUrl = "urn:uuid:{{ provenance.deviceid }}"
 * entry[=].resource = Instance-Device-{{ provenance.deviceid }}
-* entry[+].fullUrl  = "urn:uuid:{{ provenance.provenanceid }}"
+* entry[+].fullUrl = "urn:uuid:{{ provenance.provenanceid }}"
 * entry[=].resource = Instance-Provenance-{{ provenance.provenanceid }}
 
 %%HEAD%% {# ── Section marker required by the FSH pre-processor ─────────────── #}

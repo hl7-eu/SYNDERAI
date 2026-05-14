@@ -176,13 +176,13 @@ Usage: #inline
     Add text.status = #generated and a text.div to correct this.
   ══════════════════════════════════════════════════════════════════════════════
 #}
-* code.coding[0]                     = $sct#716186003 "No known allergy (situation)"
-* patient                            = Reference(urn:uuid:{{ patient.instanceid }}) "{{ patient.name }}"
-* onsetDateTime.extension.url        = "http://hl7.org/fhir/StructureDefinition/data-absent-reason"
-* onsetDateTime.extension.valueCode  = #unknown
+* code.coding[0] = $sct#716186003 "No known allergy (situation)"
+* patient = Reference(urn:uuid:{{ patient.instanceid }}) "{{ patient.name }}"
+* onsetDateTime.extension.url = "http://hl7.org/fhir/StructureDefinition/data-absent-reason"
+* onsetDateTime.extension.valueCode = #unknown
 {# clinicalStatus #active required by profile even for a "no known allergy" sentinel #}
-* clinicalStatus.coding              = $allergyintolerance-clinical#active
-* verificationStatus                 = $allergyintolerance-verification#confirmed
+* clinicalStatus.coding = $allergyintolerance-clinical#active
+* verificationStatus = $allergyintolerance-verification#confirmed
 {# Single HTML cell — no table structure or HEAD row for the sentinel #}
 {{ addHTML_tr() }}
 {{ addHTML_td("No known allergies or intolerances") }}
@@ -238,7 +238,7 @@ Usage: #inline
 * onsetDateTime = "{{ allergyintolerance.start }}"
 {{ addHTML_tdnb(allergyintolerance.start) }}
 {% else %}
-* onsetDateTime.extension.url       = "http://hl7.org/fhir/StructureDefinition/data-absent-reason"
+* onsetDateTime.extension.url = "http://hl7.org/fhir/StructureDefinition/data-absent-reason"
 * onsetDateTime.extension.valueCode = #unknown
 {{ addHTML_td("?") }}
 {% endif %}
@@ -320,7 +320,7 @@ Usage: #inline
   (see bug note in file header).
 #}
 * text.status = #generated
-* text.div    = """
+* text.div = """
 <div xmlns="http://www.w3.org/1999/xhtml">
 <table class="hl7__ips">{{ emitHEAD() | raw }} {{ emitHTML() | raw }}</table>
 </div>

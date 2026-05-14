@@ -51,14 +51,16 @@ if ($PROCESSISH) {
   
   $procedureshandle = fopen(
     is_file(SYNTHEADIR . "/procedures/$candid") ? 
-    SYNTHEADIR . "/procedures/$candid" : 
-    SYNTHEADIR . "/procedures.csv", "r"
+      SYNTHEADIR . "/procedures/$candid" : 
+      SYNTHEADIR . "/procedures.csv",
+    "r"
   );
   while (($item = fgetcsv($procedureshandle, 10000, ",", '"', '\\')) !== FALSE) {
     if (strpos($item[2], $candid) !== FALSE) {
 
-      $snomed = trim($item[4]);
-      $snomeddisplay = trim($item[5]);
+      $snomed = trim($item[5]);
+      $snomeddisplay = trim($item[6]);
+      $encounterid = trim($item[3]);
 
       // last minute corrections: tweak some codes
       if ($snomed === "449381000124108") {
@@ -98,9 +100,9 @@ if ($PROCESSISH) {
         $snomeddisplay = "Plain X-ray of humerus (procedure)";
       }
       */
-
       $snomedproperties = get_SNOMED_properties($snomed, $snomeddisplay);
-      if ($snomedproperties["code"] !== $snomed) $snomed = $snomedproperties["code"]; // this is a replacement
+      if ($snomedproperties["code"] !== $snomed && strlen($snomedproperties["code"]) > 0)
+        $snomed = $snomedproperties["code"]; // this is a replacement
       $snomeddisplay = strlen($snomedproperties["fullySpecifiedName"]) > 0 ? $snomedproperties["fullySpecifiedName"] : $snomeddisplay;
       
       $start = substr($item[0], 0, 10);
@@ -108,17 +110,18 @@ if ($PROCESSISH) {
       $date = $start;
       if ($start !== $end) $date = $end;
 
-      $reason = trim($item[7]);
-      $reasondisplay = trim($item[8]);
+      $reason = trim($item[8]);
+      $reasondisplay = trim($item[9]);
       if (strlen($reason) > 0) {
         $reasonproperties = get_SNOMED_properties ($reason, $reasondisplay);
-      if ($reasonproperties["code"] !== $reason) $reason = $reasonproperties["code"]; // this is a replacement
+        if ($reasonproperties["code"] !== $reason && strlen($reasonproperties["code"]) > 0)
+          $reason = $reasonproperties["code"]; // this is a replacement
         $reasondisplay = strlen($reasonproperties["fullySpecifiedName"]) > 0 ? $reasonproperties["fullySpecifiedName"] : $reasondisplay;
       }
 
       if (
-        in_array(trim($item[3]), $CLINICALPROCEDUREENCOUNTERS) and
-        strlen($snomedproperties["fullySpecifiedName"]) > 0
+        in_array($encounterid, $CLINICALPROCEDUREENCOUNTERS) and
+        strlen($snomeddisplay) > 0
       ) { 
         // add only if this is a usefull encounterclass for these procedure, e.g. not wellness
         // and there is a proper fullySpecifiedName for the SNOMED code
@@ -135,7 +138,7 @@ if ($PROCESSISH) {
             "system" => "\$sct",
             "display" => $reasondisplay,
           ],
-          "encounter" => trim($item[3]),
+          "encounter" => $encounterid,
         ];
         lognl(3, "......... $snomed $snomeddisplay $date");
         // var_dump($found);exit;

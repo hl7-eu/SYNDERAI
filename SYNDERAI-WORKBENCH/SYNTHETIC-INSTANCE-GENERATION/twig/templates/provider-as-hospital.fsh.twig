@@ -97,12 +97,12 @@
 Instance: Instance-PractitionerRole-{{ hospital.instancerole }}
 InstanceOf: PractitionerRoleEuCore
 Usage: #inline
-* id           = "{{ hospital.instancerole }}"
+* id = "{{ hospital.instancerole }}"
 * practitioner = Reference(urn:uuid:{{ hospital.instancepractitioner }})
 * organization = Reference(urn:uuid:{{ hospital.instanceorganization }})
 {# Minimal plain-text narrative for identification in viewers #}
 * text.status = #generated
-* text.div    = """
+* text.div = """
 <div xmlns="http://www.w3.org/1999/xhtml">
 Hospital Role Id: {{ hospital.instancerole }}
 </div>
@@ -121,9 +121,9 @@ Usage: #inline
 * id = "{{ hospital.instancepractitioner }}"
 
 {# Practitioner identifier under the HL7 Europe OID namespace #}
-* identifier.system           = "urn:oid:{{ HL7EUROPEEXAMPLESOID }}"
+* identifier.system = "urn:oid:{{ HL7EUROPEEXAMPLESOID }}"
 {% set practitioneridentifier = getUUID() %} {# Generate ephemeral UUID for this identifier #}
-* identifier.value            = "{{ practitioneridentifier }}"
+* identifier.value = "{{ practitioneridentifier }}"
 * identifier.assigner.display = "HL7 Europe"
 
 {# Name components — all individually optional #}
@@ -140,11 +140,11 @@ Usage: #inline
 {# Telecom — email and phone are independently optional #}
 {% if hospital.practitioner.email is not empty %}
 * telecom.system = #email
-* telecom.value  = "{{ hospital.practitioner.email }}"
+* telecom.value = "{{ hospital.practitioner.email }}"
 {% endif %}
 {% if hospital.practitioner.phone is not empty %}
 * telecom.system = #phone
-* telecom.value  = "{{ hospital.practitioner.phone }}"
+* telecom.value = "{{ hospital.practitioner.phone }}"
 {% endif %}
 
 {#
@@ -153,7 +153,7 @@ Usage: #inline
   where prefix is supplied as an array of multiple titles.
 #}
 * text.status = #generated
-* text.div    = """
+* text.div = """
 <div xmlns="http://www.w3.org/1999/xhtml">
 Practitioner in Hospital: {{ hospital.practitioner.prefix|join(" ") ~ " " ~ (hospital.practitioner.given|join(" ")) ~ " " ~ hospital.practitioner.family }}
 </div>
@@ -167,7 +167,7 @@ Practitioner in Hospital: {{ hospital.practitioner.prefix|join(" ") ~ " " ~ (hos
 Instance: Instance-Organization-{{ hospital.instanceorganization }}
 InstanceOf: OrganizationEuCore
 Usage: #inline
-* id   = "{{ hospital.instanceorganization }}"
+* id = "{{ hospital.instanceorganization }}"
 * name = "{{ hospital.name }}"
 
 {% if hospital.street is not empty %}
@@ -189,7 +189,7 @@ Usage: #inline
 
 {# Compact single-line narrative: name, postal code, city, country #}
 * text.status = #generated
-* text.div    = """
+* text.div = """
 <div xmlns="http://www.w3.org/1999/xhtml">
 Hospital: {{ hospital.name }}, {{ hospital.postcode }} {{ hospital.city }}, {{ hospital.country }}
 </div>

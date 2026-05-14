@@ -165,7 +165,7 @@ if (count($found) === 0) {
 }
 
 // show matching lab results
-if (DEBUGLEVEL >= 2) {
+if (DEBUGLEVEL >= 2 && $pdat->labobservations !== NULL) {
   foreach ($pdat->labobservations as $ldate => $lbspd) {
       lognl(3, "...... @> " . substr($ldate, 0, 10));
       foreach ($lbspd as $lbc)
@@ -184,10 +184,12 @@ if (DEBUGLEVEL >= 2) {
 
 // get specimen date list
 $tmpspecimenlist = array();
-foreach ($pdat->labobservations as $ldate => $lbspd)
-  foreach ($lbspd as $lbc) {
-  $tmpspecimenlist[$ldate][$lbc["lnsystem"]] = $lbc["date"];
-  }
+if ($pdat->labobservations !== NULL) {
+  foreach ($pdat->labobservations as $ldate => $lbspd)
+    foreach ($lbspd as $lbc) {
+      $tmpspecimenlist[$ldate][$lbc["lnsystem"]] = $lbc["date"];
+    }
+}
 // var_dump($tmpspecimenlist);exit;
 
 // populate patient's specimen list, key is date

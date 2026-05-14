@@ -117,25 +117,25 @@ Usage: #inline
   Official trial registration number on https://clinicaltrials.eu.
   This is static for the BEUDIS study.
 #}
-* identifier[+].use    = #official
+* identifier[+].use = #official
 * identifier[=].system = "https://clinicaltrials.eu"
-* identifier[=].value  = "FBEUDIS7395z67927"
+* identifier[=].value = "FBEUDIS7395z67927"
 
 {#
   ── Study metadata (all static for BEUDIS) ──────────────────────────────────
   The multi-line `description` uses FSH's triple-quote syntax and includes
   Markdown bold formatting, which is valid within FSH string values.
 #}
-* title              = "The Big EU Diabetis Study (BEUDIS) Phase 4"
-* description        = """
+* title = "The Big EU Diabetis Study (BEUDIS) Phase 4"
+* description = """
 This fictous study aims on treating **Diabetis Type 2** patients in the European Union with a brand new drug called "Combattente"
 """
 * primaryPurposeType = #treatment
-* phase              = #phase-4
+* phase = #phase-4
 
 * condition = $sct#44054006 "Diabetes mellitus type 2 (disorder)"
 
-* status   = #active
+* status = #active
 
 {#
   ── Location: EU region ─────────────────────────────────────────────────────
@@ -150,7 +150,7 @@ This fictous study aims on treating **Diabetis Type 2** patients in the European
   carries the combined HTML table narrative for both instances.
 #}
 * text.status = #generated
-* text.div    = """
+* text.div = """
 <div xmlns="http://www.w3.org/1999/xhtml">
 tbd
 </div>
@@ -174,9 +174,9 @@ Usage: #inline
   A study-internal UUID assigned to the participant slot within BEUDIS.
   Typed #secondary as it is a local study number rather than a national id.
 #}
-* identifier[+].use    = #secondary
+* identifier[+].use = #secondary
 * identifier[=].system = "https://beudis.eu"
-* identifier[=].value  = "40f978c4-0d32-422e-bc07-5f99db9c27c7"
+* identifier[=].value = "40f978c4-0d32-422e-bc07-5f99db9c27c7"
 
 * status = #candidate
 
@@ -194,10 +194,10 @@ Usage: #inline
   as separate slices of `individual`. This establishes the patient's ECI as
   the participant identifier in the study.
 #}
-* individual[+].type   = $v2-0203#PT
-* individual[+].use    = #official
+* individual[+].type = $v2-0203#PT
+* individual[+].use = #official
 * individual[=].system = "http://ec.europa.eu/identifier/eci"
-* individual[=].value  = "{{ patient.eci }}"
+* individual[=].value = "{{ patient.eci }}"
 
 {#
   ── Combined HTML narrative ──────────────────────────────────────────────────
@@ -208,7 +208,7 @@ Usage: #inline
   of the first column to 25% in the vi7eti stylesheet.
 #}
 * text.status = #generated
-* text.div    = """
+* text.div = """
 <div xmlns="http://www.w3.org/1999/xhtml">
 <table class="hl7__ips first25">{{ emitHEAD() | raw }} {{ emitHTML() | raw }}</table>
 </div>

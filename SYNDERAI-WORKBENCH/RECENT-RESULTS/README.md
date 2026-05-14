@@ -2,6 +2,6 @@
 
 © [HL7 Europe](https://hl7europe.org) | Main Contributor: Dr. Kai U. Heitmann | [Privacy Policy](https://hl7europe.eu/privacy-policy-for-hl7-europe/) • AGPL-3.0 license
 
-## This folder on GitHub is intentionally empty due to it volatile nature.
+## This folder on GitHub is intentionally empty due to its volatile nature.
 
 Please contact authors/contributors.

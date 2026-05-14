@@ -155,7 +155,7 @@
 {# Use first coding only — HL7 EU HDR requires exactly 1..1 code #}
 {% set c = labresult.code|first %}
 * code[+].coding = {{ c.system }}#{{ c.code }} "{{ c.display }}"
-* code[=].text   = "{{ c.display }}"
+* code[=].text = "{{ c.display }}"
 {{ addHTML_td(c.display) }}
 
 {#
@@ -189,13 +189,13 @@
   element names — this reflects the upstream data model, not an error.
 #}
 {% if labresult.value.type == "Quantity" or labresult.valueQuantity is not empty %}
-# value as Quantity
+{# value as Quantity #}
 
 {% if labresult.value.value is not empty or labresult.valueQuantity.value is not empty %}
 {# Numeric quantity value #}
-* valueQuantity.value  = {{ labresult.value.value ?? labresult.valueQuantity.value }}
-* valueQuantity.unit   = "{{ labresult.value.code ?? labresult.valueQuantity.code }}"
-* valueQuantity.code   = #{{ labresult.value.unit ?? labresult.valueQuantity.unit }}
+* valueQuantity.value = {{ labresult.value.value ?? labresult.valueQuantity.value }}
+* valueQuantity.unit = "{{ labresult.value.code ?? labresult.valueQuantity.code }}"
+* valueQuantity.code = #{{ labresult.value.unit ?? labresult.valueQuantity.unit }}
 * valueQuantity.system = ${{ labresult.value.system ?? labresult.valueQuantity.system }}
 {% elseif labresult.valueString is not empty %}
 {# Fallback: plain string value when no numeric quantity is available #}
@@ -212,7 +212,7 @@
 #}
 {% if labresult.reference.low is not empty and labresult.reference.high is not empty %}
 
-* referenceRange[+].low  = {{ labresult.reference.low }} ${{ labresult.value.system }}#{{ labresult.reference.unit }}
+* referenceRange[+].low = {{ labresult.reference.low }} ${{ labresult.value.system }}#{{ labresult.reference.unit }}
 * referenceRange[=].high = {{ labresult.reference.high }} ${{ labresult.value.system }}#{{ labresult.reference.unit }}
 
 {{ addHTML_td(labresult.reference.low ~ " - " ~ labresult.reference.high) }}
@@ -252,7 +252,7 @@
 {{ addHTML_td(labresult.valueCodeableConcept.display) }}
 
 {% if labresult.reference.low is not empty and labresult.reference.high is not empty %}
-* referenceRange[+].low  = "{{ labresult.reference.low }}"
+* referenceRange[+].low = "{{ labresult.reference.low }}"
 * referenceRange[=].high = "{{ labresult.reference.high }}"
 {% endif %}
 
@@ -280,7 +280,7 @@
   date column header. CSS class: hl7__eu__lab__report.
 #}
 * text.status = #generated
-* text.div    = """
+* text.div = """
 <div xmlns="http://www.w3.org/1999/xhtml">
 <table class="hl7__eu__lab__report">{{ emitHEAD() | raw }}{{ emitHTML() | raw }}</table>
 </div>

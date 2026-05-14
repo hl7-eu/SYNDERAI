@@ -2,9 +2,11 @@
 
 /* __ input files from synthea and check __ */
 define("SYNTHETICDATA",            "../SYNTHETIC-DATA");
-define("SYNTHEADIR",               SYNTHETICDATA . "/synthea_sample_data_generated202507");
+define("SYNTHEADIR",               SYNTHETICDATA . "/synthea_sample_data_generated202604");
 define("SYNTHEAINTL",              SYNTHETICDATA . "/synthea-international-202507");
 define("MAPPINGS",                 "../MAPPINGS");
+define("EUROPEDEMOGRAPHICS",       SYNTHETICDATA . "/25_tipster_eu_demographics_31k_202509.csv");
+define("SYNTHEAPATIENTSTRATA",     SYNTHETICDATA . "/25_tipster_clinicalcandidates_7k_202604.csv");
 
 /** Severity constants used by lognlsev(). */
 define("FATAL",   -1);   // display error and die()

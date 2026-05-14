@@ -1,6 +1,5 @@
 <?php
 
-
 $pdat->inpatientencounters = NULL;
 
 if ($PROCESSISH) {
@@ -8,7 +7,7 @@ if ($PROCESSISH) {
   // for ISH patients there is only one encounter
   // var_dump($pdat->encounter);exit;
   // encounter procdures
-  $pcode = array();
+  $pcode = [];
   foreach ($pdat->encounter->procedure as $cc) {
     if (isset($cc->code))
       $pcode[] = [
@@ -95,7 +94,6 @@ if ($PROCESSISH) {
           "endexact" => $ipe["endexact"],
           "encounterid" => $ipe["encounterid"]
         ];
-        // var_dump($found);
         lognl (2, sprintf(
           "......... Hospital encounter from %s to %s (ID %s)",
           $ipe["start"],
@@ -107,6 +105,7 @@ if ($PROCESSISH) {
           $reasondisplay,
           $proceduredisplay
         ));
+        // var_dump($ipe);
         lognl (2, sprintf(
           "............ discharge synthesis: %s",
           $ipe["discharge"]["text"]

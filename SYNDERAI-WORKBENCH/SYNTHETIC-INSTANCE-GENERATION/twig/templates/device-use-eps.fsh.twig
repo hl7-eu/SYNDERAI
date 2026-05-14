@@ -36,7 +36,7 @@
     which identifies a specific UDI carrier record rather than the UDI string
     itself (which would be `udiCarrier[0].deviceIdentifier`). Verify the
     profile element binding if strict UDI compliance is required.
-    The Device narrative is an inline literal: display name + uid in parentheses.
+    The Device narrative is an inline literal: display name + udi in parentheses.
 
   DEVICE USE STATEMENT INSTANCE
     status is hardcoded as #active — all device uses are assumed ongoing.
@@ -63,15 +63,16 @@
   ├──────────────────────────┼──────────┼──────────────────────────────────────────────┤
   │ deinstanceid             │ string   │ UUID for the Device resource.                │
   │ duinstanceid             │ string   │ UUID for the DeviceUseStatement resource.    │
-  │ patient.instanceid       │ string   │ UUID of the Patient resource.               │
+  │ patient.instanceid       │ string   │ UUID of the Patient resource.                │
   │ patient.name             │ string   │ Full display name for References.            │
-  │ device.uid               │ string   │ UDI string stored in udiCarrier[0].id.      │
+  │ device.deviceIdentifier  │ string   │ string for udiCarrier[0].deviceIdentifier.   │
+  │ device.udi               │ string   │ UDI string stored in udiCarrier[0].id.       │
   │ device.display           │ string   │ Human-readable device name; used in HTML td 1│
   │                          │          │ and in Device narrative and Reference label. │
-  │ device.system            │ string   │ CodeSystem URI for the device type code.    │
-  │ device.code              │ string?  │ Device type code (optional; gates the type  │
-  │                          │          │ rule). When empty, no type rule is emitted. │
-  │ device.start             │ string?  │ ISO 8601 start date of device use. When     │
+  │ device.system            │ string   │ CodeSystem URI for the device type code.     │
+  │ device.code              │ string?  │ Device type code (optional; gates the type   │
+  │                          │          │ rule). When empty, no type rule is emitted.  │
+  │ device.start             │ string?  │ ISO 8601 start date of device use. When      │
   │                          │          │ absent, data-absent-reason on timing.        │
   └──────────────────────────┴──────────┴──────────────────────────────────────────────┘
 
@@ -103,10 +104,19 @@ Usage: #inline
 
 {#
   UDI carrier — udiCarrier[0].id stores the UDI string.
-  Note: .id is the carrier record identifier; .deviceIdentifier would be the
-  UDI string per FHIR R4. Verify the DeviceEuEps profile element binding.
+  Note: .id is the carrier record identifier;
+  .deviceIdentifier would be the UDI string per FHIR R4.
+  Better example
+    "deviceIdentifier": "28101704176818",
+    "issuer": "https://www.gs1.org/",
+    "carrierHRF": "(01)28101704176818(11)991104(17)241118(10)328176(21)42090829",
+    "entryType": "barcode"
+  Verify the DeviceEuEps profile element binding.
 #}
-* udiCarrier[0].id = "{{ device.uid }}"
+* udiCarrier[0].deviceIdentifier = "{{ device.deviceIdentifier }}"
+* udiCarrier[=].issuer = "https://www.gs1.org/"
+* udiCarrier[=].carrierHRF = "{{ device.udi }}"
+* udiCarrier[=].entryType = "barcode"
 
 {# Device type code (conditional) — omitted when device.code is empty #}
 {% if device.code is not empty %}
@@ -115,9 +125,9 @@ Usage: #inline
 
 {# Inline literal narrative: display name + UDI #}
 * text.status = #generated
-* text.div    = """
+* text.div = """
 <div xmlns="http://www.w3.org/1999/xhtml">
-{{ device.display }} ({{ device.uid }})
+{{ device.display }} ({{ device.udi }})
 </div>
 """
 
@@ -156,7 +166,7 @@ Usage: #inline
   chooses between them depending on data availability.
 #}
 {% if device.start is empty %}
-* timing.extension.url       = "http://hl7.org/fhir/StructureDefinition/data-absent-reason"
+* timing.extension.url = "http://hl7.org/fhir/StructureDefinition/data-absent-reason"
 * timing.extension.valueCode = #unknown
 {{ addHTML_td("?") }}
 {% else %}
@@ -165,7 +175,7 @@ Usage: #inline
 {% endif %}
 
 {# References: device back to Instance 1; subject to Patient #}
-* device  = Reference(urn:uuid:{{ deinstanceid }}) "{{ device.display }}"
+* device = Reference(urn:uuid:{{ deinstanceid }}) "{{ device.display }}"
 * subject = Reference(urn:uuid:{{ patient.instanceid }}) "{{ patient.name }}"
 
 {{ addHTML_trend() -}}
@@ -176,7 +186,7 @@ Usage: #inline
   emitted exclusively in %%HEAD%% below.
 #}
 * text.status = #generated
-* text.div    = """
+* text.div = """
 <div xmlns="http://www.w3.org/1999/xhtml">
 <table class="hl7__ips">{{ emitHTML() | raw }}</table>
 </div>

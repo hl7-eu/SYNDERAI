@@ -246,7 +246,7 @@ foreach ($pdat->labobservations as $ldate => $lbspd) {
 
     $pdat->labresultsaitable[$ldate] = $overalllabtesttable;
 
-    if (DEBUGLEVEL >= 4) lognl ("......... " . $logtext);
+    if (DEBUGLEVEL >= 4) lognl (4, "......... " . $logtext);
 
   }
 }

@@ -105,7 +105,6 @@ AIP;
     $response = curl_exec($ch);
     $code     = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     $error    = curl_error($ch);
-    curl_close($ch);
 
     $phpres = json_decode($response, TRUE);
 
@@ -199,7 +198,6 @@ AIP;
     $response = curl_exec($ch);
     $code     = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     $error    = curl_error($ch);
-    curl_close($ch);
 
     $phpres = json_decode($response, TRUE);
 
@@ -277,7 +275,6 @@ AIP;
     $response = curl_exec($ch);
     $code     = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     $error    = curl_error($ch);
-    curl_close($ch);
 
     $phpres = json_decode($response, TRUE);
 
@@ -386,7 +383,6 @@ AIP;
     $response = curl_exec($ch);
     $code     = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     $error    = curl_error($ch);
-    curl_close($ch);
 
     $phpres = json_decode($response, TRUE);
 
@@ -469,7 +465,6 @@ AIP;
     $response = curl_exec($ch);
     $code     = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     $error    = curl_error($ch);
-    curl_close($ch);
 
     $phpres = json_decode($response, TRUE);
 
@@ -588,7 +583,6 @@ AIP;
     $response = curl_exec($ch);
     $code     = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     $error    = curl_error($ch);
-    curl_close($ch);
 
     $phpres = json_decode($response, TRUE);
 
@@ -779,7 +773,6 @@ AIP;
         ]);
 
         $response = curl_exec($ch);
-        curl_close($ch);
 
         $fileData = json_decode($response, true);
         $fileId   = isset($fileData["id"]) ? $fileData["id"] : NULL;  // e.g. "file_011CNha8..."
@@ -848,7 +841,6 @@ AIP;
     $response = curl_exec($ch);
     $code     = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     $error    = curl_error($ch);
-    curl_close($ch);
 
     // Correct extraction using the Anthropic response schema:
     //   $result["content"][0]["text"]
@@ -948,7 +940,6 @@ AIP;
     $response = curl_exec($ch);
     $code     = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     $error    = curl_error($ch);
-    curl_close($ch);
 
     $phpres = json_decode($response, TRUE);
 
@@ -1069,7 +1060,6 @@ AIP;
     ]);
 
     $response = curl_exec($ch);
-    curl_close($ch);
     // var_dump($response);  // DEBUG — halts execution here in practice
 
     $fileData = json_decode($response, true);
@@ -1105,7 +1095,6 @@ AIP;
     $response = curl_exec($ch);
     $code     = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     $error    = curl_error($ch);
-    curl_close($ch);
 
     $phpres = json_decode($response, TRUE);
     // var_dump($phpres); exit;  // DEBUG — halts execution; function never returns

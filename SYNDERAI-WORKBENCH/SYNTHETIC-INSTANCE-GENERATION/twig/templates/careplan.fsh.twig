@@ -193,7 +193,7 @@ Usage: #inline
 {#
   Fixed category: SNOMED "Care plan (record artifact)".
   The FSH // comment below documents a previously considered (incorrect) code.
-  FSH // comments survive into the SUSHI output unlike Twig {# #} comments.
+  FSH // comments survive into the SUSHI output unlike Twig { # # } comments.
 #}
 // wrong: http://terminology.hl7.org/CodeSystem/care-plan-category#assess-plan "Assessment and Plan"
 * category.coding = $sct#734163000 "Care plan (record artifact)"
@@ -306,7 +306,7 @@ Usage: #inline
   CSS class: hl7__ips first25 (first column constrained to ~25% width).
 #}
 * text.status = #generated
-* text.div    = """
+* text.div = """
 <div xmlns="http://www.w3.org/1999/xhtml">
 <table class="hl7__ips first25">{{ emitHEAD() | raw }}{{ emitHTML() | raw }}</table>
 </div>
@@ -326,10 +326,10 @@ InstanceOf: Goal
 Title: "{{ g.title }}"
 Description: "{{ g.description}}"
 Usage: #inline
-* id               = "{{ g.instanceid }}"
-* lifecycleStatus  = #active
+* id = "{{ g.instanceid }}"
+* lifecycleStatus = #active
 * description.text = "{{ g.description}}"
-* subject          = Reference(urn:uuid:{{ patient.instanceid }}) "{{ patient.name }}"
+* subject = Reference(urn:uuid:{{ patient.instanceid }}) "{{ patient.name }}"
 
 {# Pre-built FSH string for additional Goal properties (targets, notes, etc.) #}
 {{ g.fsh | raw }}

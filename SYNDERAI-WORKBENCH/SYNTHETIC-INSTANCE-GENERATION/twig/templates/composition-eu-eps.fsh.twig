@@ -174,8 +174,8 @@ Usage: #inline
 * id = "{{ composition.instanceid }}"
 
 {# Composition business identifier under the HL7 Europe OID namespace #}
-* identifier.system           = "urn:oid:{{ HL7EUROPEEXAMPLESOID }}"
-* identifier.value            = "{{ composition.identifier }}"
+* identifier.system = "urn:oid:{{ HL7EUROPEEXAMPLESOID }}"
+* identifier.value = "{{ composition.identifier }}"
 * identifier.assigner.display = "HL7 Europe"
 
 * title = "European Patient Summary"
@@ -183,7 +183,7 @@ Usage: #inline
 
 {# Fixed LOINC type: Patient Summary Document #}
 * type.coding = $loinc#60591-5 "Patient summary Document"
-* type.text   = "Patient summary Document"
+* type.text = "Patient summary Document"
 
 * subject = Reference(urn:uuid:{{ patient.instanceid }}) "{{ patient.name }}"
 
@@ -221,10 +221,10 @@ Usage: #inline
 {# Always a named slice — slicename is always the dict key #}
 * section[{{ slicename }}]
   * title = "{{ section.title }}"
-  * code  = {{ section.code }} "{{ section.display }}"
+  * code = {{ section.code }} "{{ section.display }}"
 {# section.text is pre-built XHTML from the PHP caller; | raw prevents escaping #}
   * text.status = #generated
-  * text.div    = """
+  * text.div = """
 <div xmlns="http://www.w3.org/1999/xhtml">
 {{ section.text | raw }}
 </div>
@@ -275,7 +275,7 @@ Usage: #inline
   the Composition root text is deliberately empty.
 #}
 * text.status = #empty
-* text.div    = "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+* text.div = "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
 
 %%HEAD%% {# ── Section marker required by the FSH pre-processor — intentionally empty #}
 

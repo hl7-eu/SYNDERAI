@@ -114,19 +114,19 @@ Usage: #inline
   Same three-slice pattern as patient-eu-core: ECI (always), match
   (conditional), localid (conditional).
 #}
-* identifier[+].type   = $v2-0203#JHN
+* identifier[+].type = $v2-0203#JHN
 * identifier[=].system = "http://ec.europa.eu/identifier/eci"
-* identifier[=].value  = "{{ patient.eci }}"
+* identifier[=].value = "{{ patient.eci }}"
 
 {% if patient.match is not empty %}
-* identifier[+].type   = $v2-0203#MR
+* identifier[+].type = $v2-0203#MR
 * identifier[=].system = "http://local.setting.eu/identifier"
-* identifier[=].value  = "{{ patient.match }}"
+* identifier[=].value = "{{ patient.match }}"
 {% endif %}
 {% if patient.localid is not empty %}
-* identifier[+].type   = $v2-0203#MR
+* identifier[+].type = $v2-0203#MR
 * identifier[=].system = "http://local.setting.eu/identifier"
-* identifier[=].value  = "{{ patient.localid }}"
+* identifier[=].value = "{{ patient.localid }}"
 {% endif %}
 
 {#
@@ -160,7 +160,7 @@ Usage: #inline
   ── Address ─────────────────────────────────────────────────────────────────
   Same conditional street line pattern as patient-eu-core.
 #}
-* address[+].use  = #home
+* address[+].use = #home
 * address[=].type = #physical
 {% if patient.street1 is not empty %}
 * address[=].line[+] = "{{ patient.street1 }}"
@@ -172,14 +172,14 @@ Usage: #inline
 * address[=].line[+] = "{{ patient.street3 }}"
 {% endif %}
 * address[=].postalCode = "{{ patient.postcode }}"
-* address[=].city       = "{{ patient.city }}"
-* address[=].country    = "{{ patient.countryname }}"
+* address[=].city = "{{ patient.city }}"
+* address[=].country = "{{ patient.countryname }}"
 
 {#
   ── Telecom ──────────────────────────────────────────────────────────────────
 #}
 * telecom[+].system = #phone
-* telecom[=].value  = "{{ patient.phone }}"
+* telecom[=].value = "{{ patient.phone }}"
 
 {#
   ── Nationality extension — ALWAYS EMITTED ──────────────────────────────────
@@ -193,7 +193,7 @@ Usage: #inline
 #}
 * extension[+].url = "http://hl7.org/fhir/StructureDefinition/patient-nationality"
 * extension[=].extension[+].url = "code"
-* extension[=].extension[=].valueCodeableConcept      = urn:iso:std:iso:3166#{{ patient.countrycode|upper }}
+* extension[=].extension[=].valueCodeableConcept = urn:iso:std:iso:3166#{{ patient.countrycode|upper }}
 * extension[=].extension[=].valueCodeableConcept.text = "{{ patient.countryname }}"
 
 {{ addHTML_trend() -}}
@@ -204,7 +204,7 @@ Usage: #inline
   of emit calls. The narrative table carries body rows without column headers.
 #}
 * text.status = #generated
-* text.div    = """
+* text.div = """
 <div xmlns="http://www.w3.org/1999/xhtml">
 <table class="hl7__ips">{{ emitHTML() | raw }}</table>
 </div>

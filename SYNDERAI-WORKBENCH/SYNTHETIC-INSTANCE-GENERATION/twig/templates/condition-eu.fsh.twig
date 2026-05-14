@@ -202,7 +202,7 @@ Usage: #inline
     non-empty (no further check that it differs from .display, unlike EPS).
 #}
 {% set activeflag = condition.active | slice(0, 1) %} {# "1" = active, "0" = inactive #}
-{% set inactive   = activeflag == 0 %}
+{% set inactive = activeflag == 0 %}
 
 {# Array-or-object normalisation for condition.code #}
 {% if condition.code[0] is not empty %}
@@ -228,7 +228,7 @@ Usage: #inline
 
 {# Code: explicit [0] index — one coding per condition #}
 * code.coding[0] = {{ thisconditioncode.system }}#{{ thisconditioncode.code }} "{{ thisconditioncode.display }}"
-* code.text      = "{{ preferred }}"
+* code.text = "{{ preferred }}"
 
 {#
   ── TD 1: condition name ────────────────────────────────────────────────────
@@ -250,7 +250,7 @@ Usage: #inline
     condition-eps additionally requires the condition to be inactive.
 #}
 {% if condition.start is empty %}
-* onsetDateTime.extension.url       = "http://hl7.org/fhir/StructureDefinition/data-absent-reason"
+* onsetDateTime.extension.url = "http://hl7.org/fhir/StructureDefinition/data-absent-reason"
 * onsetDateTime.extension.valueCode = #unknown
 {{ addHTML_td("?") }}
 {% else %}
@@ -297,7 +297,7 @@ Usage: #inline
   emitHTML() only — no HEAD bag populated, %%HEAD%% is empty.
 #}
 * text.status = #generated
-* text.div    = """
+* text.div = """
 <div xmlns="http://www.w3.org/1999/xhtml">
 <table class="hl7__ips">{{ emitHTML() | raw }}</table>
 </div>

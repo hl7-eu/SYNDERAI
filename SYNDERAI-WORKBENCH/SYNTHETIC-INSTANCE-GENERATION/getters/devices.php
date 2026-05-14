@@ -22,7 +22,11 @@
 
             $snomedproperties = get_SNOMED_properties($snomed, $display);
             if ($snomedproperties["code"] !== $snomed) $snomed = $snomedproperties["code"]; // this is a replacement
-            $uid = trim($item[6]);
+
+            // get UDI carrier id human readable from, eg. (01)48854374928313(11)161212(17)411227(10)326774982846433636(21)42143
+            // and extract the devide identifier, eg. 48854374928313
+            $udi = trim($item[6]);
+            $devid = explode('(', substr($udi, 4))[0] ;
 
             if (strlen($snomedproperties['fullySpecifiedName']) > 0) $display = $snomedproperties['fullySpecifiedName'];
 
@@ -31,7 +35,8 @@
               "code" => $snomed,
               "system" => "\$sct",
               "display" => $display,
-              "uid" => $uid
+              "deviceIdentifier" => $devid,
+              "udi" => $udi
             ];
             lognl(3, sprintf(
               "......... %-10s %-10s %s",

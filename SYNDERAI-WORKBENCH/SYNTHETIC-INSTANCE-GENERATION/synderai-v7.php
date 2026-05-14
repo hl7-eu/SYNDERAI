@@ -1,5 +1,4 @@
 <?php
-
 /**
  * SynderAI v7 — Synthetic Patient Data Generator
  *
@@ -74,15 +73,20 @@
  * KEY INPUT FILES (defined via constants in constants.php)
  * ============================================================================
  *
- *   SYNTHETICDATA/25_tipster_202509_25k.csv
- *     Tab-separated synthetic patient demographics (up to 25 000 rows).
+ *   SYNTHETICDATA European demographics,
+ *   e.g. 25_tipster_eu_demographics_31k_202509
+ *     Tab-separated synthetic EU patient demographics.
  *     Columns: language, given, family, gender, birthdate, age, eci,
  *              countrycode, street1, street2, street3, city, postcode,
  *              country, phone, latitude, longitude
  *
- *   SYNTHETICDATA/25_tipster_clinicalcandidates25k.csv
+ *   SYNTHETICDATA clinical candidates from Synthea,
+ *   e.g. 25_tipster_clinicalcandidates_41k_202509
  *     Comma-separated clinical story candidates used for stratified matching.
  *     Col 0: candidate ID, Col 1: age, Col 2: gender (M/F)
+ *   This file allows to select a generated clinical story from Synthea based on the stratum and
+ *   associate it with a European citizen record to be used for demographics instead
+ *   the Synthea based one.
  *
  *   SYNTHEADIR/<resource>.csv
  *     Synthea-generated clinical CSV files:
@@ -239,7 +243,7 @@ $ISARERUN = FALSE;
 $STORYFOR = array();
 
 /* Announce the script version */
-lognl(1, "SYNDERAI 7.0 as of 2026-03");
+lognl(1, "SYNDERAI 7.1 as of 2026-04");
 
 
 // ============================================================================
@@ -459,14 +463,14 @@ if (FALSE) {
             ]
         ]
     ];
-    var_dump(getAIHospitalCourse(46, "male", $x, TRUE));
+    // var_dump(getAIHospitalCourse(46, "male", $x, TRUE));
     exit;
 } // END TEST AREA
 
 
 // ============================================================================
 // PATIENT LIST LOADING
-// Read the 25k synthetic patient demographics CSV and apply any pre-selection
+// Read the synthetic patient demographics CSV and apply any pre-selection
 // filters (--patient, --countries) to build the working patient list.
 //
 // CSV columns (tab-separated):
@@ -474,7 +478,7 @@ if (FALSE) {
 //   street1, street2, street3, city, postcode, country, phone, latitude, longitude
 // ============================================================================
 
-$patienthandle = fopen(SYNTHETICDATA . "/25_tipster_202509_25k.csv", "r");
+$patienthandle = fopen(EUROPEDEMOGRAPHICS, "r");
 $row           = 0;
 $PATIENTS      = array();
 $arnames       = array();
@@ -517,7 +521,7 @@ while (($csvline = fgetcsv($patienthandle, NULL, "\t", '"', '\\')) !== FALSE) {
     }
 }
 fclose($patienthandle);
-lognlsev(1, SUCCESS, "... patient list" . ($preselectionineffect ? " (pre-selections in effect): " : ": ") . count($PATIENTS) . " found");
+lognlsev(1, SUCCESS, "... patient list - EU demographics" . ($preselectionineffect ? " (pre-selections in effect): " : ": ") . count($PATIENTS) . " found");
 
 
 // ============================================================================
@@ -574,7 +578,6 @@ if (includeConditionally("lnsctspecimen")) include("getters/lnsctspecimen.php");
 $CLINICALPROCEDUREENCOUNTERS = array();
 $INPATIENTENCOUNTERS         = array();
 if (includeConditionally("encounters")) include("getters/encounters.php");
-
 
 // ============================================================================
 // STATISTICS FILE INITIALISATION
@@ -757,15 +760,6 @@ if (json_last_error() !== JSON_ERROR_NONE) {
 
 
 // ============================================================================
-// OPEN CLINICAL CANDIDATES FILE
-// Remains open for the entire Phase I loop; rewound at the start of each
-// candidate-search iteration.
-// ============================================================================
-
-$clinicalcandidateshandle = fopen(SYNTHETICDATA . "/25_tipster_clinicalcandidates25k.csv", "r");
-
-
-// ============================================================================
 // EMPTY ARTIFACT OUTPUT DIRECTORIES
 // Clear previously generated FSH files before the new run so stale examples
 // are not mixed with freshly generated ones.
@@ -777,6 +771,17 @@ foreach ($ARTIFACTS as $a) {
     foreach (glob($fn) as $f) unlink($f);
     lognl(1, "...... $a now empty");
 }
+
+
+// ============================================================================
+// OPEN CLINICAL CANDIDATES FILE
+// Remains open for the entire Phase I loop; rewound at the start of each
+// candidate-search iteration.
+// ============================================================================
+
+$cstories = count(explode("\n", file_get_contents(SYNTHEAPATIENTSTRATA)));
+lognlsev(1, SUCCESS, "... synthetic clinical stories: " . $cstories . " found");
+$clinicalcandidateshandle = fopen(SYNTHEAPATIENTSTRATA, "r");
 
 
 // ============================================================================
@@ -843,6 +848,7 @@ foreach ($PATIENTS as $pdat) {
     //   - Candidate age must be between (patient age + 1) and (patient age + 4).
     //   - If preselection criteria were specified, the candidate must satisfy all.
     // -------------------------------------------------------------------------
+    $candid = NULL;
     if ($PROCESSISH) {
         lognl(2, "...... Using clinical story of ISH patient $pdat->name\n");
     } else if ($ISARERUN) {
@@ -870,14 +876,18 @@ foreach ($PATIENTS as $pdat) {
                     $matches[] = $mdat;
             }
             $matchcount = count($matches);
+            // var_dump($matchingpreselectioncriteriacandidates);
+
             if ($matchcount > 0) {
                 $cand          = rand(0, $matchcount - 1);
                 $candid        = $matches[$cand][0];
                 $pdat->match   = $candid;
 
                 if ($candid === NULL) { 
-                    var_dump($matches); exit; 
-                }  // should never happen
+                    // should never happen
+                    var_dump($matches); 
+                    exit; 
+                }
 
                 $candidateage = $matches[$cand][1];
                 lognl(1, "......... clinical story match #$cand out of $matchcount stories chosen: $candid ($candidateage yr)\n");
@@ -898,6 +908,7 @@ foreach ($PATIENTS as $pdat) {
     if (includeConditionally("conditions"))            include("getters/conditions.php");
     if (includeConditionally("procedures"))            include("getters/procedures.php");
     if (includeConditionally("inpatientencounters"))   include("getters/inpatientencounters.php");
+
     if (!$PROCESSISH) {
         // non-ISH patients must get these information from their clinical story candidate
         if (includeConditionally("medications"))           include("getters/medications.php");
@@ -907,6 +918,7 @@ foreach ($PATIENTS as $pdat) {
         if (includeConditionally("vitalsigns"))            include("getters/vitalsigns.php");
         if (includeConditionally("pregnancies"))           include("getters/pregnancies.php");
     }
+
     // var_dump($pdat->conditions);var_dump($pdat->procedures);exit;
 
     // -------------------------------------------------------------------------
@@ -1077,7 +1089,7 @@ foreach ($PATIENTS as $pdat) {
     }
     if (in_array("LAB", $ARTIFACTS)) {
         if ($pdat->labobservations === NULL)
-                lognlsev(2, FATAL, "...... +++ Patient's clinical story candidate has missing lab observations for a proper LAB, refusing to continue\n");
+                lognlsev(2, ERROR, "...... +++ Patient's clinical story candidate has missing lab observations for a proper LAB, which is undesireable\n");
     }
     if (in_array("HDR", $ARTIFACTS)) {
         if (!isset($pdat->conditions) or $pdat->conditions === NULL)
@@ -1085,7 +1097,7 @@ foreach ($PATIENTS as $pdat) {
         if (!isset($pdat->procedures) or $pdat->procedures === NULL)
                 lognlsev(2, WARNING, "...... +++ Patient's clinical story candidate has missing procedures for a proper HDR, continuing anyway\n");
         if (!isset($pdat->inpatientencounters) or $pdat->inpatientencounters === NULL)
-                lognlsev(2, FATAL, "...... +++ Patient's clinical story candidate has missing inpatient encounters for a proper HDR, refusing to continue\n");
+                lognlsev(2, ERROR, "...... +++ Patient's clinical story candidate has missing inpatient encounters for a proper HDR, which is undesireable\n");
     }
     
     if ($pdat->match === NULL)
@@ -1589,8 +1601,8 @@ function emitFSH($pdat, $thisartifact) {
         include("sections/recentlabobservationEPS.php");
         include("sections/device.php");
 
-        // Use the most recent lab observation date as the composition date
-        $maxfoundix  = max(array_keys($pdat->labobservations));
+        // Use the most recent lab observation date (if present) as the composition date, today otherwise
+        $maxfoundix  = $pdat->labobservations !== NULL ? max(array_keys($pdat->labobservations)) : date('Y-m-d\TH:i:s\Z') ;
         $composition = [
             "instanceid" => uuid(),
             "identifier" => uuid(),
@@ -1654,7 +1666,7 @@ function emitFSH($pdat, $thisartifact) {
         // emit all EPSs
         $outputcount = 0;
 
-        $overallsetofdates = array_keys($pdat->labobservations);
+        $overallsetofdates = $pdat->labobservations === NULL ? [] : array_keys($pdat->labobservations);
 
         foreach ($overallsetofdates as $thisroundate) {
 

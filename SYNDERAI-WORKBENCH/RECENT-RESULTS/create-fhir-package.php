@@ -8,6 +8,9 @@ ini_set("pcre.jit", "0");
 
 date_default_timezone_set("Europe/Brussels");
 
+// PYTHON must be available
+$PYTHON = "python3";
+
 $starttimer = time();   // for emiting teh elapsed time register the start time
 
 $THISSYNDERAIVERSION = "2.1.0";
@@ -79,7 +82,6 @@ if (is_dir("package")) {
     mkdir("package");
 }
 mkdir("package/xml");
-
 
 // first get all JSON Bundles
 $alljson = glob("Bundle*.json");
@@ -167,9 +169,44 @@ $pack = json_encode($pack, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
 file_put_contents("package/package.json", $pack);
 file_put_contents("package/.index.json", $finalindex);
 
-// finally targz it
+// final for this phase: targz it
 exec("tar -czvf package.tar.gz package >/dev/null 2>/dev/null");
 lognl("FHIR package for $theartifact - $desc created!");
+
+// last step: if this is an EPS package, and it contains more than 20 patient Example
+// create the dashboard files, execute python scripts in dashboard-makers
+// synderai_eps_condition_dashboard synderai_eps_medication_dashboard synderai_eps_careplan_dashboard
+// output next to the package folder a file like condition_dashboard_fragment.html
+if ($theartifact === "EPS" && $xmls > 20) {
+    lognl("Adding dashboard hmtl fragments.");
+    $dbartefacts = [
+        "condition", 
+        "medication",
+        "careplan"
+    ];
+    foreach ($dbartefacts as $script) {
+        $packagedir = getcwd();
+        $command = "$PYTHON ../dashboard-makers/synderai_eps_" . $script . "_dashboard.py --package $packagedir/package ";
+        $command .= "--out " . $script . "_dashboard_fragment.html ";
+        $command .= "--semver " . $thisversion;
+
+        // var_dump($command);
+        $OUT = "";
+        $ol = "";
+        $rv = 0;
+        exec($command, $ol, $rv);
+        if ($rv !== 0) {
+            die("Script synderai_eps_" . $script . "_dashboard finished with an error.");
+        } else {
+            lognl("... $script dashboard added");
+        }
+    }
+    lognl("Dashboard hmtl fragments added.");
+}
+
+
+// ready...
+
 
 exit;
 

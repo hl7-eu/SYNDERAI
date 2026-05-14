@@ -186,11 +186,11 @@ Usage: #inline
 {% endif %}
 {% if immunization.site is not empty %}
 * site.coding = {{ immunization.site.system }}#{{ immunization.site.code }} "{{ immunization.site.display }}"
-* site.text   = "{{ immunization.site.display }}"
+* site.text = "{{ immunization.site.display }}"
 {% endif %}
 {% if immunization.route is not empty %}
 * route.coding[0] = {{ immunization.route.system }}#{{ immunization.route.code }} "{{ immunization.route.display }}"
-* route.text      = "{{ immunization.route.display }}"
+* route.text = "{{ immunization.route.display }}"
 {% endif %}
 
 {{ addHTML_trend() -}}
@@ -201,7 +201,7 @@ Usage: #inline
   The HEAD bag is emitted in %%HEAD%% for external consumers.
 #}
 * text.status = #generated
-* text.div    = """
+* text.div = """
 <div xmlns="http://www.w3.org/1999/xhtml">
 <table class="hl7__ips">{{ emitHTML() | raw }}</table>
 </div>

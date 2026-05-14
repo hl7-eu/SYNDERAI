@@ -131,8 +131,8 @@ Usage: #inline
 * id = "{{ composition.instanceid }}"
 
 {# Composition business identifier under the HL7 Europe OID namespace #}
-* identifier.system           = "urn:oid:{{ HL7EUROPEEXAMPLESOID }}"
-* identifier.value            = "{{ composition.identifier }}"
+* identifier.system = "urn:oid:{{ HL7EUROPEEXAMPLESOID }}"
+* identifier.value = "{{ composition.identifier }}"
 * identifier.assigner.display = "HL7 Europe"
 
 * title = "Hospital Discharge Report"
@@ -140,7 +140,7 @@ Usage: #inline
 
 {# Fixed LOINC type: Hospital Discharge summary #}
 * type.coding = $loinc#34105-7 "Hospital Discharge summary"
-* type.text   = "Hospital Discharge Report"
+* type.text = "Hospital Discharge Report"
 
 * subject = Reference(urn:uuid:{{ patient.instanceid }}) "{{ patient.name }}"
 
@@ -164,7 +164,7 @@ Usage: #inline
   Position has no FSH/FHIR semantic effect; affects only output readability.
 #}
 * text.status = #empty
-* text.div    = "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+* text.div = "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
 
 {#
   ══════════════════════════════════════════════════════════════════════════════
@@ -192,9 +192,9 @@ Usage: #inline
 * section[{{ slicename }}]
 {% endif %}
   * title = "{{ section.title }}"
-  * code  = {{ section.code }} "{{ section.display }}"
+  * code = {{ section.code }} "{{ section.display }}"
   * text.status = #generated
-  * text.div    = """
+  * text.div = """
 <div xmlns="http://www.w3.org/1999/xhtml">
 {{ section.text | raw }}
 </div>

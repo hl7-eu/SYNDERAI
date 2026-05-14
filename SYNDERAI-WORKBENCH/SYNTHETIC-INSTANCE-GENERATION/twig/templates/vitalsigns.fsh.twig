@@ -194,10 +194,10 @@ Usage: #inline
     All four FHIR Quantity sub-elements are emitted. UCUM is always the system.
 #}
 {% if (vital.value.scale == "numeric" or vital.valueQuantity.scale == "numeric") and (vital.value.value is not empty or vital.valueQuantity.value is not empty) %}
-* valueQuantity.value  = {{ vital.value.value ?? vital.valueQuantity.value }}
-* valueQuantity.code   = #{{ vital.value.code ?? vital.valueQuantity.code }}
+* valueQuantity.value = {{ vital.value.value ?? vital.valueQuantity.value }}
+* valueQuantity.code = #{{ vital.value.code ?? vital.valueQuantity.code }}
 * valueQuantity.system = "http://unitsofmeasure.org"
-* valueQuantity.unit   = "{{ vital.value.unit ?? vital.valueQuantity.unit }}"
+* valueQuantity.unit = "{{ vital.value.unit ?? vital.valueQuantity.unit }}"
 {{ addHTML_td((vital.value.value ?? vital.valueQuantity.value) ~ " " ~ (vital.value.unit ?? vital.valueQuantity.unit)) }}
 
 {#
@@ -217,10 +217,10 @@ Usage: #inline
 {% else %}
 * component[+].code = {{ c.system }}#{{ c.code }} "{{ c.display }}"
 {% endif %}
-* component[=].valueQuantity.value  = {{ cmp.value.value ?? cmp.valueQuantity.value }}
-* component[=].valueQuantity.code   = #{{ cmp.value.code ?? cmp.valueQuantity.code }}
+* component[=].valueQuantity.value = {{ cmp.value.value ?? cmp.valueQuantity.value }}
+* component[=].valueQuantity.code = #{{ cmp.value.code ?? cmp.valueQuantity.code }}
 * component[=].valueQuantity.system = "http://unitsofmeasure.org"
-* component[=].valueQuantity.unit   = "{{ cmp.value.unit ?? cmp.valueQuantity.unit }}"
+* component[=].valueQuantity.unit = "{{ cmp.value.unit ?? cmp.valueQuantity.unit }}"
 {% endfor %} {# end: cmp in vital.component — FSH rules #}
 
 {#
@@ -231,7 +231,7 @@ Usage: #inline
   loop.last prevents a trailing " / " after the final value.
 #}
 {% set cvalue = "" %}
-{% set cunit  = "" %}
+{% set cunit = "" %}
 {% for cmp in vital.component %}
 {% set cvalue = cvalue ~ (cmp.value.value ?? cmp.valueQuantity.value) %}
 {% if not loop.last %}
@@ -258,7 +258,7 @@ Usage: #inline
   below is intentionally empty — see HEAD Section Note in the file header.
 #}
 * text.status = #generated
-* text.div    = """
+* text.div = """
 <div xmlns="http://www.w3.org/1999/xhtml">
 <table class="hl7__ips">{{ emitHEAD() | raw }}{{ emitHTML() | raw }}</table>
 </div>

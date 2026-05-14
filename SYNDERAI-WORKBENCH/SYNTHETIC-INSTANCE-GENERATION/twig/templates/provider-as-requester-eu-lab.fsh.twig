@@ -112,11 +112,11 @@ InstanceOf: PractitionerRoleEu
 Title: "Practitioner Role (EPS) Requester"
 Description: "Practitioner Role Requester"
 Usage: #inline
-* id           = "{{ requester.instancerole }}"
+* id = "{{ requester.instancerole }}"
 * organization = Reference(urn:uuid:{{ requester.instanceorg }})
 {# Minimal narrative — identifies the role by its id #}
 * text.status = #generated
-* text.div    = """
+* text.div = """
 <div xmlns="http://www.w3.org/1999/xhtml">
 Provider Role Id: {{ requester.instancerole }}
 </div>
@@ -141,8 +141,8 @@ Usage: #inline
 * id = "{{ requester.instanceorg }}"
 
 {# Business identifier under the HL7 Europe OID namespace #}
-* identifier.system           = "urn:oid:{{ HL7EUROPEEXAMPLESOID }}"
-* identifier.value            = "{{ requester.orgidentifier }}"
+* identifier.system = "urn:oid:{{ HL7EUROPEEXAMPLESOID }}"
+* identifier.value = "{{ requester.orgidentifier }}"
 * identifier.assigner.display = "HL7 Europe"
 
 * name = "{{ requester.orgname }}"
@@ -163,7 +163,7 @@ Usage: #inline
 
 {# Minimal narrative — shows the requesting organisation name #}
 * text.status = #generated
-* text.div    = """
+* text.div = """
 <div xmlns="http://www.w3.org/1999/xhtml">
 Provider Organization: {{ requester.orgname }}
 </div>
@@ -180,12 +180,11 @@ Description: "Practitioner Requester"
 Usage: #inline
 * id = "{{ provider.instanceprovider }}"
 * name.prefix = "{{ provider.providernameprefix }}"
-* name.given[+] ="{{ provider.providernamegiven }}"
+* name.given[+] = "{{ provider.providernamegiven }}"
 * name.family = "{{ provider.providernamefamily }}"
 {# populate .text #}
-
 * text.status = #generated
-* text.div =""""
+* text.div = """
 <div xmlns="http://www.w3.org/1999/xhtml">
 <table class="hl7__ips">{{ provider.providernameprefix ~ " " ~ provider.providernamegiven ~ " " ~ provider.providernamefamily }}</table>
 </div>

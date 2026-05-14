@@ -103,13 +103,13 @@ Usage: #inline
   Slice 2: DiagnosticReport's own business identifier.
   Both share the same OID namespace; different values distinguish them.
 #}
-* identifier[+].system             = "urn:oid:{{ HL7EUROPEEXAMPLESOID }}"
-* identifier[=].value              = "{{ composition.identifier }}"
-* identifier[=].assigner.display   = "HL7 Europe"
+* identifier[+].system = "urn:oid:{{ HL7EUROPEEXAMPLESOID }}"
+* identifier[=].value = "{{ composition.identifier }}"
+* identifier[=].assigner.display = "HL7 Europe"
 
-* identifier[+].system             = "urn:oid:{{ HL7EUROPEEXAMPLESOID }}"
-* identifier[=].value              = "{{ diagnosticreport.identifier }}"
-* identifier[=].assigner.display   = "HL7 Europe"
+* identifier[+].system = "urn:oid:{{ HL7EUROPEEXAMPLESOID }}"
+* identifier[=].value = "{{ diagnosticreport.identifier }}"
+* identifier[=].assigner.display = "HL7 Europe"
 
 {#
   ── R5 back-port extension — links DiagnosticReport to its Composition ───────
@@ -125,9 +125,9 @@ Usage: #inline
   status #registered indicates the report exists but is not yet finalised.
   category[studyType] and code are fixed LOINC codes required by the profile.
 #}
-* status            = #registered
+* status = #registered
 * category[studyType] = $loinc#26436-6 "Laboratory studies (set)"
-* code              = $loinc#11502-2 "Laboratory report"
+* code = $loinc#11502-2 "Laboratory report"
 
 {#
   ── Patient reference ───────────────────────────────────────────────────────
@@ -159,7 +159,7 @@ Usage: #inline
   text.status = #empty is the correct FHIR status for this case.
 #}
 * text.status = #empty
-* text.div    = "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+* text.div = "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
 
 %%HEAD%% {# ── Section marker required by the FSH pre-processor ─────────────── #}
 <!-- empty -->
