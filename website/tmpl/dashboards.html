@@ -2,11 +2,213 @@
 <div class="teaser">%%TEASER%%</div>
 <h1>Synthetic Data Example Dashboards</h1>
 
-<section class="dashboard">
-   %%DASHBOARDS%%
-</section>
+<!-- ═══════════════════════════════════════════════════════════
+     DASHBOARD TAB WRAPPER
+     Drop the three generated dashboard fragments where indicated.
+     No external dependencies beyond the site's existing styles.css.
+═══════════════════════════════════════════════════════════ -->
+<style>
+/* ── Dashboard tab chrome ───────────────────────────────────────── */
+ 
+.dash-tabbar {
+  display: flex;
+  gap: .6rem;
+  margin: 1rem 2.4rem 1.4rem;
+  flex-wrap: wrap;
+}
+ 
+.dash-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: .55rem;
+  padding: .55rem 1.4rem;
+  border-radius: 50px;
+  border: 1px solid rgba(255,255,255,.15);
+  background: rgba(255,255,255,.04);
+  color: rgba(255,255,255,.55);
+  font-family: 'Inter', sans-serif;
+  font-size: .82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all .22s ease;
+  user-select: none;
+  position: relative;
+  overflow: hidden;
+}
+.dash-tab::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, #c87028, #f07086);
+  opacity: 0;
+  transition: opacity .22s;
+  z-index: 0;
+}
+.dash-tab:hover { border-color: rgba(240,112,134,.4); color: rgba(255,255,255,.8); }
+.dash-tab:hover::before { opacity: .18; }
+.dash-tab.active { border-color: transparent; color: #fff; }
+.dash-tab.active::before { opacity: 1; }
+.dash-tab i    { font-size: 1.1rem; position: relative; z-index: 1; }
+.dash-tab span { position: relative; z-index: 1; }
+.dash-tab .dash-badge {
+  position: relative; z-index: 1;
+  font-size: .62rem; font-family: monospace; letter-spacing: .04em;
+  padding: 1px 7px; border-radius: 20px;
+  background: rgba(255,255,255,.15); color: rgba(255,255,255,.7);
+  white-space: nowrap;
+}
+.dash-tab.active .dash-badge { background: rgba(255,255,255,.25); color: #fff; }
+ 
+/* Tab divider */
+.dash-rule {
+  height: 1px;
+  margin: 0 2.4rem;
+  background: linear-gradient(90deg, rgba(240,112,134,.3), rgba(200,112,40,.15), transparent);
+}
+ 
+/* Panel visibility toggle */
+.dash-panel         { display: none; }
+.dash-panel.active  { display: block; animation: dashFadeIn .26s ease; }
+ 
+@keyframes dashFadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+ 
+/* Placeholder shown when a fragment file is missing */
+.dash-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 180px;
+  border: 1px dashed rgba(255,255,255,.15);
+  border-radius: 12px;
+  font-family: monospace;
+  font-size: .78rem;
+  color: rgba(255,255,255,.3);
+  letter-spacing: .04em;
+  margin: .5rem 0;
+}
+ 
+@media (max-width: 700px) {
+  .dash-tab { padding: .45rem .9rem; font-size: .76rem; }
+  .dash-tab .dash-badge { display: none; }
+}
+</style>
+ 
+<div class="dash-page dash-anchor" id="dashboards">
+ 
+  <!-- ── Tab bar ──────────────────────────────────────────────────── -->
+<div class="dash-tabbar" id="dashTabbar" role="tablist" aria-label="Dashboard sections">
+ 
+  <button class="dash-tab active"
+          id="tab-conditions"
+          role="tab"
+          aria-selected="true"
+          aria-controls="panel-conditions"
+          data-panel="conditions">
+    <i class="mdi mdi-stethoscope"></i>
+    <span>Conditions</span>
+    <span class="dash-badge">EPS</span>
+  </button>
+ 
+  <button class="dash-tab"
+          id="tab-careplans"
+          role="tab"
+          aria-selected="false"
+          aria-controls="panel-careplans"
+          data-panel="careplans">
+    <i class="mdi mdi-clipboard-pulse-outline"></i>
+    <span>Care Plans</span>
+    <span class="dash-badge">EPS</span>
+  </button>
+ 
+  <button class="dash-tab"
+          id="tab-medications"
+          role="tab"
+          aria-selected="false"
+          aria-controls="panel-medications"
+          data-panel="medications">
+    <i class="mdi mdi-pill"></i>
+    <span>Medications</span>
+    <span class="dash-badge">EPS</span>
+  </button>
+ 
+</div><!-- /.dash-tabbar -->
+ 
+<div class="dash-rule"></div>
 
-<!-- toggle scripts -->
-<script src="assets/js/main.js"></script>
+<!-- ══ Panels ════════════════════════════════════════ -->
+%%DASHBOARDS%%
+</div>
+ 
+<!-- ── Tab controller ───────────────────────────────────────────
+     Inline at end of content so all panel elements are in DOM.
+     No dependency on main.js.
+─────────────────────────────────────────────────────────────── -->
+<script>
+(function () {
+  "use strict";
+ 
+  var tabbar = document.getElementById("dashTabbar");
+  if (!tabbar) return; /* guard: element not found */
+ 
+  /* ── switch to a named panel ─── */
+  function activateTab(panelName) {
+    /* deactivate all buttons */
+    var buttons = tabbar.querySelectorAll(".dash-tab");
+    for (var i = 0; i < buttons.length; i++) {
+      buttons[i].classList.remove("active");
+      buttons[i].setAttribute("aria-selected", "false");
+    }
+    /* hide all panels */
+    var panels = document.querySelectorAll(".dash-panel");
+    for (var j = 0; j < panels.length; j++) {
+      panels[j].classList.remove("active");
+    }
+    /* show chosen */
+    var btn   = tabbar.querySelector('[data-panel="' + panelName + '"]');
+    var panel = document.getElementById("panel-" + panelName);
+    if (btn)   { btn.classList.add("active");   btn.setAttribute("aria-selected", "true"); }
+    if (panel) { panel.classList.add("active"); }
+    /* deep-link */
+    if (history.replaceState) {
+      history.replaceState(null, "", "#" + panelName);
+    }
+  }
+ 
+  /* ── click handler ─── */
+  tabbar.addEventListener("click", function (e) {
+    var btn = e.target.closest ? e.target.closest(".dash-tab")
+                                : (function (el) {
+                                    while (el && !el.classList.contains("dash-tab")) el = el.parentElement;
+                                    return el;
+                                  })(e.target);
+    if (!btn || !btn.dataset.panel) return;
+    activateTab(btn.dataset.panel);
+  });
+ 
+  /* ── keyboard navigation (← →) ─── */
+  tabbar.addEventListener("keydown", function (e) {
+    var tabs   = Array.prototype.slice.call(tabbar.querySelectorAll(".dash-tab"));
+    var active = tabbar.querySelector(".dash-tab.active");
+    var idx    = tabs.indexOf(active);
+    if (e.key === "ArrowRight" && idx < tabs.length - 1) activateTab(tabs[idx + 1].dataset.panel);
+    if (e.key === "ArrowLeft"  && idx > 0)               activateTab(tabs[idx - 1].dataset.panel);
+  });
+ 
+  /* ── deep-link on load: #medications or ?tab=medications ─── */
+  (function () {
+    var hash  = location.hash.replace("#", "");
+    var param = "";
+    try { param = new URLSearchParams(location.search).get("tab") || ""; } catch (e) {}
+    var target = hash || param;
+    if (target && tabbar.querySelector('[data-panel="' + target + '"]')) {
+      activateTab(target);
+    }
+  })();
+ 
+})();
+</script>
 
 </div>

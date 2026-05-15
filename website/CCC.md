@@ -7,6 +7,10 @@
 
 Dr. Kai U. Heitmann, HL7 Europe
 
+## Acknowledgements
+
+Numerous persons gave professional content related feeback during all phases of the development. We owe special thanks to the following individuals (in no specific oder): Georgio Cangioli, Mikael Rinnetmäki, Hynek Kružík, Bas van den Heuvel, Patrick Werner, Alexander Zautke, Andries Hamster.
+
 ## Credits, Courtesy
 
 This project includes original code and uses additional several open-source libraries and datasets as follows:

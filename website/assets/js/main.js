@@ -1,17 +1,21 @@
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.style.opacity = 1;
-      entry.target.style.transform = 'translateY(0)';
-      observer.unobserve(entry.target);
-    }
-  });
-}, { threshold: 0.2 });
+if (window.__synderaiMainLoaded) { /* already ran */ } else {
+  
+  window.__synderaiMainLoaded = true;
 
-document.querySelectorAll('[data-animate]').forEach(el => observer.observe(el));
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.opacity = 1;
+        entry.target.style.transform = 'translateY(0)';
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.2 });
+
+  document.querySelectorAll('[data-animate]').forEach(el => observer.observe(el));
 
 
-document.addEventListener('DOMContentLoaded', () => {
+  document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('table.toggle-table').forEach(setupTableToggle);
   });
 
@@ -51,3 +55,5 @@ document.addEventListener('DOMContentLoaded', () => {
     // Place the button right after the table it controls
     table.after(btn);
   }
+  
+}

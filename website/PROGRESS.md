@@ -26,5 +26,6 @@
    – published as **package 1.0.0+20251023** for EPS and LAB and HDR
 - 2025-12-07 and 2025-12-09: recreated 50 synthetic patients / 50 HL7 FHIR example instance of the European European Patient Summary (EPS)
   – published as **package 1.5.0+20251209** for EPS and LAB
-- 2025-03-01: starting the big validation "marathon" to process all synthetic examples by the HAPI validator aiming on passing (virtually) all examples with no errors, perparations for the EHDS Plugathon during the IHE Connectathon week 23-27 March 2026 in Brussels
+- 2026-03-01: starting the big validation "marathon" to process all synthetic examples by the HAPI validator aiming on passing (virtually) all examples with no errors, perparations for the EHDS Plugathon during the IHE Connectathon week 23-27 March 2026 in Brussels
   – published as **package 2.0.0+20260318** for EPS and LAB
+- 2026-05-14 corrected the `udiCarrier` constructs in all `Device` resources – published as **package 2.1.0+20260514** for EPS

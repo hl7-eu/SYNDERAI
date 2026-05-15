@@ -339,7 +339,7 @@ if ($CURRENTMENU['menu'] === 'index') {
     $content = str_replace("%%BACKGROUNDIMG%%", "page-image", $content);
 
     $allexamplecategories = glob("examples/*");
-    $eclist = "";
+    $eclist = array();
 
     foreach ($allexamplecategories as $ec) {
         if (is_dir($ec)) {
@@ -393,18 +393,33 @@ if ($CURRENTMENU['menu'] === 'index') {
             }
 
             // Build the artifact category card
-            $eclist .= "<div class=\"feature-card\" data-animate>";
-            $eclist .= "<i class=\"mdi $ecicon $ecicolor\"></i>";
-            $eclist .= "<h3>$ectitle</h3>";
-            $eclist .= "<p><strong>$patcount synthetic patients</strong> with<br/><strong>$catcount</strong> $ecdesc";
-            $eclist .= "<br><small>(Package $latestexamplesfolder)</small></p>";
-            $eclist .= "<a href=\"index.php?menu=$ec\" class=\"learn-more-btn\">VISIT</a>";
-            $eclist .= "</div>";
+            $fea = "<div class=\"feature-card\" data-animate>";
+            $fea .= "<i class=\"mdi $ecicon $ecicolor\"></i>";
+            $fea .= "<h3>$ectitle</h3>";
+            if ($patcount > 0) {
+                $fea .= "<p><strong>$patcount synthetic patients</strong> with<br/><strong>$catcount</strong> $ecdesc";
+                $fea .= "<br><small>(Package $latestexamplesfolder)</small></p>";
+                $fea .= "<a href=\"index.php?menu=$ec\" class=\"learn-more-btn\">VISIT</a>";
+            } else {
+                $fea .= "<p>Soon: $ecdesc";
+            }
+            $fea .= "</div>";
+            // add this feature card to the eclist array
+            $eclist[$ecshort] = [
+                "count" => $patcount,
+                "html" => $fea
+            ];
         }
     }
 
     $tmp = file_get_contents('tmpl/examples.html');
-    $tmp = str_replace("%%EXAMPLECATEGORIES%%", $eclist,        $tmp);
+    // sort the eclist by count
+    $counts = array_column($eclist, 'count');
+    array_multisort($counts, SORT_DESC, $eclist);
+    $allfc = "";
+    foreach ($eclist as $ecfc)
+        $allfc .= $ecfc["html"];
+    $tmp = str_replace("%%EXAMPLECATEGORIES%%", $allfc,         $tmp);
     $tmp = str_replace("%%TEASER%%",            SYNDERAITEASER, $tmp);
 
     $OUT = str_replace("%%MAIN%%",   $tmp, $content);
@@ -684,14 +699,34 @@ if ($CURRENTMENU['menu'] === 'index') {
     $tmp = file_get_contents('tmpl/dashboards.html');
     $tmp = str_replace("%%TEASER%%", SYNDERAITEASER, $tmp);
 
-    /* get the dashboard fragment file from package
-    $dashboards = "<ul>";
-    $dashboards .= "<li><table><tr><td><i class=\"mdi mdi-view-dashboard-variant green\"></i></td>";
-    $dashboards .= "<td class=\"dashboard-info\"><strong>Conditions</strong><p/>Dashboard over all conditions of the EPS patients.";
-    $dashboards .= "</td></tr></table></li></ul>";
-    */
+    // dashboards are shown only for the last EPS, find it
+    $allpackages = glob("examples/EPS/*.*.*");
+    $recentdate = "";
+    $recentpackage = "";
+    foreach ($allpackages as $pf) {
+        // eg examples/EPS/2.1.0+20260514
+        $items = explode("/", $pf);
+        $package = $items[2];  // eg 2.1.0+20260514
+        $packagedate = after("+", $package);
+        if ($packagedate > $recentdate) {
+            $recentdate = $packagedate;
+            $recentpackage = $package;
+        }
+    }
 
-    $dashboards = file_get_contents("examples/EPS/2.0.0+20260318/condition_dashboard_fragment.html");
+    // get the dashboard fragment file from package
+    $dashboards = "";
+    foreach (array('condition', 'medication', 'careplan') as $db) {
+        $active = $db === 'condition' ? 'active' : ''; // conditions panel is active (open) by default
+        $dashboards .= "<div class=\"dash-panel " . $active . "\" id=\"panel-" . $db . "s\" role=\"tabpanel\" aria-labelledby=\"tab-" . $db . "s\">";
+        $f = 'examples/EPS/' . $recentpackage . '/' . $db . '_dashboard_fragment.html';
+        if (file_exists($f)) {
+            $dashboards .= file_get_contents($f);
+        } else {
+            $dashboards .= '<div class="dash-placeholder">NOTE: $db dashboard not found...</div>';
+        }
+        $dashboards .= "</div>";
+    }
 
     $content = str_replace("%%MAIN%%", $tmp, $content);
     $content = str_replace("%%DASHBOARDS%%", $dashboards, $content);
