@@ -7,6 +7,15 @@
 
 Dr. Kai U. Heitmann, HL7 Europe
 
+## Partners
+
+<img style="float: right; width: 100px; margin-left: 10px;" src="img/partners.png"> </img>
+SYNDERAI has started to partner with other initiatives and companies to make the assets created are sustainable.
+
+We evaluate the High-Performance FHIR Server from [fire.ly](https://fire.lfirely-server-trial/) for the synthetic examples,
+we have a [compelling rendering](https://ehds.hamster.nl) of the EHDS examples next to the original [vi7eti](https:vi7eti.net) and investigate Fast Continuous validation, drift
+detection and releases evidence with [MedVertical](https://medverticacom).
+
 ## Acknowledgements
 
 Numerous persons gave professional content related feeback during all phases of the development. We owe special thanks to the following individuals (in no specific oder): Georgio Cangioli, Mikael Rinnetmäki, Hynek Kružík, Bas van den Heuvel, Patrick Werner, Alexander Zautke, Andries Hamster.
@@ -19,7 +28,7 @@ This project includes original code and uses additional several open-source libr
 
 Copyright © [OpenAI](https://openai.com/) 
 
-Copyright © [ART-DECOR](https://art-decor.org/) Expert Group and ART-DECOR Open Tools GmbH • LGPL-3.0 license
+Copyright © [ART-DECOR](https://art-decor.org/) Expert Group and [ART-DECOR Open Tools GmbH](https://art-decor-open-tools.net/)• LGPL-3.0 license
 
 [Fake Name Generator](https://www.fakenamegenerator.com/license.php)™ identities, the Fake Name Generator website, and all Fake Name Generator tools are copyright © 2006-2025 Corban Works, LLC und and GNU General Public License as published by the Free Software Foundation v3 licenses. The Fake Name Generator identities is free software.
 
