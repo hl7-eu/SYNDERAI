@@ -3,14 +3,14 @@
 
 © [HL7 Europe](https://hl7europe.org) | Main Contributor: Dr. Kai U. Heitmann | [Privacy Policy](https://hl7europe.eu/privacy-policy-for-hl7-europe/) • LGPL-3.0 license
 
-## Contributors
+## Primary Contributor
 
 Dr. Kai U. Heitmann, HL7 Europe
 
 ## Partners
 
 <img style="float: right; width: 100px; margin-left: 10px;" src="img/partners.png"> </img>
-SYNDERAI has started to partner with other initiatives and companies to make the assets created are sustainable.
+SYNDERAI has started to partner with other initiatives and companies to assure the assets created are sustainable.
 
 We evaluate the High-Performance FHIR Server from [fire.ly](https://fire.lfirely-server-trial/) for the synthetic examples,
 we have a [compelling rendering](https://ehds.hamster.nl) of the EHDS examples next to the original [vi7eti](https:vi7eti.net) and investigate Fast Continuous validation, drift
