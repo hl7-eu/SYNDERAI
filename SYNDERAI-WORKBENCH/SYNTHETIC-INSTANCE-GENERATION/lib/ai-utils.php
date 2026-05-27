@@ -101,6 +101,13 @@ AIP;
     curl_setopt($ch, CURLOPT_POST,           TRUE);
     curl_setopt($ch, CURLOPT_POSTFIELDS,     $jsondata);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+    // For curl (OpenAI / Claude API / terminology API)
+    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
+    curl_setopt($ch, CURLOPT_TIMEOUT, 120);
+    // And critically, enable low-speed abort so dead sockets break:
+    curl_setopt($ch, CURLOPT_LOW_SPEED_LIMIT, 1);
+    curl_setopt($ch, CURLOPT_LOW_SPEED_TIME, 60);
+
 
     $response = curl_exec($ch);
     $code     = curl_getinfo($ch, CURLINFO_HTTP_CODE);
@@ -194,6 +201,12 @@ AIP;
     curl_setopt($ch, CURLOPT_POST,           TRUE);
     curl_setopt($ch, CURLOPT_POSTFIELDS,     $jsondata);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+    // For curl (OpenAI / Claude API / terminology API)
+    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
+    curl_setopt($ch, CURLOPT_TIMEOUT, 120);
+    // And critically, enable low-speed abort so dead sockets break:
+    curl_setopt($ch, CURLOPT_LOW_SPEED_LIMIT, 1);
+    curl_setopt($ch, CURLOPT_LOW_SPEED_TIME, 60);
 
     $response = curl_exec($ch);
     $code     = curl_getinfo($ch, CURLINFO_HTTP_CODE);
@@ -271,6 +284,12 @@ AIP;
     curl_setopt($ch, CURLOPT_POST,           TRUE);
     curl_setopt($ch, CURLOPT_POSTFIELDS,     $jsondata);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+    // For curl (OpenAI / Claude API / terminology API)
+    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
+    curl_setopt($ch, CURLOPT_TIMEOUT, 120);
+    // And critically, enable low-speed abort so dead sockets break:
+    curl_setopt($ch, CURLOPT_LOW_SPEED_LIMIT, 1);
+    curl_setopt($ch, CURLOPT_LOW_SPEED_TIME, 60);
 
     $response = curl_exec($ch);
     $code     = curl_getinfo($ch, CURLINFO_HTTP_CODE);
@@ -379,6 +398,12 @@ AIP;
     curl_setopt($ch, CURLOPT_POST,           TRUE);
     curl_setopt($ch, CURLOPT_POSTFIELDS,     $jsondata);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+    // For curl (OpenAI / Claude API / terminology API)
+    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
+    curl_setopt($ch, CURLOPT_TIMEOUT, 120);
+    // And critically, enable low-speed abort so dead sockets break:
+    curl_setopt($ch, CURLOPT_LOW_SPEED_LIMIT, 1);
+    curl_setopt($ch, CURLOPT_LOW_SPEED_TIME, 60);
 
     $response = curl_exec($ch);
     $code     = curl_getinfo($ch, CURLINFO_HTTP_CODE);
@@ -461,6 +486,12 @@ AIP;
     curl_setopt($ch, CURLOPT_POST,           TRUE);
     curl_setopt($ch, CURLOPT_POSTFIELDS,     $jsondata);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+    // For curl (OpenAI / Claude API / terminology API)
+    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
+    curl_setopt($ch, CURLOPT_TIMEOUT, 120);
+    // And critically, enable low-speed abort so dead sockets break:
+    curl_setopt($ch, CURLOPT_LOW_SPEED_LIMIT, 1);
+    curl_setopt($ch, CURLOPT_LOW_SPEED_TIME, 60);
 
     $response = curl_exec($ch);
     $code     = curl_getinfo($ch, CURLINFO_HTTP_CODE);
@@ -579,6 +610,12 @@ AIP;
     curl_setopt($ch, CURLOPT_POST,           TRUE);
     curl_setopt($ch, CURLOPT_POSTFIELDS,     $jsondata);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+    // For curl (OpenAI / Claude API / terminology API)
+    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
+    curl_setopt($ch, CURLOPT_TIMEOUT, 120);
+    // And critically, enable low-speed abort so dead sockets break:
+    curl_setopt($ch, CURLOPT_LOW_SPEED_LIMIT, 1);
+    curl_setopt($ch, CURLOPT_LOW_SPEED_TIME, 60);
 
     $response = curl_exec($ch);
     $code     = curl_getinfo($ch, CURLINFO_HTTP_CODE);
@@ -769,7 +806,13 @@ AIP;
             CURLOPT_POSTFIELDS     => [
                 "file" => new CURLFile($snomedprocs)
                 // NOTE: No "purpose" field — Claude's Files API doesn't use it
-            ]
+            ],
+            CURLOPT_TIMEOUT => 120,   // seconds
+            // For curl (OpenAI / Claude API / terminology API)
+            CURLOPT_CONNECTTIMEOUT => 10,
+            // And critically, enable low-speed abort so dead sockets break:
+            CURLOPT_LOW_SPEED_LIMIT => 1,
+            CURLOPT_LOW_SPEED_TIME => 60
         ]);
 
         $response = curl_exec($ch);
@@ -837,6 +880,12 @@ AIP;
     curl_setopt($ch, CURLOPT_POST,           TRUE);
     curl_setopt($ch, CURLOPT_POSTFIELDS,     $jsondata);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+    // For curl (OpenAI / Claude API / terminology API)
+    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
+    curl_setopt($ch, CURLOPT_TIMEOUT, 120);
+    // And critically, enable low-speed abort so dead sockets break:
+    curl_setopt($ch, CURLOPT_LOW_SPEED_LIMIT, 1);
+    curl_setopt($ch, CURLOPT_LOW_SPEED_TIME, 60);
 
     $response = curl_exec($ch);
     $code     = curl_getinfo($ch, CURLINFO_HTTP_CODE);
@@ -936,6 +985,12 @@ AIP;
     curl_setopt($ch, CURLOPT_POST,           TRUE);
     curl_setopt($ch, CURLOPT_POSTFIELDS,     $jsondata);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+    // For curl (OpenAI / Claude API / terminology API)
+    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
+    curl_setopt($ch, CURLOPT_TIMEOUT, 120);
+    // And critically, enable low-speed abort so dead sockets break:
+    curl_setopt($ch, CURLOPT_LOW_SPEED_LIMIT, 1);
+    curl_setopt($ch, CURLOPT_LOW_SPEED_TIME, 60);
 
     $response = curl_exec($ch);
     $code     = curl_getinfo($ch, CURLINFO_HTTP_CODE);
@@ -1056,7 +1111,13 @@ AIP;
         CURLOPT_POSTFIELDS     => [
             "file"    => new CURLFile($snomedprocs),
             "purpose" => "assistants"
-        ]
+        ],
+        CURLOPT_TIMEOUT => 120,   // seconds
+        // For curl (OpenAI / Claude API / terminology API)
+        CURLOPT_CONNECTTIMEOUT => 10,
+        // And critically, enable low-speed abort so dead sockets break:
+        CURLOPT_LOW_SPEED_LIMIT => 1,
+        CURLOPT_LOW_SPEED_TIME => 60
     ]);
 
     $response = curl_exec($ch);
@@ -1091,6 +1152,12 @@ AIP;
     curl_setopt($ch, CURLOPT_POST,           TRUE);
     curl_setopt($ch, CURLOPT_POSTFIELDS,     $jsondata);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+    // For curl (OpenAI / Claude API / terminology API)
+    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
+    curl_setopt($ch, CURLOPT_TIMEOUT, 120);
+    // And critically, enable low-speed abort so dead sockets break:
+    curl_setopt($ch, CURLOPT_LOW_SPEED_LIMIT, 1);
+    curl_setopt($ch, CURLOPT_LOW_SPEED_TIME, 60);
 
     $response = curl_exec($ch);
     $code     = curl_getinfo($ch, CURLINFO_HTTP_CODE);

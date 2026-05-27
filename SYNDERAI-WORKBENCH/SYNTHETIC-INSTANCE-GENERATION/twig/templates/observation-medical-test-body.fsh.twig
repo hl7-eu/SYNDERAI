@@ -246,8 +246,7 @@
   ?? coalesces the two data paths (value.* vs valueCodeableConcept.*).
 #}
 {% if labresult.value.type == "CodeableConcept" or labresult.valueCodeableConcept is not empty %}
-# value as CodeableConcept
-
+{# value as CodeableConcept #}
 * valueCodeableConcept = {{ labresult.value.system ?? labresult.valueCodeableConcept.system }}#{{ labresult.value.code ?? labresult.valueCodeableConcept.code }} "{{ labresult.value.display ?? labresult.valueCodeableConcept.display }}"
 {{ addHTML_td(labresult.valueCodeableConcept.display) }}
 

@@ -171,7 +171,12 @@ function get_SNOMED_properties(string $c, string $hint = "no hints") {
             'Content-Type: application/xml',
         ],
         CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_TIMEOUT        => 20,   // seconds
+        CURLOPT_TIMEOUT        => 120,   // seconds
+        // For curl (OpenAI / Claude API / terminology API)
+        CURLOPT_CONNECTTIMEOUT => 10,
+        // And critically, enable low-speed abort so dead sockets break:
+        CURLOPT_LOW_SPEED_LIMIT => 1,
+        CURLOPT_LOW_SPEED_TIME  => 60
     ]);
 
     $maxretries = 3;

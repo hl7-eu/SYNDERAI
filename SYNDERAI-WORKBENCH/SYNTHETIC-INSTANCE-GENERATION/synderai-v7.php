@@ -243,7 +243,7 @@ $ISARERUN = FALSE;
 $STORYFOR = array();
 
 /* Announce the script version */
-lognl(1, "SYNDERAI 7.1 as of 2026-04");
+lognl(1, "SYNDERAI 7.2 as of 2026-05");
 
 
 // ============================================================================
@@ -446,26 +446,6 @@ foreach ($DESIREDFILES as $f) {
         exit;
     }
 }
-
-/*
- * ============================================================
- * TEST AREA — guarded by if(FALSE) so it never runs in production.
- * Change to if(TRUE) to invoke a live AI hospital course test.
- * WARNING: contains var_dump/exit — will halt the script.
- * ============================================================
- */
-if (FALSE) {
-    $x = [
-        "encounters" => [
-            [
-                "reason"    => ["code" => "68496003", "display" => "Polyp of colon"],
-                "discharge" => ["text" => "Colonic polyp, removed endoscopically", "code" => "K63.5", "display" => "Polyp of colon"]
-            ]
-        ]
-    ];
-    // var_dump(getAIHospitalCourse(46, "male", $x, TRUE));
-    exit;
-} // END TEST AREA
 
 
 // ============================================================================
@@ -835,6 +815,11 @@ foreach ($PATIENTS as $pdat) {
     } else {
         $matchingpreselectioncriteriacandidates = NULL;  // no constraints; all candidates are eligible
     }
+    if ($matchingpreselectioncriteriacandidates === NULL) {
+        lognl(2, "...... No pre-selection criteria\n");
+    } else {
+        lognl(2, "......... Candidates matching pre-selection criteria: " . count($matchingpreselectioncriteriacandidates) . "\n");
+    }
 
     // -------------------------------------------------------------------------
     // CLINICAL STORY MATCHING
@@ -863,7 +848,7 @@ foreach ($PATIENTS as $pdat) {
             rewind($clinicalcandidateshandle);
             while (($mdat = fgetcsv($clinicalcandidateshandle, 10000, ",", '"', '\\')) !== FALSE) {
                 $mgender   = $mdat[2] === "M" ? "male" : "female";
-                $agediff   = (int) $mdat[1] - (int) $age;
+                $agediff   = (int) $mdat[1] - (int) $age;  // this patient age diff from this candidate
                 // Accept candidates that are 1 to 4 years older than the patient
                 $matchingagerange   = ($agediff > 0 and $agediff <= 4);
                 $matchinggender     = ($mgender === $gender);
@@ -872,6 +857,7 @@ foreach ($PATIENTS as $pdat) {
                     ? TRUE
                     : in_array($mdat[0], $matchingpreselectioncriteriacandidates);
 
+                // echo "K:" . $mdat[0] . "\n";
                 if ($matchingagerange and $matchinggender and $matchingpreselectioncriteria)
                     $matches[] = $mdat;
             }
@@ -895,6 +881,8 @@ foreach ($PATIENTS as $pdat) {
             }
         }
     }
+    
+    if ($candid === NULL) lognlsev(1, FATAL, "... No clinical story match found, check 25_tipster_clinicalcandidates and matching preselection criteria"); 
 
     // -------------------------------------------------------------------------
     // CLINICAL DATA LOADING

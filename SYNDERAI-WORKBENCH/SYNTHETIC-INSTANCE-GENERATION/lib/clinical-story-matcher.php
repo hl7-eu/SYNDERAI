@@ -39,7 +39,7 @@ include_once("config.php");
  *                     no candidates satisfy all active filters.
  */
 function getClinicalStoryCandidatesWithMatchingPreselections($preselarr) {
-
+    
     global $INPATIENTENCOUNTERS;
 
     $founde = [];   // candidates matching inpatient filter
@@ -50,7 +50,7 @@ function getClinicalStoryCandidatesWithMatchingPreselections($preselarr) {
     // Filter I: inpatient encounters
     // ------------------------------------------------------------------
     if ($preselarr->inpatient === TRUE) {
-        lognl(2, "...... Finding clinical stories that have encounters with 'appropriate' admission reasons and discharge information");
+        lognl(2, "......... Finding clinical stories that have encounters with 'appropriate' admission reasons and discharge information");
         foreach ($INPATIENTENCOUNTERS as $c) {
             $founde[$c["candid"]] = $c["candid"];
         }
@@ -60,7 +60,7 @@ function getClinicalStoryCandidatesWithMatchingPreselections($preselarr) {
     // Filter D: active diagnoses (SNOMED CT codes — ALL must be present)
     // ------------------------------------------------------------------
     if (isset($preselarr->diagnosis)) {
-        lognl(2, "...... Finding candidates that matches preselected diagnoses (snomeds: " . implode(", ", $preselarr->diagnosis) . ")\n");
+        lognl(2, "......... Finding candidates that matches preselected diagnoses (snomeds: " . implode(", ", $preselarr->diagnosis) . ")\n");
 
         $handle = @fopen(SYNTHEADIR . "/conditions.csv", "r");
         rewind($handle);
@@ -85,14 +85,14 @@ function getClinicalStoryCandidatesWithMatchingPreselections($preselarr) {
                 $foundd[] = $candid;
             }
         }
-        lognl(2, "......... Candidates with matching conditions: " . count($foundd) . "\n");
+        lognl(2, "............ Candidates with matching conditions: " . count($foundd) . "\n");
     }
 
     // ------------------------------------------------------------------
     // Filter M: medications (name substring match — ALL must be present)
     // ------------------------------------------------------------------
     if (isset($preselarr->medication)) {
-        lognl(2, "...... Finding candidates that matches preselected medications (names: " . implode(", ", $preselarr->medication) . ")\n");
+        lognl(2, "......... Finding candidates that matches preselected medications (names: " . implode(", ", $preselarr->medication) . ")\n");
 
         $handle = @fopen(SYNTHEADIR . "/medications.csv", "r");
         $seenmednames = [];
@@ -116,7 +116,7 @@ function getClinicalStoryCandidatesWithMatchingPreselections($preselarr) {
                 $foundm[] = $candid;
             }
         }
-        lognl(2, "......... Candidates with matching medications: " . count($foundm) . "\n");
+        lognl(2, "............ Candidates with matching medications: " . count($foundm) . "\n");
     }
 
     // ------------------------------------------------------------------
@@ -135,18 +135,21 @@ function getClinicalStoryCandidatesWithMatchingPreselections($preselarr) {
         $tmp[$ce] = isset($tmp[$ce]) ? $tmp[$ce] . "I" : "I";
     }
 
+    // if $preselarr->inpatient = FALSE, $preselarr->diagnosis and $preselarr->medication are not set
+    // return NULL
+
     $found = NULL;
     foreach ($tmp as $key => $value) {
         $iscandid = isset($preselarr->diagnosis) ? str_contains($value, "D") : TRUE;
         if ($iscandid) $iscandid = isset($preselarr->medication) ? str_contains($value, "M") : TRUE;
-        if ($iscandid) $iscandid = isset($preselarr->inpatient)  ? str_contains($value, "I") : TRUE;
+        if ($iscandid) $iscandid = (isset($preselarr->inpatient) ?? $preselarr->inpatient === TRUE)  ? str_contains($value, "I") : TRUE;
         if ($iscandid) $found[] = $key;
     }
-    // make the found list unique
-    $found = array_unique($found);
 
     if ($found) {
-        lognl(2, "...... Combined catches: " . count($found) . "\n");
+        // make the found list unique
+        $found = array_unique($found);
+        lognl(2, "......... Combined catches: " . count($found) . "\n");
         // var_dump($found);
     }
 

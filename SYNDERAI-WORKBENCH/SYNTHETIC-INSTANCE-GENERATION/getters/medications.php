@@ -95,7 +95,6 @@ while (!feof($medicationshandle)) {
           }
         }
         // var_dump($conditions4ai);exit;
-        lognl(3, "............ " . "Inventing appropiate dosage for " . $cfound["snomed"]["preferredTerm"] . "\n");
         $md5 = md5($pdat->age . $pdat->gender . $cfound["snomed"]["preferredTerm"]);
         $fai = inCACHE('dosage', $md5);
         if ($fai !== FALSE) {
@@ -103,6 +102,7 @@ while (!feof($medicationshandle)) {
           lognl(5, "......... MD5: $md5\n");
           $cfound["dosagefsh"] = $fai;
         } else {
+          lognl(3, "............ " . "Inventing appropiate dosage for " . $cfound["snomed"]["preferredTerm"] . "\n");
           // not in cache, ask AI
           $AI = getAIsuggestedMedicationDosage ($pdat->age, $pdat->gender, $conditions4ai, $cfound["snomed"]["preferredTerm"]);
           // double check doseQuantity.system is mentioned if doseQuantity.code is present
