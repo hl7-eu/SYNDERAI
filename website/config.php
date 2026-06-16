@@ -49,6 +49,11 @@ $MENU = [
         "file" => "FUTURE-ACTIVITIES.md"
     ],
     [
+        "title" => "Europeans",
+        "menu" => "eu",
+        "file" => "SUMMARY-EU-MODULES.md"
+    ],
+    [
         "title" => "Policy",
         "menu" => "policy",
         "file" => "SYNDERAI-SYNTHETIC-DATA-POLICY.md"

@@ -28,4 +28,7 @@
   – published as **package 1.5.0+20251209** for EPS and LAB
 - 2026-03-01: starting the big validation "marathon" to process all synthetic examples by the HAPI validator aiming on passing (virtually) all examples with no errors, perparations for the EHDS Plugathon during the IHE Connectathon week 23-27 March 2026 in Brussels
   – published as **package 2.0.0+20260318** for EPS and LAB
-- 2026-05-14 corrected the `udiCarrier` constructs in all `Device` resources – published as **package 2.1.0+20260514** for EPS
+- 2026-05-14 corrected the `udiCarrier` constructs in all `Device` resources 
+   – published as **package 2.1.0+20260514** for EPS
+- 2026-05-23 finalized adaptation to EU population set of diseases, results and therapies: **39 new EU modules** added, **53 US modules removed** (including the entire veteran block, the opioid pipeline, SNF, homelessness, and SDOH modules), and **~110 modules** present in both sets were modified; prepared for publication package 3.* series.
+- 20260529 added synthetic Study Information for `ResearchSubject` and `ResearchStudy` data to be interspersed randomly into EPS records; prepared for publication package within the 3.* series.
