@@ -281,24 +281,96 @@ foreach ($MENU as $ix => $m) {
 $content = file_get_contents("tmpl/index.html");
 $content = str_replace("%%TITLE%%", SYNDERAITITLE, $content);
 
-// Build the navigation bar: logo + <ul><li> links
-$nav  = "<div class=\"logo\"><img src=\"img/HL7_Europe_RGB_2.png\" alt=\"logo\"></img></div>";
-$nav .= "<ul class='nav-links' id='navLinks'>";
+// Build the grouped navigation bar.
+// $MENU supplies each item's title + URL (and drives routing); $NAV (config.php)
+// describes how those items are arranged into a Home link + dropdown groups.
+// The active page is rendered .is-active; its parent group gets .group-active.
 
+// Index $MENU by its 'menu' key for O(1) lookup from $NAV.
+$menuByKey = [];
 foreach ($MENU as $m) {
-    $title = $m['title'];
-    $url   = $SELFSCRIPT . "?menu=" . $m['menu'];
-    $nav  .= "<li>";
-    if ($m['menu'] === $CURRENTMENU['menu']) {
-        // Active item: visually disabled to indicate current location
-        $nav .= "<a href=\"$url\" style=\"cursor: not-allowed; opacity: 0.5; text-decoration: none;\">$title</a>";
-    } else {
-        $nav .= "<a href=\"$url\">$title</a>";
-    }
-    $nav .= "</li>";
+    $menuByKey[$m['menu']] = $m;
 }
 
-$nav    .= "</ul>";
+// Active-page test. Also matches dynamic sub-paths such as "examples/EPS"
+// against their declared parent key "examples".
+$isActiveKey = function (string $key) use ($CURRENTMENU): bool {
+    $cur = $CURRENTMENU['menu'];
+    return $cur === $key || strpos($cur, $key . '/') === 0;
+};
+
+// Render a single navigation <a> for a given menu key.
+$renderNavLink = function (string $key, string $extraClass = '')
+        use ($menuByKey, $SELFSCRIPT, $isActiveKey): string {
+    if (!isset($menuByKey[$key])) {
+        return '';  // key not declared in $MENU — skip silently
+    }
+    $title  = htmlspecialchars($menuByKey[$key]['title'], ENT_QUOTES | ENT_HTML5, 'UTF-8');
+    $url    = htmlspecialchars($SELFSCRIPT . '?menu=' . $key, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+    $active = $isActiveKey($key);
+    $cls    = trim($extraClass . ($active ? ' is-active' : ''));
+    $clsAtt = $cls !== '' ? " class=\"$cls\"" : '';
+    $curAtt = $active ? ' aria-current="page"' : '';
+    return "<a href=\"$url\"$clsAtt$curAtt>$title</a>";
+};
+
+// Graceful fallback: if config.php predates $NAV, render every item flat.
+if (!isset($NAV) || !is_array($NAV)) {
+    $NAV = [];
+    foreach ($MENU as $m) {
+        $NAV[] = ['type' => 'link', 'menu' => $m['menu']];
+    }
+}
+
+// --- Logo (links home) -----------------------------------------------------
+$homeUrl = htmlspecialchars($SELFSCRIPT . '?menu=index', ENT_QUOTES | ENT_HTML5, 'UTF-8');
+$nav  = "<a class=\"logo\" href=\"$homeUrl\" aria-label=\"SYNDERAI \xe2\x80\x93 home\">";
+$nav .= "<img src=\"img/HL7_Europe_RGB_2.png\" alt=\"HL7 Europe\"></a>";
+
+// --- Hamburger (mobile only; shown via CSS media query) --------------------
+$nav .= "<button type=\"button\" class=\"menu-toggle\" id=\"menuToggle\""
+      . " aria-label=\"Open menu\" aria-expanded=\"false\" aria-controls=\"navLinks\">"
+      . "<span></span><span></span><span></span></button>";
+
+// --- Grouped link list -----------------------------------------------------
+$nav .= "<ul class=\"nav-links\" id=\"navLinks\">";
+
+foreach ($NAV as $entry) {
+    $type = $entry['type'] ?? 'link';
+
+    if ($type === 'link') {
+        $link = $renderNavLink($entry['menu'] ?? '');
+        if ($link !== '') {
+            $nav .= "<li>$link</li>";
+        }
+
+    } elseif ($type === 'group') {
+        $label = htmlspecialchars($entry['label'] ?? '', ENT_QUOTES | ENT_HTML5, 'UTF-8');
+        $items = $entry['items'] ?? [];
+
+        // Mark the whole group active when one of its children is current.
+        $groupActive = false;
+        foreach ($items as $key) {
+            if ($isActiveKey($key)) { $groupActive = true; break; }
+        }
+        $liCls = 'has-dropdown' . ($groupActive ? ' group-active' : '');
+
+        $nav .= "<li class=\"$liCls\">";
+        $nav .= "<button type=\"button\" class=\"dropdown-toggle\""
+              . " aria-haspopup=\"true\" aria-expanded=\"false\">"
+              . "$label <i class=\"mdi mdi-chevron-down\" aria-hidden=\"true\"></i></button>";
+        $nav .= "<ul class=\"dropdown\">";
+        foreach ($items as $key) {
+            $link = $renderNavLink($key, 'dropdown-link');
+            if ($link !== '') {
+                $nav .= "<li>$link</li>";
+            }
+        }
+        $nav .= "</ul></li>";
+    }
+}
+
+$nav .= "</ul>";
 $content = str_replace("%%NAVULLI%%", $nav, $content);
 
 

@@ -49,9 +49,14 @@ $MENU = [
         "file" => "FUTURE-ACTIVITIES.md"
     ],
     [
-        "title" => "Europeans",
+        "title" => "Prevalences (EU)",
         "menu" => "eu",
         "file" => "SUMMARY-EU-MODULES.md"
+    ],
+    [
+        "title" => "SNOMED Codes (EU)",
+        "menu" => "eus",
+        "file" => "SUMMARY-EU-SNOMED.md"
     ],
     [
         "title" => "Policy",
@@ -64,6 +69,34 @@ $MENU = [
         "file" => "CCC.md"
     ]
 ];
+/*
+    Navigation presentation structure.
+
+    $MENU (above) drives ROUTING and supplies each item's title + URL.
+    $NAV describes only how those items are ARRANGED in the top bar, so the
+    12 menu entries collapse into a short, harmonised set of grouped
+    dropdowns (Home + About + Data + Project) on desktop and an accordion
+    drawer on mobile.
+
+    Each $NAV entry is one of:
+      ['type' => 'link',  'menu'  => '<menu-key from $MENU>']
+      ['type' => 'group', 'label' => '<dropdown label>',
+                          'items' => ['<menu-key>', '<menu-key>', ...]]
+
+    To move an item between groups, edit it here only - $MENU is untouched.
+    Every key listed here must also exist in $MENU. Any $MENU key NOT listed
+    here is simply hidden from the bar (its page stays reachable by URL).
+*/
+$NAV = [
+    ['type' => 'link',  'menu'  => 'index'],
+    ['type' => 'group', 'label' => 'About',
+                        'items' => ['story', 'principles', 'personas', 'credits']],
+    ['type' => 'group', 'label' => 'Data',
+                        'items' => ['examples', 'dashboards', 'downloads']],
+    ['type' => 'group', 'label' => 'Project',
+                        'items' => ['progress', 'future', 'eu', 'eus', 'policy']],
+];
+
 /*
     vi7eti integration – deep link
 */
