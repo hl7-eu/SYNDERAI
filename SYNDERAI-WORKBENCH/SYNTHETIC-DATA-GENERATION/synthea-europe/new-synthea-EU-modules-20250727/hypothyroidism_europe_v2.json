@@ -1,0 +1,321 @@
+{
+  "name": "Hypothyroidism Europe",
+  "remarks": [
+    "EU-calibrated hypothyroidism module (v2).",
+    "Calibrated to ETA 2023 / Thyroid Europe Association data.",
+    "",
+    "CHANGES vs v1:",
+    "  Annual incidence rates reduced ~55-60% across all bands.",
+    "  Previous rates produced ~16.7% female lifetime risk (EU target 5-8%).",
+    "  New target: female ~7-8% lifetime, male ~1.5% lifetime.",
+    "  Overall adult prevalence: ~3-5% (ETA 2023 EU reference).",
+    "",
+    "  New rates (% per annual check):",
+    "    Female 18-39: 0.15% → 0.06%  |  40-59: 0.35% → 0.15%  |  60+: 0.40% → 0.20%",
+    "    Male   18-59: 0.05% → 0.02%  |  60+:   0.10% → 0.05%"
+  ],
+  "states": {
+    "Initial": {
+      "type": "Initial",
+      "direct_transition": "Age_Guard"
+    },
+    "Age_Guard": {
+      "type": "Guard",
+      "allow": {
+        "condition_type": "Age",
+        "operator": ">=",
+        "quantity": 18,
+        "unit": "years"
+      },
+      "direct_transition": "Hypothyroidism_Naive_Guard"
+    },
+    "Hypothyroidism_Naive_Guard": {
+      "type": "Guard",
+      "allow": {
+        "condition_type": "Attribute",
+        "attribute": "hypothyroidism",
+        "operator": "is nil"
+      },
+      "direct_transition": "Annual_Check_Delay"
+    },
+    "Annual_Check_Delay": {
+      "type": "Delay",
+      "exact": {
+        "quantity": 1,
+        "unit": "years"
+      },
+      "direct_transition": "Sex_Stratified_Risk"
+    },
+    "Sex_Stratified_Risk": {
+      "type": "Simple",
+      "remarks": [
+        "Female incidence ~3x higher than male."
+      ],
+      "conditional_transition": [
+        {
+          "condition": {
+            "condition_type": "Gender",
+            "gender": "F"
+          },
+          "transition": "Female_Age_Check"
+        },
+        {
+          "transition": "Male_Age_Check"
+        }
+      ]
+    },
+    "Female_Age_Check": {
+      "type": "Simple",
+      "conditional_transition": [
+        {
+          "condition": {
+            "condition_type": "Age",
+            "operator": "<",
+            "quantity": 40,
+            "unit": "years"
+          },
+          "transition": "Female_Prob_18_39"
+        },
+        {
+          "condition": {
+            "condition_type": "Age",
+            "operator": "<",
+            "quantity": 60,
+            "unit": "years"
+          },
+          "transition": "Female_Prob_40_59"
+        },
+        {
+          "transition": "Female_Prob_60_plus"
+        }
+      ]
+    },
+    "Female_Prob_18_39": {
+      "type": "Simple",
+      "remarks": [
+        "Recalibrated: 0.150% → 0.060%/yr (ETA 2023)."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.0006,
+          "transition": "Diagnose_Hypothyroidism"
+        },
+        {
+          "distribution": 0.9994,
+          "transition": "Annual_Check_Delay"
+        }
+      ]
+    },
+    "Female_Prob_40_59": {
+      "type": "Simple",
+      "remarks": [
+        "Recalibrated: 0.350% → 0.150%/yr (ETA 2023)."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.0015,
+          "transition": "Diagnose_Hypothyroidism"
+        },
+        {
+          "distribution": 0.9985,
+          "transition": "Annual_Check_Delay"
+        }
+      ]
+    },
+    "Female_Prob_60_plus": {
+      "type": "Simple",
+      "remarks": [
+        "Recalibrated: 0.400% → 0.200%/yr (ETA 2023)."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.002,
+          "transition": "Diagnose_Hypothyroidism"
+        },
+        {
+          "distribution": 0.998,
+          "transition": "Annual_Check_Delay"
+        }
+      ]
+    },
+    "Male_Age_Check": {
+      "type": "Simple",
+      "conditional_transition": [
+        {
+          "condition": {
+            "condition_type": "Age",
+            "operator": "<",
+            "quantity": 60,
+            "unit": "years"
+          },
+          "transition": "Male_Prob_18_59"
+        },
+        {
+          "transition": "Male_Prob_60_plus"
+        }
+      ]
+    },
+    "Male_Prob_18_59": {
+      "type": "Simple",
+      "remarks": [
+        "Recalibrated: 0.050% → 0.020%/yr (ETA 2023)."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.0002,
+          "transition": "Diagnose_Hypothyroidism"
+        },
+        {
+          "distribution": 0.9998,
+          "transition": "Annual_Check_Delay"
+        }
+      ]
+    },
+    "Male_Prob_60_plus": {
+      "type": "Simple",
+      "remarks": [
+        "Recalibrated: 0.100% → 0.050%/yr (ETA 2023)."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.0005,
+          "transition": "Diagnose_Hypothyroidism"
+        },
+        {
+          "distribution": 0.9995,
+          "transition": "Annual_Check_Delay"
+        }
+      ]
+    },
+    "Diagnose_Hypothyroidism": {
+      "type": "ConditionOnset",
+      "assign_to_attribute": "hypothyroidism",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "40930008",
+          "display": "Hypothyroidism (disorder)"
+        }
+      ],
+      "direct_transition": "Set_Hypothyroidism_Boolean"
+    },
+    "Set_Hypothyroidism_Boolean": {
+      "type": "SetAttribute",
+      "attribute": "hypothyroidism",
+      "value": true,
+      "direct_transition": "Diagnosis_Encounter"
+    },
+    "Diagnosis_Encounter": {
+      "type": "Encounter",
+      "encounter_class": "ambulatory",
+      "reason": "Diagnose_Hypothyroidism",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "11429006",
+          "display": "Consultation (procedure)"
+        }
+      ],
+      "direct_transition": "TSH_Test"
+    },
+    "TSH_Test": {
+      "type": "Observation",
+      "category": "laboratory",
+      "codes": [
+        {
+          "system": "LOINC",
+          "code": "11579-0",
+          "display": "Thyrotropin [Units/volume] in Serum or Plasma by Detection limit <= 0.05 mIU/L"
+        }
+      ],
+      "range": {
+        "low": 5.0,
+        "high": 20.0,
+        "decimals": 1
+      },
+      "unit": "mIU/L",
+      "direct_transition": "Free_T4_Test"
+    },
+    "Free_T4_Test": {
+      "type": "Observation",
+      "category": "laboratory",
+      "codes": [
+        {
+          "system": "LOINC",
+          "code": "3024-7",
+          "display": "Thyroxine (T4) free [Mass/volume] in Serum or Plasma"
+        }
+      ],
+      "range": {
+        "low": 5.0,
+        "high": 10.0,
+        "decimals": 1
+      },
+      "unit": "pmol/L",
+      "direct_transition": "Prescribe_Levothyroxine"
+    },
+    "Prescribe_Levothyroxine": {
+      "type": "MedicationOrder",
+      "reason": "Diagnose_Hypothyroidism",
+      "codes": [
+        {
+          "system": "RxNorm",
+          "code": "966221",
+          "display": "levothyroxine sodium 50 MCG Oral Tablet"
+        }
+      ],
+      "direct_transition": "End_Diagnosis_Encounter"
+    },
+    "End_Diagnosis_Encounter": {
+      "type": "EncounterEnd",
+      "direct_transition": "Annual_Review_Delay"
+    },
+    "Annual_Review_Delay": {
+      "type": "Delay",
+      "range": {
+        "low": 10,
+        "high": 14,
+        "unit": "months"
+      },
+      "direct_transition": "Annual_Review_Encounter"
+    },
+    "Annual_Review_Encounter": {
+      "type": "Encounter",
+      "encounter_class": "ambulatory",
+      "reason": "Diagnose_Hypothyroidism",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "390906007",
+          "display": "Follow-up encounter (procedure)"
+        }
+      ],
+      "direct_transition": "Annual_TSH"
+    },
+    "Annual_TSH": {
+      "type": "Observation",
+      "category": "laboratory",
+      "codes": [
+        {
+          "system": "LOINC",
+          "code": "11579-0",
+          "display": "Thyrotropin [Units/volume] in Serum or Plasma by Detection limit <= 0.05 mIU/L"
+        }
+      ],
+      "range": {
+        "low": 0.5,
+        "high": 3.0,
+        "decimals": 1
+      },
+      "unit": "mIU/L",
+      "direct_transition": "End_Annual_Review"
+    },
+    "End_Annual_Review": {
+      "type": "EncounterEnd",
+      "direct_transition": "Annual_Review_Delay"
+    },
+    "Terminal": {
+      "type": "Terminal"
+    }
+  }
+}

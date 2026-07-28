@@ -1,0 +1,387 @@
+{
+  "name": "Osteoarthritis Europe",
+  "remarks": [
+    "European calibration of osteoarthritis.",
+    "EULAR/Eurostat 2022: prevalence 5-10% EU adults.",
+    "Knee OA most prevalent; hip and hand OA modelled separately.",
+    "Risk factors: age >50, obesity (BMI>30), female sex.",
+    "Treatment per EULAR 2019: exercise, weight loss, NSAIDs, joint replacement."
+  ],
+  "states": {
+    "Initial": {
+      "type": "Initial",
+      "direct_transition": "Age_Guard"
+    },
+    "Age_Guard": {
+      "type": "Guard",
+      "allow": {
+        "condition_type": "Age",
+        "operator": ">=",
+        "quantity": 45,
+        "unit": "years"
+      },
+      "direct_transition": "OA_Naive_Guard"
+    },
+    "OA_Naive_Guard": {
+      "type": "Guard",
+      "allow": {
+        "condition_type": "Attribute",
+        "attribute": "osteoarthritis",
+        "operator": "is nil"
+      },
+      "direct_transition": "Annual_OA_Delay"
+    },
+    "Annual_OA_Delay": {
+      "type": "Delay",
+      "exact": {
+        "quantity": 1,
+        "unit": "years"
+      },
+      "direct_transition": "OA_Risk_Check"
+    },
+    "OA_Risk_Check": {
+      "type": "Simple",
+      "remarks": [
+        "Obesity (BMI>30) doubles OA risk per EULAR 2019."
+      ],
+      "conditional_transition": [
+        {
+          "condition": {
+            "condition_type": "Attribute",
+            "attribute": "bmi_value",
+            "operator": ">",
+            "value": 30
+          },
+          "transition": "OA_Obese_Age_Check"
+        },
+        {
+          "transition": "OA_Normal_Age_Check"
+        }
+      ]
+    },
+    "OA_Obese_Age_Check": {
+      "type": "Simple",
+      "conditional_transition": [
+        {
+          "condition": {
+            "condition_type": "Age",
+            "operator": "<",
+            "quantity": 60,
+            "unit": "years"
+          },
+          "transition": "OA_Prob_Obese_45_59"
+        },
+        {
+          "condition": {
+            "condition_type": "Age",
+            "operator": "<",
+            "quantity": 75,
+            "unit": "years"
+          },
+          "transition": "OA_Prob_Obese_60_74"
+        },
+        {
+          "transition": "OA_Prob_Obese_75_plus"
+        }
+      ]
+    },
+    "OA_Normal_Age_Check": {
+      "type": "Simple",
+      "conditional_transition": [
+        {
+          "condition": {
+            "condition_type": "Age",
+            "operator": "<",
+            "quantity": 60,
+            "unit": "years"
+          },
+          "transition": "OA_Prob_Normal_45_59"
+        },
+        {
+          "condition": {
+            "condition_type": "Age",
+            "operator": "<",
+            "quantity": 75,
+            "unit": "years"
+          },
+          "transition": "OA_Prob_Normal_60_74"
+        },
+        {
+          "transition": "OA_Prob_Normal_75_plus"
+        }
+      ]
+    },
+    "OA_Prob_Obese_45_59": {
+      "type": "Simple",
+      "distributed_transition": [
+        {
+          "distribution": 0.03,
+          "transition": "OA_Type_Branch"
+        },
+        {
+          "distribution": 0.97,
+          "transition": "Annual_OA_Delay"
+        }
+      ]
+    },
+    "OA_Prob_Obese_60_74": {
+      "type": "Simple",
+      "distributed_transition": [
+        {
+          "distribution": 0.055,
+          "transition": "OA_Type_Branch"
+        },
+        {
+          "distribution": 0.945,
+          "transition": "Annual_OA_Delay"
+        }
+      ]
+    },
+    "OA_Prob_Obese_75_plus": {
+      "type": "Simple",
+      "distributed_transition": [
+        {
+          "distribution": 0.07,
+          "transition": "OA_Type_Branch"
+        },
+        {
+          "distribution": 0.93,
+          "transition": "Annual_OA_Delay"
+        }
+      ]
+    },
+    "OA_Prob_Normal_45_59": {
+      "type": "Simple",
+      "distributed_transition": [
+        {
+          "distribution": 0.012,
+          "transition": "OA_Type_Branch"
+        },
+        {
+          "distribution": 0.988,
+          "transition": "Annual_OA_Delay"
+        }
+      ]
+    },
+    "OA_Prob_Normal_60_74": {
+      "type": "Simple",
+      "distributed_transition": [
+        {
+          "distribution": 0.025,
+          "transition": "OA_Type_Branch"
+        },
+        {
+          "distribution": 0.975,
+          "transition": "Annual_OA_Delay"
+        }
+      ]
+    },
+    "OA_Prob_Normal_75_plus": {
+      "type": "Simple",
+      "distributed_transition": [
+        {
+          "distribution": 0.035,
+          "transition": "OA_Type_Branch"
+        },
+        {
+          "distribution": 0.965,
+          "transition": "Annual_OA_Delay"
+        }
+      ]
+    },
+    "OA_Type_Branch": {
+      "type": "Simple",
+      "remarks": [
+        "EULAR: knee 55%, hip 25%, hand 20% of OA cases."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.55,
+          "transition": "Diagnose_Knee_OA"
+        },
+        {
+          "distribution": 0.25,
+          "transition": "Diagnose_Hip_OA"
+        },
+        {
+          "distribution": 0.2,
+          "transition": "Diagnose_Hand_OA"
+        }
+      ]
+    },
+    "Diagnose_Knee_OA": {
+      "type": "ConditionOnset",
+      "assign_to_attribute": "osteoarthritis",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "57676002",
+          "display": "Joint pain (finding)"
+        },
+        {
+          "system": "SNOMED-CT",
+          "code": "239873007",
+          "display": "Osteoarthritis of knee (disorder)"
+        }
+      ],
+      "direct_transition": "Set_OA_Boolean"
+    },
+    "Diagnose_Hip_OA": {
+      "type": "ConditionOnset",
+      "assign_to_attribute": "osteoarthritis",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "239872002",
+          "display": "Osteoarthritis of hip (disorder)"
+        }
+      ],
+      "direct_transition": "Set_OA_Boolean"
+    },
+    "Diagnose_Hand_OA": {
+      "type": "ConditionOnset",
+      "assign_to_attribute": "osteoarthritis",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "201834006",
+          "display": "Localized  primary osteoarthritis of the hand (disorder)"
+        }
+      ],
+      "direct_transition": "Set_OA_Boolean"
+    },
+    "Set_OA_Boolean": {
+      "type": "SetAttribute",
+      "attribute": "osteoarthritis",
+      "value": true,
+      "direct_transition": "OA_Diagnosis_Encounter"
+    },
+    "OA_Diagnosis_Encounter": {
+      "type": "Encounter",
+      "encounter_class": "ambulatory",
+      "reason": "Diagnose_Knee_OA",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "11429006",
+          "display": "Consultation (procedure)"
+        }
+      ],
+      "direct_transition": "OA_Physiotherapy"
+    },
+    "OA_Physiotherapy": {
+      "type": "Procedure",
+      "reason": "Diagnose_Knee_OA",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "722138006",
+          "display": "Physical therapy (regime/therapy)"
+        }
+      ],
+      "direct_transition": "OA_Analgesia_Decision"
+    },
+    "OA_Analgesia_Decision": {
+      "type": "Simple",
+      "distributed_transition": [
+        {
+          "distribution": 0.45,
+          "transition": "Prescribe_Paracetamol"
+        },
+        {
+          "distribution": 0.4,
+          "transition": "Prescribe_NSAID"
+        },
+        {
+          "distribution": 0.15,
+          "transition": "End_OA_Encounter"
+        }
+      ]
+    },
+    "Prescribe_Paracetamol": {
+      "type": "MedicationOrder",
+      "reason": "Diagnose_Knee_OA",
+      "codes": [
+        {
+          "system": "RxNorm",
+          "code": "313782",
+          "display": "Acetaminophen 500 MG Oral Tablet"
+        }
+      ],
+      "direct_transition": "End_OA_Encounter"
+    },
+    "Prescribe_NSAID": {
+      "type": "MedicationOrder",
+      "reason": "Diagnose_Knee_OA",
+      "codes": [
+        {
+          "system": "RxNorm",
+          "code": "310965",
+          "display": "Ibuprofen 400 MG Oral Tablet"
+        }
+      ],
+      "direct_transition": "End_OA_Encounter"
+    },
+    "End_OA_Encounter": {
+      "type": "EncounterEnd",
+      "direct_transition": "OA_Followup_Delay"
+    },
+    "OA_Followup_Delay": {
+      "type": "Delay",
+      "range": {
+        "low": 10,
+        "high": 14,
+        "unit": "months"
+      },
+      "direct_transition": "OA_Surgery_Check"
+    },
+    "OA_Surgery_Check": {
+      "type": "Simple",
+      "remarks": [
+        "EULAR: ~1% per year progress to joint replacement."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.01,
+          "transition": "OA_Joint_Replacement"
+        },
+        {
+          "distribution": 0.99,
+          "transition": "OA_Review_Encounter"
+        }
+      ]
+    },
+    "OA_Joint_Replacement": {
+      "type": "Procedure",
+      "reason": "Diagnose_Knee_OA",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "609588000",
+          "display": "Total knee replacement (procedure)"
+        }
+      ],
+      "direct_transition": "Terminal"
+    },
+    "OA_Review_Encounter": {
+      "type": "Encounter",
+      "encounter_class": "ambulatory",
+      "reason": "Diagnose_Knee_OA",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "390906007",
+          "display": "Follow-up encounter (procedure)"
+        }
+      ],
+      "direct_transition": "End_OA_Review"
+    },
+    "End_OA_Review": {
+      "type": "EncounterEnd",
+      "direct_transition": "OA_Followup_Delay"
+    },
+    "Terminal": {
+      "type": "Terminal"
+    }
+  }
+}

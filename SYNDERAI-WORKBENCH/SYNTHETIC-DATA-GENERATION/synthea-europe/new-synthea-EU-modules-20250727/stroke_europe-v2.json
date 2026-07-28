@@ -1,0 +1,594 @@
+{
+  "name": "Stroke Europe",
+  "remarks": [
+    "European calibration of ischaemic stroke (v2 — fixed).",
+    "ESO 2022: point prevalence 1.5-3% EU adults (living stroke survivors).",
+    "",
+    "CHANGES vs v1:",
+    "  Fix 1 — Added alcoholism risk tier (reads alcoholism == true attribute,",
+    "           set by substance_use_europe_v2.json).",
+    "           Heavy alcohol use is an independent stroke risk factor (WHO/ESO).",
+    "           Rates: 0.30%/yr (45-64), 0.55%/yr (65-74), 1.00%/yr (75+).",
+    "  Fix 2 — Recalibrated all incidence rates (~50% reduction).",
+    "           Previous rates produced ~10-13% cohort stroke prevalence.",
+    "           Root cause: 53% hypertension × medium-risk path × long simulation.",
+    "           New rates target: 2-3% cohort prevalence (EU ESO reference).",
+    "  Fix 3 — Stroke recurrence reduced 5%/yr → 3%/yr.",
+    "           Previous: 40% 10-year recurrence. New: 26% ✓ (ESO data).",
+    "  Fix 4 — Stroke_Recurrence SNOMED code aligned to Ischemic stroke (422504002).",
+    "           Was CVA (230690007), creating two separate condition entries in EPS.",
+    "",
+    "DEPENDENCY:",
+    "  Reads atrial_fibrillation == true (set by atrial_fibrillation_europe_v2.json).",
+    "  Reads hypertension == true (set by hypertension_europe.json or similar).",
+    "  Reads alcoholism == true (set by substance_use_europe_v2.json).",
+    "  Priority: AF > alcoholism > hypertension > low risk.",
+    "",
+    "PATCH (calibration round 2):",
+    "  Added End_Acute_Stroke_Condition (ConditionEnd of Stroke_Onset)",
+    "  immediately after acute care, and Onset_History_Of_Stroke",
+    "  (SNOMED 275526006) for the chronic problem list."
+  ],
+  "states": {
+    "Initial": {
+      "type": "Initial",
+      "direct_transition": "Age_Guard"
+    },
+    "Age_Guard": {
+      "type": "Guard",
+      "allow": {
+        "condition_type": "Age",
+        "operator": ">=",
+        "quantity": 45,
+        "unit": "years"
+      },
+      "direct_transition": "Stroke_Naive_Guard"
+    },
+    "Stroke_Naive_Guard": {
+      "type": "Guard",
+      "allow": {
+        "condition_type": "Attribute",
+        "attribute": "stroke_eu",
+        "operator": "is nil"
+      },
+      "direct_transition": "Annual_Stroke_Delay"
+    },
+    "Annual_Stroke_Delay": {
+      "type": "Delay",
+      "exact": {
+        "quantity": 1,
+        "unit": "years"
+      },
+      "direct_transition": "Stroke_Risk_Check"
+    },
+    "Stroke_Risk_Check": {
+      "type": "Simple",
+      "remarks": [
+        "AF, hypertension and diabetes significantly raise stroke risk."
+      ],
+      "conditional_transition": [
+        {
+          "condition": {
+            "condition_type": "Attribute",
+            "attribute": "atrial_fibrillation",
+            "operator": "==",
+            "value": true
+          },
+          "transition": "Stroke_High_Risk_Age_Check"
+        },
+        {
+          "condition": {
+            "condition_type": "Attribute",
+            "attribute": "alcoholism",
+            "operator": "==",
+            "value": true
+          },
+          "transition": "Stroke_Alcohol_Risk_Age_Check"
+        },
+        {
+          "condition": {
+            "condition_type": "Attribute",
+            "attribute": "hypertension",
+            "operator": "==",
+            "value": true
+          },
+          "transition": "Stroke_Medium_Risk_Age_Check"
+        },
+        {
+          "transition": "Stroke_Low_Risk_Age_Check"
+        }
+      ]
+    },
+    "Stroke_High_Risk_Age_Check": {
+      "type": "Simple",
+      "conditional_transition": [
+        {
+          "condition": {
+            "condition_type": "Age",
+            "operator": "<",
+            "quantity": 65,
+            "unit": "years"
+          },
+          "transition": "Stroke_Prob_High_45_64"
+        },
+        {
+          "condition": {
+            "condition_type": "Age",
+            "operator": "<",
+            "quantity": 75,
+            "unit": "years"
+          },
+          "transition": "Stroke_Prob_High_65_74"
+        },
+        {
+          "transition": "Stroke_Prob_High_75_plus"
+        }
+      ]
+    },
+    "Stroke_Medium_Risk_Age_Check": {
+      "type": "Simple",
+      "conditional_transition": [
+        {
+          "condition": {
+            "condition_type": "Age",
+            "operator": "<",
+            "quantity": 65,
+            "unit": "years"
+          },
+          "transition": "Stroke_Prob_Med_45_64"
+        },
+        {
+          "condition": {
+            "condition_type": "Age",
+            "operator": "<",
+            "quantity": 75,
+            "unit": "years"
+          },
+          "transition": "Stroke_Prob_Med_65_74"
+        },
+        {
+          "transition": "Stroke_Prob_Med_75_plus"
+        }
+      ]
+    },
+    "Stroke_Low_Risk_Age_Check": {
+      "type": "Simple",
+      "conditional_transition": [
+        {
+          "condition": {
+            "condition_type": "Age",
+            "operator": "<",
+            "quantity": 65,
+            "unit": "years"
+          },
+          "transition": "Stroke_Prob_Low_45_64"
+        },
+        {
+          "condition": {
+            "condition_type": "Age",
+            "operator": "<",
+            "quantity": 75,
+            "unit": "years"
+          },
+          "transition": "Stroke_Prob_Low_65_74"
+        },
+        {
+          "transition": "Stroke_Prob_Low_75_plus"
+        }
+      ]
+    },
+    "Stroke_Prob_High_45_64": {
+      "type": "Simple",
+      "distributed_transition": [
+        {
+          "distribution": 0.008,
+          "transition": "Stroke_Onset"
+        },
+        {
+          "distribution": 0.992,
+          "transition": "Annual_Stroke_Delay"
+        }
+      ],
+      "remarks": [
+        "Recalibrated: 1.500% → 0.800%/year."
+      ]
+    },
+    "Stroke_Prob_High_65_74": {
+      "type": "Simple",
+      "distributed_transition": [
+        {
+          "distribution": 0.014,
+          "transition": "Stroke_Onset"
+        },
+        {
+          "distribution": 0.986,
+          "transition": "Annual_Stroke_Delay"
+        }
+      ],
+      "remarks": [
+        "Recalibrated: 2.500% → 1.400%/year."
+      ]
+    },
+    "Stroke_Prob_High_75_plus": {
+      "type": "Simple",
+      "distributed_transition": [
+        {
+          "distribution": 0.022,
+          "transition": "Stroke_Onset"
+        },
+        {
+          "distribution": 0.978,
+          "transition": "Annual_Stroke_Delay"
+        }
+      ],
+      "remarks": [
+        "Recalibrated: 4.000% → 2.200%/year."
+      ]
+    },
+    "Stroke_Prob_Med_45_64": {
+      "type": "Simple",
+      "distributed_transition": [
+        {
+          "distribution": 0.0015,
+          "transition": "Stroke_Onset"
+        },
+        {
+          "distribution": 0.9985,
+          "transition": "Annual_Stroke_Delay"
+        }
+      ],
+      "remarks": [
+        "Recalibrated: 0.300% → 0.150%/year."
+      ]
+    },
+    "Stroke_Prob_Med_65_74": {
+      "type": "Simple",
+      "distributed_transition": [
+        {
+          "distribution": 0.003,
+          "transition": "Stroke_Onset"
+        },
+        {
+          "distribution": 0.997,
+          "transition": "Annual_Stroke_Delay"
+        }
+      ],
+      "remarks": [
+        "Recalibrated: 0.600% → 0.300%/year."
+      ]
+    },
+    "Stroke_Prob_Med_75_plus": {
+      "type": "Simple",
+      "distributed_transition": [
+        {
+          "distribution": 0.005,
+          "transition": "Stroke_Onset"
+        },
+        {
+          "distribution": 0.995,
+          "transition": "Annual_Stroke_Delay"
+        }
+      ],
+      "remarks": [
+        "Recalibrated: 1.000% → 0.500%/year."
+      ]
+    },
+    "Stroke_Prob_Low_45_64": {
+      "type": "Simple",
+      "distributed_transition": [
+        {
+          "distribution": 0.0006,
+          "transition": "Stroke_Onset"
+        },
+        {
+          "distribution": 0.9994,
+          "transition": "Annual_Stroke_Delay"
+        }
+      ],
+      "remarks": [
+        "Recalibrated: 0.100% → 0.060%/year."
+      ]
+    },
+    "Stroke_Prob_Low_65_74": {
+      "type": "Simple",
+      "distributed_transition": [
+        {
+          "distribution": 0.0014,
+          "transition": "Stroke_Onset"
+        },
+        {
+          "distribution": 0.9986,
+          "transition": "Annual_Stroke_Delay"
+        }
+      ],
+      "remarks": [
+        "Recalibrated: 0.250% → 0.140%/year."
+      ]
+    },
+    "Stroke_Prob_Low_75_plus": {
+      "type": "Simple",
+      "distributed_transition": [
+        {
+          "distribution": 0.003,
+          "transition": "Stroke_Onset"
+        },
+        {
+          "distribution": 0.997,
+          "transition": "Annual_Stroke_Delay"
+        }
+      ],
+      "remarks": [
+        "Recalibrated: 0.500% → 0.300%/year."
+      ]
+    },
+    "Stroke_Onset": {
+      "type": "ConditionOnset",
+      "assign_to_attribute": "stroke_eu",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "422504002",
+          "display": "Ischemic stroke (disorder)"
+        }
+      ],
+      "direct_transition": "Set_Stroke_Boolean"
+    },
+    "Set_Stroke_Boolean": {
+      "type": "SetAttribute",
+      "attribute": "stroke_eu",
+      "value": true,
+      "direct_transition": "Stroke_Emergency_Encounter"
+    },
+    "Stroke_Emergency_Encounter": {
+      "type": "Encounter",
+      "encounter_class": "emergency",
+      "reason": "Stroke_Onset",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "50849002",
+          "display": "Emergency room admission (procedure)"
+        }
+      ],
+      "direct_transition": "Stroke_Imaging"
+    },
+    "Stroke_Imaging": {
+      "type": "Procedure",
+      "reason": "Stroke_Onset",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "816077007",
+          "display": "Magnetic resonance imaging of brain (procedure)"
+        }
+      ],
+      "direct_transition": "Stroke_Outcome_Check"
+    },
+    "Stroke_Outcome_Check": {
+      "type": "Simple",
+      "remarks": [
+        "ESO 2022: ~20% die acutely, 80% survive acute phase."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.2,
+          "transition": "Stroke_Death"
+        },
+        {
+          "distribution": 0.5,
+          "transition": "Prescribe_Thrombolysis"
+        },
+        {
+          "distribution": 0.3,
+          "transition": "Stroke_Conservative"
+        }
+      ]
+    },
+    "Stroke_Death": {
+      "type": "Death",
+      "direct_transition": "Terminal"
+    },
+    "Prescribe_Thrombolysis": {
+      "type": "MedicationOrder",
+      "reason": "Stroke_Onset",
+      "codes": [
+        {
+          "system": "RxNorm",
+          "code": "1804799",
+          "display": "alteplase 100 MG Injection"
+        }
+      ],
+      "direct_transition": "Antiplatelet_Secondary_Prevention"
+    },
+    "Stroke_Conservative": {
+      "type": "Procedure",
+      "reason": "Stroke_Onset",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "2517002",
+          "display": "Stroke rehabilitation (regime/therapy)"
+        }
+      ],
+      "direct_transition": "Antiplatelet_Secondary_Prevention"
+    },
+    "Antiplatelet_Secondary_Prevention": {
+      "type": "MedicationOrder",
+      "reason": "Stroke_Onset",
+      "codes": [
+        {
+          "system": "RxNorm",
+          "code": "849574",
+          "display": "clopidogrel 75 MG Oral Tablet"
+        }
+      ],
+      "direct_transition": "End_Stroke_Encounter"
+    },
+    "End_Stroke_Encounter": {
+      "type": "EncounterEnd",
+      "direct_transition": "End_Acute_Stroke_Condition"
+    },
+    "Stroke_Rehab_Delay": {
+      "type": "Delay",
+      "range": {
+        "low": 10,
+        "high": 14,
+        "unit": "months"
+      },
+      "direct_transition": "Stroke_Annual_Review"
+    },
+    "Stroke_Annual_Review": {
+      "type": "Encounter",
+      "encounter_class": "ambulatory",
+      "reason": "Stroke_Onset",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "390906007",
+          "display": "Follow-up encounter (procedure)"
+        }
+      ],
+      "direct_transition": "Stroke_Recurrence_Check"
+    },
+    "Stroke_Recurrence_Check": {
+      "type": "Simple",
+      "remarks": [
+        "Recalibrated: 5%/year → 3%/year recurrence.",
+        "ESO 10-year risk: ~24-30%. At 3%/year: 1-(0.97)^10 = 26% ✓"
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.03,
+          "transition": "Stroke_Recurrence"
+        },
+        {
+          "distribution": 0.97,
+          "transition": "End_Stroke_Review"
+        }
+      ]
+    },
+    "Stroke_Recurrence": {
+      "type": "ConditionOnset",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "422504002",
+          "display": "Ischemic stroke (disorder)"
+        }
+      ],
+      "direct_transition": "Terminal",
+      "remarks": [
+        "SNOMED code aligned with Stroke_Onset (422504002).",
+        "Previously used CVA (230690007) creating a separate condition entry."
+      ]
+    },
+    "End_Stroke_Review": {
+      "type": "EncounterEnd",
+      "direct_transition": "Stroke_Rehab_Delay"
+    },
+    "Terminal": {
+      "type": "Terminal"
+    },
+    "Stroke_Alcohol_Risk_Age_Check": {
+      "type": "Simple",
+      "remarks": [
+        "Age routing for alcoholism-associated stroke risk."
+      ],
+      "conditional_transition": [
+        {
+          "condition": {
+            "condition_type": "Age",
+            "operator": "<",
+            "quantity": 65,
+            "unit": "years"
+          },
+          "transition": "Stroke_Prob_Alco_45_64"
+        },
+        {
+          "condition": {
+            "condition_type": "Age",
+            "operator": "<",
+            "quantity": 75,
+            "unit": "years"
+          },
+          "transition": "Stroke_Prob_Alco_65_74"
+        },
+        {
+          "transition": "Stroke_Prob_Alco_75_plus"
+        }
+      ]
+    },
+    "Stroke_Prob_Alco_45_64": {
+      "type": "Simple",
+      "remarks": [
+        "Alcoholism-associated stroke incidence: 0.300%/year."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.003,
+          "transition": "Stroke_Onset"
+        },
+        {
+          "distribution": 0.997,
+          "transition": "Annual_Stroke_Delay"
+        }
+      ]
+    },
+    "Stroke_Prob_Alco_65_74": {
+      "type": "Simple",
+      "remarks": [
+        "Alcoholism-associated stroke incidence: 0.550%/year."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.0055,
+          "transition": "Stroke_Onset"
+        },
+        {
+          "distribution": 0.9945,
+          "transition": "Annual_Stroke_Delay"
+        }
+      ]
+    },
+    "Stroke_Prob_Alco_75_plus": {
+      "type": "Simple",
+      "remarks": [
+        "Alcoholism-associated stroke incidence: 1.000%/year."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.01,
+          "transition": "Stroke_Onset"
+        },
+        {
+          "distribution": 0.99,
+          "transition": "Annual_Stroke_Delay"
+        }
+      ]
+    },
+    "End_Acute_Stroke_Condition": {
+      "type": "ConditionEnd",
+      "condition_onset": "Stroke_Onset",
+      "direct_transition": "Onset_History_Of_Stroke"
+    },
+    "Onset_History_Of_Stroke": {
+      "type": "ConditionOnset",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "275526006",
+          "display": "History of cerebrovascular accident (situation)"
+        }
+      ],
+      "direct_transition": "Continue_Stroke_Followup",
+      "remarks": [
+        "Chronic problem-list entry for stroke history.",
+        "Replaces previously persistent acute 'Ischemic stroke' active."
+      ]
+    },
+    "Continue_Stroke_Followup": {
+      "type": "Simple",
+      "direct_transition": "Stroke_Rehab_Delay"
+    }
+  }
+}

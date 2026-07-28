@@ -1,0 +1,540 @@
+{
+  "name": "COPD (European Calibration)",
+  "remarks": [
+    "=======================================================================",
+    "SYNTHEA MODULE: COPD — European Epidemiology Edition",
+    "=======================================================================",
+    "Calibrated against:",
+    "  - ERS White Book 2013; ERS update 2022",
+    "  - BOLD Europe study (Buist et al. Lancet 2007)",
+    "  - GOLD 2023 COPD Guidelines",
+    "  - GBD 2019: Europe-specific COPD burden",
+    "  - Eurostat EHIS Wave 3 (2019)",
+    "  - WHO Europe NCD Report 2022",
+    "",
+    "Key calibration changes vs US default module:",
+    "  - Module was effectively absent in default output — fully rebuilt",
+    "  - Overall prevalence ~6.5% of adults (BOLD Europe)",
+    "  - Strong post-50 age weighting (BOLD shows <2% under 50, 10%+ over 60)",
+    "  - Smoking as primary risk factor (prevalence ~25% EU adults — WHO 2022)",
+    "  - GOLD staging: GOLD 1-4 distribution from BOLD Europe study",
+    "  - Medication: GOLD preferred A/B/E pathway (LAMA/ICS-LABA/triple)",
+    "  - Exacerbation rates from ECLIPSE / TORCH studies",
+    "",
+    "European age-stratified prevalence (BOLD Europe / GBD 2019):",
+    "  40-49 years : ~2.5%",
+    "  50-59 years : ~6.0%",
+    "  60-69 years : ~10.5%",
+    "  70-79 years : ~14.0%",
+    "  80+  years  : ~15.0%",
+    "",
+    "PATCH (calibration round 2):",
+    "  Reduced all COPD onset rates by 30%. Previous calibration produced",
+    "  ~18% cohort prevalence; target ~12-13% (BOLD Europe).",
+    "  Smoker path: 40-49: 0.5→0.35 | 50-59: 1.0→0.7 | 60-69: 1.5→1.05 |",
+    "  70-79: 1.2→0.84 | 80+: 0.8→0.56 (all %/yr)"
+  ],
+  "states": {
+    "Initial": {
+      "type": "Initial",
+      "direct_transition": "Age_Guard"
+    },
+    "Age_Guard": {
+      "type": "Guard",
+      "remarks": [
+        "COPD is extremely rare before 40. BOLD study finds negligible prevalence <40."
+      ],
+      "allow": {
+        "condition_type": "Age",
+        "operator": ">=",
+        "quantity": 40,
+        "unit": "years"
+      },
+      "direct_transition": "Smoking_Risk_Check"
+    },
+    "Smoking_Risk_Check": {
+      "type": "Simple",
+      "remarks": [
+        "Smoking prevalence in Europe ~25% (WHO Europe 2022).",
+        "COPD risk: ~25% of smokers develop COPD (BOLD study).",
+        "Non-smokers can develop COPD via biomass, occupational exposure (~15% of cases).",
+        "Routes: high-risk (smokers) vs base-risk (non-smokers)."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.25,
+          "transition": "COPD_High_Risk_Loop"
+        },
+        {
+          "distribution": 0.75,
+          "transition": "COPD_Base_Risk_Loop"
+        }
+      ]
+    },
+    "COPD_High_Risk_Loop": {
+      "type": "Simple",
+      "conditional_transition": [
+        {
+          "condition": {
+            "condition_type": "Age",
+            "operator": "<",
+            "quantity": 50,
+            "unit": "years"
+          },
+          "transition": "COPD_HR_40_49"
+        },
+        {
+          "condition": {
+            "condition_type": "Age",
+            "operator": "<",
+            "quantity": 60,
+            "unit": "years"
+          },
+          "transition": "COPD_HR_50_59"
+        },
+        {
+          "condition": {
+            "condition_type": "Age",
+            "operator": "<",
+            "quantity": 70,
+            "unit": "years"
+          },
+          "transition": "COPD_HR_60_69"
+        },
+        {
+          "condition": {
+            "condition_type": "Age",
+            "operator": "<",
+            "quantity": 80,
+            "unit": "years"
+          },
+          "transition": "COPD_HR_70_79"
+        },
+        {
+          "transition": "COPD_HR_80_plus"
+        }
+      ]
+    },
+    "COPD_HR_40_49": {
+      "type": "Simple",
+      "remarks": [
+        "Annual incidence ~0.5% for smokers in this band. BOLD Europe."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.0035,
+          "transition": "Diagnose_COPD_Gold1"
+        },
+        {
+          "distribution": 0.9965,
+          "transition": "COPD_Annual_Delay"
+        }
+      ]
+    },
+    "COPD_HR_50_59": {
+      "type": "Simple",
+      "remarks": [
+        "Annual incidence ~1.0% for smokers. BOLD / TORCH."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.007,
+          "transition": "Diagnose_COPD_Gold1"
+        },
+        {
+          "distribution": 0.993,
+          "transition": "COPD_Annual_Delay"
+        }
+      ]
+    },
+    "COPD_HR_60_69": {
+      "type": "Simple",
+      "remarks": [
+        "Annual incidence ~1.5% for smokers."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.0105,
+          "transition": "Diagnose_COPD_Gold2"
+        },
+        {
+          "distribution": 0.9895,
+          "transition": "COPD_Annual_Delay"
+        }
+      ]
+    },
+    "COPD_HR_70_79": {
+      "type": "Simple",
+      "distributed_transition": [
+        {
+          "distribution": 0.0084,
+          "transition": "Diagnose_COPD_Gold2"
+        },
+        {
+          "distribution": 0.9916,
+          "transition": "COPD_Annual_Delay"
+        }
+      ]
+    },
+    "COPD_HR_80_plus": {
+      "type": "Simple",
+      "distributed_transition": [
+        {
+          "distribution": 0.0056,
+          "transition": "Diagnose_COPD_Gold3"
+        },
+        {
+          "distribution": 0.9944,
+          "transition": "COPD_Annual_Delay"
+        }
+      ]
+    },
+    "COPD_Base_Risk_Loop": {
+      "type": "Simple",
+      "conditional_transition": [
+        {
+          "condition": {
+            "condition_type": "Age",
+            "operator": "<",
+            "quantity": 60,
+            "unit": "years"
+          },
+          "transition": "COPD_BR_Under60"
+        },
+        {
+          "condition": {
+            "condition_type": "Age",
+            "operator": "<",
+            "quantity": 75,
+            "unit": "years"
+          },
+          "transition": "COPD_BR_60_74"
+        },
+        {
+          "transition": "COPD_BR_75_plus"
+        }
+      ]
+    },
+    "COPD_BR_Under60": {
+      "type": "Simple",
+      "distributed_transition": [
+        {
+          "distribution": 0.00035,
+          "transition": "Diagnose_COPD_Gold1"
+        },
+        {
+          "distribution": 0.99965,
+          "transition": "COPD_Annual_Delay"
+        }
+      ]
+    },
+    "COPD_BR_60_74": {
+      "type": "Simple",
+      "distributed_transition": [
+        {
+          "distribution": 0.0014,
+          "transition": "Diagnose_COPD_Gold1"
+        },
+        {
+          "distribution": 0.9986,
+          "transition": "COPD_Annual_Delay"
+        }
+      ]
+    },
+    "COPD_BR_75_plus": {
+      "type": "Simple",
+      "distributed_transition": [
+        {
+          "distribution": 0.0021,
+          "transition": "Diagnose_COPD_Gold2"
+        },
+        {
+          "distribution": 0.9979,
+          "transition": "COPD_Annual_Delay"
+        }
+      ]
+    },
+    "COPD_Annual_Delay": {
+      "type": "Delay",
+      "exact": {
+        "quantity": 1,
+        "unit": "years"
+      },
+      "direct_transition": "COPD_High_Risk_Loop"
+    },
+    "Diagnose_COPD_Gold1": {
+      "type": "ConditionOnset",
+      "remarks": [
+        "GOLD 1: Mild COPD. FEV1 >=80% predicted. SNOMED 13645005."
+      ],
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "13645005",
+          "display": "Chronic obstructive lung disease (disorder)"
+        }
+      ],
+      "direct_transition": "COPD_Spirometry_Encounter",
+      "assign_to_attribute": "copd"
+    },
+    "Diagnose_COPD_Gold2": {
+      "type": "ConditionOnset",
+      "remarks": [
+        "GOLD 2: Moderate COPD. FEV1 50-79% predicted."
+      ],
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "13645005",
+          "display": "Chronic obstructive lung disease (disorder)"
+        }
+      ],
+      "direct_transition": "COPD_Spirometry_Encounter",
+      "assign_to_attribute": "copd"
+    },
+    "Diagnose_COPD_Gold3": {
+      "type": "ConditionOnset",
+      "remarks": [
+        "GOLD 3: Severe COPD. FEV1 30-49% predicted."
+      ],
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "13645005",
+          "display": "Chronic obstructive lung disease (disorder)"
+        }
+      ],
+      "direct_transition": "COPD_Spirometry_Encounter",
+      "assign_to_attribute": "copd"
+    },
+    "COPD_Spirometry_Encounter": {
+      "type": "Encounter",
+      "encounter_class": "ambulatory",
+      "reason": "copd",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "11429006",
+          "display": "Consultation (procedure)"
+        }
+      ],
+      "direct_transition": "Spirometry_FEV1"
+    },
+    "Spirometry_FEV1": {
+      "type": "Observation",
+      "remarks": [
+        "FEV1/FVC ratio <0.70 required for GOLD diagnosis (post-bronchodilator). LOINC 19926-5."
+      ],
+      "category": "procedure",
+      "unit": "%",
+      "codes": [
+        {
+          "system": "LOINC",
+          "code": "19926-5",
+          "display": "FEV1/FVC"
+        }
+      ],
+      "range": {
+        "low": 40,
+        "high": 69
+      },
+      "direct_transition": "COPD_Smoking_Cessation_Advice"
+    },
+    "COPD_Smoking_Cessation_Advice": {
+      "type": "Procedure",
+      "remarks": [
+        "GOLD 2023: smoking cessation is the single most effective intervention for COPD."
+      ],
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "225323000",
+          "display": "Smoking cessation education (procedure)"
+        }
+      ],
+      "duration": {
+        "low": 15,
+        "high": 30,
+        "unit": "minutes"
+      },
+      "reason": "copd",
+      "direct_transition": "COPD_Medication_Decision"
+    },
+    "COPD_Medication_Decision": {
+      "type": "Simple",
+      "remarks": [
+        "GOLD 2023 Pharmacological Treatment:",
+        "  Group A (low symptoms, low risk): SAMA or SABA prn",
+        "  Group B (more symptoms, low risk): LAMA preferred",
+        "  Group E (high risk exacerbation): LAMA + LABA; add ICS if eos >=300",
+        "Distribution: ~30% SABA, ~40% LAMA, ~30% triple (ICS+LABA+LAMA)"
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.3,
+          "transition": "Prescribe_SABA"
+        },
+        {
+          "distribution": 0.4,
+          "transition": "Prescribe_LAMA"
+        },
+        {
+          "distribution": 0.3,
+          "transition": "Prescribe_Triple_Therapy"
+        }
+      ]
+    },
+    "Prescribe_SABA": {
+      "type": "MedicationOrder",
+      "remarks": [
+        "Salbutamol (albuterol) 100mcg MDI — GOLD Group A. RxNorm 745679."
+      ],
+      "codes": [
+        {
+          "system": "RxNorm",
+          "code": "745679",
+          "display": "albuterol 0.1 MG/ACTUAT Metered Dose Inhaler"
+        }
+      ],
+      "reason": "copd",
+      "prescription": {
+        "refills": 5,
+        "as_needed": true,
+        "instructions": "2 puffs inhaled as needed for breathlessness"
+      },
+      "direct_transition": "End_COPD_Initial_Encounter"
+    },
+    "Prescribe_LAMA": {
+      "type": "MedicationOrder",
+      "remarks": [
+        "Tiotropium 18mcg Handihaler OD — GOLD preferred LAMA; UPLIFT trial evidence.",
+        "RxNorm 896184: tiotropium 0.018 MG Inhalation Powder."
+      ],
+      "codes": [
+        {
+          "system": "RxNorm",
+          "code": "896184",
+          "display": "tiotropium 0.018 MG Inhalation Powder"
+        }
+      ],
+      "reason": "copd",
+      "prescription": {
+        "refills": 11,
+        "as_needed": false,
+        "instructions": "Inhale contents of 1 capsule once daily via Handihaler"
+      },
+      "direct_transition": "End_COPD_Initial_Encounter"
+    },
+    "Prescribe_Triple_Therapy": {
+      "type": "MedicationOrder",
+      "remarks": [
+        "Fluticasone/salmeterol 500/50mcg BD — ICS+LABA component of triple therapy.",
+        "Combined with tiotropium for GOLD Group E high-risk patients.",
+        "IMPACT trial: triple therapy reduces exacerbations vs dual. RxNorm 896199."
+      ],
+      "codes": [
+        {
+          "system": "RxNorm",
+          "code": "896199",
+          "display": "fluticasone propionate 0.25 MG/ACTUAT / salmeterol 0.05 MG/ACTUAT Dry Powder Inhaler"
+        }
+      ],
+      "reason": "copd",
+      "prescription": {
+        "refills": 11,
+        "as_needed": false,
+        "instructions": "Inhale 1 blister twice daily"
+      },
+      "direct_transition": "End_COPD_Initial_Encounter"
+    },
+    "End_COPD_Initial_Encounter": {
+      "type": "EncounterEnd",
+      "direct_transition": "COPD_Stable_Delay"
+    },
+    "COPD_Stable_Delay": {
+      "type": "Delay",
+      "range": {
+        "low": 5,
+        "high": 7,
+        "unit": "months"
+      },
+      "direct_transition": "COPD_Review_Encounter"
+    },
+    "COPD_Review_Encounter": {
+      "type": "Encounter",
+      "encounter_class": "ambulatory",
+      "reason": "copd",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "11429006",
+          "display": "Consultation (procedure)"
+        }
+      ],
+      "direct_transition": "COPD_Exacerbation_Check"
+    },
+    "COPD_Exacerbation_Check": {
+      "type": "Simple",
+      "remarks": [
+        "Annual exacerbation rates from ECLIPSE study (Hurst et al. NEJM 2010):",
+        "  ~50% of GOLD 2-4 patients have >=1 exacerbation per year",
+        "  ~20% require hospitalisation"
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.1,
+          "transition": "COPD_Severe_Exacerbation"
+        },
+        {
+          "distribution": 0.25,
+          "transition": "COPD_Moderate_Exacerbation"
+        },
+        {
+          "distribution": 0.65,
+          "transition": "End_COPD_Review"
+        }
+      ]
+    },
+    "COPD_Moderate_Exacerbation": {
+      "type": "Procedure",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "195951007",
+          "display": "Acute exacerbation of chronic obstructive airways disease (disorder)"
+        }
+      ],
+      "duration": {
+        "low": 7,
+        "high": 14,
+        "unit": "days"
+      },
+      "reason": "copd",
+      "direct_transition": "End_COPD_Review"
+    },
+    "COPD_Severe_Exacerbation": {
+      "type": "Encounter",
+      "encounter_class": "inpatient",
+      "reason": "copd",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "32485007",
+          "display": "Hospital admission (procedure)"
+        }
+      ],
+      "direct_transition": "COPD_Exacerbation_End"
+    },
+    "COPD_Exacerbation_End": {
+      "type": "EncounterEnd",
+      "direct_transition": "End_COPD_Review"
+    },
+    "End_COPD_Review": {
+      "type": "EncounterEnd",
+      "direct_transition": "COPD_Stable_Delay"
+    },
+    "Terminal": {
+      "type": "Terminal"
+    }
+  }
+}

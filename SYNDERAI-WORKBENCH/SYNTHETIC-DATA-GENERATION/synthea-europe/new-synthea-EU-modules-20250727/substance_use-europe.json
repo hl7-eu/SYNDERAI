@@ -1,0 +1,613 @@
+{
+  "name": "Substance Use Disorders — Alcohol-Shifted (European Calibration)",
+  "remarks": [
+    "=======================================================================",
+    "SYNTHEA MODULE: Substance Use Disorders — European Epidemiology Edition",
+    "=======================================================================",
+    "v2 (fixed): corrected 5 bugs vs original release.",
+    "",
+    "BUGS FIXED:",
+    "  Bug 1 — Substance_Type_Branch probabilities summed to 288% (not 100%).",
+    "           Opioid and Stimulant states were dead code (never reached).",
+    "           Fixed: proportions now 77.5% alcohol / 15.3% cannabis /",
+    "           4.1% opioid / 3.1% stimulant, based on WHO/EMCDDA 2023.",
+    "",
+    "  Bug 2 — Alcohol_Complication_Check: the 98.4% branch looped back",
+    "           to Substance_Complication_Check_Delay FOREVER, not Terminal.",
+    "           Result: every AUD patient accumulated 30-50 complication checks",
+    "           over a lifetime → observed cohort cirrhosis 8% (target 0.2%).",
+    "           Fixed: 97.42% now → Terminal.",
+    "",
+    "  Bug 3 — All substance types (incl. cannabis) entered the alcohol",
+    "           complication loop after End_Substance_Encounter.",
+    "           Fixed: Check_If_Alcohol_Dependent guard added; only patients",
+    "           with alcoholism=true enter the complication loop.",
+    "",
+    "  Bug 4 — No assign_to_attribute after Onset_Alcohol_Dependence.",
+    "           Downstream modules (stroke, AF) could not detect alcoholism.",
+    "           Fixed: Set_Alcoholism_Attribute added (alcoholism=true).",
+    "           Set_Harmful_Alcohol_Attribute added (harmful_alcohol_use=true).",
+    "",
+    "  Bug 5 — Alcohol_Cirrhosis had no exit to Terminal; looped back,",
+    "           allowing same patient to accumulate multiple onset events.",
+    "           Fixed: Alcohol_Cirrhosis → Terminal.",
+    "",
+    "CALIBRATION (unchanged from v1):",
+    "  WHO Europe: Alcohol and Health in the WHO European Region (2022)",
+    "  EMCDDA: European Drug Report 2023",
+    "  Eurostat EHIS Wave 3 (2019)",
+    "  Target cohort prevalences (for mean-age-52 EU cohort):",
+    "    Alcoholism (AUD dependence):   ~7-8%",
+    "    Harmful alcohol use:           ~9-10%",
+    "    Liver cirrhosis (from AUD):    ~0.15-0.25%",
+    "    Alcoholic hepatitis:           ~0.1%",
+    "    Alcoholic pancreatitis:        ~0.06%",
+    "    Cannabis use disorder:         ~1.5%",
+    "    Opioid use disorder:           ~0.4%",
+    "    Stimulant use disorder:        ~0.3%",
+    "=======================================================================",
+    "",
+    "PATCH (calibration round 2):",
+    "  Halved AUD onset rates: 1.2/1.0/0.7/0.3 → 0.6/0.5/0.35/0.15 %/yr",
+    "  by age band. Target AUD prevalence: 7-8% (was 15%).",
+    "",
+    "  Reduced annual complication rates:",
+    "    Cirrhosis:    1.29 → 0.25 %/yr per AUD patient",
+    "    Hepatitis:    0.81 → 0.20 %/yr",
+    "    Pancreatitis: 0.48 → 0.15 %/yr",
+    "  Forced hepatitis and pancreatitis to Terminal after first event",
+    "  (was looping back to complication checks, multi-counting events).",
+    "  Target cirrhosis cohort prevalence: ~0.5% (was 5%).",
+    "",
+    "  SNOMED terminology corrections:",
+    "    Alcohol_Hepatitis: 66870002 (Chronic active hepatitis) → 9953008",
+    "    (Alcoholic hepatitis).",
+    "    Alcohol_Pancreatitis: 197456007 (Acute pancreatitis) → 235498002",
+    "    (Alcohol-induced chronic pancreatitis)."
+  ],
+  "states": {
+    "Initial": {
+      "type": "Initial",
+      "direct_transition": "Age_Guard"
+    },
+    "Age_Guard": {
+      "type": "Guard",
+      "allow": {
+        "condition_type": "Age",
+        "operator": ">=",
+        "quantity": 16,
+        "unit": "years"
+      },
+      "direct_transition": "Substance_Annual_Check"
+    },
+    "Substance_Annual_Check": {
+      "type": "Simple",
+      "conditional_transition": [
+        {
+          "condition": {
+            "condition_type": "Age",
+            "operator": "<",
+            "quantity": 25,
+            "unit": "years"
+          },
+          "transition": "Substance_Prob_16_24"
+        },
+        {
+          "condition": {
+            "condition_type": "Age",
+            "operator": "<",
+            "quantity": 45,
+            "unit": "years"
+          },
+          "transition": "Substance_Prob_25_44"
+        },
+        {
+          "condition": {
+            "condition_type": "Age",
+            "operator": "<",
+            "quantity": 65,
+            "unit": "years"
+          },
+          "transition": "Substance_Prob_45_64"
+        },
+        {
+          "transition": "Substance_Prob_65_plus"
+        }
+      ]
+    },
+    "Substance_Prob_16_24": {
+      "type": "Simple",
+      "remarks": [
+        "Highest annual incidence in young adults.",
+        "ESPAD 2019: heavy episodic drinking very common in 16-19 EU students.",
+        "EMCDDA 2023: cannabis initiation peaks 16-22."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.006,
+          "transition": "Substance_Type_Branch"
+        },
+        {
+          "distribution": 0.994,
+          "transition": "Substance_Annual_Delay"
+        }
+      ]
+    },
+    "Substance_Prob_25_44": {
+      "type": "Simple",
+      "remarks": [
+        "Alcohol use disorder peaks in 25-44 band. GBD 2019 Europe."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.005,
+          "transition": "Substance_Type_Branch"
+        },
+        {
+          "distribution": 0.995,
+          "transition": "Substance_Annual_Delay"
+        }
+      ]
+    },
+    "Substance_Prob_45_64": {
+      "type": "Simple",
+      "remarks": [
+        "High ongoing alcohol disorder prevalence in mid-life. WHO Europe 2022."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.0035,
+          "transition": "Substance_Type_Branch"
+        },
+        {
+          "distribution": 0.9965,
+          "transition": "Substance_Annual_Delay"
+        }
+      ]
+    },
+    "Substance_Prob_65_plus": {
+      "type": "Simple",
+      "remarks": [
+        "Reduced prevalence in elderly but alcohol still dominant. GBD 2019."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.0015,
+          "transition": "Alcohol_Disorder_Branch"
+        },
+        {
+          "distribution": 0.9985,
+          "transition": "Substance_Annual_Delay"
+        }
+      ]
+    },
+    "Substance_Annual_Delay": {
+      "type": "Delay",
+      "exact": {
+        "quantity": 1,
+        "unit": "years"
+      },
+      "direct_transition": "Substance_Annual_Check"
+    },
+    "Substance_Type_Branch": {
+      "type": "Simple",
+      "remarks": [
+        "European substance disorder mix (EMCDDA 2023 / GBD 2019):",
+        "  Alcohol use disorder:   ~77% of all substance disorders",
+        "  Cannabis use disorder:  ~15%",
+        "  Opioid use disorder:    ~4%  (heroin; NOT fentanyl dominance)",
+        "  Stimulant/other:        ~4%"
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.775,
+          "transition": "Alcohol_Disorder_Branch"
+        },
+        {
+          "distribution": 0.153,
+          "transition": "Cannabis_Disorder"
+        },
+        {
+          "distribution": 0.041,
+          "transition": "Opioid_Disorder_Low_Risk"
+        },
+        {
+          "distribution": 0.031,
+          "transition": "Stimulant_Disorder"
+        }
+      ]
+    },
+    "Alcohol_Disorder_Branch": {
+      "type": "Simple",
+      "remarks": [
+        "ICD-10 / AUDIT severity split from WHO Europe 2022:",
+        "  Harmful use (AUDIT 8-15):     ~55%",
+        "  Dependence (AUDIT 16+):       ~45%"
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.55,
+          "transition": "Onset_Harmful_Alcohol"
+        },
+        {
+          "distribution": 0.45,
+          "transition": "Onset_Alcohol_Dependence"
+        }
+      ]
+    },
+    "Onset_Harmful_Alcohol": {
+      "type": "ConditionOnset",
+      "remarks": [
+        "SNOMED 10939881000119105: Unhealthy alcohol drinking behaviour (finding)."
+      ],
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "10939881000119105",
+          "display": "Unhealthy alcohol drinking behavior (finding)"
+        }
+      ],
+      "direct_transition": "Set_Harmful_Alcohol_Attribute",
+      "assign_to_attribute": "alcohol_disorder"
+    },
+    "Onset_Alcohol_Dependence": {
+      "type": "ConditionOnset",
+      "remarks": [
+        "SNOMED 7200002: Alcoholism (disorder)."
+      ],
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "7200002",
+          "display": "Alcoholism (disorder)"
+        }
+      ],
+      "direct_transition": "Set_Alcoholism_Attribute",
+      "assign_to_attribute": "alcohol_disorder"
+    },
+    "Alcohol_Encounter": {
+      "type": "Encounter",
+      "encounter_class": "ambulatory",
+      "reason": "alcohol_disorder",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "11429006",
+          "display": "Consultation (procedure)"
+        }
+      ],
+      "direct_transition": "AUDIT_Screening"
+    },
+    "AUDIT_Screening": {
+      "type": "Observation",
+      "remarks": [
+        "AUDIT-C / full AUDIT: WHO-recommended screening tool, widely used in European PHC.",
+        "LOINC 75624-7: AUDIT total score."
+      ],
+      "category": "survey",
+      "unit": "score",
+      "codes": [
+        {
+          "system": "LOINC",
+          "code": "75624-7",
+          "display": "Total score AUDIT"
+        }
+      ],
+      "range": {
+        "low": 8,
+        "high": 28
+      },
+      "direct_transition": "Alcohol_Intervention_Branch"
+    },
+    "Alcohol_Intervention_Branch": {
+      "type": "Simple",
+      "remarks": [
+        "European alcohol treatment pathway:",
+        "  Brief intervention (BI): effective in primary care for harmful use",
+        "  Pharmacotherapy: acamprosate / naltrexone for dependence (both EMA-approved)",
+        "  Specialist referral: severe dependence"
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.5,
+          "transition": "Alcohol_Brief_Intervention"
+        },
+        {
+          "distribution": 0.35,
+          "transition": "Prescribe_Acamprosate"
+        },
+        {
+          "distribution": 0.15,
+          "transition": "Prescribe_Naltrexone_Alcohol"
+        }
+      ]
+    },
+    "Alcohol_Brief_Intervention": {
+      "type": "Procedure",
+      "remarks": [
+        "Brief intervention (BI): 5-15 min motivational counselling. NICE PH24 / WHO guide."
+      ],
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "408946003",
+          "display": "Alcohol intake advice (procedure)"
+        }
+      ],
+      "duration": {
+        "low": 10,
+        "high": 20,
+        "unit": "minutes"
+      },
+      "reason": "alcohol_disorder",
+      "direct_transition": "End_Substance_Encounter"
+    },
+    "Prescribe_Acamprosate": {
+      "type": "MedicationOrder",
+      "remarks": [
+        "Acamprosate 333mg TDS — EMA-approved for maintaining abstinence.",
+        "Preferred first-line in European guidelines (NICE CG115, AWMF).",
+        "RxNorm 215414: acamprosate calcium 333 MG Oral Tablet."
+      ],
+      "codes": [
+        {
+          "system": "RxNorm",
+          "code": "215414",
+          "display": "acamprosate calcium 333 MG Oral Tablet"
+        }
+      ],
+      "reason": "alcohol_disorder",
+      "prescription": {
+        "refills": 5,
+        "as_needed": false,
+        "instructions": "Take 2 tablets three times daily. Start after detoxification."
+      },
+      "direct_transition": "End_Substance_Encounter"
+    },
+    "Prescribe_Naltrexone_Alcohol": {
+      "type": "MedicationOrder",
+      "remarks": [
+        "Naltrexone 50mg OD — EMA-approved for alcohol dependence.",
+        "Reduces craving and relapse. NICE CG115 alternative to acamprosate.",
+        "RxNorm 1860486: naltrexone hydrochloride 50 MG Oral Tablet."
+      ],
+      "codes": [
+        {
+          "system": "RxNorm",
+          "code": "1860486",
+          "display": "naltrexone hydrochloride 50 MG Oral Tablet"
+        }
+      ],
+      "reason": "alcohol_disorder",
+      "prescription": {
+        "refills": 5,
+        "as_needed": false,
+        "instructions": "Take once daily. Ensure opioid-free for 7 days before starting."
+      },
+      "direct_transition": "End_Substance_Encounter"
+    },
+    "Cannabis_Disorder": {
+      "type": "ConditionOnset",
+      "remarks": [
+        "SNOMED 418191001: Cannabis dependence (disorder).",
+        "Prevalence ~1.5% (EMCDDA 2023). High in 16-30 age band.",
+        "Treatment: primarily psychological — CBT/MET. No licensed pharmacotherapy in EU."
+      ],
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "85005007",
+          "display": "Cannabis dependence (disorder)"
+        }
+      ],
+      "direct_transition": "Cannabis_Encounter",
+      "assign_to_attribute": "cannabis_disorder"
+    },
+    "Cannabis_Encounter": {
+      "type": "Encounter",
+      "encounter_class": "ambulatory",
+      "reason": "cannabis_disorder",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "11429006",
+          "display": "Consultation (procedure)"
+        }
+      ],
+      "direct_transition": "Cannabis_CBT"
+    },
+    "Cannabis_CBT": {
+      "type": "Procedure",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "228557008",
+          "display": "Cognitive behavior therapy (regime/therapy)"
+        }
+      ],
+      "duration": {
+        "low": 45,
+        "high": 60,
+        "unit": "minutes"
+      },
+      "reason": "cannabis_disorder",
+      "direct_transition": "End_Substance_Encounter"
+    },
+    "Opioid_Disorder_Low_Risk": {
+      "type": "ConditionOnset",
+      "remarks": [
+        "European opioid use disorder: ~0.4% (EMCDDA 2023).",
+        "Predominantly heroin; prescription opioid misuse much lower than US.",
+        "No fentanyl crisis in Europe at time of calibration.",
+        "SNOMED 231981004: Opioid abuse (disorder)."
+      ],
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "5602001",
+          "display": "Opioid abuse (disorder)"
+        }
+      ],
+      "direct_transition": "Opioid_OST_Encounter",
+      "assign_to_attribute": "opioid_disorder"
+    },
+    "Opioid_OST_Encounter": {
+      "type": "Encounter",
+      "encounter_class": "ambulatory",
+      "reason": "opioid_disorder",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "11429006",
+          "display": "Consultation (procedure)"
+        }
+      ],
+      "direct_transition": "Prescribe_OST"
+    },
+    "Prescribe_OST": {
+      "type": "MedicationOrder",
+      "remarks": [
+        "Opioid Substitution Therapy (OST): methadone or buprenorphine.",
+        "European standard: OST is evidence-based harm reduction (EMCDDA best practice).",
+        "Buprenorphine/naloxone 8/2mg sublingual — Suboxone. RxNorm 1010600.",
+        "Higher OST uptake in Europe vs US (more structured programmes)."
+      ],
+      "codes": [
+        {
+          "system": "RxNorm",
+          "code": "1010600",
+          "display": "buprenorphine 8 MG / naloxone 2 MG Sublingual Film"
+        }
+      ],
+      "reason": "opioid_disorder",
+      "prescription": {
+        "refills": 11,
+        "as_needed": false,
+        "instructions": "Place under tongue once daily. Supervised initially, then take-away doses."
+      },
+      "direct_transition": "End_Substance_Encounter"
+    },
+    "Stimulant_Disorder": {
+      "type": "ConditionOnset",
+      "remarks": [
+        "Cocaine use disorder in Southern/Western Europe; amphetamine in Northern/Eastern.",
+        "EMCDDA 2023: combined stimulant use disorder ~0.3%.",
+        "SNOMED 66214007: Stimulant abuse (disorder)."
+      ],
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "441527004",
+          "display": "Stimulant abuse (disorder)"
+        }
+      ],
+      "direct_transition": "End_Substance_Encounter"
+    },
+    "End_Substance_Encounter": {
+      "type": "EncounterEnd",
+      "direct_transition": "Check_If_Alcohol_Dependent"
+    },
+    "Substance_Complication_Check_Delay": {
+      "type": "Delay",
+      "range": {
+        "low": 10,
+        "high": 14,
+        "unit": "months"
+      },
+      "direct_transition": "Alcohol_Complication_Check"
+    },
+    "Alcohol_Complication_Check": {
+      "type": "Simple",
+      "remarks": [
+        "Annual complications from chronic alcohol use disorder (GBD 2019 Europe):",
+        "  Liver cirrhosis:          ~0.8%/yr",
+        "  Alcoholic hepatitis:      ~0.5%/yr",
+        "  Pancreatitis:             ~0.3%/yr",
+        "  Wernicke's encephalopathy: ~0.1%/yr"
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.0025,
+          "transition": "Alcohol_Cirrhosis"
+        },
+        {
+          "distribution": 0.002,
+          "transition": "Alcohol_Hepatitis"
+        },
+        {
+          "distribution": 0.0015,
+          "transition": "Alcohol_Pancreatitis"
+        },
+        {
+          "distribution": 0.994,
+          "transition": "Terminal"
+        }
+      ]
+    },
+    "Alcohol_Cirrhosis": {
+      "type": "ConditionOnset",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "19943007",
+          "display": "Cirrhosis of liver (disorder)"
+        }
+      ],
+      "direct_transition": "Terminal"
+    },
+    "Alcohol_Hepatitis": {
+      "type": "ConditionOnset",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "235875008",
+          "display": "Alcoholic hepatitis (disorder)"
+        }
+      ],
+      "direct_transition": "Terminal"
+    },
+    "Alcohol_Pancreatitis": {
+      "type": "ConditionOnset",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "235952002",
+          "display": "Alcohol-induced chronic pancreatitis (disorder)"
+        }
+      ],
+      "direct_transition": "Terminal"
+    },
+    "Terminal": {
+      "type": "Terminal"
+    },
+    "Set_Alcoholism_Attribute": {
+      "type": "SetAttribute",
+      "attribute": "alcoholism",
+      "value": true,
+      "direct_transition": "Alcohol_Encounter"
+    },
+    "Set_Harmful_Alcohol_Attribute": {
+      "type": "SetAttribute",
+      "attribute": "harmful_alcohol_use",
+      "value": true,
+      "direct_transition": "Alcohol_Encounter"
+    },
+    "Check_If_Alcohol_Dependent": {
+      "type": "Simple",
+      "conditional_transition": [
+        {
+          "condition": {
+            "condition_type": "Attribute",
+            "attribute": "alcoholism",
+            "operator": "==",
+            "value": true
+          },
+          "transition": "Substance_Complication_Check_Delay"
+        },
+        {
+          "transition": "Terminal"
+        }
+      ]
+    }
+  }
+}

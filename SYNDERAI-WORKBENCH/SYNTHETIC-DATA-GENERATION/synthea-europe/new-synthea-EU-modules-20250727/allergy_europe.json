@@ -1,0 +1,776 @@
+{
+  "name": "Allergy Europe",
+  "remarks": [
+    "European calibration of allergies.",
+    "EAACI 2022: 25-35% EU population affected by at least one allergic disease.",
+    "Models: allergic rhinitis, food allergies, drug allergies, insect venom.",
+    "EU-specific: penicillin over-labelling, NSAID hypersensitivity, HDM dominance.",
+    "Sources: EAACI 2022, EFA 2022, EAACI Food Allergy Guidelines 2014."
+  ],
+  "states": {
+    "Initial": {
+      "type": "Initial",
+      "direct_transition": "Allergy_Age_Delay"
+    },
+    "Allergy_Age_Delay": {
+      "type": "Delay",
+      "remarks": [
+        "Short initial delay to allow demographics to be set."
+      ],
+      "exact": {
+        "quantity": 1,
+        "unit": "years"
+      },
+      "direct_transition": "Allergy_Onset_Check"
+    },
+    "Allergy_Onset_Check": {
+      "type": "Simple",
+      "remarks": [
+        "EAACI 2022: ~28% of EU population has at least one allergy.",
+        "Distributed across allergy types based on EU prevalence data."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.18,
+          "transition": "Onset_Allergic_Rhinitis"
+        },
+        {
+          "distribution": 0.04,
+          "transition": "Onset_Food_Allergy"
+        },
+        {
+          "distribution": 0.06,
+          "transition": "Onset_Drug_Allergy"
+        },
+        {
+          "distribution": 0.02,
+          "transition": "Onset_Insect_Venom"
+        },
+        {
+          "distribution": 0.7,
+          "transition": "No_Allergy"
+        }
+      ]
+    },
+    "No_Allergy": {
+      "type": "Terminal"
+    },
+    "Onset_Allergic_Rhinitis": {
+      "type": "Simple",
+      "remarks": [
+        "Split between perennial (HDM/pet) and seasonal (pollen) rhinitis.",
+        "EU: perennial ~55%, seasonal ~45% of allergic rhinitis cases."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.55,
+          "transition": "Onset_Perennial_Rhinitis"
+        },
+        {
+          "distribution": 0.45,
+          "transition": "Onset_Seasonal_Rhinitis"
+        }
+      ]
+    },
+    "Onset_Perennial_Rhinitis": {
+      "type": "AllergyOnset",
+      "remarks": [
+        "House dust mite \u2014 predominant EU aeroallergen (EFA 2022)."
+      ],
+      "allergy_type": "allergy",
+      "category": "environment",
+      "target_encounter": "Allergy_Encounter",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "446096008",
+          "display": "Perennial allergic rhinitis (disorder)"
+        }
+      ],
+      "reactions": [
+        {
+          "reaction": {
+            "system": "SNOMED-CT",
+            "code": "76067001",
+            "display": "Sneezing (finding)"
+          },
+          "possible_severities": [
+            {
+              "level": "mild",
+              "value": 1.0
+            }
+          ]
+        }
+      ],
+      "direct_transition": "Prescribe_Antihistamine"
+    },
+    "Onset_Seasonal_Rhinitis": {
+      "type": "AllergyOnset",
+      "remarks": [
+        "Grass/tree pollen \u2014 major seasonal allergen in EU."
+      ],
+      "allergy_type": "allergy",
+      "category": "environment",
+      "target_encounter": "Allergy_Encounter",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "367498001",
+          "display": "Seasonal allergic rhinitis (disorder)"
+        }
+      ],
+      "reactions": [
+        {
+          "reaction": {
+            "system": "SNOMED-CT",
+            "code": "76067001",
+            "display": "Sneezing (finding)"
+          },
+          "possible_severities": [
+            {
+              "level": "mild",
+              "value": 1.0
+            }
+          ]
+        }
+      ],
+      "direct_transition": "Prescribe_Antihistamine"
+    },
+    "Onset_Food_Allergy": {
+      "type": "Simple",
+      "remarks": [
+        "EU Big 14 allergens distribution (EAACI 2014).",
+        "Milk/egg most common in children; tree nuts, shellfish in adults."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.25,
+          "transition": "Allergy_Cows_Milk"
+        },
+        {
+          "distribution": 0.2,
+          "transition": "Allergy_Egg"
+        },
+        {
+          "distribution": 0.15,
+          "transition": "Allergy_Wheat"
+        },
+        {
+          "distribution": 0.12,
+          "transition": "Allergy_Tree_Nut"
+        },
+        {
+          "distribution": 0.1,
+          "transition": "Allergy_Fish"
+        },
+        {
+          "distribution": 0.08,
+          "transition": "Allergy_Shellfish"
+        },
+        {
+          "distribution": 0.06,
+          "transition": "Allergy_Peanut"
+        },
+        {
+          "distribution": 0.04,
+          "transition": "Allergy_Soy"
+        }
+      ]
+    },
+    "Allergy_Cows_Milk": {
+      "type": "AllergyOnset",
+      "allergy_type": "allergy",
+      "category": "food",
+      "target_encounter": "Allergy_Encounter",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "425525006",
+          "display": "Allergy to dairy product (finding)"
+        }
+      ],
+      "reactions": [
+        {
+          "reaction": {
+            "system": "SNOMED-CT",
+            "code": "271807003",
+            "display": "Eruption of skin (disorder)"
+          },
+          "possible_severities": [
+            {
+              "level": "mild",
+              "value": 0.6
+            },
+            {
+              "level": "moderate",
+              "value": 0.3
+            },
+            {
+              "level": "severe",
+              "value": 0.1
+            }
+          ]
+        }
+      ],
+      "direct_transition": "Allergy_Encounter"
+    },
+    "Allergy_Egg": {
+      "type": "AllergyOnset",
+      "allergy_type": "allergy",
+      "category": "food",
+      "target_encounter": "Allergy_Encounter",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "91930004",
+          "display": "Allergy to eggs (finding)"
+        }
+      ],
+      "reactions": [
+        {
+          "reaction": {
+            "system": "SNOMED-CT",
+            "code": "271807003",
+            "display": "Eruption of skin (disorder)"
+          },
+          "possible_severities": [
+            {
+              "level": "mild",
+              "value": 0.7
+            },
+            {
+              "level": "moderate",
+              "value": 0.3
+            }
+          ]
+        }
+      ],
+      "direct_transition": "Allergy_Encounter"
+    },
+    "Allergy_Wheat": {
+      "type": "AllergyOnset",
+      "allergy_type": "allergy",
+      "category": "food",
+      "target_encounter": "Allergy_Encounter",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "420174000",
+          "display": "Allergy to wheat (finding)"
+        }
+      ],
+      "reactions": [
+        {
+          "reaction": {
+            "system": "SNOMED-CT",
+            "code": "21522001",
+            "display": "Abdominal pain (finding)"
+          },
+          "possible_severities": [
+            {
+              "level": "mild",
+              "value": 0.6
+            },
+            {
+              "level": "moderate",
+              "value": 0.4
+            }
+          ]
+        }
+      ],
+      "direct_transition": "Allergy_Encounter"
+    },
+    "Allergy_Tree_Nut": {
+      "type": "AllergyOnset",
+      "allergy_type": "allergy",
+      "category": "food",
+      "target_encounter": "Allergy_Encounter",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "91934008",
+          "display": "Allergy to nut (finding)"
+        }
+      ],
+      "reactions": [
+        {
+          "reaction": {
+            "system": "SNOMED-CT",
+            "code": "39579001",
+            "display": "Anaphylaxis (disorder)"
+          },
+          "possible_severities": [
+            {
+              "level": "mild",
+              "value": 0.4
+            },
+            {
+              "level": "moderate",
+              "value": 0.4
+            },
+            {
+              "level": "severe",
+              "value": 0.2
+            }
+          ]
+        }
+      ],
+      "direct_transition": "Allergy_Encounter"
+    },
+    "Allergy_Fish": {
+      "type": "AllergyOnset",
+      "allergy_type": "allergy",
+      "category": "food",
+      "target_encounter": "Allergy_Encounter",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "417532002",
+          "display": "Allergy to fish (finding)"
+        }
+      ],
+      "reactions": [
+        {
+          "reaction": {
+            "system": "SNOMED-CT",
+            "code": "247472004",
+            "display": "Wheal (disorder)"
+          },
+          "possible_severities": [
+            {
+              "level": "mild",
+              "value": 0.5
+            },
+            {
+              "level": "moderate",
+              "value": 0.5
+            }
+          ]
+        }
+      ],
+      "direct_transition": "Allergy_Encounter"
+    },
+    "Allergy_Shellfish": {
+      "type": "AllergyOnset",
+      "allergy_type": "allergy",
+      "category": "food",
+      "target_encounter": "Allergy_Encounter",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "300913006",
+          "display": "Shellfish allergy (finding)"
+        }
+      ],
+      "reactions": [
+        {
+          "reaction": {
+            "system": "SNOMED-CT",
+            "code": "39579001",
+            "display": "Anaphylaxis (disorder)"
+          },
+          "possible_severities": [
+            {
+              "level": "mild",
+              "value": 0.4
+            },
+            {
+              "level": "moderate",
+              "value": 0.4
+            },
+            {
+              "level": "severe",
+              "value": 0.2
+            }
+          ]
+        }
+      ],
+      "direct_transition": "Allergy_Encounter"
+    },
+    "Allergy_Peanut": {
+      "type": "AllergyOnset",
+      "allergy_type": "allergy",
+      "category": "food",
+      "target_encounter": "Allergy_Encounter",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "91935009",
+          "display": "Allergy to peanuts (finding)"
+        }
+      ],
+      "reactions": [
+        {
+          "reaction": {
+            "system": "SNOMED-CT",
+            "code": "39579001",
+            "display": "Anaphylaxis (disorder)"
+          },
+          "possible_severities": [
+            {
+              "level": "mild",
+              "value": 0.3
+            },
+            {
+              "level": "moderate",
+              "value": 0.4
+            },
+            {
+              "level": "severe",
+              "value": 0.3
+            }
+          ]
+        }
+      ],
+      "direct_transition": "Allergy_Encounter"
+    },
+    "Allergy_Soy": {
+      "type": "AllergyOnset",
+      "allergy_type": "allergy",
+      "category": "food",
+      "target_encounter": "Allergy_Encounter",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "416098002",
+          "display": "Allergy to drug (finding)"
+        }
+      ],
+      "reactions": [
+        {
+          "reaction": {
+            "system": "SNOMED-CT",
+            "code": "21522001",
+            "display": "Abdominal pain (finding)"
+          },
+          "possible_severities": [
+            {
+              "level": "mild",
+              "value": 0.7
+            },
+            {
+              "level": "moderate",
+              "value": 0.3
+            }
+          ]
+        }
+      ],
+      "direct_transition": "Allergy_Encounter"
+    },
+    "Onset_Drug_Allergy": {
+      "type": "Simple",
+      "remarks": [
+        "EU drug allergy distribution (EAACI Drug Allergy Guidelines 2022).",
+        "Penicillin 60%, NSAIDs 25%, other antibiotics 15%.",
+        "Note: most penicillin 'allergies' are intolerances/over-labelling."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.6,
+          "transition": "Allergy_Penicillin"
+        },
+        {
+          "distribution": 0.25,
+          "transition": "Allergy_NSAID"
+        },
+        {
+          "distribution": 0.15,
+          "transition": "Allergy_Sulfonamide"
+        }
+      ]
+    },
+    "Allergy_Penicillin": {
+      "type": "AllergyOnset",
+      "remarks": [
+        "Most common drug allergy label in EU EHRs.",
+        "EU: 8-12% labelled but only 1-2% true IgE-mediated allergy (EAACI 2022)."
+      ],
+      "allergy_type": "allergy",
+      "category": "medication",
+      "target_encounter": "Allergy_Encounter",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "372687004",
+          "display": "Amoxicillin (substance)"
+        }
+      ],
+      "reactions": [
+        {
+          "reaction": {
+            "system": "SNOMED-CT",
+            "code": "271807003",
+            "display": "Eruption of skin (disorder)"
+          },
+          "possible_severities": [
+            {
+              "level": "mild",
+              "value": 0.7
+            },
+            {
+              "level": "moderate",
+              "value": 0.2
+            },
+            {
+              "level": "severe",
+              "value": 0.1
+            }
+          ]
+        }
+      ],
+      "direct_transition": "Allergy_Encounter"
+    },
+    "Allergy_NSAID": {
+      "type": "AllergyOnset",
+      "remarks": [
+        "NSAID hypersensitivity \u2014 more prevalent in Southern EU (EAACI 2022).",
+        "Cross-reactive with multiple NSAIDs in many patients."
+      ],
+      "allergy_type": "intolerance",
+      "category": "medication",
+      "target_encounter": "Allergy_Encounter",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "387207008",
+          "display": "Ibuprofen (substance)"
+        }
+      ],
+      "reactions": [
+        {
+          "reaction": {
+            "system": "SNOMED-CT",
+            "code": "267036007",
+            "display": "Dyspnea (finding)"
+          },
+          "possible_severities": [
+            {
+              "level": "mild",
+              "value": 0.5
+            },
+            {
+              "level": "moderate",
+              "value": 0.4
+            },
+            {
+              "level": "severe",
+              "value": 0.1
+            }
+          ]
+        }
+      ],
+      "direct_transition": "Allergy_Encounter"
+    },
+    "Allergy_Sulfonamide": {
+      "type": "AllergyOnset",
+      "allergy_type": "allergy",
+      "category": "medication",
+      "target_encounter": "Allergy_Encounter",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "363528007",
+          "display": "Sulfamethoxazole (substance)"
+        }
+      ],
+      "reactions": [
+        {
+          "reaction": {
+            "system": "SNOMED-CT",
+            "code": "271807003",
+            "display": "Eruption of skin (disorder)"
+          },
+          "possible_severities": [
+            {
+              "level": "mild",
+              "value": 0.6
+            },
+            {
+              "level": "moderate",
+              "value": 0.3
+            },
+            {
+              "level": "severe",
+              "value": 0.1
+            }
+          ]
+        }
+      ],
+      "direct_transition": "Allergy_Encounter"
+    },
+    "Onset_Insect_Venom": {
+      "type": "Simple",
+      "distributed_transition": [
+        {
+          "distribution": 0.55,
+          "transition": "Allergy_Bee_Venom"
+        },
+        {
+          "distribution": 0.45,
+          "transition": "Allergy_Wasp_Venom"
+        }
+      ]
+    },
+    "Allergy_Bee_Venom": {
+      "type": "AllergyOnset",
+      "allergy_type": "allergy",
+      "category": "environment",
+      "target_encounter": "Allergy_Encounter",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "424213003",
+          "display": "Allergy to bee venom (finding)"
+        }
+      ],
+      "reactions": [
+        {
+          "reaction": {
+            "system": "SNOMED-CT",
+            "code": "39579001",
+            "display": "Anaphylaxis (disorder)"
+          },
+          "possible_severities": [
+            {
+              "level": "mild",
+              "value": 0.3
+            },
+            {
+              "level": "moderate",
+              "value": 0.4
+            },
+            {
+              "level": "severe",
+              "value": 0.3
+            }
+          ]
+        }
+      ],
+      "direct_transition": "Allergy_Encounter"
+    },
+    "Allergy_Wasp_Venom": {
+      "type": "AllergyOnset",
+      "allergy_type": "allergy",
+      "category": "environment",
+      "target_encounter": "Allergy_Encounter",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "423058007",
+          "display": "Allergy to wasp venom (finding)"
+        }
+      ],
+      "reactions": [
+        {
+          "reaction": {
+            "system": "SNOMED-CT",
+            "code": "39579001",
+            "display": "Anaphylaxis (disorder)"
+          },
+          "possible_severities": [
+            {
+              "level": "mild",
+              "value": 0.3
+            },
+            {
+              "level": "moderate",
+              "value": 0.4
+            },
+            {
+              "level": "severe",
+              "value": 0.3
+            }
+          ]
+        }
+      ],
+      "direct_transition": "Allergy_Encounter"
+    },
+    "Allergy_Encounter": {
+      "type": "Encounter",
+      "encounter_class": "ambulatory",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "11429006",
+          "display": "Consultation (procedure)"
+        }
+      ],
+      "direct_transition": "Allergy_Test"
+    },
+    "Allergy_Test": {
+      "type": "Procedure",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "395142003",
+          "display": "Allergy screening test (procedure)"
+        }
+      ],
+      "direct_transition": "Allergy_Treatment_Decision"
+    },
+    "Allergy_Treatment_Decision": {
+      "type": "Simple",
+      "distributed_transition": [
+        {
+          "distribution": 0.55,
+          "transition": "Prescribe_Antihistamine"
+        },
+        {
+          "distribution": 0.25,
+          "transition": "Prescribe_Nasal_Corticosteroid"
+        },
+        {
+          "distribution": 0.15,
+          "transition": "Prescribe_Adrenaline"
+        },
+        {
+          "distribution": 0.05,
+          "transition": "End_Allergy_Encounter"
+        }
+      ]
+    },
+    "Prescribe_Antihistamine": {
+      "type": "MedicationOrder",
+      "codes": [
+        {
+          "system": "RxNorm",
+          "code": "1011483",
+          "display": "cetirizine hydrochloride 10 MG Oral Tablet"
+        }
+      ],
+      "direct_transition": "End_Allergy_Encounter"
+    },
+    "Prescribe_Nasal_Corticosteroid": {
+      "type": "MedicationOrder",
+      "codes": [
+        {
+          "system": "RxNorm",
+          "code": "1797831",
+          "display": "fluticasone furoate 0.027 MG/ACTUAT Nasal Spray"
+        }
+      ],
+      "direct_transition": "End_Allergy_Encounter"
+    },
+    "Prescribe_Adrenaline": {
+      "type": "MedicationOrder",
+      "remarks": [
+        "Adrenaline auto-injector for patients with severe/anaphylactic reactions."
+      ],
+      "codes": [
+        {
+          "system": "RxNorm",
+          "code": "727316",
+          "display": "Epinephrine 0.3 MG Auto-Injector"
+        }
+      ],
+      "direct_transition": "End_Allergy_Encounter"
+    },
+    "End_Allergy_Encounter": {
+      "type": "EncounterEnd",
+      "direct_transition": "Terminal"
+    },
+    "Terminal": {
+      "type": "Terminal"
+    }
+  }
+}

@@ -1,0 +1,295 @@
+{
+  "name": "Mild Cognitive Impairment Europe",
+  "remarks": [
+    "European calibration of mild cognitive impairment (MCI).",
+    "EuroCoDe 2021: prevalence 1-3% whole population, ~15% of >65 year olds.",
+    "Annual incidence ~2-3% in >65 year olds.",
+    "Progression to dementia: ~10-15% per year.",
+    "Treatment: cognitive stimulation, lifestyle counselling, monitoring.",
+    "This module is separate from alzheimers_dementia_europe.json which handles",
+    "full dementia. MCI patients here may progress to dementia via this module."
+  ],
+  "states": {
+    "Initial": {
+      "type": "Initial",
+      "direct_transition": "Age_Guard"
+    },
+    "Age_Guard": {
+      "type": "Guard",
+      "remarks": [
+        "MCI onset modelled from age 65 onwards."
+      ],
+      "allow": {
+        "condition_type": "Age",
+        "operator": ">=",
+        "quantity": 65,
+        "unit": "years"
+      },
+      "direct_transition": "MCI_Naive_Guard"
+    },
+    "MCI_Naive_Guard": {
+      "type": "Guard",
+      "remarks": [
+        "Only proceed if patient has not already been diagnosed with MCI or dementia."
+      ],
+      "allow": {
+        "condition_type": "And",
+        "conditions": [
+          {
+            "condition_type": "Attribute",
+            "attribute": "mci",
+            "operator": "is nil"
+          },
+          {
+            "condition_type": "Attribute",
+            "attribute": "dementia",
+            "operator": "is nil"
+          }
+        ]
+      },
+      "direct_transition": "MCI_Annual_Delay"
+    },
+    "MCI_Annual_Delay": {
+      "type": "Delay",
+      "exact": {
+        "quantity": 1,
+        "unit": "years"
+      },
+      "direct_transition": "MCI_Age_Check"
+    },
+    "MCI_Age_Check": {
+      "type": "Simple",
+      "remarks": [
+        "Age-stratified MCI onset probability."
+      ],
+      "conditional_transition": [
+        {
+          "condition": {
+            "condition_type": "Age",
+            "operator": "<",
+            "quantity": 75,
+            "unit": "years"
+          },
+          "transition": "MCI_Prob_65_74"
+        },
+        {
+          "condition": {
+            "condition_type": "Age",
+            "operator": "<",
+            "quantity": 85,
+            "unit": "years"
+          },
+          "transition": "MCI_Prob_75_84"
+        },
+        {
+          "transition": "MCI_Prob_85_plus"
+        }
+      ]
+    },
+    "MCI_Prob_65_74": {
+      "type": "Simple",
+      "remarks": [
+        "EuroCoDe: ~1.5%/year incidence in 65-74 age group."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.015,
+          "transition": "Diagnose_MCI"
+        },
+        {
+          "distribution": 0.985,
+          "transition": "MCI_Annual_Delay"
+        }
+      ]
+    },
+    "MCI_Prob_75_84": {
+      "type": "Simple",
+      "remarks": [
+        "EuroCoDe: ~3.0%/year incidence in 75-84 age group."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.03,
+          "transition": "Diagnose_MCI"
+        },
+        {
+          "distribution": 0.97,
+          "transition": "MCI_Annual_Delay"
+        }
+      ]
+    },
+    "MCI_Prob_85_plus": {
+      "type": "Simple",
+      "remarks": [
+        "EuroCoDe: ~5.0%/year incidence in 85+ age group."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.05,
+          "transition": "Diagnose_MCI"
+        },
+        {
+          "distribution": 0.95,
+          "transition": "MCI_Annual_Delay"
+        }
+      ]
+    },
+    "Diagnose_MCI": {
+      "type": "ConditionOnset",
+      "assign_to_attribute": "mci",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "386805003",
+          "display": "Mild cognitive impairment (disorder)"
+        }
+      ],
+      "direct_transition": "MCI_Diagnostic_Encounter"
+    },
+    "MCI_Diagnostic_Encounter": {
+      "type": "Encounter",
+      "encounter_class": "ambulatory",
+      "reason": "Diagnose_MCI",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "11429006",
+          "display": "Consultation (procedure)"
+        }
+      ],
+      "direct_transition": "MCI_Cognitive_Assessment"
+    },
+    "MCI_Cognitive_Assessment": {
+      "type": "Procedure",
+      "reason": "Diagnose_MCI",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "113024001",
+          "display": "Cognitive testing and assessment (procedure)"
+        }
+      ],
+      "direct_transition": "MCI_MMSE"
+    },
+    "MCI_MMSE": {
+      "type": "Observation",
+      "category": "survey",
+      "codes": [
+        {
+          "system": "LOINC",
+          "code": "72106-8",
+          "display": "Total score [MMSE]"
+        }
+      ],
+      "range": {
+        "low": 21,
+        "high": 26,
+        "decimals": 0
+      },
+      "unit": "{score}",
+      "direct_transition": "MCI_Lifestyle_Counselling"
+    },
+    "MCI_Lifestyle_Counselling": {
+      "type": "Procedure",
+      "reason": "Diagnose_MCI",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "409073007",
+          "display": "Education (procedure)"
+        }
+      ],
+      "direct_transition": "End_MCI_Initial_Encounter"
+    },
+    "End_MCI_Initial_Encounter": {
+      "type": "EncounterEnd",
+      "direct_transition": "MCI_Review_Delay"
+    },
+    "MCI_Review_Delay": {
+      "type": "Delay",
+      "range": {
+        "low": 10,
+        "high": 14,
+        "unit": "months"
+      },
+      "direct_transition": "MCI_Progression_Check"
+    },
+    "MCI_Progression_Check": {
+      "type": "Simple",
+      "remarks": [
+        "EuroCoDe: ~12% per year progress from MCI to full dementia.",
+        "~5% per year revert to normal cognition.",
+        "~83% remain stable MCI."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.12,
+          "transition": "MCI_Progresses_to_Dementia"
+        },
+        {
+          "distribution": 0.05,
+          "transition": "MCI_Remission"
+        },
+        {
+          "distribution": 0.83,
+          "transition": "MCI_Stable_Review"
+        }
+      ]
+    },
+    "MCI_Remission": {
+      "type": "ConditionEnd",
+      "remarks": [
+        "~5% per year revert to normal cognition."
+      ],
+      "condition_onset": "Diagnose_MCI",
+      "direct_transition": "Terminal"
+    },
+    "MCI_Progresses_to_Dementia": {
+      "type": "ConditionEnd",
+      "remarks": [
+        "MCI condition ended \u2014 patient has progressed beyond MCI stage.",
+        "Full dementia onset handled separately by alzheimers_dementia_europe.json."
+      ],
+      "condition_onset": "Diagnose_MCI",
+      "direct_transition": "Terminal"
+    },
+    "MCI_Stable_Review": {
+      "type": "Encounter",
+      "encounter_class": "ambulatory",
+      "reason": "Diagnose_MCI",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "390906007",
+          "display": "Follow-up encounter (procedure)"
+        }
+      ],
+      "direct_transition": "MCI_Followup_MMSE"
+    },
+    "MCI_Followup_MMSE": {
+      "type": "Observation",
+      "category": "survey",
+      "codes": [
+        {
+          "system": "LOINC",
+          "code": "72106-8",
+          "display": "Total score [MMSE]"
+        }
+      ],
+      "range": {
+        "low": 20,
+        "high": 26,
+        "decimals": 0
+      },
+      "unit": "{score}",
+      "direct_transition": "End_MCI_Review"
+    },
+    "End_MCI_Review": {
+      "type": "EncounterEnd",
+      "direct_transition": "MCI_Review_Delay"
+    },
+    "Terminal": {
+      "type": "Terminal"
+    }
+  }
+}

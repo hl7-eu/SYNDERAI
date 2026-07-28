@@ -1,0 +1,449 @@
+{
+  "name": "Alzheimers Dementia (European Calibration)",
+  "remarks": [
+    "EU-calibrated Alzheimer's / dementia module (v2).",
+    "",
+    "CHANGES vs v1:",
+    "  Removed internal MCI onset pipeline (MCI_Check, MCI_Conversion_Check etc.).",
+    "  mci_europe.json handles ALL MCI onset and MCI→dementia progression.",
+    "  Having both was double-counting MCI for age 60-65 patients (before mci_europe",
+    "  fires at 65). Keeping duplicate MCI states was inflating observed 8% Alzheimer's.",
+    "",
+    "  Reduced direct dementia rates ~60%:",
+    "    60-69: 0.20% → 0.05%/yr  |  70-79: 0.80% → 0.15%/yr",
+    "    80-89: 2.50% → 0.50%/yr  |  90+:   4.00% → 1.00%/yr",
+    "  Direct onset covers cases not preceded by MCI.",
+    "  mci_europe.json (12%/yr MCI→dementia conversion) covers the majority pathway.",
+    "",
+    "  Dependency: mci_europe.json must be present. Read attribute 'mci'.",
+    "  Target combined dementia prevalence: ~2% (all adults) / ~8% (65+) per EuroCoDe.",
+    "",
+    "PATCH (calibration round 2):",
+    "  Renamed Age_Stratified_Dementia_Check → Dementia_Age_Check",
+    "  to repair broken transition from Annual_Dementia_Delay.",
+    "  Pruned 6 orphaned v1 states left over from refactor.",
+    "",
+    "PATCH (round 3):",
+    "  Raised annual dementia incidence to EuroCoDe-aligned values.",
+    "  Round-2 graph fix unblocked the module but revealed configured",
+    "  rates were ~10x below EU references:",
+    "    60-69: 0.05 → 0.30 %/yr  (EuroCoDe 10-yr avg ~0.3%)",
+    "    70-79: 0.15 → 1.50 %/yr  (EuroCoDe 10-yr avg ~1.4%)",
+    "    80-89: 0.50 → 4.50 %/yr  (EuroCoDe 10-yr avg ~4.4%)",
+    "    90+:   1.00 → 9.00 %/yr  (EuroCoDe ~9%)",
+    "  Reference: Alzheimer Europe Yearbook / EuroCoDe consensus.",
+    "  Target cohort prevalence post-round-3: ~2-3% (≥65 subset: 5-7%)."
+  ],
+  "states": {
+    "Initial": {
+      "type": "Initial",
+      "direct_transition": "Age_Guard"
+    },
+    "Age_Guard": {
+      "type": "Guard",
+      "remarks": [
+        "Dementia is extremely rare before 60. EuroCoDe: <0.1% in 55-59 band."
+      ],
+      "allow": {
+        "condition_type": "Age",
+        "operator": ">=",
+        "quantity": 60,
+        "unit": "years"
+      },
+      "direct_transition": "Dementia_Naive_Guard"
+    },
+    "Dementia_Prob_60_69": {
+      "type": "Simple",
+      "remarks": [
+        "Recalibrated: 0.20% → 0.050%/yr. MCI→dementia progression handled by mci_europe.json."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.003,
+          "transition": "Dementia_Type_Branch"
+        },
+        {
+          "distribution": 0.997,
+          "transition": "Annual_Dementia_Delay"
+        }
+      ]
+    },
+    "Dementia_Prob_70_79": {
+      "type": "Simple",
+      "remarks": [
+        "Recalibrated: 0.80% → 0.150%/yr. MCI→dementia progression handled by mci_europe.json."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.015,
+          "transition": "Dementia_Type_Branch"
+        },
+        {
+          "distribution": 0.985,
+          "transition": "Annual_Dementia_Delay"
+        }
+      ]
+    },
+    "Dementia_Prob_80_89": {
+      "type": "Simple",
+      "remarks": [
+        "Recalibrated: 2.50% → 0.500%/yr. MCI→dementia progression handled by mci_europe.json."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.045,
+          "transition": "Dementia_Type_Branch"
+        },
+        {
+          "distribution": 0.955,
+          "transition": "Annual_Dementia_Delay"
+        }
+      ]
+    },
+    "Dementia_Prob_90_plus": {
+      "type": "Simple",
+      "remarks": [
+        "Recalibrated: 4.00% → 1.000%/yr. MCI→dementia progression handled by mci_europe.json."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.09,
+          "transition": "Dementia_Type_Branch"
+        },
+        {
+          "distribution": 0.91,
+          "transition": "Annual_Dementia_Delay"
+        }
+      ]
+    },
+    "Dementia_Type_Branch": {
+      "type": "Simple",
+      "remarks": [
+        "Dementia subtype distribution (Alzheimer Europe 2022):",
+        "  Alzheimer's disease:  ~65%",
+        "  Vascular dementia:    ~20%",
+        "  Mixed (AD+vascular):  ~10%",
+        "  Other (LBD, FTD etc): ~5%"
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.65,
+          "transition": "Onset_Alzheimers"
+        },
+        {
+          "distribution": 0.2,
+          "transition": "Onset_Vascular_Dementia"
+        },
+        {
+          "distribution": 0.1,
+          "transition": "Onset_Mixed_Dementia"
+        },
+        {
+          "distribution": 0.05,
+          "transition": "Onset_Other_Dementia"
+        }
+      ]
+    },
+    "Onset_Alzheimers": {
+      "type": "ConditionOnset",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "26929004",
+          "display": "Alzheimer's disease (disorder)"
+        }
+      ],
+      "direct_transition": "Dementia_Diagnostic_Encounter",
+      "assign_to_attribute": "dementia"
+    },
+    "Onset_Vascular_Dementia": {
+      "type": "ConditionOnset",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "429998004",
+          "display": "Vascular dementia (disorder)"
+        }
+      ],
+      "direct_transition": "Dementia_Diagnostic_Encounter",
+      "assign_to_attribute": "dementia"
+    },
+    "Onset_Mixed_Dementia": {
+      "type": "ConditionOnset",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "56267009",
+          "display": "Multi-infarct dementia (disorder)"
+        }
+      ],
+      "direct_transition": "Dementia_Diagnostic_Encounter",
+      "assign_to_attribute": "dementia"
+    },
+    "Onset_Other_Dementia": {
+      "type": "ConditionOnset",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "52448006",
+          "display": "Dementia (disorder)"
+        }
+      ],
+      "direct_transition": "Dementia_Diagnostic_Encounter",
+      "assign_to_attribute": "dementia"
+    },
+    "Dementia_Diagnostic_Encounter": {
+      "type": "Encounter",
+      "remarks": [
+        "Memory clinic referral — standard EU pathway for dementia workup."
+      ],
+      "encounter_class": "ambulatory",
+      "reason": "dementia",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "11429006",
+          "display": "Consultation (procedure)"
+        }
+      ],
+      "direct_transition": "MMSE_Dementia"
+    },
+    "MMSE_Dementia": {
+      "type": "Observation",
+      "remarks": [
+        "Mild dementia: MMSE 20-23.",
+        "Moderate:      MMSE 10-19.",
+        "Severe:        MMSE <10."
+      ],
+      "category": "survey",
+      "unit": "score",
+      "codes": [
+        {
+          "system": "LOINC",
+          "code": "72106-8",
+          "display": "Total score MMSE"
+        }
+      ],
+      "range": {
+        "low": 15,
+        "high": 23
+      },
+      "direct_transition": "Dementia_Stage_Branch"
+    },
+    "Dementia_Stage_Branch": {
+      "type": "Simple",
+      "remarks": [
+        "Stage at diagnosis from European memory clinic data:",
+        "  Mild:     ~50%  → cholinesterase inhibitor",
+        "  Moderate: ~35%  → ChEI + consider memantine",
+        "  Severe:   ~15%  → memantine"
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.5,
+          "transition": "Prescribe_Donepezil"
+        },
+        {
+          "distribution": 0.35,
+          "transition": "Prescribe_Rivastigmine"
+        },
+        {
+          "distribution": 0.15,
+          "transition": "Prescribe_Memantine"
+        }
+      ]
+    },
+    "Prescribe_Donepezil": {
+      "type": "MedicationOrder",
+      "remarks": [
+        "Donepezil 5mg OD — first-line AChEI; EMA-approved for mild-moderate AD.",
+        "Most widely prescribed anti-dementia drug in Europe.",
+        "RxNorm 135447: donepezil hydrochloride 5 MG Oral Tablet."
+      ],
+      "codes": [
+        {
+          "system": "RxNorm",
+          "code": "135447",
+          "display": "donepezil hydrochloride 5 MG Oral Tablet"
+        }
+      ],
+      "reason": "dementia",
+      "prescription": {
+        "refills": 11,
+        "as_needed": false,
+        "instructions": "Take once daily at bedtime. Titrate to 10mg after 4-6 weeks if tolerated."
+      },
+      "direct_transition": "End_Dementia_Initial_Encounter"
+    },
+    "Prescribe_Rivastigmine": {
+      "type": "MedicationOrder",
+      "remarks": [
+        "Rivastigmine patch 4.6mg/24h — preferred for moderate AD or LBD.",
+        "Patch formulation associated with fewer GI side effects.",
+        "RxNorm 833036: rivastigmine 0.192 MG/HR Transdermal System."
+      ],
+      "codes": [
+        {
+          "system": "RxNorm",
+          "code": "833036",
+          "display": "rivastigmine 0.192 MG/HR Transdermal System"
+        }
+      ],
+      "reason": "dementia",
+      "prescription": {
+        "refills": 11,
+        "as_needed": false,
+        "instructions": "Apply one patch daily. Rotate application site."
+      },
+      "direct_transition": "End_Dementia_Initial_Encounter"
+    },
+    "Prescribe_Memantine": {
+      "type": "MedicationOrder",
+      "remarks": [
+        "Memantine 10mg BD — NMDA antagonist; EMA-approved for moderate-severe AD.",
+        "Used as monotherapy (severe) or in combination with AChEI (moderate).",
+        "RxNorm 996740: memantine hydrochloride 10 MG Oral Tablet."
+      ],
+      "codes": [
+        {
+          "system": "RxNorm",
+          "code": "996740",
+          "display": "memantine hydrochloride 10 MG Oral Tablet"
+        }
+      ],
+      "reason": "dementia",
+      "prescription": {
+        "refills": 11,
+        "as_needed": false,
+        "instructions": "Take twice daily. Start at 5mg OD and titrate weekly."
+      },
+      "direct_transition": "End_Dementia_Initial_Encounter"
+    },
+    "End_Dementia_Initial_Encounter": {
+      "type": "EncounterEnd",
+      "direct_transition": "Dementia_Progression_Delay"
+    },
+    "Dementia_Progression_Delay": {
+      "type": "Delay",
+      "range": {
+        "low": 10,
+        "high": 14,
+        "unit": "months"
+      },
+      "direct_transition": "Dementia_Review_Encounter"
+    },
+    "Dementia_Review_Encounter": {
+      "type": "Encounter",
+      "encounter_class": "ambulatory",
+      "reason": "dementia",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "11429006",
+          "display": "Consultation (procedure)"
+        }
+      ],
+      "direct_transition": "MMSE_Followup"
+    },
+    "MMSE_Followup": {
+      "type": "Observation",
+      "remarks": [
+        "Annual MMSE to track cognitive decline: ~3 points/year in untreated AD."
+      ],
+      "category": "survey",
+      "unit": "score",
+      "codes": [
+        {
+          "system": "LOINC",
+          "code": "72106-8",
+          "display": "Total score MMSE"
+        }
+      ],
+      "range": {
+        "low": 8,
+        "high": 20
+      },
+      "direct_transition": "Caregiver_Support_Assessment"
+    },
+    "Caregiver_Support_Assessment": {
+      "type": "Procedure",
+      "remarks": [
+        "European dementia care includes formal caregiver assessment.",
+        "Alzheimer Europe guidelines stress caregiver burden evaluation at each contact."
+      ],
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "305450004",
+          "display": "Social services assessment (procedure)"
+        }
+      ],
+      "duration": {
+        "low": 20,
+        "high": 40,
+        "unit": "minutes"
+      },
+      "reason": "dementia",
+      "direct_transition": "End_Dementia_Review"
+    },
+    "End_Dementia_Review": {
+      "type": "EncounterEnd",
+      "direct_transition": "Dementia_Progression_Delay"
+    },
+    "Dementia_Naive_Guard": {
+      "type": "Guard",
+      "remarks": [
+        "Only proceed if patient has not already developed dementia/MCI."
+      ],
+      "allow": {
+        "condition_type": "Attribute",
+        "attribute": "dementia",
+        "operator": "is nil"
+      },
+      "direct_transition": "Annual_Dementia_Delay"
+    },
+    "Annual_Dementia_Delay": {
+      "type": "Delay",
+      "exact": {
+        "quantity": 1,
+        "unit": "years"
+      },
+      "direct_transition": "Dementia_Age_Check"
+    },
+    "Dementia_Age_Check": {
+      "type": "Simple",
+      "conditional_transition": [
+        {
+          "condition": {
+            "condition_type": "Age",
+            "operator": "<",
+            "quantity": 70,
+            "unit": "years"
+          },
+          "transition": "Dementia_Prob_60_69"
+        },
+        {
+          "condition": {
+            "condition_type": "Age",
+            "operator": "<",
+            "quantity": 80,
+            "unit": "years"
+          },
+          "transition": "Dementia_Prob_70_79"
+        },
+        {
+          "condition": {
+            "condition_type": "Age",
+            "operator": "<",
+            "quantity": 90,
+            "unit": "years"
+          },
+          "transition": "Dementia_Prob_80_89"
+        },
+        {
+          "transition": "Dementia_Prob_90_plus"
+        }
+      ]
+    }
+  }
+}

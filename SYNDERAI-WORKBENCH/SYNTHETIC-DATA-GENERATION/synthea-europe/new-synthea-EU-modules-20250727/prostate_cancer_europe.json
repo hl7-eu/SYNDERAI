@@ -1,0 +1,366 @@
+{
+  "name": "Prostate Cancer Europe",
+  "remarks": [
+    "European calibration of prostate cancer.",
+    "ECIS 2022: most common male cancer EU, prevalence 0.8-1.2%.",
+    "EAU guidelines 2023: PSA screening, active surveillance for low-risk,",
+    "radical prostatectomy or radiotherapy for intermediate/high-risk.",
+    "ADT (LHRH agonist) for advanced disease.",
+    "EU 5-year survival: ~89% all stages combined."
+  ],
+  "states": {
+    "Initial": {
+      "type": "Initial",
+      "direct_transition": "Sex_Guard"
+    },
+    "Sex_Guard": {
+      "type": "Guard",
+      "remarks": [
+        "Prostate cancer is male-only."
+      ],
+      "allow": {
+        "condition_type": "Gender",
+        "gender": "M"
+      },
+      "direct_transition": "Age_Guard"
+    },
+    "Age_Guard": {
+      "type": "Guard",
+      "allow": {
+        "condition_type": "Age",
+        "operator": ">=",
+        "quantity": 50,
+        "unit": "years"
+      },
+      "direct_transition": "Prostate_Naive_Guard"
+    },
+    "Prostate_Naive_Guard": {
+      "type": "Guard",
+      "allow": {
+        "condition_type": "Attribute",
+        "attribute": "prostate_cancer",
+        "operator": "is nil"
+      },
+      "direct_transition": "Annual_PSA_Delay"
+    },
+    "Annual_PSA_Delay": {
+      "type": "Delay",
+      "exact": {
+        "quantity": 1,
+        "unit": "years"
+      },
+      "direct_transition": "Prostate_Age_Check"
+    },
+    "Prostate_Age_Check": {
+      "type": "Simple",
+      "conditional_transition": [
+        {
+          "condition": {
+            "condition_type": "Age",
+            "operator": "<",
+            "quantity": 60,
+            "unit": "years"
+          },
+          "transition": "Prostate_Prob_50_59"
+        },
+        {
+          "condition": {
+            "condition_type": "Age",
+            "operator": "<",
+            "quantity": 70,
+            "unit": "years"
+          },
+          "transition": "Prostate_Prob_60_69"
+        },
+        {
+          "condition": {
+            "condition_type": "Age",
+            "operator": "<",
+            "quantity": 75,
+            "unit": "years"
+          },
+          "transition": "Prostate_Prob_70_74"
+        },
+        {
+          "transition": "Prostate_Prob_75_plus"
+        }
+      ]
+    },
+    "Prostate_Prob_50_59": {
+      "type": "Simple",
+      "remarks": [
+        "ECIS 2022: ~0.08%/year incidence in men 50-59."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.0016,
+          "transition": "PSA_Screening"
+        },
+        {
+          "distribution": 0.9984,
+          "transition": "Annual_PSA_Delay"
+        }
+      ]
+    },
+    "Prostate_Prob_60_69": {
+      "type": "Simple",
+      "remarks": [
+        "ECIS 2022: ~0.35%/year in men 60-69 \u2014 major peak."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.007,
+          "transition": "PSA_Screening"
+        },
+        {
+          "distribution": 0.993,
+          "transition": "Annual_PSA_Delay"
+        }
+      ]
+    },
+    "Prostate_Prob_70_74": {
+      "type": "Simple",
+      "remarks": [
+        "ECIS 2022: ~0.55%/year in men 70-74."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.011,
+          "transition": "PSA_Screening"
+        },
+        {
+          "distribution": 0.989,
+          "transition": "Annual_PSA_Delay"
+        }
+      ]
+    },
+    "Prostate_Prob_75_plus": {
+      "type": "Simple",
+      "remarks": [
+        "ECIS 2022: ~0.45%/year in men 75+ (competing mortality reduces detection)."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.009,
+          "transition": "PSA_Screening"
+        },
+        {
+          "distribution": 0.991,
+          "transition": "Annual_PSA_Delay"
+        }
+      ]
+    },
+    "PSA_Screening": {
+      "type": "Encounter",
+      "encounter_class": "ambulatory",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "11429006",
+          "display": "Consultation (procedure)"
+        }
+      ],
+      "direct_transition": "PSA_Test"
+    },
+    "PSA_Test": {
+      "type": "Observation",
+      "category": "laboratory",
+      "codes": [
+        {
+          "system": "LOINC",
+          "code": "2857-1",
+          "display": "PSA [Mass/volume] in Serum or Plasma"
+        }
+      ],
+      "range": {
+        "low": 4.0,
+        "high": 50.0,
+        "decimals": 1
+      },
+      "unit": "ng/mL",
+      "direct_transition": "Diagnose_Prostate_Cancer"
+    },
+    "Diagnose_Prostate_Cancer": {
+      "type": "ConditionOnset",
+      "assign_to_attribute": "prostate_cancer",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "126906006",
+          "display": "Neoplasm of prostate (disorder)"
+        }
+      ],
+      "direct_transition": "Set_Prostate_Boolean"
+    },
+    "Set_Prostate_Boolean": {
+      "type": "SetAttribute",
+      "attribute": "prostate_cancer",
+      "value": true,
+      "direct_transition": "Prostate_Biopsy"
+    },
+    "Prostate_Biopsy": {
+      "type": "Procedure",
+      "reason": "Diagnose_Prostate_Cancer",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "65575008",
+          "display": "Biopsy of prostate (procedure)"
+        }
+      ],
+      "direct_transition": "End_PSA_Encounter"
+    },
+    "End_PSA_Encounter": {
+      "type": "EncounterEnd",
+      "direct_transition": "Risk_Stratification"
+    },
+    "Risk_Stratification": {
+      "type": "Simple",
+      "remarks": [
+        "EAU 2023: low risk 40%, intermediate 35%, high/advanced 25%."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.4,
+          "transition": "Active_Surveillance"
+        },
+        {
+          "distribution": 0.35,
+          "transition": "Radical_Treatment"
+        },
+        {
+          "distribution": 0.25,
+          "transition": "Advanced_Treatment"
+        }
+      ]
+    },
+    "Active_Surveillance": {
+      "type": "Encounter",
+      "encounter_class": "ambulatory",
+      "reason": "Diagnose_Prostate_Cancer",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "390906007",
+          "display": "Follow-up encounter (procedure)"
+        }
+      ],
+      "direct_transition": "End_Surveillance_Encounter"
+    },
+    "End_Surveillance_Encounter": {
+      "type": "EncounterEnd",
+      "direct_transition": "Prostate_Followup_Delay"
+    },
+    "Radical_Treatment": {
+      "type": "Procedure",
+      "reason": "Diagnose_Prostate_Cancer",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "26294005",
+          "display": "Radical prostatectomy (procedure)"
+        }
+      ],
+      "direct_transition": "End_Radical_Encounter"
+    },
+    "End_Radical_Encounter": {
+      "type": "EncounterEnd",
+      "direct_transition": "Prostate_Followup_Delay"
+    },
+    "Advanced_Treatment": {
+      "type": "MedicationOrder",
+      "reason": "Diagnose_Prostate_Cancer",
+      "codes": [
+        {
+          "system": "RxNorm",
+          "code": "203602",
+          "display": "leuprolide 7.5 MG Injection"
+        }
+      ],
+      "direct_transition": "End_Advanced_Encounter"
+    },
+    "End_Advanced_Encounter": {
+      "type": "EncounterEnd",
+      "direct_transition": "Prostate_Followup_Delay"
+    },
+    "Prostate_Followup_Delay": {
+      "type": "Delay",
+      "range": {
+        "low": 10,
+        "high": 14,
+        "unit": "months"
+      },
+      "direct_transition": "Prostate_PSA_Review"
+    },
+    "Prostate_PSA_Review": {
+      "type": "Encounter",
+      "encounter_class": "ambulatory",
+      "reason": "Diagnose_Prostate_Cancer",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "390906007",
+          "display": "Follow-up encounter (procedure)"
+        }
+      ],
+      "direct_transition": "Followup_PSA"
+    },
+    "Followup_PSA": {
+      "type": "Observation",
+      "category": "laboratory",
+      "codes": [
+        {
+          "system": "LOINC",
+          "code": "2857-1",
+          "display": "PSA [Mass/volume] in Serum or Plasma"
+        }
+      ],
+      "range": {
+        "low": 0.1,
+        "high": 4.0,
+        "decimals": 2
+      },
+      "unit": "ng/mL",
+      "direct_transition": "Prostate_Outcome_Check"
+    },
+    "Prostate_Outcome_Check": {
+      "type": "Simple",
+      "remarks": [
+        "EAU: 2% per year disease-specific mortality; 3% remission (PSA undetectable)."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.02,
+          "transition": "Prostate_Death"
+        },
+        {
+          "distribution": 0.03,
+          "transition": "Prostate_Remission"
+        },
+        {
+          "distribution": 0.95,
+          "transition": "End_PSA_Review"
+        }
+      ]
+    },
+    "Prostate_Death": {
+      "type": "Death",
+      "direct_transition": "Terminal"
+    },
+    "Prostate_Remission": {
+      "type": "ConditionEnd",
+      "remarks": [
+        "PSA undetectable \u2014 clinical remission."
+      ],
+      "condition_onset": "Diagnose_Prostate_Cancer",
+      "direct_transition": "Terminal"
+    },
+    "End_PSA_Review": {
+      "type": "EncounterEnd",
+      "direct_transition": "Prostate_Followup_Delay"
+    },
+    "Terminal": {
+      "type": "Terminal"
+    }
+  }
+}

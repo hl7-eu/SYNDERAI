@@ -1,0 +1,380 @@
+{
+  "name": "Stable Ischaemic Heart Disease Europe",
+  "remarks": [
+    "EU-calibrated stable ischaemic heart disease (IHD) module.",
+    "REPLACES stable_ischemic_heart_disease.json which fires for 0% of EU patients",
+    "  High-risk 45-64: 0.25%/yr  |  65-74: 0.55%/yr  |  75+: 1.10%/yr",
+    "  Low-risk  45-64: 0.09%/yr  |  65-74: 0.25%/yr  |  75+: 0.50%/yr",
+    "Calibrated to ESC Chronic Coronary Syndromes Guidelines 2019 and",
+    "ESC Atlas 2023: stable IHD prevalence ~3-4% EU adults.",
+    "",
+    "Risk tiers (reads attributes set by other EU modules):",
+    "  High: hypertension == true OR diabetes == true (reads hypertension_europe,",
+    "        diabetes_europe attributes)",
+    "  Low:  no major risk factors",
+    "",
+    "Annual incidence rates (ESC 2019, EUROASPIRE data):",
+    "  High-risk 45-64: 0.40%/yr  |  65-74: 0.90%/yr  |  75+: 1.80%/yr",
+    "  Low-risk  45-64: 0.15%/yr  |  65-74: 0.40%/yr  |  75+: 0.80%/yr",
+    "",
+    "Medications: ESC 2019 first-line: aspirin, statin, beta-blocker, nitrate.",
+    "Sets attribute: ischemic_heart_disease = true (read by other modules).",
+    "",
+    "PATCH (calibration round 2):",
+    "  Halved all annual IHD onset rates. Previous calibration produced",
+    "  ~20% cohort prevalence; new rates target ~8-10% (ESC Atlas 2023):",
+    "    High 45-64: 0.25 → 0.125 %/yr | 65-74: 0.55 → 0.275 %/yr |",
+    "    75+: 1.10 → 0.55 %/yr",
+    "    Low  45-64: 0.09 → 0.045 %/yr | 65-74: 0.25 → 0.125 %/yr |",
+    "    75+: 0.50 → 0.25 %/yr"
+  ],
+  "states": {
+    "Initial": {
+      "type": "Initial",
+      "direct_transition": "Age_Guard"
+    },
+    "Age_Guard": {
+      "type": "Guard",
+      "allow": {
+        "condition_type": "Age",
+        "operator": ">=",
+        "quantity": 45,
+        "unit": "years"
+      },
+      "direct_transition": "IHD_Naive_Guard"
+    },
+    "IHD_Naive_Guard": {
+      "type": "Guard",
+      "allow": {
+        "condition_type": "Attribute",
+        "attribute": "ischemic_heart_disease",
+        "operator": "is nil"
+      },
+      "direct_transition": "Annual_IHD_Delay"
+    },
+    "Annual_IHD_Delay": {
+      "type": "Delay",
+      "exact": {
+        "quantity": 1,
+        "unit": "years"
+      },
+      "direct_transition": "IHD_Risk_Check"
+    },
+    "IHD_Risk_Check": {
+      "type": "Simple",
+      "remarks": [
+        "Route to high or low risk based on hypertension/diabetes attributes."
+      ],
+      "conditional_transition": [
+        {
+          "condition": {
+            "condition_type": "Or",
+            "conditions": [
+              {
+                "condition_type": "Attribute",
+                "attribute": "hypertension",
+                "operator": "==",
+                "value": true
+              },
+              {
+                "condition_type": "Attribute",
+                "attribute": "diabetes",
+                "operator": "==",
+                "value": true
+              }
+            ]
+          },
+          "transition": "IHD_High_Risk_Age_Check"
+        },
+        {
+          "transition": "IHD_Low_Risk_Age_Check"
+        }
+      ]
+    },
+    "IHD_High_Risk_Age_Check": {
+      "type": "Simple",
+      "conditional_transition": [
+        {
+          "condition": {
+            "condition_type": "Age",
+            "operator": "<",
+            "quantity": 65,
+            "unit": "years"
+          },
+          "transition": "IHD_Prob_High_45_64"
+        },
+        {
+          "condition": {
+            "condition_type": "Age",
+            "operator": "<",
+            "quantity": 75,
+            "unit": "years"
+          },
+          "transition": "IHD_Prob_High_65_74"
+        },
+        {
+          "transition": "IHD_Prob_High_75_plus"
+        }
+      ]
+    },
+    "IHD_Low_Risk_Age_Check": {
+      "type": "Simple",
+      "conditional_transition": [
+        {
+          "condition": {
+            "condition_type": "Age",
+            "operator": "<",
+            "quantity": 65,
+            "unit": "years"
+          },
+          "transition": "IHD_Prob_Low_45_64"
+        },
+        {
+          "condition": {
+            "condition_type": "Age",
+            "operator": "<",
+            "quantity": 75,
+            "unit": "years"
+          },
+          "transition": "IHD_Prob_Low_65_74"
+        },
+        {
+          "transition": "IHD_Prob_Low_75_plus"
+        }
+      ]
+    },
+    "IHD_Prob_High_45_64": {
+      "type": "Simple",
+      "remarks": [
+        "Recalibrated 0.400% → 0.250%/yr (ESC 2019)."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.00125,
+          "transition": "Diagnose_IHD"
+        },
+        {
+          "distribution": 0.99875,
+          "transition": "Annual_IHD_Delay"
+        }
+      ]
+    },
+    "IHD_Prob_High_65_74": {
+      "type": "Simple",
+      "remarks": [
+        "Recalibrated 0.900% → 0.550%/yr (ESC 2019)."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.00275,
+          "transition": "Diagnose_IHD"
+        },
+        {
+          "distribution": 0.99725,
+          "transition": "Annual_IHD_Delay"
+        }
+      ]
+    },
+    "IHD_Prob_High_75_plus": {
+      "type": "Simple",
+      "remarks": [
+        "Recalibrated 1.800% → 1.100%/yr (ESC 2019)."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.0055,
+          "transition": "Diagnose_IHD"
+        },
+        {
+          "distribution": 0.9945,
+          "transition": "Annual_IHD_Delay"
+        }
+      ]
+    },
+    "IHD_Prob_Low_45_64": {
+      "type": "Simple",
+      "remarks": [
+        "Recalibrated 0.150% → 0.090%/yr (ESC 2019)."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.00045,
+          "transition": "Diagnose_IHD"
+        },
+        {
+          "distribution": 0.99955,
+          "transition": "Annual_IHD_Delay"
+        }
+      ]
+    },
+    "IHD_Prob_Low_65_74": {
+      "type": "Simple",
+      "remarks": [
+        "Recalibrated 0.400% → 0.250%/yr (ESC 2019)."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.00125,
+          "transition": "Diagnose_IHD"
+        },
+        {
+          "distribution": 0.99875,
+          "transition": "Annual_IHD_Delay"
+        }
+      ]
+    },
+    "IHD_Prob_Low_75_plus": {
+      "type": "Simple",
+      "remarks": [
+        "Recalibrated 0.800% → 0.500%/yr (ESC 2019)."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.0025,
+          "transition": "Diagnose_IHD"
+        },
+        {
+          "distribution": 0.9975,
+          "transition": "Annual_IHD_Delay"
+        }
+      ]
+    },
+    "Diagnose_IHD": {
+      "type": "ConditionOnset",
+      "assign_to_attribute": "ischemic_heart_disease",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "414545008",
+          "display": "Ischemic heart disease (disorder)"
+        }
+      ],
+      "direct_transition": "Set_IHD_Boolean"
+    },
+    "Set_IHD_Boolean": {
+      "type": "SetAttribute",
+      "attribute": "ischemic_heart_disease",
+      "value": true,
+      "direct_transition": "IHD_Initial_Encounter"
+    },
+    "IHD_Initial_Encounter": {
+      "type": "Encounter",
+      "encounter_class": "ambulatory",
+      "reason": "Diagnose_IHD",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "11429006",
+          "display": "Consultation (procedure)"
+        }
+      ],
+      "direct_transition": "IHD_ECG"
+    },
+    "IHD_ECG": {
+      "type": "Procedure",
+      "reason": "Diagnose_IHD",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "29303009",
+          "display": "Electrocardiographic procedure (procedure)"
+        }
+      ],
+      "direct_transition": "Prescribe_Aspirin_IHD"
+    },
+    "Prescribe_Aspirin_IHD": {
+      "type": "MedicationOrder",
+      "reason": "Diagnose_IHD",
+      "codes": [
+        {
+          "system": "RxNorm",
+          "code": "243670",
+          "display": "aspirin 100 MG Oral Tablet"
+        }
+      ],
+      "remarks": [
+        "ESC 2019: aspirin 75-100mg antiplatelet therapy for stable IHD."
+      ],
+      "direct_transition": "Prescribe_Statin_IHD"
+    },
+    "Prescribe_Statin_IHD": {
+      "type": "MedicationOrder",
+      "reason": "Diagnose_IHD",
+      "codes": [
+        {
+          "system": "RxNorm",
+          "code": "859751",
+          "display": "atorvastatin 40 MG Oral Tablet"
+        }
+      ],
+      "remarks": [
+        "ESC 2019: high-intensity statin mandatory for all IHD patients."
+      ],
+      "direct_transition": "Prescribe_Beta_Blocker_IHD"
+    },
+    "Prescribe_Beta_Blocker_IHD": {
+      "type": "MedicationOrder",
+      "reason": "Diagnose_IHD",
+      "codes": [
+        {
+          "system": "RxNorm",
+          "code": "854901",
+          "display": "bisoprolol fumarate 5 MG Oral Tablet"
+        }
+      ],
+      "remarks": [
+        "ESC 2019: beta-blocker for heart rate control and anti-anginal effect."
+      ],
+      "direct_transition": "IHD_Sublingual_Nitrate"
+    },
+    "IHD_Sublingual_Nitrate": {
+      "type": "MedicationOrder",
+      "reason": "Diagnose_IHD",
+      "codes": [
+        {
+          "system": "RxNorm",
+          "code": "1740467",
+          "display": "glyceryl trinitrate 0.5 MG Sublingual Tablet"
+        }
+      ],
+      "remarks": [
+        "Glyceryl trinitrate (GTN) sublingual: EU INN for nitroglycerin.",
+        "Standard EU acute angina relief. Known as 'nitroglycerin' in US."
+      ],
+      "direct_transition": "End_IHD_Initial_Encounter"
+    },
+    "End_IHD_Initial_Encounter": {
+      "type": "EncounterEnd",
+      "direct_transition": "IHD_Followup_Delay"
+    },
+    "IHD_Followup_Delay": {
+      "type": "Delay",
+      "range": {
+        "low": 10,
+        "high": 14,
+        "unit": "months"
+      },
+      "direct_transition": "IHD_Annual_Review"
+    },
+    "IHD_Annual_Review": {
+      "type": "Encounter",
+      "encounter_class": "ambulatory",
+      "reason": "Diagnose_IHD",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "390906007",
+          "display": "Follow-up encounter (procedure)"
+        }
+      ],
+      "direct_transition": "End_IHD_Review"
+    },
+    "End_IHD_Review": {
+      "type": "EncounterEnd",
+      "direct_transition": "IHD_Followup_Delay"
+    },
+    "Terminal": {
+      "type": "Terminal"
+    }
+  }
+}

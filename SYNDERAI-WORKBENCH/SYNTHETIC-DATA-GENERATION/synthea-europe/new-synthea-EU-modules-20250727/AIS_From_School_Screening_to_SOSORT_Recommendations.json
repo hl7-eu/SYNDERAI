@@ -1,0 +1,1890 @@
+{
+  "name": "AIS_From_School_Screening_to_SOSORT_Recommendations",
+  "remarks": [
+    "Module for Adolescent Idiopathic Scoliosis screening and treatment",
+    "Based on SOSORT 2016 guidelines",
+    "Covers patients aged 10-18 years",
+    "Authors: Reem Koubeh, Daoud Karakolah, Mohammad Firas Wahbeh",
+    "Version: 2.0, updated 01-24-2026"
+  ],
+  "states": {
+    "Initial": {
+      "type": "Initial",
+      "name": "Initial",
+      "direct_transition": "Age_Guard"
+    },
+    "Terminal": {
+      "type": "Terminal",
+      "name": "Terminal"
+    },
+    "Adolescent_Idiopathic_Scoliosis": {
+      "type": "ConditionOnset",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "203646004",
+          "display": "Adolescent idiopathic scoliosis (disorder)",
+          "value_set": ""
+        }
+      ],
+      "remarks": [
+        "AIS starts before detection"
+      ],
+      "target_encounter": "Followup_Orthopaedic_Encounter",
+      "direct_transition": "Screening_Delay",
+      "name": "Adolescent_Idiopathic_Scoliosis"
+    },
+    "Age_Guard": {
+      "type": "Guard",
+      "allow": {
+        "condition_type": "And",
+        "conditions": [
+          {
+            "condition_type": "Age",
+            "operator": ">=",
+            "quantity": 10,
+            "unit": "years"
+          },
+          {
+            "condition_type": "Age",
+            "operator": "<=",
+            "quantity": 18,
+            "unit": "years"
+          }
+        ]
+      },
+      "name": "Age_Guard",
+      "distributed_transition": [
+        {
+          "transition": "Adolescent_Idiopathic_Scoliosis",
+          "distribution": 0.03
+        },
+        {
+          "transition": "Terminal",
+          "distribution": 0.97
+        }
+      ]
+    },
+    "Wellness_Encounter": {
+      "type": "Encounter",
+      "encounter_class": "wellness",
+      "reason": "Adolescent_Idiopathic_Scoliosis",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "185349003",
+          "display": "Encounter for check up (procedure)",
+          "value_set": ""
+        }
+      ],
+      "direct_transition": "Scoliosis_School_Screening",
+      "name": "Wellness_Encounter"
+    },
+    "Scoliosis_School_Screening": {
+      "type": "Procedure",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "170245002",
+          "display": "Child examination: school screening (procedure)",
+          "value_set": ""
+        }
+      ],
+      "distribution": {
+        "kind": "UNIFORM",
+        "parameters": {
+          "high": 5,
+          "low": 1
+        }
+      },
+      "unit": "minutes",
+      "direct_transition": "Position_of_Body_and_Posture",
+      "name": "Scoliosis_School_Screening",
+      "reason": "Adolescent_Idiopathic_Scoliosis"
+    },
+    "Position_of_Body_and_Posture": {
+      "type": "Observation",
+      "category": "exam",
+      "unit": "",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "271605009",
+          "display": "Position of body and posture (observable entity)",
+          "value_set": ""
+        }
+      ],
+      "distribution": {
+        "kind": "UNIFORM",
+        "round": true,
+        "parameters": {
+          "high": 7,
+          "low": 1
+        }
+      },
+      "direct_transition": "Referral_to_Orthopaedic_Surgeon",
+      "name": "Position_of_Body_and_Posture"
+    },
+    "Referral_to_Orthopaedic_Surgeon": {
+      "type": "Procedure",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "308481009",
+          "display": "Referral to orthopedic surgeon (procedure)",
+          "value_set": ""
+        }
+      ],
+      "distribution": {
+        "kind": "UNIFORM",
+        "parameters": {
+          "high": 60,
+          "low": 30
+        }
+      },
+      "unit": "days",
+      "direct_transition": "End_Wellness_Encounter",
+      "name": "Referral_to_Orthopaedic_Surgeon",
+      "reason": "Adolescent_Idiopathic_Scoliosis"
+    },
+    "End_Wellness_Encounter": {
+      "type": "EncounterEnd",
+      "name": "End_Wellness_Encounter",
+      "direct_transition": "Orthopaedic_Encounter"
+    },
+    "Orthopaedic_Encounter": {
+      "type": "Encounter",
+      "encounter_class": "ambulatory",
+      "reason": "Adolescent_Idiopathic_Scoliosis",
+      "telemedicine_possibility": "none",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "185347001",
+          "display": "Encounter for problem (procedure)",
+          "value_set": ""
+        }
+      ],
+      "direct_transition": "History_Taking",
+      "name": "Orthopaedic_Encounter"
+    },
+    "History_Taking": {
+      "type": "Procedure",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "84100007",
+          "display": "History taking (procedure)",
+          "value_set": ""
+        }
+      ],
+      "distribution": {
+        "kind": "UNIFORM",
+        "parameters": {
+          "high": 15,
+          "low": 10
+        }
+      },
+      "unit": "minutes",
+      "direct_transition": "Postural_Examination",
+      "name": "History_Taking",
+      "reason": "Adolescent_Idiopathic_Scoliosis"
+    },
+    "Postural_Examination": {
+      "type": "Procedure",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "417656005",
+          "display": "Osteopathic postural examination (procedure)",
+          "value_set": ""
+        }
+      ],
+      "distribution": {
+        "kind": "UNIFORM",
+        "parameters": {
+          "high": 5,
+          "low": 1
+        }
+      },
+      "unit": "minutes",
+      "direct_transition": "Physical_Examination",
+      "name": "Postural_Examination",
+      "reason": "Adolescent_Idiopathic_Scoliosis"
+    },
+    "Physical_Examination": {
+      "type": "Procedure",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "5880005",
+          "display": "Physical examination procedure (procedure)",
+          "value_set": ""
+        }
+      ],
+      "distribution": {
+        "kind": "UNIFORM",
+        "parameters": {
+          "high": 10,
+          "low": 5
+        }
+      },
+      "unit": "minutes",
+      "direct_transition": "Scoliosis_Suspicion",
+      "name": "Physical_Examination",
+      "reason": "Adolescent_Idiopathic_Scoliosis"
+    },
+    "Scoliosis_Suspicion": {
+      "type": "Simple",
+      "direct_transition": "Referral_for_X-ray",
+      "name": "Scoliosis_Suspicion"
+    },
+    "Referral_for_X-ray": {
+      "type": "Procedure",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "183830008",
+          "display": "Referral for X-ray (procedure)",
+          "value_set": ""
+        }
+      ],
+      "distribution": {
+        "kind": "UNIFORM",
+        "parameters": {
+          "high": 10,
+          "low": 5
+        }
+      },
+      "unit": "minutes",
+      "direct_transition": "End_Orthopaedic_Encounter",
+      "name": "Referral_for_X-ray",
+      "reason": "Adolescent_Idiopathic_Scoliosis"
+    },
+    "Plain_X-Ray_Spine_and_Pelvis": {
+      "type": "Procedure",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "1290953004",
+          "display": "Plain X-ray of spine and pelvis (procedure)",
+          "value_set": ""
+        }
+      ],
+      "distribution": {
+        "kind": "UNIFORM",
+        "parameters": {
+          "high": 30,
+          "low": 10
+        }
+      },
+      "unit": "minutes",
+      "direct_transition": "End_XRay_Encounter",
+      "name": "Plain_X-Ray_Spine_and_Pelvis",
+      "reason": "Adolescent_Idiopathic_Scoliosis"
+    },
+    "End_Orthopaedic_Encounter": {
+      "type": "EncounterEnd",
+      "direct_transition": "XRay_Encounter",
+      "name": "End_Orthopaedic_Encounter"
+    },
+    "XRay_Encounter": {
+      "type": "Encounter",
+      "encounter_class": "outpatient",
+      "reason": "Adolescent_Idiopathic_Scoliosis",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "308335008",
+          "display": "Patient encounter procedure (procedure)",
+          "value_set": ""
+        }
+      ],
+      "direct_transition": "XRay_Delay",
+      "name": "XRay_Encounter"
+    },
+    "XRay_Delay": {
+      "type": "Delay",
+      "distribution": {
+        "kind": "UNIFORM",
+        "parameters": {
+          "high": 7,
+          "low": 3
+        }
+      },
+      "unit": "days",
+      "direct_transition": "Plain_X-Ray_Spine_and_Pelvis",
+      "name": "XRay_Delay"
+    },
+    "End_XRay_Encounter": {
+      "type": "EncounterEnd",
+      "name": "End_XRay_Encounter",
+      "direct_transition": "Post_XRay_Delay"
+    },
+    "Post_XRay_Delay": {
+      "type": "Delay",
+      "distribution": {
+        "kind": "UNIFORM",
+        "parameters": {
+          "high": 14,
+          "low": 7
+        }
+      },
+      "unit": "days",
+      "direct_transition": "Followup_Orthopaedic_Encounter",
+      "name": "Post_XRay_Delay"
+    },
+    "Followup_Orthopaedic_Encounter": {
+      "type": "Encounter",
+      "encounter_class": "ambulatory",
+      "reason": "Adolescent_Idiopathic_Scoliosis",
+      "telemedicine_possibility": "none",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "390906007",
+          "display": "Follow-up encounter (procedure)",
+          "value_set": ""
+        }
+      ],
+      "direct_transition": "XRay_Measurements",
+      "name": "Followup_Orthopaedic_Encounter"
+    },
+    "XRay_Measurements": {
+      "type": "Procedure",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "122869004",
+          "display": "Measurement procedure (procedure)",
+          "value_set": ""
+        }
+      ],
+      "distribution": {
+        "kind": "UNIFORM",
+        "parameters": {
+          "high": 15,
+          "low": 10
+        }
+      },
+      "unit": "minutes",
+      "direct_transition": "Confirm_AIS_No_Red_Flags",
+      "name": "XRay_Measurements",
+      "reason": "Adolescent_Idiopathic_Scoliosis"
+    },
+    "Confirm_AIS_No_Red_Flags": {
+      "type": "ConditionOnset",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "203646004",
+          "display": "Adolescent idiopathic scoliosis (disorder)",
+          "value_set": ""
+        }
+      ],
+      "remarks": [
+        "AIS diagnosis is confirmed after excluding red flags"
+      ],
+      "name": "Confirm_AIS_No_Red_Flags",
+      "distributed_transition": [
+        {
+          "transition": "Cobb_11_15_R_0_5",
+          "distribution": 0.0769230769230769
+        },
+        {
+          "transition": "Cobb_16_20_R_0_2",
+          "distribution": 0.0769230769230769
+        },
+        {
+          "transition": "Cobb_16_20_R_3_5",
+          "distribution": 0.0769230769230769
+        },
+        {
+          "transition": "Cobb_21_25_R_0_2",
+          "distribution": 0.0769230769230769
+        },
+        {
+          "transition": "Cobb_21_25_R_3_5",
+          "distribution": 0.0769230769230769
+        },
+        {
+          "transition": "Cobb_26_30_R_0_3",
+          "distribution": 0.0769230769230769
+        },
+        {
+          "transition": "Cobb_26_45_R_4_5",
+          "distribution": 0.0769230769230769
+        },
+        {
+          "transition": "Cobb_31_35_R_0_3",
+          "distribution": 0.0769230769230769
+        },
+        {
+          "transition": "Cobb_36_45_R_2_3",
+          "distribution": 0.0769230769230769
+        },
+        {
+          "transition": "Cobb_36_45_R_0_1",
+          "distribution": 0.0769230769230769
+        },
+        {
+          "transition": "Cobb_46_50_R_0_1",
+          "distribution": 0.0769230769230769
+        },
+        {
+          "transition": "Cobb_46_50_R_2_5",
+          "distribution": 0.0769230769230769
+        },
+        {
+          "transition": "Cobb_51_65_R_0_5",
+          "distribution": 0.07692307692307743
+        }
+      ]
+    },
+    "Cobb_21_25_R_0_2": {
+      "type": "Observation",
+      "category": "exam",
+      "unit": "",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "285285000",
+          "display": "Cobb angle (observable entity)",
+          "value_set": ""
+        }
+      ],
+      "remarks": [
+        "Cobb angle (21-25)"
+      ],
+      "distribution": {
+        "kind": "UNIFORM",
+        "round": false,
+        "parameters": {
+          "high": 25,
+          "low": 21
+        }
+      },
+      "name": "Cobb_21_25_R_0_2",
+      "direct_transition": "Risser_0_2_C_21_25"
+    },
+    "Cobb_11_15_R_0_5": {
+      "type": "Observation",
+      "category": "exam",
+      "unit": "",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "285285000",
+          "display": "Cobb angle (observable entity)",
+          "value_set": ""
+        }
+      ],
+      "remarks": [
+        "Cobb angle (11-15)"
+      ],
+      "distribution": {
+        "kind": "UNIFORM",
+        "round": false,
+        "parameters": {
+          "high": 15,
+          "low": 11
+        }
+      },
+      "name": "Cobb_11_15_R_0_5",
+      "direct_transition": "Risser_0_5_C_11_15"
+    },
+    "Cobb_16_20_R_3_5": {
+      "type": "Observation",
+      "category": "exam",
+      "unit": "",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "285285000",
+          "display": "Cobb angle (observable entity)",
+          "value_set": ""
+        }
+      ],
+      "remarks": [
+        "Cobb angle (16-20)"
+      ],
+      "distribution": {
+        "kind": "UNIFORM",
+        "round": false,
+        "parameters": {
+          "high": 20,
+          "low": 16
+        }
+      },
+      "name": "Cobb_16_20_R_3_5",
+      "direct_transition": "Risser_3_5_C_16_20"
+    },
+    "Cobb_16_20_R_0_2": {
+      "type": "Observation",
+      "category": "exam",
+      "unit": "",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "285285000",
+          "display": "Cobb angle (observable entity)",
+          "value_set": ""
+        }
+      ],
+      "remarks": [
+        "Cobb angle (16-20)"
+      ],
+      "distribution": {
+        "kind": "UNIFORM",
+        "round": false,
+        "parameters": {
+          "high": 20,
+          "low": 16
+        }
+      },
+      "name": "Cobb_16_20_R_0_2",
+      "direct_transition": "Risser_0_2_C_16_20"
+    },
+    "Cobb_21_25_R_3_5": {
+      "type": "Observation",
+      "category": "exam",
+      "unit": "",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "285285000",
+          "display": "Cobb angle (observable entity)",
+          "value_set": ""
+        }
+      ],
+      "remarks": [
+        "Cobb angle (21-25)"
+      ],
+      "distribution": {
+        "kind": "UNIFORM",
+        "round": false,
+        "parameters": {
+          "high": 25,
+          "low": 21
+        }
+      },
+      "name": "Cobb_21_25_R_3_5",
+      "direct_transition": "Risser_3_5_C_21_25"
+    },
+    "Cobb_26_45_R_4_5": {
+      "type": "Observation",
+      "category": "exam",
+      "unit": "",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "285285000",
+          "display": "Cobb angle (observable entity)",
+          "value_set": ""
+        }
+      ],
+      "remarks": [
+        "Cobb angle (26-45)"
+      ],
+      "distribution": {
+        "kind": "UNIFORM",
+        "round": false,
+        "parameters": {
+          "high": 45,
+          "low": 26
+        }
+      },
+      "name": "Cobb_26_45_R_4_5",
+      "direct_transition": "Risser_4_5_C_26_45"
+    },
+    "Cobb_31_35_R_0_3": {
+      "type": "Observation",
+      "category": "exam",
+      "unit": "",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "285285000",
+          "display": "Cobb angle (observable entity)",
+          "value_set": ""
+        }
+      ],
+      "remarks": [
+        "Cobb angle (31-35)"
+      ],
+      "distribution": {
+        "kind": "UNIFORM",
+        "round": false,
+        "parameters": {
+          "high": 35,
+          "low": 31
+        }
+      },
+      "name": "Cobb_31_35_R_0_3",
+      "direct_transition": "Risser_0_3_C_31_35"
+    },
+    "Cobb_26_30_R_0_3": {
+      "type": "Observation",
+      "category": "exam",
+      "unit": "",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "285285000",
+          "display": "Cobb angle (observable entity)",
+          "value_set": ""
+        }
+      ],
+      "remarks": [
+        "Cobb angle (26-30)"
+      ],
+      "distribution": {
+        "kind": "UNIFORM",
+        "round": false,
+        "parameters": {
+          "high": 30,
+          "low": 26
+        }
+      },
+      "name": "Cobb_26_30_R_0_3",
+      "direct_transition": "Risser_0_3_C_26_30"
+    },
+    "Cobb_36_45_R_0_1": {
+      "type": "Observation",
+      "category": "exam",
+      "unit": "",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "285285000",
+          "display": "Cobb angle (observable entity)",
+          "value_set": ""
+        }
+      ],
+      "remarks": [
+        "Cobb angle (36-45)"
+      ],
+      "distribution": {
+        "kind": "UNIFORM",
+        "round": false,
+        "parameters": {
+          "high": 45,
+          "low": 36
+        }
+      },
+      "name": "Cobb_36_45_R_0_1",
+      "direct_transition": "Risser_0_1_C_36_45"
+    },
+    "Cobb_46_50_R_0_1": {
+      "type": "Observation",
+      "category": "exam",
+      "unit": "",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "285285000",
+          "display": "Cobb angle (observable entity)",
+          "value_set": ""
+        }
+      ],
+      "remarks": [
+        "Cobb angle (46-50)"
+      ],
+      "distribution": {
+        "kind": "UNIFORM",
+        "round": false,
+        "parameters": {
+          "high": 50,
+          "low": 46
+        }
+      },
+      "name": "Cobb_46_50_R_0_1",
+      "direct_transition": "Risser_0_1_C_46_50"
+    },
+    "Cobb_46_50_R_2_5": {
+      "type": "Observation",
+      "category": "exam",
+      "unit": "",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "285285000",
+          "display": "Cobb angle (observable entity)",
+          "value_set": ""
+        }
+      ],
+      "remarks": [
+        "Cobb angle (46-50)"
+      ],
+      "distribution": {
+        "kind": "UNIFORM",
+        "round": false,
+        "parameters": {
+          "high": 50,
+          "low": 46
+        }
+      },
+      "name": "Cobb_46_50_R_2_5",
+      "direct_transition": "Risser_2_5_C_46_50"
+    },
+    "Cobb_36_45_R_2_3": {
+      "type": "Observation",
+      "category": "exam",
+      "unit": "",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "285285000",
+          "display": "Cobb angle (observable entity)",
+          "value_set": ""
+        }
+      ],
+      "remarks": [
+        "Cobb angle (36-45)"
+      ],
+      "distribution": {
+        "kind": "UNIFORM",
+        "round": false,
+        "parameters": {
+          "high": 45,
+          "low": 36
+        }
+      },
+      "name": "Cobb_36_45_R_2_3",
+      "direct_transition": "Risser_2_3_C_36_45"
+    },
+    "Cobb_51_65_R_0_5": {
+      "type": "Observation",
+      "category": "exam",
+      "unit": "",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "285285000",
+          "display": "Cobb angle (observable entity)",
+          "value_set": ""
+        }
+      ],
+      "remarks": [
+        "Cobb angle (51-65)"
+      ],
+      "distribution": {
+        "kind": "UNIFORM",
+        "round": false,
+        "parameters": {
+          "high": 65,
+          "low": 51
+        }
+      },
+      "direct_transition": "Risser_0_5_C_51_65",
+      "name": "Cobb_51_65_R_0_5"
+    },
+    "Risser_0_2_C_16_20": {
+      "type": "Observation",
+      "category": "exam",
+      "unit": "",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "870537001",
+          "display": "Risser sign (finding)",
+          "value_set": ""
+        }
+      ],
+      "remarks": [
+        "Risser stage (0-2)"
+      ],
+      "distribution": {
+        "kind": "UNIFORM",
+        "round": true,
+        "parameters": {
+          "high": 2,
+          "low": 0
+        }
+      },
+      "name": "Risser_0_2_C_16_20",
+      "direct_transition": "Clinical_Decision_Based_on_SOSORT_2016_Guidelines_4"
+    },
+    "Risser_0_5_C_11_15": {
+      "type": "Observation",
+      "category": "exam",
+      "unit": "",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "870537001",
+          "display": "Risser sign (finding)",
+          "value_set": ""
+        }
+      ],
+      "remarks": [
+        "Risser stage (0-5)"
+      ],
+      "distribution": {
+        "kind": "UNIFORM",
+        "round": true,
+        "parameters": {
+          "high": 5,
+          "low": 0
+        }
+      },
+      "name": "Risser_0_5_C_11_15",
+      "direct_transition": "Clinical_Decision_Based_on_SOSORT_2016_Guidelines_2"
+    },
+    "Risser_3_5_C_16_20": {
+      "type": "Observation",
+      "category": "exam",
+      "unit": "",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "870537001",
+          "display": "Risser sign (finding)",
+          "value_set": ""
+        }
+      ],
+      "remarks": [
+        "Risser stage (3-5)"
+      ],
+      "distribution": {
+        "kind": "UNIFORM",
+        "round": true,
+        "parameters": {
+          "high": 5,
+          "low": 3
+        }
+      },
+      "name": "Risser_3_5_C_16_20",
+      "direct_transition": "Clinical_Decision_Based_on_SOSORT_2016_Guidelines_3"
+    },
+    "Risser_3_5_C_21_25": {
+      "type": "Observation",
+      "category": "exam",
+      "unit": "",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "870537001",
+          "display": "Risser sign (finding)",
+          "value_set": ""
+        }
+      ],
+      "remarks": [
+        "Risser stage (3-5)"
+      ],
+      "distribution": {
+        "kind": "UNIFORM",
+        "round": true,
+        "parameters": {
+          "high": 5,
+          "low": 3
+        }
+      },
+      "name": "Risser_3_5_C_21_25",
+      "direct_transition": "Clinical_Decision_Based_on_SOSORT_2016_Guidelines_5"
+    },
+    "Risser_4_5_C_26_45": {
+      "type": "Observation",
+      "category": "exam",
+      "unit": "",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "870537001",
+          "display": "Risser sign (finding)",
+          "value_set": ""
+        }
+      ],
+      "remarks": [
+        "Risser stage (4-5)"
+      ],
+      "distribution": {
+        "kind": "UNIFORM",
+        "round": true,
+        "parameters": {
+          "high": 5,
+          "low": 4
+        }
+      },
+      "name": "Risser_4_5_C_26_45",
+      "direct_transition": "Clinical_Decision_Based_on_SOSORT_2016_Guidelines_6"
+    },
+    "Risser_0_3_C_31_35": {
+      "type": "Observation",
+      "category": "exam",
+      "unit": "",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "870537001",
+          "display": "Risser sign (finding)",
+          "value_set": ""
+        }
+      ],
+      "distribution": {
+        "kind": "UNIFORM",
+        "round": true,
+        "parameters": {
+          "high": 3,
+          "low": 0
+        }
+      },
+      "remarks": [
+        "Risser stage (0-3)"
+      ],
+      "name": "Risser_0_3_C_31_35",
+      "direct_transition": "Clinical_Decision_Based_on_SOSORT_2016_Guidelines_7"
+    },
+    "Risser_0_3_C_26_30": {
+      "type": "Observation",
+      "category": "exam",
+      "unit": "",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "870537001",
+          "display": "Risser sign (finding)",
+          "value_set": ""
+        }
+      ],
+      "distribution": {
+        "kind": "UNIFORM",
+        "round": true,
+        "parameters": {
+          "high": 3,
+          "low": 0
+        }
+      },
+      "remarks": [
+        "Risser stage (0-3)"
+      ],
+      "name": "Risser_0_3_C_26_30",
+      "direct_transition": "Clinical_Decision_Based_on_SOSORT_2016_Guidelines_8"
+    },
+    "Risser_0_1_C_36_45": {
+      "type": "Observation",
+      "category": "exam",
+      "unit": "",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "870537001",
+          "display": "Risser sign (finding)",
+          "value_set": ""
+        }
+      ],
+      "remarks": [
+        "Risser stage (0-1)"
+      ],
+      "distribution": {
+        "kind": "UNIFORM",
+        "round": true,
+        "parameters": {
+          "high": 1,
+          "low": 0
+        }
+      },
+      "name": "Risser_0_1_C_36_45",
+      "direct_transition": "Clinical_Decision_Based_on_SOSORT_2016_Guidelines_9"
+    },
+    "Risser_0_1_C_46_50": {
+      "type": "Observation",
+      "category": "exam",
+      "unit": "",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "870537001",
+          "display": "Risser sign (finding)",
+          "value_set": ""
+        }
+      ],
+      "remarks": [
+        "Risser stage (0-1)"
+      ],
+      "distribution": {
+        "kind": "UNIFORM",
+        "round": true,
+        "parameters": {
+          "high": 1,
+          "low": 0
+        }
+      },
+      "name": "Risser_0_1_C_46_50",
+      "direct_transition": "Clinical_Decision_Based_on_SOSORT_2016_Guidelines_10"
+    },
+    "Risser_2_5_C_46_50": {
+      "type": "Observation",
+      "category": "exam",
+      "unit": "",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "870537001",
+          "display": "Risser sign (finding)",
+          "value_set": ""
+        }
+      ],
+      "remarks": [
+        "Risser stage (2-5)"
+      ],
+      "distribution": {
+        "kind": "UNIFORM",
+        "round": true,
+        "parameters": {
+          "high": 5,
+          "low": 2
+        }
+      },
+      "name": "Risser_2_5_C_46_50",
+      "direct_transition": "Clinical_Decision_Based_on_SOSORT_2016_Guidelines_11"
+    },
+    "Risser_2_3_C_36_45": {
+      "type": "Observation",
+      "category": "exam",
+      "unit": "",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "870537001",
+          "display": "Risser sign (finding)",
+          "value_set": ""
+        }
+      ],
+      "remarks": [
+        "Risser stage (2-3)"
+      ],
+      "distribution": {
+        "kind": "UNIFORM",
+        "round": true,
+        "parameters": {
+          "high": 3,
+          "low": 2
+        }
+      },
+      "name": "Risser_2_3_C_36_45",
+      "direct_transition": "Clinical_Decision_Based_on_SOSORT_2016_Guidelines_12"
+    },
+    "Risser_0_5_C_51_65": {
+      "type": "Observation",
+      "category": "exam",
+      "unit": "",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "870537001",
+          "display": "Risser sign (finding)",
+          "value_set": ""
+        }
+      ],
+      "remarks": [
+        "Risser stage (0-5)"
+      ],
+      "distribution": {
+        "kind": "UNIFORM",
+        "round": true,
+        "parameters": {
+          "high": 5,
+          "low": 0
+        }
+      },
+      "direct_transition": "Clinical_Decision_Based_on_SOSORT_2016_Guidelines_13",
+      "name": "Risser_0_5_C_51_65"
+    },
+    "Risser_0_2_C_21_25": {
+      "type": "Observation",
+      "category": "exam",
+      "unit": "",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "870537001",
+          "display": "Risser sign (finding)",
+          "value_set": ""
+        }
+      ],
+      "remarks": [
+        "Risser stage (0-2)"
+      ],
+      "distribution": {
+        "kind": "UNIFORM",
+        "round": true,
+        "parameters": {
+          "high": 2,
+          "low": 0
+        }
+      },
+      "name": "Risser_0_2_C_21_25",
+      "direct_transition": "Clinical_Decision_Based_on_SOSORT_2016_Guidelines_1"
+    },
+    "min_1": {
+      "type": "Simple",
+      "name": "min_1",
+      "direct_transition": "Refer_To_PSSE"
+    },
+    "max_1": {
+      "type": "Simple",
+      "name": "max_1",
+      "direct_transition": "Refer_To_FTRB"
+    },
+    "min_2": {
+      "type": "Simple",
+      "name": "min_2",
+      "direct_transition": "Refer_For_Monitoring_6_Months"
+    },
+    "max_2": {
+      "type": "Simple",
+      "name": "max_2",
+      "direct_transition": "Refer_To_PSSE"
+    },
+    "Clinical_Decision_Based_on_SOSORT_2016_Guidelines_1": {
+      "type": "Simple",
+      "name": "Clinical_Decision_Based_on_SOSORT_2016_Guidelines_1",
+      "distributed_transition": [
+        {
+          "transition": "min_1",
+          "distribution": 0.5
+        },
+        {
+          "transition": "max_1",
+          "distribution": 0.5
+        }
+      ]
+    },
+    "Clinical_Decision_Based_on_SOSORT_2016_Guidelines_2": {
+      "type": "Simple",
+      "name": "Clinical_Decision_Based_on_SOSORT_2016_Guidelines_2",
+      "distributed_transition": [
+        {
+          "transition": "min_2",
+          "distribution": 0.5
+        },
+        {
+          "transition": "max_2",
+          "distribution": 0.5
+        }
+      ]
+    },
+    "Clinical_Decision_Based_on_SOSORT_2016_Guidelines_3": {
+      "type": "Simple",
+      "name": "Clinical_Decision_Based_on_SOSORT_2016_Guidelines_3",
+      "distributed_transition": [
+        {
+          "transition": "min_3",
+          "distribution": 0.5
+        },
+        {
+          "transition": "max_3",
+          "distribution": 0.5
+        }
+      ]
+    },
+    "min_3": {
+      "type": "Simple",
+      "name": "min_3",
+      "direct_transition": "Refer_For_Monitoring_6_Months"
+    },
+    "max_3": {
+      "type": "Simple",
+      "name": "max_3",
+      "direct_transition": "Refer_To_PTRB"
+    },
+    "Refer_To_PTRB": {
+      "type": "Procedure",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "737617004",
+          "display": "Referral to prosthetic service (procedure) ",
+          "value_set": ""
+        }
+      ],
+      "remarks": [
+        "Refer to Part Time Rigid Bracing Service"
+      ],
+      "distribution": {
+        "kind": "UNIFORM",
+        "parameters": {
+          "high": 20,
+          "low": 10
+        }
+      },
+      "unit": "minutes",
+      "name": "Refer_To_PTRB",
+      "reason": "Adolescent_Idiopathic_Scoliosis",
+      "direct_transition": "Closure_of_Part_time_Brace_Referral"
+    },
+    "Refer_To_FTRB": {
+      "type": "Procedure",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "737617004",
+          "display": "Referral to prosthetic service (procedure) ",
+          "value_set": ""
+        }
+      ],
+      "remarks": [
+        "Refer to Full Time Rigid Bracing Service"
+      ],
+      "distribution": {
+        "kind": "UNIFORM",
+        "parameters": {
+          "high": 20,
+          "low": 10
+        }
+      },
+      "unit": "minutes",
+      "name": "Refer_To_FTRB",
+      "reason": "Adolescent_Idiopathic_Scoliosis",
+      "direct_transition": "Closure_of_Full_time_Brace_Referral"
+    },
+    "Refer_To_PSSE": {
+      "type": "Procedure",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "78429003",
+          "display": "Referral to physical rehabilitation service (procedure)",
+          "value_set": ""
+        }
+      ],
+      "remarks": [
+        "Refer to Physiotherapeutic Scoliosis Specific Exercises Service"
+      ],
+      "distribution": {
+        "kind": "UNIFORM",
+        "parameters": {
+          "high": 10,
+          "low": 5
+        }
+      },
+      "unit": "minutes",
+      "name": "Refer_To_PSSE",
+      "reason": "Adolescent_Idiopathic_Scoliosis",
+      "direct_transition": "Closure_of_PSSE_Referral"
+    },
+    "Refer_For_Monitoring_6_Months": {
+      "type": "Procedure",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "183444007",
+          "display": "Referral for further care (procedure)",
+          "value_set": ""
+        }
+      ],
+      "remarks": [
+        "Refer for follow-up monitoring after 6 months"
+      ],
+      "distribution": {
+        "kind": "UNIFORM",
+        "parameters": {
+          "high": 10,
+          "low": 5
+        }
+      },
+      "unit": "minutes",
+      "name": "Refer_For_Monitoring_6_Months",
+      "reason": "Adolescent_Idiopathic_Scoliosis",
+      "direct_transition": "Closure_of_6_Month_Monitoring_Referral"
+    },
+    "min_4": {
+      "type": "Simple",
+      "name": "min_4",
+      "direct_transition": "Refer_For_Monitoring_3_Months"
+    },
+    "max_4": {
+      "type": "Simple",
+      "name": "max_4",
+      "direct_transition": "Refer_To_PTRB"
+    },
+    "Refer_For_Monitoring_3_Months": {
+      "type": "Procedure",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "183444007",
+          "display": "Referral for further care (procedure)",
+          "value_set": ""
+        }
+      ],
+      "remarks": [
+        "Refer for follow-up monitoring after 3 months"
+      ],
+      "distribution": {
+        "kind": "UNIFORM",
+        "parameters": {
+          "high": 10,
+          "low": 5
+        }
+      },
+      "unit": "minutes",
+      "name": "Refer_For_Monitoring_3_Months",
+      "reason": "Adolescent_Idiopathic_Scoliosis",
+      "direct_transition": "Closure_of_3_Month_Monitoring_Referral"
+    },
+    "Clinical_Decision_Based_on_SOSORT_2016_Guidelines_4": {
+      "type": "Simple",
+      "distributed_transition": [
+        {
+          "transition": "min_4",
+          "distribution": 0.5
+        },
+        {
+          "transition": "max_4",
+          "distribution": 0.5
+        }
+      ],
+      "name": "Clinical_Decision_Based_on_SOSORT_2016_Guidelines_4"
+    },
+    "Clinical_Decision_Based_on_SOSORT_2016_Guidelines_5": {
+      "type": "Simple",
+      "name": "Clinical_Decision_Based_on_SOSORT_2016_Guidelines_5",
+      "distributed_transition": [
+        {
+          "transition": "max_5",
+          "distribution": 0.5
+        },
+        {
+          "transition": "min_5",
+          "distribution": 0.5
+        }
+      ]
+    },
+    "min_5": {
+      "type": "Simple",
+      "name": "min_5",
+      "direct_transition": "Refer_For_Monitoring_6_Months"
+    },
+    "max_5": {
+      "type": "Simple",
+      "name": "max_5",
+      "direct_transition": "Refer_To_FTRB"
+    },
+    "Clinical_Decision_Based_on_SOSORT_2016_Guidelines_6": {
+      "type": "Simple",
+      "name": "Clinical_Decision_Based_on_SOSORT_2016_Guidelines_6",
+      "distributed_transition": [
+        {
+          "transition": "min_6",
+          "distribution": 0.5
+        },
+        {
+          "transition": "max_6",
+          "distribution": 0.5
+        }
+      ]
+    },
+    "min_6": {
+      "type": "Simple",
+      "name": "min_6",
+      "direct_transition": "Refer_For_Monitoring_6_Months"
+    },
+    "max_6": {
+      "type": "Simple",
+      "name": "max_6",
+      "direct_transition": "Refer_To_FTRB"
+    },
+    "Clinical_Decision_Based_on_SOSORT_2016_Guidelines_7": {
+      "type": "Simple",
+      "name": "Clinical_Decision_Based_on_SOSORT_2016_Guidelines_7",
+      "distributed_transition": [
+        {
+          "transition": "min_7",
+          "distribution": 0.5
+        },
+        {
+          "transition": "max_7",
+          "distribution": 0.5
+        }
+      ]
+    },
+    "min_7": {
+      "type": "Simple",
+      "name": "min_7",
+      "direct_transition": "Refer_To_SSB"
+    },
+    "max_7": {
+      "type": "Simple",
+      "name": "max_7",
+      "direct_transition": "Refer_To_FTRB"
+    },
+    "Refer_To_SSB": {
+      "type": "Procedure",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "737617004",
+          "display": "Referral to prosthetic service (procedure)",
+          "value_set": ""
+        }
+      ],
+      "remarks": [
+        "Refer to Scoliosis Soft Bracing Service"
+      ],
+      "distribution": {
+        "kind": "UNIFORM",
+        "parameters": {
+          "high": 20,
+          "low": 10
+        }
+      },
+      "unit": "minutes",
+      "name": "Refer_To_SSB",
+      "reason": "Adolescent_Idiopathic_Scoliosis",
+      "direct_transition": "Closure_of_Soft_Brace_Referral"
+    },
+    "Clinical_Decision_Based_on_SOSORT_2016_Guidelines_8": {
+      "type": "Simple",
+      "name": "Clinical_Decision_Based_on_SOSORT_2016_Guidelines_8",
+      "distributed_transition": [
+        {
+          "transition": "min_8",
+          "distribution": 0.5
+        },
+        {
+          "transition": "max_8",
+          "distribution": 0.5
+        }
+      ]
+    },
+    "min_8": {
+      "type": "Simple",
+      "name": "min_8",
+      "direct_transition": "Refer_To_PSSE"
+    },
+    "max_8": {
+      "type": "Simple",
+      "name": "max_8",
+      "direct_transition": "Refer_To_FTRB"
+    },
+    "Clinical_Decision_Based_on_SOSORT_2016_Guidelines_9": {
+      "type": "Simple",
+      "name": "Clinical_Decision_Based_on_SOSORT_2016_Guidelines_9",
+      "distributed_transition": [
+        {
+          "transition": "min_9",
+          "distribution": 0.5
+        },
+        {
+          "transition": "max_9",
+          "distribution": 0.5
+        }
+      ]
+    },
+    "min_9": {
+      "type": "Simple",
+      "name": "min_9",
+      "direct_transition": "Refer_To_PTRB"
+    },
+    "max_9": {
+      "type": "Simple",
+      "name": "max_9",
+      "direct_transition": "Refer_To_FTRB"
+    },
+    "Clinical_Decision_Based_on_SOSORT_2016_Guidelines_10": {
+      "type": "Simple",
+      "name": "Clinical_Decision_Based_on_SOSORT_2016_Guidelines_10",
+      "distributed_transition": [
+        {
+          "transition": "min_10",
+          "distribution": 0.5
+        },
+        {
+          "transition": "max_10",
+          "distribution": 0.5
+        }
+      ]
+    },
+    "min_10": {
+      "type": "Simple",
+      "name": "min_10",
+      "direct_transition": "Refer_To_FTRB"
+    },
+    "max_10": {
+      "type": "Simple",
+      "name": "max_10",
+      "direct_transition": "Refer_to_Spinal_Surgery"
+    },
+    "Refer_to_Spinal_Surgery": {
+      "type": "Procedure",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "770695002",
+          "display": "Referral to spinal surgery service (procedure)",
+          "value_set": ""
+        }
+      ],
+      "distribution": {
+        "kind": "UNIFORM",
+        "parameters": {
+          "high": 25,
+          "low": 15
+        }
+      },
+      "unit": "minutes",
+      "name": "Refer_to_Spinal_Surgery",
+      "reason": "Adolescent_Idiopathic_Scoliosis",
+      "direct_transition": "Closure_of_Spinal_Surgery_Referral"
+    },
+    "Clinical_Decision_Based_on_SOSORT_2016_Guidelines_11": {
+      "type": "Simple",
+      "name": "Clinical_Decision_Based_on_SOSORT_2016_Guidelines_11",
+      "distributed_transition": [
+        {
+          "transition": "min_11",
+          "distribution": 0.5
+        },
+        {
+          "transition": "max_11",
+          "distribution": 0.5
+        }
+      ]
+    },
+    "min_11": {
+      "type": "Simple",
+      "name": "min_11",
+      "direct_transition": "Refer_To_SSB"
+    },
+    "max_11": {
+      "type": "Simple",
+      "name": "max_11",
+      "direct_transition": "Refer_to_Spinal_Surgery"
+    },
+    "Clinical_Decision_Based_on_SOSORT_2016_Guidelines_12": {
+      "type": "Simple",
+      "name": "Clinical_Decision_Based_on_SOSORT_2016_Guidelines_12",
+      "distributed_transition": [
+        {
+          "transition": "min_12",
+          "distribution": 0.5
+        },
+        {
+          "transition": "max_12",
+          "distribution": 0.5
+        }
+      ]
+    },
+    "min_12": {
+      "type": "Simple",
+      "name": "min_12",
+      "direct_transition": "Refer_To_SSB"
+    },
+    "max_12": {
+      "type": "Simple",
+      "name": "max_12",
+      "direct_transition": "Refer_To_FTRB"
+    },
+    "Clinical_Decision_Based_on_SOSORT_2016_Guidelines_13": {
+      "type": "Simple",
+      "name": "Clinical_Decision_Based_on_SOSORT_2016_Guidelines_13",
+      "distributed_transition": [
+        {
+          "transition": "min_13",
+          "distribution": 0.5
+        },
+        {
+          "transition": "max_13",
+          "distribution": 0.5
+        }
+      ]
+    },
+    "min_13": {
+      "type": "Simple",
+      "direct_transition": "Refer_To_FTRB",
+      "name": "min_13"
+    },
+    "max_13": {
+      "type": "Simple",
+      "direct_transition": "Refer_to_Spinal_Surgery",
+      "name": "max_13"
+    },
+    "Closure_of_3_Month_Monitoring_Referral": {
+      "type": "EncounterEnd",
+      "name": "Closure_of_3_Month_Monitoring_Referral",
+      "direct_transition": "Delay_3_Months_for_Monitoring"
+    },
+    "Closure_of_Part_time_Brace_Referral": {
+      "type": "EncounterEnd",
+      "name": "Closure_of_Part_time_Brace_Referral",
+      "direct_transition": "Delay_After_PTRB_Closure"
+    },
+    "Closure_of_6_Month_Monitoring_Referral": {
+      "type": "EncounterEnd",
+      "name": "Closure_of_6_Month_Monitoring_Referral",
+      "direct_transition": "Delay_6_Months_for_Monitoring"
+    },
+    "Closure_of_Full_time_Brace_Referral": {
+      "type": "EncounterEnd",
+      "name": "Closure_of_Full_time_Brace_Referral",
+      "direct_transition": "Delay_After_FTRB_Closure"
+    },
+    "Closure_of_Soft_Brace_Referral": {
+      "type": "EncounterEnd",
+      "name": "Closure_of_Soft_Brace_Referral",
+      "direct_transition": "Delay_After_SSB_Closure"
+    },
+    "Closure_of_Spinal_Surgery_Referral": {
+      "type": "EncounterEnd",
+      "name": "Closure_of_Spinal_Surgery_Referral",
+      "direct_transition": "Delay_After_Spinal_Surgery_Closure"
+    },
+    "Delay_6_Months_for_Monitoring": {
+      "type": "Delay",
+      "distribution": {
+        "kind": "EXACT",
+        "parameters": {
+          "value": 6
+        }
+      },
+      "unit": "months",
+      "name": "Delay_6_Months_for_Monitoring",
+      "direct_transition": "6_Months_Monitoring_Encounter"
+    },
+    "Delay_3_Months_for_Monitoring": {
+      "type": "Delay",
+      "distribution": {
+        "kind": "EXACT",
+        "parameters": {
+          "value": 3
+        }
+      },
+      "unit": "months",
+      "name": "Delay_3_Months_for_Monitoring",
+      "direct_transition": "3_Months_Monitoring_Encounter"
+    },
+    "3_Months_Monitoring_Encounter": {
+      "type": "Encounter",
+      "encounter_class": "ambulatory",
+      "reason": "Adolescent_Idiopathic_Scoliosis",
+      "telemedicine_possibility": "none",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "390906007",
+          "display": "Follow-up encounter (procedure)",
+          "value_set": ""
+        }
+      ],
+      "name": "3_Months_Monitoring_Encounter",
+      "direct_transition": "End_3_Months_Monitoring_Encounter"
+    },
+    "End_3_Months_Monitoring_Encounter": {
+      "type": "EncounterEnd",
+      "name": "End_3_Months_Monitoring_Encounter",
+      "direct_transition": "Terminal"
+    },
+    "Delay_After_PTRB_Closure": {
+      "type": "Delay",
+      "distribution": {
+        "kind": "UNIFORM",
+        "parameters": {
+          "high": 21,
+          "low": 7
+        }
+      },
+      "unit": "days",
+      "name": "Delay_After_PTRB_Closure",
+      "direct_transition": "PTRB_Post_Referral_Encounter"
+    },
+    "Closure_of_PSSE_Referral": {
+      "type": "EncounterEnd",
+      "name": "Closure_of_PSSE_Referral",
+      "direct_transition": "Delay_After_PSSE_Closure"
+    },
+    "Delay_After_PSSE_Closure": {
+      "type": "Delay",
+      "distribution": {
+        "kind": "UNIFORM",
+        "parameters": {
+          "high": 10,
+          "low": 3
+        }
+      },
+      "unit": "days",
+      "name": "Delay_After_PSSE_Closure",
+      "direct_transition": "PSSE_Post_Referral_Encounter"
+    },
+    "Delay_After_FTRB_Closure": {
+      "type": "Delay",
+      "distribution": {
+        "kind": "UNIFORM",
+        "parameters": {
+          "high": 28,
+          "low": 14
+        }
+      },
+      "unit": "days",
+      "name": "Delay_After_FTRB_Closure",
+      "direct_transition": "FTRB_Post_Referral_Encounter"
+    },
+    "Delay_After_Spinal_Surgery_Closure": {
+      "type": "Delay",
+      "distribution": {
+        "kind": "UNIFORM",
+        "parameters": {
+          "high": 42,
+          "low": 14
+        }
+      },
+      "unit": "days",
+      "name": "Delay_After_Spinal_Surgery_Closure",
+      "direct_transition": "Surgery_Post_Referral_Encounter"
+    },
+    "Delay_After_SSB_Closure": {
+      "type": "Delay",
+      "distribution": {
+        "kind": "UNIFORM",
+        "parameters": {
+          "high": 14,
+          "low": 7
+        }
+      },
+      "unit": "days",
+      "name": "Delay_After_SSB_Closure",
+      "direct_transition": "SSB_Post_Referral_Encounter"
+    },
+    "SSB_Post_Referral_Encounter": {
+      "type": "Encounter",
+      "encounter_class": "ambulatory",
+      "reason": "Adolescent_Idiopathic_Scoliosis",
+      "telemedicine_possibility": "none",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "185347001",
+          "display": "Encounter for problem (procedure)",
+          "value_set": ""
+        }
+      ],
+      "name": "SSB_Post_Referral_Encounter",
+      "direct_transition": "End_SSB_Post_Referral_Encounter"
+    },
+    "Surgery_Post_Referral_Encounter": {
+      "type": "Encounter",
+      "encounter_class": "ambulatory",
+      "reason": "Adolescent_Idiopathic_Scoliosis",
+      "telemedicine_possibility": "none",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "185347001",
+          "display": "Encounter for problem (procedure)",
+          "value_set": ""
+        }
+      ],
+      "name": "Surgery_Post_Referral_Encounter",
+      "direct_transition": "End_Surgery_Post_Referral_Encounter"
+    },
+    "FTRB_Post_Referral_Encounter": {
+      "type": "Encounter",
+      "encounter_class": "ambulatory",
+      "reason": "Adolescent_Idiopathic_Scoliosis",
+      "telemedicine_possibility": "none",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "185347001",
+          "display": "Encounter for problem (procedure)",
+          "value_set": ""
+        }
+      ],
+      "name": "FTRB_Post_Referral_Encounter",
+      "direct_transition": "End_FTRB_Post_Referral_Encounter"
+    },
+    "PSSE_Post_Referral_Encounter": {
+      "type": "Encounter",
+      "encounter_class": "ambulatory",
+      "reason": "Adolescent_Idiopathic_Scoliosis",
+      "telemedicine_possibility": "none",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "185347001",
+          "display": "Encounter for problem (procedure)",
+          "value_set": ""
+        }
+      ],
+      "name": "PSSE_Post_Referral_Encounter",
+      "direct_transition": "End_PSSE_Post_Referral_Encounter"
+    },
+    "6_Months_Monitoring_Encounter": {
+      "type": "Encounter",
+      "encounter_class": "ambulatory",
+      "reason": "Adolescent_Idiopathic_Scoliosis",
+      "telemedicine_possibility": "none",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "390906007",
+          "display": "Follow-up encounter (procedure)",
+          "value_set": ""
+        }
+      ],
+      "direct_transition": "End_6_Months_Monitoring_Encounter",
+      "name": "6_Months_Monitoring_Encounter"
+    },
+    "End_6_Months_Monitoring_Encounter": {
+      "type": "EncounterEnd",
+      "direct_transition": "Terminal",
+      "name": "End_6_Months_Monitoring_Encounter"
+    },
+    "End_PSSE_Post_Referral_Encounter": {
+      "type": "EncounterEnd",
+      "name": "End_PSSE_Post_Referral_Encounter",
+      "direct_transition": "Terminal"
+    },
+    "End_FTRB_Post_Referral_Encounter": {
+      "type": "EncounterEnd",
+      "name": "End_FTRB_Post_Referral_Encounter",
+      "direct_transition": "Terminal"
+    },
+    "PTRB_Post_Referral_Encounter": {
+      "type": "Encounter",
+      "encounter_class": "ambulatory",
+      "reason": "Adolescent_Idiopathic_Scoliosis",
+      "telemedicine_possibility": "none",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "185347001",
+          "display": "Encounter for problem (procedure)",
+          "value_set": ""
+        }
+      ],
+      "name": "PTRB_Post_Referral_Encounter",
+      "direct_transition": "End_PTRB_Post_Referral_Encounter"
+    },
+    "End_PTRB_Post_Referral_Encounter": {
+      "type": "EncounterEnd",
+      "name": "End_PTRB_Post_Referral_Encounter",
+      "direct_transition": "Terminal"
+    },
+    "End_SSB_Post_Referral_Encounter": {
+      "type": "EncounterEnd",
+      "name": "End_SSB_Post_Referral_Encounter",
+      "direct_transition": "Terminal"
+    },
+    "End_Surgery_Post_Referral_Encounter": {
+      "type": "EncounterEnd",
+      "name": "End_Surgery_Post_Referral_Encounter",
+      "direct_transition": "Terminal"
+    },
+    "Screening_Delay": {
+      "type": "Delay",
+      "distribution": {
+        "kind": "UNIFORM",
+        "parameters": {
+          "high": 12,
+          "low": 0
+        }
+      },
+      "unit": "months",
+      "direct_transition": "Wellness_Encounter",
+      "name": "Screening_Delay"
+    }
+  },
+  "gmf_version": 2
+}

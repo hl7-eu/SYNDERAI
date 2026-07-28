@@ -1,0 +1,518 @@
+{
+  "name": "Diabetes Mellitus Type 2 (European Calibration)",
+  "remarks": [
+    "=======================================================================",
+    "SYNTHEA MODULE: Type 2 Diabetes \u2014 European Epidemiology Edition",
+    "=======================================================================",
+    "Calibrated against:",
+    "  - IDF Diabetes Atlas 10th Edition (2021): Europe region",
+    "  - WHO Europe Diabetes Fact Sheet (2022)",
+    "  - Eurostat EHIS Wave 3 (2019)",
+    "  - EASD/ADA 2022 Consensus Guidelines",
+    "  - GBD 2019: Europe-specific prevalence estimates",
+    "",
+    "Key calibration changes vs US default module:",
+    "  - Overall adult prevalence raised to ~7.5% (IDF Atlas Europe 2021)",
+    "  - Onset shifted later: peak incidence 45-64 (European age pyramid)",
+    "  - Prediabetes prevalence: ~8% adult population",
+    "  - First-line therapy: metformin (EASD/ADA consensus)",
+    "  - HbA1c target: <53 mmol/mol (7.0%) per EASD guidelines",
+    "  - Complication rates from EURISC / EURODIAB study",
+    "",
+    "European age-stratified prevalence (IDF Atlas 2021 / EHIS 2019):",
+    "  20-39 years : ~1.5%",
+    "  40-49 years : ~5.0%",
+    "  50-59 years : ~11.0%",
+    "  60-69 years : ~18.0%",
+    "  70-79 years : ~22.0%",
+    "  80+  years  : ~23.0%"
+  ],
+  "states": {
+    "Initial": {
+      "type": "Initial",
+      "direct_transition": "Age_Guard"
+    },
+    "Age_Guard": {
+      "type": "Guard",
+      "allow": {
+        "condition_type": "Age",
+        "operator": ">=",
+        "quantity": 20,
+        "unit": "years"
+      },
+      "direct_transition": "Prediabetes_Check"
+    },
+    "Prediabetes_Check": {
+      "type": "Simple",
+      "remarks": [
+        "~8% of European adults have prediabetes (IDF Atlas 2021)."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.08,
+          "transition": "Onset_Prediabetes"
+        },
+        {
+          "distribution": 0.92,
+          "transition": "Delay_Annual_Check"
+        }
+      ]
+    },
+    "Onset_Prediabetes": {
+      "type": "ConditionOnset",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "15777000",
+          "display": "Prediabetes"
+        }
+      ],
+      "direct_transition": "Set_prediabetes_Boolean",
+      "assign_to_attribute": "prediabetes"
+    },
+    "Delay_Annual_Check": {
+      "type": "Delay",
+      "exact": {
+        "quantity": 1,
+        "unit": "years"
+      },
+      "direct_transition": "Age_Stratified_DM2_Check"
+    },
+    "Age_Stratified_DM2_Check": {
+      "type": "Simple",
+      "conditional_transition": [
+        {
+          "condition": {
+            "condition_type": "Age",
+            "operator": "<",
+            "quantity": 40,
+            "unit": "years"
+          },
+          "transition": "Onset_Prob_20_39"
+        },
+        {
+          "condition": {
+            "condition_type": "Age",
+            "operator": "<",
+            "quantity": 50,
+            "unit": "years"
+          },
+          "transition": "Onset_Prob_40_49"
+        },
+        {
+          "condition": {
+            "condition_type": "Age",
+            "operator": "<",
+            "quantity": 60,
+            "unit": "years"
+          },
+          "transition": "Onset_Prob_50_59"
+        },
+        {
+          "condition": {
+            "condition_type": "Age",
+            "operator": "<",
+            "quantity": 70,
+            "unit": "years"
+          },
+          "transition": "Onset_Prob_60_69"
+        },
+        {
+          "condition": {
+            "condition_type": "Age",
+            "operator": "<",
+            "quantity": 80,
+            "unit": "years"
+          },
+          "transition": "Onset_Prob_70_79"
+        },
+        {
+          "transition": "Onset_Prob_80_plus"
+        }
+      ]
+    },
+    "Onset_Prob_20_39": {
+      "type": "Simple",
+      "remarks": [
+        "Annual incidence ~0.15% to reach cumulative ~1.5% by age 39."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.0015,
+          "transition": "Diagnose_DM2"
+        },
+        {
+          "distribution": 0.9985,
+          "transition": "Delay_Annual_Check"
+        }
+      ]
+    },
+    "Onset_Prob_40_49": {
+      "type": "Simple",
+      "remarks": [
+        "Annual incidence ~0.5% to reach cumulative ~5% by age 49."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.005,
+          "transition": "Diagnose_DM2"
+        },
+        {
+          "distribution": 0.995,
+          "transition": "Delay_Annual_Check"
+        }
+      ]
+    },
+    "Onset_Prob_50_59": {
+      "type": "Simple",
+      "remarks": [
+        "Annual incidence ~0.8% \u2014 peak incidence band in Europe."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.008,
+          "transition": "Diagnose_DM2"
+        },
+        {
+          "distribution": 0.992,
+          "transition": "Delay_Annual_Check"
+        }
+      ]
+    },
+    "Onset_Prob_60_69": {
+      "type": "Simple",
+      "remarks": [
+        "Annual incidence ~1.0% \u2014 highest cumulative prevalence band."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.01,
+          "transition": "Diagnose_DM2"
+        },
+        {
+          "distribution": 0.99,
+          "transition": "Delay_Annual_Check"
+        }
+      ]
+    },
+    "Onset_Prob_70_79": {
+      "type": "Simple",
+      "remarks": [
+        "Annual incidence ~0.6%, many already diagnosed or prediabetic."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.006,
+          "transition": "Diagnose_DM2"
+        },
+        {
+          "distribution": 0.994,
+          "transition": "Delay_Annual_Check"
+        }
+      ]
+    },
+    "Onset_Prob_80_plus": {
+      "type": "Simple",
+      "distributed_transition": [
+        {
+          "distribution": 0.004,
+          "transition": "Diagnose_DM2"
+        },
+        {
+          "distribution": 0.996,
+          "transition": "Delay_Annual_Check"
+        }
+      ]
+    },
+    "Diagnose_DM2": {
+      "type": "ConditionOnset",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "44054006",
+          "display": "Diabetes mellitus type 2 (disorder)"
+        }
+      ],
+      "direct_transition": "Set_diabetes_Boolean",
+      "assign_to_attribute": "diabetes"
+    },
+    "DM2_Initial_Encounter": {
+      "type": "Encounter",
+      "encounter_class": "ambulatory",
+      "reason": "Diagnose_DM2",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "11429006",
+          "display": "Consultation (procedure)"
+        }
+      ],
+      "direct_transition": "Record_HbA1c"
+    },
+    "Record_HbA1c": {
+      "type": "Observation",
+      "remarks": [
+        "EASD target: <53 mmol/mol (7.0%). Newly diagnosed typically 58-86 mmol/mol (7.5-10%)."
+      ],
+      "category": "laboratory",
+      "unit": "mmol/mol",
+      "codes": [
+        {
+          "system": "LOINC",
+          "code": "59261-8",
+          "display": "Hemoglobin A1c/Hemoglobin.total in Blood"
+        }
+      ],
+      "range": {
+        "low": 58,
+        "high": 86
+      },
+      "direct_transition": "Prescribe_Metformin"
+    },
+    "Prescribe_Metformin": {
+      "type": "MedicationOrder",
+      "remarks": [
+        "Metformin 500mg BD titrating to 1000mg BD \u2014 universal first-line in Europe.",
+        "EASD/ADA 2022 consensus: metformin + lifestyle as foundational therapy.",
+        "RxNorm 861007: metformin hydrochloride 500 MG Oral Tablet."
+      ],
+      "codes": [
+        {
+          "system": "RxNorm",
+          "code": "861007",
+          "display": "metformin hydrochloride 500 MG Oral Tablet"
+        }
+      ],
+      "reason": "Diagnose_DM2",
+      "prescription": {
+        "refills": 11,
+        "as_needed": false,
+        "instructions": "Take twice daily with meals, titrate to 1000mg BD over 4 weeks"
+      },
+      "direct_transition": "Lifestyle_Intervention"
+    },
+    "Lifestyle_Intervention": {
+      "type": "Procedure",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "284350006",
+          "display": "Diabetes mellitus diet education (procedure)"
+        }
+      ],
+      "duration": {
+        "low": 30,
+        "high": 60,
+        "unit": "minutes"
+      },
+      "reason": "Diagnose_DM2",
+      "direct_transition": "End_DM2_Encounter"
+    },
+    "End_DM2_Encounter": {
+      "type": "EncounterEnd",
+      "direct_transition": "DM2_Followup_Delay"
+    },
+    "DM2_Followup_Delay": {
+      "type": "Delay",
+      "range": {
+        "low": 5,
+        "high": 7,
+        "unit": "months"
+      },
+      "direct_transition": "DM2_Followup_Encounter"
+    },
+    "DM2_Followup_Encounter": {
+      "type": "Encounter",
+      "encounter_class": "ambulatory",
+      "reason": "Diagnose_DM2",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "11429006",
+          "display": "Consultation (procedure)"
+        }
+      ],
+      "direct_transition": "HbA1c_Control_Check"
+    },
+    "HbA1c_Control_Check": {
+      "type": "Observation",
+      "category": "laboratory",
+      "unit": "mmol/mol",
+      "codes": [
+        {
+          "system": "LOINC",
+          "code": "59261-8",
+          "display": "Hemoglobin A1c/Hemoglobin.total in Blood"
+        }
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.55,
+          "transition": "HbA1c_Controlled"
+        },
+        {
+          "distribution": 0.3,
+          "transition": "HbA1c_Partially_Controlled"
+        },
+        {
+          "distribution": 0.15,
+          "transition": "Intensify_DM2_Therapy"
+        }
+      ]
+    },
+    "HbA1c_Controlled": {
+      "type": "Observation",
+      "remarks": [
+        "Target achieved: <53 mmol/mol (7.0%). EASD/ADA 2022."
+      ],
+      "category": "laboratory",
+      "unit": "mmol/mol",
+      "codes": [
+        {
+          "system": "LOINC",
+          "code": "59261-8",
+          "display": "Hemoglobin A1c/Hemoglobin.total in Blood"
+        }
+      ],
+      "range": {
+        "low": 42,
+        "high": 53
+      },
+      "direct_transition": "End_DM2_Followup"
+    },
+    "HbA1c_Partially_Controlled": {
+      "type": "Observation",
+      "category": "laboratory",
+      "unit": "mmol/mol",
+      "codes": [
+        {
+          "system": "LOINC",
+          "code": "59261-8",
+          "display": "Hemoglobin A1c/Hemoglobin.total in Blood"
+        }
+      ],
+      "range": {
+        "low": 53,
+        "high": 64
+      },
+      "direct_transition": "End_DM2_Followup"
+    },
+    "Intensify_DM2_Therapy": {
+      "type": "MedicationOrder",
+      "remarks": [
+        "EASD/ADA 2022: add GLP-1 RA or SGLT-2i as second agent \u2014 cardiovascular/renal benefit.",
+        "Empagliflozin preferred where CV risk high (EMPA-REG OUTCOME).",
+        "RxNorm 1545653: empagliflozin 10 MG Oral Tablet."
+      ],
+      "codes": [
+        {
+          "system": "RxNorm",
+          "code": "1545653",
+          "display": "empagliflozin 10 MG Oral Tablet"
+        }
+      ],
+      "reason": "Diagnose_DM2",
+      "prescription": {
+        "refills": 11,
+        "as_needed": false,
+        "instructions": "Take once daily in the morning"
+      },
+      "direct_transition": "End_DM2_Followup"
+    },
+    "End_DM2_Followup": {
+      "type": "EncounterEnd",
+      "direct_transition": "DM2_Complication_Check"
+    },
+    "DM2_Complication_Check": {
+      "type": "Simple",
+      "remarks": [
+        "Annual complication probabilities from EURODIAB / UKPDS / GBD 2019 Europe:",
+        "  Nephropathy (microalbuminuria): ~0.8%/yr",
+        "  Retinopathy:                    ~0.5%/yr",
+        "  Peripheral neuropathy:          ~0.4%/yr",
+        "  IHD:                            ~0.5%/yr"
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.008,
+          "transition": "DM2_Nephropathy"
+        },
+        {
+          "distribution": 0.005,
+          "transition": "DM2_Retinopathy"
+        },
+        {
+          "distribution": 0.004,
+          "transition": "DM2_Neuropathy"
+        },
+        {
+          "distribution": 0.005,
+          "transition": "DM2_IHD"
+        },
+        {
+          "distribution": 0.978,
+          "transition": "DM2_Followup_Delay"
+        }
+      ]
+    },
+    "DM2_Nephropathy": {
+      "type": "ConditionOnset",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "127013003",
+          "display": "Disorder of kidney due to diabetes mellitus (disorder)"
+        }
+      ],
+      "direct_transition": "DM2_Followup_Delay"
+    },
+    "DM2_Retinopathy": {
+      "type": "ConditionOnset",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "4855003",
+          "display": "Retinopathy due to diabetes mellitus (disorder)"
+        }
+      ],
+      "direct_transition": "DM2_Followup_Delay"
+    },
+    "DM2_Neuropathy": {
+      "type": "ConditionOnset",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "230572002",
+          "display": "Diabetic neuropathy (disorder)"
+        }
+      ],
+      "direct_transition": "DM2_Followup_Delay"
+    },
+    "DM2_IHD": {
+      "type": "ConditionOnset",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "414545008",
+          "display": "Ischemic heart disease (disorder)"
+        }
+      ],
+      "direct_transition": "DM2_Followup_Delay"
+    },
+    "Terminal": {
+      "type": "Terminal"
+    },
+    "Set_prediabetes_Boolean": {
+      "type": "SetAttribute",
+      "attribute": "prediabetes",
+      "value": true,
+      "direct_transition": "Delay_Annual_Check"
+    },
+    "Set_diabetes_Boolean": {
+      "type": "SetAttribute",
+      "attribute": "diabetes",
+      "value": true,
+      "direct_transition": "DM2_Initial_Encounter"
+    }
+  }
+}

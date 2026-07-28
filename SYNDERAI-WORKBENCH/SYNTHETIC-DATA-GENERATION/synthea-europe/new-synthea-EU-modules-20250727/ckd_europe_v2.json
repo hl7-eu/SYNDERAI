@@ -1,0 +1,435 @@
+{
+  "name": "Chronic Kidney Disease Europe",
+  "remarks": [
+    "European calibration of chronic kidney disease (CKD).",
+    "ERA-EDTA 2022: prevalence 8-12% EU adults.",
+    "Staged by eGFR per KDIGO 2022 guidelines.",
+    "Major risk factors: hypertension, diabetes, age >60.",
+    "EU treatment: RAAS blockade, SGLT2 inhibitors, dietary management.",
+    "v2: rates reduced ~33%. Estimated prevalence 12.4% (ERA-EDTA target 10-15%).",
+    "",
+    "PATCH (calibration round 2):",
+    "  Replaced single-stage onset (everything → Stage 1) with stage",
+    "  distribution at incident diagnosis (KDIGO/ERA-EDTA):",
+    "    Stage 1: 5% | Stage 2: 35% | Stage 3a: 35% | Stage 3b: 15% |",
+    "    Stage 4: 8% | Stage 5: 2%",
+    "  Added SNOMED-coded onset states for stages 2, 3a, 3b, 4, 5.",
+    "  Previous dashboard: Stage 1 22%, Stage 2 3%, Stage 3 7%.",
+    "  Expected distribution post-patch will more closely match",
+    "  EPIRCE / ERA-EDTA detection-stage proportions."
+  ],
+  "states": {
+    "Initial": {
+      "type": "Initial",
+      "direct_transition": "Age_Guard"
+    },
+    "Age_Guard": {
+      "type": "Guard",
+      "allow": {
+        "condition_type": "Age",
+        "operator": ">=",
+        "quantity": 30,
+        "unit": "years"
+      },
+      "direct_transition": "CKD_Naive_Guard"
+    },
+    "CKD_Naive_Guard": {
+      "type": "Guard",
+      "allow": {
+        "condition_type": "Attribute",
+        "attribute": "ckd_eu",
+        "operator": "is nil"
+      },
+      "direct_transition": "Annual_CKD_Delay"
+    },
+    "Annual_CKD_Delay": {
+      "type": "Delay",
+      "exact": {
+        "quantity": 1,
+        "unit": "years"
+      },
+      "direct_transition": "CKD_Risk_Check"
+    },
+    "CKD_Risk_Check": {
+      "type": "Simple",
+      "remarks": [
+        "Higher risk if hypertension or diabetes present."
+      ],
+      "conditional_transition": [
+        {
+          "condition": {
+            "condition_type": "Or",
+            "conditions": [
+              {
+                "condition_type": "Attribute",
+                "attribute": "hypertension",
+                "operator": "is not nil"
+              },
+              {
+                "condition_type": "Attribute",
+                "attribute": "diabetes",
+                "operator": "is not nil"
+              }
+            ]
+          },
+          "transition": "CKD_High_Risk_Age_Check"
+        },
+        {
+          "transition": "CKD_Low_Risk_Age_Check"
+        }
+      ]
+    },
+    "CKD_High_Risk_Age_Check": {
+      "type": "Simple",
+      "conditional_transition": [
+        {
+          "condition": {
+            "condition_type": "Age",
+            "operator": "<",
+            "quantity": 60,
+            "unit": "years"
+          },
+          "transition": "CKD_Prob_High_30_59"
+        },
+        {
+          "transition": "CKD_Prob_High_60_plus"
+        }
+      ]
+    },
+    "CKD_Low_Risk_Age_Check": {
+      "type": "Simple",
+      "conditional_transition": [
+        {
+          "condition": {
+            "condition_type": "Age",
+            "operator": "<",
+            "quantity": 60,
+            "unit": "years"
+          },
+          "transition": "CKD_Prob_Low_30_59"
+        },
+        {
+          "transition": "CKD_Prob_Low_60_plus"
+        }
+      ]
+    },
+    "CKD_Prob_High_30_59": {
+      "type": "Simple",
+      "remarks": [
+        "Recalibrated: 0.975% → 0.650%/yr.",
+        "Reduced ~33%: dual-firer chronic_kidney_disease.json removed."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.0065,
+          "transition": "CKD_Stage_Branch"
+        },
+        {
+          "distribution": 0.9935,
+          "transition": "Annual_CKD_Delay"
+        }
+      ]
+    },
+    "CKD_Prob_High_60_plus": {
+      "type": "Simple",
+      "remarks": [
+        "Recalibrated: 1.950% → 1.300%/yr.",
+        "Reduced ~33%: dual-firer chronic_kidney_disease.json removed."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.013,
+          "transition": "CKD_Stage_Branch"
+        },
+        {
+          "distribution": 0.987,
+          "transition": "Annual_CKD_Delay"
+        }
+      ]
+    },
+    "CKD_Prob_Low_30_59": {
+      "type": "Simple",
+      "remarks": [
+        "Recalibrated: 0.300% → 0.200%/yr.",
+        "Reduced ~33%: dual-firer chronic_kidney_disease.json removed."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.002,
+          "transition": "CKD_Stage_Branch"
+        },
+        {
+          "distribution": 0.998,
+          "transition": "Annual_CKD_Delay"
+        }
+      ]
+    },
+    "CKD_Prob_Low_60_plus": {
+      "type": "Simple",
+      "remarks": [
+        "Recalibrated: 1.000% → 0.700%/yr.",
+        "Reduced ~33%: dual-firer chronic_kidney_disease.json removed."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.007,
+          "transition": "CKD_Stage_Branch"
+        },
+        {
+          "distribution": 0.993,
+          "transition": "Annual_CKD_Delay"
+        }
+      ]
+    },
+    "Diagnose_CKD_Stage1": {
+      "type": "ConditionOnset",
+      "assign_to_attribute": "ckd_eu",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "431855005",
+          "display": "Chronic kidney disease stage 1 (disorder)"
+        }
+      ],
+      "direct_transition": "Set_CKD_Boolean"
+    },
+    "Set_CKD_Boolean": {
+      "type": "SetAttribute",
+      "attribute": "ckd_eu",
+      "value": true,
+      "direct_transition": "CKD_Diagnosis_Encounter"
+    },
+    "CKD_Diagnosis_Encounter": {
+      "type": "Encounter",
+      "encounter_class": "ambulatory",
+      "reason": "Diagnose_CKD_Stage1",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "11429006",
+          "display": "Consultation (procedure)"
+        }
+      ],
+      "direct_transition": "eGFR_Test"
+    },
+    "eGFR_Test": {
+      "type": "Observation",
+      "category": "laboratory",
+      "codes": [
+        {
+          "system": "LOINC",
+          "code": "98979-8",
+          "display": "Glomerular filtration rate/1.73 sq M.predicted [Volume Rate/Area] in Serum, Plasma or Blood by Creatinine-based formula (CKD-EPI 2021)"
+        }
+      ],
+      "range": {
+        "low": 60,
+        "high": 89,
+        "decimals": 0
+      },
+      "unit": "mL/min/{1.73_m2}",
+      "direct_transition": "Urine_ACR"
+    },
+    "Urine_ACR": {
+      "type": "Observation",
+      "category": "laboratory",
+      "codes": [
+        {
+          "system": "LOINC",
+          "code": "9318-7",
+          "display": "Albumin/Creatinine [Mass Ratio] in Urine"
+        }
+      ],
+      "range": {
+        "low": 3,
+        "high": 30,
+        "decimals": 0
+      },
+      "unit": "mg/g",
+      "direct_transition": "CKD_RAAS_Blockade"
+    },
+    "CKD_RAAS_Blockade": {
+      "type": "MedicationOrder",
+      "reason": "Diagnose_CKD_Stage1",
+      "codes": [
+        {
+          "system": "RxNorm",
+          "code": "29046",
+          "display": "Lisinopril 10 MG Oral Tablet"
+        }
+      ],
+      "direct_transition": "End_CKD_Diagnosis_Encounter"
+    },
+    "End_CKD_Diagnosis_Encounter": {
+      "type": "EncounterEnd",
+      "direct_transition": "CKD_Progression_Delay"
+    },
+    "CKD_Progression_Delay": {
+      "type": "Delay",
+      "range": {
+        "low": 10,
+        "high": 14,
+        "unit": "months"
+      },
+      "direct_transition": "CKD_Progression_Check"
+    },
+    "CKD_Progression_Check": {
+      "type": "Simple",
+      "remarks": [
+        "KDIGO 2022: ~2% per year progress to next stage; 98% remain stable or slow."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.02,
+          "transition": "CKD_Progress_Stage"
+        },
+        {
+          "distribution": 0.98,
+          "transition": "CKD_Annual_Review"
+        }
+      ]
+    },
+    "CKD_Progress_Stage": {
+      "type": "ConditionOnset",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "433144002",
+          "display": "Chronic kidney disease stage 3 (disorder)"
+        }
+      ],
+      "direct_transition": "CKD_Annual_Review"
+    },
+    "CKD_Annual_Review": {
+      "type": "Encounter",
+      "encounter_class": "ambulatory",
+      "reason": "Diagnose_CKD_Stage1",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "390906007",
+          "display": "Follow-up encounter (procedure)"
+        }
+      ],
+      "direct_transition": "CKD_Review_eGFR"
+    },
+    "CKD_Review_eGFR": {
+      "type": "Observation",
+      "category": "laboratory",
+      "codes": [
+        {
+          "system": "LOINC",
+          "code": "98979-8",
+          "display": "Glomerular filtration rate/1.73 sq M.predicted [Volume Rate/Area] in Serum, Plasma or Blood by Creatinine-based formula (CKD-EPI 2021)"
+        }
+      ],
+      "range": {
+        "low": 30,
+        "high": 89,
+        "decimals": 0
+      },
+      "unit": "mL/min/{1.73_m2}",
+      "direct_transition": "End_CKD_Review"
+    },
+    "End_CKD_Review": {
+      "type": "EncounterEnd",
+      "direct_transition": "CKD_Progression_Delay"
+    },
+    "Terminal": {
+      "type": "Terminal"
+    },
+    "CKD_Stage_Branch": {
+      "type": "Simple",
+      "remarks": [
+        "Incident CKD stage distribution at first diagnosis.",
+        "KDIGO 2022 / ERA-EDTA: detection skews to stages 2-3 in clinical practice."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.05,
+          "transition": "Diagnose_CKD_Stage1"
+        },
+        {
+          "distribution": 0.35,
+          "transition": "Diagnose_CKD_Stage2"
+        },
+        {
+          "distribution": 0.35,
+          "transition": "Diagnose_CKD_Stage3a"
+        },
+        {
+          "distribution": 0.15,
+          "transition": "Diagnose_CKD_Stage3b"
+        },
+        {
+          "distribution": 0.08,
+          "transition": "Diagnose_CKD_Stage4"
+        },
+        {
+          "distribution": 0.02,
+          "transition": "Diagnose_CKD_Stage5"
+        }
+      ]
+    },
+    "Diagnose_CKD_Stage2": {
+      "type": "ConditionOnset",
+      "assign_to_attribute": "ckd_eu",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "431856006",
+          "display": "Chronic kidney disease stage 2 (disorder)"
+        }
+      ],
+      "direct_transition": "Set_CKD_Boolean"
+    },
+    "Diagnose_CKD_Stage3a": {
+      "type": "ConditionOnset",
+      "assign_to_attribute": "ckd_eu",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "433144002",
+          "display": "Chronic kidney disease stage 3 (disorder)"
+        }
+      ],
+      "direct_transition": "Set_CKD_Boolean"
+    },
+    "Diagnose_CKD_Stage3b": {
+      "type": "ConditionOnset",
+      "assign_to_attribute": "ckd_eu",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "700378005",
+          "display": "Chronic kidney disease stage 3B (disorder)"
+        }
+      ],
+      "direct_transition": "Set_CKD_Boolean"
+    },
+    "Diagnose_CKD_Stage4": {
+      "type": "ConditionOnset",
+      "assign_to_attribute": "ckd_eu",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "431857002",
+          "display": "Chronic kidney disease stage 4 (disorder)"
+        }
+      ],
+      "direct_transition": "Set_CKD_Boolean"
+    },
+    "Diagnose_CKD_Stage5": {
+      "type": "ConditionOnset",
+      "assign_to_attribute": "ckd_eu",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "433146000",
+          "display": "Chronic kidney disease stage 5 (disorder)"
+        }
+      ],
+      "direct_transition": "Set_CKD_Boolean"
+    }
+  }
+}

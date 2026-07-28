@@ -1,0 +1,462 @@
+{
+  "name": "Lung Cancer (European Calibration)",
+  "remarks": [
+    "=======================================================================",
+    "SYNTHEA MODULE: Lung Cancer (NSCLC + SCLC) \u2014 European Epidemiology",
+    "=======================================================================",
+    "Calibrated against:",
+    "  - ECIS / IARC GLOBOCAN 2020: Europe-specific incidence rates",
+    "  - ECDC Cancer Burden report 2022",
+    "  - ERS European Lung Cancer Report 2022",
+    "  - ESMO Clinical Practice Guidelines: Lung Cancer 2023",
+    "  - GBD 2019: Tracheal, bronchus, and lung cancer \u2014 Europe",
+    "",
+    "Key calibration data (ECIS/GLOBOCAN 2020 \u2014 Europe):",
+    "  Age-standardised incidence rate: ~36 per 100,000 (both sexes)",
+    "  Male ASR: ~48/100,000; Female ASR: ~25/100,000 (rising)",
+    "  Cumulative risk to age 75: ~4.1% males, ~2.1% females",
+    "  5-year prevalence: ~0.5% of total population",
+    "  NSCLC: ~85% of cases; SCLC: ~15%",
+    "  Stage at diagnosis: Stage III-IV in ~70% (late detection)",
+    "",
+    "Age-specific incidence per 100,000/year (ECIS 2020):",
+    "  45-49 years :  ~12",
+    "  50-54 years :  ~30",
+    "  55-59 years :  ~62",
+    "  60-64 years : ~110",
+    "  65-69 years : ~155",
+    "  70-74 years : ~185",
+    "  75-79 years : ~200"
+  ],
+  "states": {
+    "Initial": {
+      "type": "Initial",
+      "direct_transition": "Age_Guard"
+    },
+    "Age_Guard": {
+      "type": "Guard",
+      "allow": {
+        "condition_type": "Age",
+        "operator": ">=",
+        "quantity": 45,
+        "unit": "years"
+      },
+      "direct_transition": "Lung_Cancer_Annual_Check"
+    },
+    "Lung_Cancer_Annual_Check": {
+      "type": "Simple",
+      "conditional_transition": [
+        {
+          "condition": {
+            "condition_type": "Age",
+            "operator": "<",
+            "quantity": 50,
+            "unit": "years"
+          },
+          "transition": "LC_Prob_45_49"
+        },
+        {
+          "condition": {
+            "condition_type": "Age",
+            "operator": "<",
+            "quantity": 55,
+            "unit": "years"
+          },
+          "transition": "LC_Prob_50_54"
+        },
+        {
+          "condition": {
+            "condition_type": "Age",
+            "operator": "<",
+            "quantity": 60,
+            "unit": "years"
+          },
+          "transition": "LC_Prob_55_59"
+        },
+        {
+          "condition": {
+            "condition_type": "Age",
+            "operator": "<",
+            "quantity": 65,
+            "unit": "years"
+          },
+          "transition": "LC_Prob_60_64"
+        },
+        {
+          "condition": {
+            "condition_type": "Age",
+            "operator": "<",
+            "quantity": 70,
+            "unit": "years"
+          },
+          "transition": "LC_Prob_65_69"
+        },
+        {
+          "condition": {
+            "condition_type": "Age",
+            "operator": "<",
+            "quantity": 75,
+            "unit": "years"
+          },
+          "transition": "LC_Prob_70_74"
+        },
+        {
+          "transition": "LC_Prob_75_plus"
+        }
+      ]
+    },
+    "LC_Prob_45_49": {
+      "type": "Simple",
+      "remarks": [
+        "Annual incidence 0.012%. ECIS 2020 rate 12/100,000/year."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.00012,
+          "transition": "LC_Type_Branch"
+        },
+        {
+          "distribution": 0.99988,
+          "transition": "LC_Annual_Delay"
+        }
+      ]
+    },
+    "LC_Prob_50_54": {
+      "type": "Simple",
+      "remarks": [
+        "0.030%. ECIS 2020."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.0003,
+          "transition": "LC_Type_Branch"
+        },
+        {
+          "distribution": 0.9997,
+          "transition": "LC_Annual_Delay"
+        }
+      ]
+    },
+    "LC_Prob_55_59": {
+      "type": "Simple",
+      "remarks": [
+        "0.062%. ECIS 2020."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.00062,
+          "transition": "LC_Type_Branch"
+        },
+        {
+          "distribution": 0.99938,
+          "transition": "LC_Annual_Delay"
+        }
+      ]
+    },
+    "LC_Prob_60_64": {
+      "type": "Simple",
+      "remarks": [
+        "0.110%. ECIS 2020."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.0011,
+          "transition": "LC_Type_Branch"
+        },
+        {
+          "distribution": 0.9989,
+          "transition": "LC_Annual_Delay"
+        }
+      ]
+    },
+    "LC_Prob_65_69": {
+      "type": "Simple",
+      "remarks": [
+        "0.155%. ECIS 2020."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.00155,
+          "transition": "LC_Type_Branch"
+        },
+        {
+          "distribution": 0.99845,
+          "transition": "LC_Annual_Delay"
+        }
+      ]
+    },
+    "LC_Prob_70_74": {
+      "type": "Simple",
+      "remarks": [
+        "0.185%. ECIS 2020."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.00185,
+          "transition": "LC_Type_Branch"
+        },
+        {
+          "distribution": 0.99815,
+          "transition": "LC_Annual_Delay"
+        }
+      ]
+    },
+    "LC_Prob_75_plus": {
+      "type": "Simple",
+      "remarks": [
+        "0.200%. ECIS 2020. Incidence peaks then plateaus in 75+."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.002,
+          "transition": "LC_Type_Branch"
+        },
+        {
+          "distribution": 0.998,
+          "transition": "LC_Annual_Delay"
+        }
+      ]
+    },
+    "LC_Annual_Delay": {
+      "type": "Delay",
+      "exact": {
+        "quantity": 1,
+        "unit": "years"
+      },
+      "direct_transition": "Lung_Cancer_Annual_Check"
+    },
+    "LC_Type_Branch": {
+      "type": "Simple",
+      "remarks": [
+        "NSCLC 85%; SCLC 15% (ERS Lung Cancer Report 2022)."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.85,
+          "transition": "Onset_NSCLC"
+        },
+        {
+          "distribution": 0.15,
+          "transition": "Onset_SCLC"
+        }
+      ]
+    },
+    "Onset_NSCLC": {
+      "type": "ConditionOnset",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "254637007",
+          "display": "Non-small cell carcinoma of lung (disorder)"
+        }
+      ],
+      "direct_transition": "LC_Staging_Encounter",
+      "assign_to_attribute": "lung_cancer"
+    },
+    "Onset_SCLC": {
+      "type": "ConditionOnset",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "254632001",
+          "display": "Small cell carcinoma of lung (disorder)"
+        }
+      ],
+      "direct_transition": "LC_Staging_Encounter",
+      "assign_to_attribute": "lung_cancer"
+    },
+    "LC_Staging_Encounter": {
+      "type": "Encounter",
+      "encounter_class": "ambulatory",
+      "reason": "lung_cancer",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "11429006",
+          "display": "Consultation (procedure)"
+        }
+      ],
+      "direct_transition": "LC_CT_Scan"
+    },
+    "LC_CT_Scan": {
+      "type": "ImagingStudy",
+      "remarks": [
+        "CT chest + abdomen + pelvis \u2014 standard EU staging workup."
+      ],
+      "series": [
+        {
+          "body_site": {
+            "system": "SNOMED-CT",
+            "code": "51185008",
+            "display": "Thoracic structure (body structure)"
+          },
+          "modality": {
+            "system": "DICOM",
+            "code": "CT",
+            "display": "Computed Tomography"
+          }
+        }
+      ],
+      "direct_transition": "LC_Stage_Branch"
+    },
+    "LC_Stage_Branch": {
+      "type": "Simple",
+      "remarks": [
+        "Stage distribution at diagnosis (ECIS/Eurocare-5 2020):",
+        "  Stage I:    ~15% (surgically resectable)",
+        "  Stage II:   ~10%",
+        "  Stage III:  ~25%",
+        "  Stage IV:   ~50% (metastatic at presentation)"
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.15,
+          "transition": "LC_Stage_I_Treatment"
+        },
+        {
+          "distribution": 0.1,
+          "transition": "LC_Stage_II_Treatment"
+        },
+        {
+          "distribution": 0.25,
+          "transition": "LC_Stage_III_Treatment"
+        },
+        {
+          "distribution": 0.5,
+          "transition": "LC_Stage_IV_Treatment"
+        }
+      ]
+    },
+    "LC_Stage_I_Treatment": {
+      "type": "Procedure",
+      "remarks": [
+        "ESMO 2023: surgical resection (lobectomy) is gold standard for stage I NSCLC."
+      ],
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "173171007",
+          "display": "Lobectomy of lung (procedure)"
+        }
+      ],
+      "duration": {
+        "low": 2,
+        "high": 4,
+        "unit": "hours"
+      },
+      "reason": "lung_cancer",
+      "direct_transition": "End_LC_Encounter"
+    },
+    "LC_Stage_II_Treatment": {
+      "type": "Procedure",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "173171007",
+          "display": "Lobectomy of lung (procedure)"
+        }
+      ],
+      "duration": {
+        "low": 2,
+        "high": 4,
+        "unit": "hours"
+      },
+      "reason": "lung_cancer",
+      "direct_transition": "End_LC_Encounter"
+    },
+    "LC_Stage_III_Treatment": {
+      "type": "MedicationOrder",
+      "remarks": [
+        "Stage III: concurrent chemoradiotherapy + durvalumab consolidation (PACIFIC trial).",
+        "Carboplatin/paclitaxel is common EU doublet chemotherapy.",
+        "RxNorm 40048: carboplatin injection."
+      ],
+      "codes": [
+        {
+          "system": "RxNorm",
+          "code": "40048",
+          "display": "carboplatin 10 MG/ML Injectable Solution"
+        }
+      ],
+      "reason": "lung_cancer",
+      "prescription": {
+        "refills": 5,
+        "as_needed": false,
+        "instructions": "IV infusion per oncology protocol"
+      },
+      "direct_transition": "End_LC_Encounter"
+    },
+    "LC_Stage_IV_Treatment": {
+      "type": "MedicationOrder",
+      "remarks": [
+        "Stage IV NSCLC: PD-L1 testing \u2192 pembrolizumab if PD-L1 >=50% (KEYNOTE-024).",
+        "Otherwise platinum-doublet + immunotherapy (ESMO 2023).",
+        "RxNorm 1860487: pembrolizumab 25 MG/ML Injectable Solution."
+      ],
+      "codes": [
+        {
+          "system": "RxNorm",
+          "code": "1860487",
+          "display": "pembrolizumab 25 MG/ML Injectable Solution"
+        }
+      ],
+      "reason": "lung_cancer",
+      "prescription": {
+        "refills": 11,
+        "as_needed": false,
+        "instructions": "200mg IV q3w per immunotherapy protocol"
+      },
+      "direct_transition": "End_LC_Encounter"
+    },
+    "End_LC_Encounter": {
+      "type": "EncounterEnd",
+      "direct_transition": "LC_Followup_Delay"
+    },
+    "LC_Followup_Delay": {
+      "type": "Delay",
+      "range": {
+        "low": 2,
+        "high": 4,
+        "unit": "months"
+      },
+      "direct_transition": "LC_Surveillance_Encounter"
+    },
+    "LC_Surveillance_Encounter": {
+      "type": "Encounter",
+      "encounter_class": "ambulatory",
+      "reason": "lung_cancer",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "11429006",
+          "display": "Consultation (procedure)"
+        }
+      ],
+      "direct_transition": "LC_Outcomes_Check"
+    },
+    "LC_Outcomes_Check": {
+      "type": "Simple",
+      "remarks": [
+        "5-year survival (Eurocare-5 / ECIS 2020):",
+        "  Stage I:   ~60%",
+        "  Stage II:  ~35%",
+        "  Stage III: ~15%",
+        "  Stage IV:   ~5%",
+        "Overall European 5-year survival: ~15% (ECIS 2020)"
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.08,
+          "transition": "Terminal"
+        },
+        {
+          "distribution": 0.92,
+          "transition": "LC_Followup_Delay"
+        }
+      ]
+    },
+    "Terminal": {
+      "type": "Terminal"
+    }
+  }
+}

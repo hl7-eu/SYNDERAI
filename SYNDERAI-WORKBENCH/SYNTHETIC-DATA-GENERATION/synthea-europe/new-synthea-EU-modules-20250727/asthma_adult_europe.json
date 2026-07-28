@@ -1,0 +1,352 @@
+{
+  "name": "Asthma Adult Europe",
+  "remarks": [
+    "European calibration of adult-onset asthma.",
+    "ERS/GINA 2022: prevalence 5-8% EU adults.",
+    "Distinct from childhood asthma. Models adult-onset disease.",
+    "GINA 2022 stepwise treatment: SABA rescue + ICS maintenance.",
+    "Exacerbation rate: ~0.5-1.5/year in uncontrolled patients."
+  ],
+  "states": {
+    "Initial": {
+      "type": "Initial",
+      "direct_transition": "Age_Guard"
+    },
+    "Age_Guard": {
+      "type": "Guard",
+      "allow": {
+        "condition_type": "Age",
+        "operator": ">=",
+        "quantity": 18,
+        "unit": "years"
+      },
+      "direct_transition": "Asthma_Naive_Guard"
+    },
+    "Asthma_Naive_Guard": {
+      "type": "Guard",
+      "remarks": [
+        "Avoid double-counting with childhood asthma module."
+      ],
+      "allow": {
+        "condition_type": "Attribute",
+        "attribute": "asthma",
+        "operator": "is nil"
+      },
+      "direct_transition": "Annual_Asthma_Delay"
+    },
+    "Annual_Asthma_Delay": {
+      "type": "Delay",
+      "exact": {
+        "quantity": 1,
+        "unit": "years"
+      },
+      "direct_transition": "Asthma_Age_Check"
+    },
+    "Asthma_Age_Check": {
+      "type": "Simple",
+      "conditional_transition": [
+        {
+          "condition": {
+            "condition_type": "Age",
+            "operator": "<",
+            "quantity": 35,
+            "unit": "years"
+          },
+          "transition": "Asthma_Prob_18_34"
+        },
+        {
+          "condition": {
+            "condition_type": "Age",
+            "operator": "<",
+            "quantity": 45,
+            "unit": "years"
+          },
+          "transition": "Asthma_Prob_35_44"
+        },
+        {
+          "condition": {
+            "condition_type": "Age",
+            "operator": "<",
+            "quantity": 55,
+            "unit": "years"
+          },
+          "transition": "Asthma_Prob_45_54"
+        },
+        {
+          "transition": "Asthma_Prob_55_plus"
+        }
+      ]
+    },
+    "Asthma_Prob_18_34": {
+      "type": "Simple",
+      "remarks": [
+        "GINA 2022: ~0.5%/year new adult asthma 18-34 (atopic peak)."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.005,
+          "transition": "Diagnose_Asthma"
+        },
+        {
+          "distribution": 0.995,
+          "transition": "Annual_Asthma_Delay"
+        }
+      ]
+    },
+    "Asthma_Prob_35_44": {
+      "type": "Simple",
+      "remarks": [
+        "~0.3%/year 35-44."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.003,
+          "transition": "Diagnose_Asthma"
+        },
+        {
+          "distribution": 0.997,
+          "transition": "Annual_Asthma_Delay"
+        }
+      ]
+    },
+    "Asthma_Prob_45_54": {
+      "type": "Simple",
+      "remarks": [
+        "~0.4%/year 45-54 (non-atopic/occupational peak)."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.004,
+          "transition": "Diagnose_Asthma"
+        },
+        {
+          "distribution": 0.996,
+          "transition": "Annual_Asthma_Delay"
+        }
+      ]
+    },
+    "Asthma_Prob_55_plus": {
+      "type": "Simple",
+      "remarks": [
+        "~0.2%/year 55+ (late-onset)."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.002,
+          "transition": "Diagnose_Asthma"
+        },
+        {
+          "distribution": 0.998,
+          "transition": "Annual_Asthma_Delay"
+        }
+      ]
+    },
+    "Diagnose_Asthma": {
+      "type": "ConditionOnset",
+      "assign_to_attribute": "asthma",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "195967001",
+          "display": "Asthma (disorder)"
+        }
+      ],
+      "direct_transition": "Set_Asthma_Boolean"
+    },
+    "Set_Asthma_Boolean": {
+      "type": "SetAttribute",
+      "attribute": "asthma",
+      "value": true,
+      "direct_transition": "Asthma_Diagnosis_Encounter"
+    },
+    "Asthma_Diagnosis_Encounter": {
+      "type": "Encounter",
+      "encounter_class": "ambulatory",
+      "reason": "Diagnose_Asthma",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "11429006",
+          "display": "Consultation (procedure)"
+        }
+      ],
+      "direct_transition": "Spirometry"
+    },
+    "Spirometry": {
+      "type": "Procedure",
+      "reason": "Diagnose_Asthma",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "127783003",
+          "display": "Spirometry (procedure)"
+        }
+      ],
+      "direct_transition": "FEV1_Observation"
+    },
+    "FEV1_Observation": {
+      "type": "Observation",
+      "category": "procedure",
+      "codes": [
+        {
+          "system": "LOINC",
+          "code": "20150-9",
+          "display": "FEV1/FVC"
+        }
+      ],
+      "range": {
+        "low": 60,
+        "high": 79,
+        "decimals": 0
+      },
+      "unit": "%",
+      "direct_transition": "Prescribe_SABA"
+    },
+    "Prescribe_SABA": {
+      "type": "MedicationOrder",
+      "reason": "Diagnose_Asthma",
+      "codes": [
+        {
+          "system": "RxNorm",
+          "code": "745679",
+          "display": "salbutamol 0.1 MG/ACTUAT Inhalant Solution"
+        }
+      ],
+      "direct_transition": "Asthma_Severity_Check"
+    },
+    "Asthma_Severity_Check": {
+      "type": "Simple",
+      "remarks": [
+        "GINA: mild 50%, moderate 35%, severe 15%."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.5,
+          "transition": "End_Asthma_Encounter"
+        },
+        {
+          "distribution": 0.35,
+          "transition": "Prescribe_ICS"
+        },
+        {
+          "distribution": 0.15,
+          "transition": "Prescribe_ICS_LABA"
+        }
+      ]
+    },
+    "Prescribe_ICS": {
+      "type": "MedicationOrder",
+      "reason": "Diagnose_Asthma",
+      "codes": [
+        {
+          "system": "RxNorm",
+          "code": "746763",
+          "display": "beclomethasone dipropionate 0.1 MG/ACTUAT Inhalant Solution"
+        }
+      ],
+      "direct_transition": "End_Asthma_Encounter"
+    },
+    "Prescribe_ICS_LABA": {
+      "type": "MedicationOrder",
+      "reason": "Diagnose_Asthma",
+      "codes": [
+        {
+          "system": "RxNorm",
+          "code": "896209",
+          "display": "budesonide 0.16 MG/ACTUAT / formoterol fumarate 0.0045 MG/ACTUAT Inhalant Powder"
+        }
+      ],
+      "direct_transition": "End_Asthma_Encounter"
+    },
+    "End_Asthma_Encounter": {
+      "type": "EncounterEnd",
+      "direct_transition": "Asthma_Followup_Delay"
+    },
+    "Asthma_Followup_Delay": {
+      "type": "Delay",
+      "range": {
+        "low": 10,
+        "high": 14,
+        "unit": "months"
+      },
+      "direct_transition": "Asthma_Control_Check"
+    },
+    "Asthma_Control_Check": {
+      "type": "Simple",
+      "remarks": [
+        "GINA: ~15% have acute exacerbation requiring care per year."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.15,
+          "transition": "Asthma_Exacerbation"
+        },
+        {
+          "distribution": 0.03,
+          "transition": "Asthma_Remission"
+        },
+        {
+          "distribution": 0.82,
+          "transition": "Asthma_Review_Encounter"
+        }
+      ]
+    },
+    "Asthma_Exacerbation": {
+      "type": "Encounter",
+      "encounter_class": "urgentcare",
+      "reason": "Diagnose_Asthma",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "270427003",
+          "display": "Patient-initiated encounter (procedure)"
+        }
+      ],
+      "direct_transition": "Systemic_Corticosteroid"
+    },
+    "Systemic_Corticosteroid": {
+      "type": "MedicationOrder",
+      "reason": "Diagnose_Asthma",
+      "codes": [
+        {
+          "system": "RxNorm",
+          "code": "312617",
+          "display": "predniSONE 5 MG Oral Tablet"
+        }
+      ],
+      "direct_transition": "End_Exacerbation_Encounter"
+    },
+    "End_Exacerbation_Encounter": {
+      "type": "EncounterEnd",
+      "direct_transition": "Asthma_Followup_Delay"
+    },
+    "Asthma_Remission": {
+      "type": "ConditionEnd",
+      "remarks": [
+        "~3% per year achieve clinical remission (ERS 2022)."
+      ],
+      "condition_onset": "Diagnose_Asthma",
+      "direct_transition": "Terminal"
+    },
+    "Asthma_Review_Encounter": {
+      "type": "Encounter",
+      "encounter_class": "ambulatory",
+      "reason": "Diagnose_Asthma",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "390906007",
+          "display": "Follow-up encounter (procedure)"
+        }
+      ],
+      "direct_transition": "End_Asthma_Review"
+    },
+    "End_Asthma_Review": {
+      "type": "EncounterEnd",
+      "direct_transition": "Asthma_Followup_Delay"
+    },
+    "Terminal": {
+      "type": "Terminal"
+    }
+  }
+}

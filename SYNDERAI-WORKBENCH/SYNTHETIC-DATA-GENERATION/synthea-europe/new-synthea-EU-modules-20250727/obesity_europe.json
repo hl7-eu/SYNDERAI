@@ -1,0 +1,323 @@
+{
+  "name": "Obesity Clinical Europe",
+  "remarks": [
+    "European calibration of clinical obesity (BMI >= 30).",
+    "WHO Europe 2022: prevalence 15-20% EU adults.",
+    "Formal clinical diagnosis and management pathway.",
+    "EU treatment guidelines: lifestyle, orlistat, GLP-1 agonists (semaglutide).",
+    "Note: Synthea's BMI tracking is separate from this formal diagnosis module.",
+    "This module adds the clinical encounter, diagnosis code, and treatment."
+  ],
+  "states": {
+    "Initial": {
+      "type": "Initial",
+      "direct_transition": "Age_Guard"
+    },
+    "Age_Guard": {
+      "type": "Guard",
+      "allow": {
+        "condition_type": "Age",
+        "operator": ">=",
+        "quantity": 18,
+        "unit": "years"
+      },
+      "direct_transition": "Obesity_Naive_Guard"
+    },
+    "Obesity_Naive_Guard": {
+      "type": "Guard",
+      "allow": {
+        "condition_type": "Attribute",
+        "attribute": "obesity_dx",
+        "operator": "is nil"
+      },
+      "direct_transition": "Annual_Obesity_Delay"
+    },
+    "Annual_Obesity_Delay": {
+      "type": "Delay",
+      "exact": {
+        "quantity": 1,
+        "unit": "years"
+      },
+      "direct_transition": "Obesity_Age_Check"
+    },
+    "Obesity_Age_Check": {
+      "type": "Simple",
+      "remarks": [
+        "WHO Europe: obesity rises steeply with age."
+      ],
+      "conditional_transition": [
+        {
+          "condition": {
+            "condition_type": "Age",
+            "operator": "<",
+            "quantity": 35,
+            "unit": "years"
+          },
+          "transition": "Obesity_Prob_18_34"
+        },
+        {
+          "condition": {
+            "condition_type": "Age",
+            "operator": "<",
+            "quantity": 50,
+            "unit": "years"
+          },
+          "transition": "Obesity_Prob_35_49"
+        },
+        {
+          "condition": {
+            "condition_type": "Age",
+            "operator": "<",
+            "quantity": 65,
+            "unit": "years"
+          },
+          "transition": "Obesity_Prob_50_64"
+        },
+        {
+          "transition": "Obesity_Prob_65_plus"
+        }
+      ]
+    },
+    "Obesity_Prob_18_34": {
+      "type": "Simple",
+      "remarks": [
+        "WHO Europe: ~0.8%/year new obesity diagnosis 18-34."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.008,
+          "transition": "Diagnose_Obesity"
+        },
+        {
+          "distribution": 0.992,
+          "transition": "Annual_Obesity_Delay"
+        }
+      ]
+    },
+    "Obesity_Prob_35_49": {
+      "type": "Simple",
+      "remarks": [
+        "WHO Europe: ~1.5%/year 35-49."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.015,
+          "transition": "Diagnose_Obesity"
+        },
+        {
+          "distribution": 0.985,
+          "transition": "Annual_Obesity_Delay"
+        }
+      ]
+    },
+    "Obesity_Prob_50_64": {
+      "type": "Simple",
+      "remarks": [
+        "WHO Europe: ~1.8%/year 50-64 \u2014 peak."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.018,
+          "transition": "Diagnose_Obesity"
+        },
+        {
+          "distribution": 0.982,
+          "transition": "Annual_Obesity_Delay"
+        }
+      ]
+    },
+    "Obesity_Prob_65_plus": {
+      "type": "Simple",
+      "remarks": [
+        "WHO Europe: ~1.2%/year 65+ (sarcopenic obesity)."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.012,
+          "transition": "Diagnose_Obesity"
+        },
+        {
+          "distribution": 0.988,
+          "transition": "Annual_Obesity_Delay"
+        }
+      ]
+    },
+    "Diagnose_Obesity": {
+      "type": "ConditionOnset",
+      "assign_to_attribute": "obesity_dx",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "414916001",
+          "display": "Obesity (disorder)"
+        }
+      ],
+      "direct_transition": "Set_Obesity_Boolean"
+    },
+    "Set_Obesity_Boolean": {
+      "type": "SetAttribute",
+      "attribute": "obesity_dx",
+      "value": true,
+      "direct_transition": "Obesity_Diagnosis_Encounter"
+    },
+    "Obesity_Diagnosis_Encounter": {
+      "type": "Encounter",
+      "encounter_class": "ambulatory",
+      "reason": "Diagnose_Obesity",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "11429006",
+          "display": "Consultation (procedure)"
+        }
+      ],
+      "direct_transition": "BMI_Measurement"
+    },
+    "BMI_Measurement": {
+      "type": "Observation",
+      "category": "vital-signs",
+      "codes": [
+        {
+          "system": "LOINC",
+          "code": "39156-5",
+          "display": "Body mass index (BMI) [Ratio]"
+        }
+      ],
+      "range": {
+        "low": 30,
+        "high": 45,
+        "decimals": 1
+      },
+      "unit": "kg/m2",
+      "direct_transition": "Lifestyle_Counselling"
+    },
+    "Lifestyle_Counselling": {
+      "type": "Procedure",
+      "reason": "Diagnose_Obesity",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "304549008",
+          "display": "Exercise promotion (procedure)"
+        }
+      ],
+      "direct_transition": "Obesity_Treatment_Decision"
+    },
+    "Obesity_Treatment_Decision": {
+      "type": "Simple",
+      "remarks": [
+        "EU guidelines: lifestyle alone (50%), orlistat (35%), GLP-1 agonist (15%)."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.5,
+          "transition": "End_Obesity_Encounter"
+        },
+        {
+          "distribution": 0.35,
+          "transition": "Prescribe_Orlistat"
+        },
+        {
+          "distribution": 0.15,
+          "transition": "Prescribe_Semaglutide"
+        }
+      ]
+    },
+    "Prescribe_Orlistat": {
+      "type": "MedicationOrder",
+      "reason": "Diagnose_Obesity",
+      "codes": [
+        {
+          "system": "RxNorm",
+          "code": "225569",
+          "display": "Orlistat 120 MG Oral Capsule"
+        }
+      ],
+      "direct_transition": "End_Obesity_Encounter"
+    },
+    "Prescribe_Semaglutide": {
+      "type": "MedicationOrder",
+      "reason": "Diagnose_Obesity",
+      "codes": [
+        {
+          "system": "RxNorm",
+          "code": "2397641",
+          "display": "semaglutide 2.4 MG/DOSE Pen Injector"
+        }
+      ],
+      "direct_transition": "End_Obesity_Encounter"
+    },
+    "End_Obesity_Encounter": {
+      "type": "EncounterEnd",
+      "direct_transition": "Obesity_Followup_Delay"
+    },
+    "Obesity_Followup_Delay": {
+      "type": "Delay",
+      "range": {
+        "low": 10,
+        "high": 14,
+        "unit": "months"
+      },
+      "direct_transition": "Obesity_Review_Encounter"
+    },
+    "Obesity_Review_Encounter": {
+      "type": "Encounter",
+      "encounter_class": "ambulatory",
+      "reason": "Diagnose_Obesity",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "390906007",
+          "display": "Follow-up encounter (procedure)"
+        }
+      ],
+      "direct_transition": "BMI_Review"
+    },
+    "BMI_Review": {
+      "type": "Observation",
+      "category": "vital-signs",
+      "codes": [
+        {
+          "system": "LOINC",
+          "code": "39156-5",
+          "display": "Body mass index (BMI) [Ratio]"
+        }
+      ],
+      "range": {
+        "low": 28,
+        "high": 45,
+        "decimals": 1
+      },
+      "unit": "kg/m2",
+      "direct_transition": "Obesity_Remission_Check"
+    },
+    "Obesity_Remission_Check": {
+      "type": "Simple",
+      "remarks": [
+        "~3% per year achieve sustained remission (BMI <30) with treatment."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.03,
+          "transition": "Obesity_Remission"
+        },
+        {
+          "distribution": 0.97,
+          "transition": "End_Obesity_Review"
+        }
+      ]
+    },
+    "Obesity_Remission": {
+      "type": "ConditionEnd",
+      "condition_onset": "Diagnose_Obesity",
+      "direct_transition": "Terminal"
+    },
+    "End_Obesity_Review": {
+      "type": "EncounterEnd",
+      "direct_transition": "Obesity_Followup_Delay"
+    },
+    "Terminal": {
+      "type": "Terminal"
+    }
+  }
+}

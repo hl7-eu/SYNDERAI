@@ -1,0 +1,511 @@
+{
+  "name": "Colorectal Cancer (European Calibration)",
+  "remarks": [
+    "=======================================================================",
+    "SYNTHEA MODULE: Colorectal Cancer \u2014 European Epidemiology Edition",
+    "=======================================================================",
+    "Calibrated against:",
+    "  - ECIS / IARC GLOBOCAN 2020: Europe-specific incidence and survival",
+    "  - ECDC Cancer Burden report 2022",
+    "  - ESMO Clinical Practice Guidelines: Colorectal Cancer 2023",
+    "  - EU Council Recommendation on cancer screening (2022)",
+    "  - GBD 2019: Colon and rectum cancer \u2014 Europe",
+    "  - Eurocare-6 survival study",
+    "",
+    "Key calibration data (ECIS/GLOBOCAN 2020 \u2014 Europe):",
+    "  Colorectal cancer is the 2nd most common cancer in Europe by incidence",
+    "  Age-standardised incidence: ~33 per 100,000 (both sexes)",
+    "  Male ASR: ~42/100,000; Female ASR: ~26/100,000",
+    "  5-year prevalence: ~0.7% of total population",
+    "  Screening coverage (FIT/colonoscopy): highly variable by EU country",
+    "  5-year survival (Eurocare-6): ~62% overall",
+    "",
+    "Age-specific incidence per 100,000/year (ECIS 2020):",
+    "  45-49 years :  ~18",
+    "  50-54 years :  ~38",
+    "  55-59 years :  ~68",
+    "  60-64 years : ~108",
+    "  65-69 years : ~155",
+    "  70-74 years : ~195",
+    "  75-79 years : ~225"
+  ],
+  "states": {
+    "Initial": {
+      "type": "Initial",
+      "direct_transition": "Age_Guard"
+    },
+    "Age_Guard": {
+      "type": "Guard",
+      "allow": {
+        "condition_type": "Age",
+        "operator": ">=",
+        "quantity": 45,
+        "unit": "years"
+      },
+      "direct_transition": "Screening_Check"
+    },
+    "Screening_Check": {
+      "type": "Simple",
+      "remarks": [
+        "EU Council Recommendation 2022: FIT-based screening from age 50-74 across EU.",
+        "Screening detection shifts stage distribution toward early-stage disease.",
+        "~40% of European CRC detected through screening programmes."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.4,
+          "transition": "CRC_Screening_Pathway"
+        },
+        {
+          "distribution": 0.6,
+          "transition": "CRC_Annual_Check"
+        }
+      ]
+    },
+    "CRC_Screening_Pathway": {
+      "type": "Procedure",
+      "remarks": [
+        "FIT (faecal immunochemical test) \u2014 primary screening tool in most EU countries."
+      ],
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "441579003",
+          "display": "Measurement of occult blood in stool specimen using immunoassay (procedure)"
+        }
+      ],
+      "duration": {
+        "low": 5,
+        "high": 10,
+        "unit": "minutes"
+      },
+      "direct_transition": "CRC_Annual_Check"
+    },
+    "CRC_Annual_Check": {
+      "type": "Simple",
+      "conditional_transition": [
+        {
+          "condition": {
+            "condition_type": "Age",
+            "operator": "<",
+            "quantity": 50,
+            "unit": "years"
+          },
+          "transition": "CRC_Prob_45_49"
+        },
+        {
+          "condition": {
+            "condition_type": "Age",
+            "operator": "<",
+            "quantity": 55,
+            "unit": "years"
+          },
+          "transition": "CRC_Prob_50_54"
+        },
+        {
+          "condition": {
+            "condition_type": "Age",
+            "operator": "<",
+            "quantity": 60,
+            "unit": "years"
+          },
+          "transition": "CRC_Prob_55_59"
+        },
+        {
+          "condition": {
+            "condition_type": "Age",
+            "operator": "<",
+            "quantity": 65,
+            "unit": "years"
+          },
+          "transition": "CRC_Prob_60_64"
+        },
+        {
+          "condition": {
+            "condition_type": "Age",
+            "operator": "<",
+            "quantity": 70,
+            "unit": "years"
+          },
+          "transition": "CRC_Prob_65_69"
+        },
+        {
+          "condition": {
+            "condition_type": "Age",
+            "operator": "<",
+            "quantity": 75,
+            "unit": "years"
+          },
+          "transition": "CRC_Prob_70_74"
+        },
+        {
+          "transition": "CRC_Prob_75_plus"
+        }
+      ]
+    },
+    "CRC_Prob_45_49": {
+      "type": "Simple",
+      "distributed_transition": [
+        {
+          "distribution": 0.00018,
+          "transition": "CRC_Subsite_Branch"
+        },
+        {
+          "distribution": 0.99982,
+          "transition": "CRC_Annual_Delay"
+        }
+      ]
+    },
+    "CRC_Prob_50_54": {
+      "type": "Simple",
+      "distributed_transition": [
+        {
+          "distribution": 0.00038,
+          "transition": "CRC_Subsite_Branch"
+        },
+        {
+          "distribution": 0.99962,
+          "transition": "CRC_Annual_Delay"
+        }
+      ]
+    },
+    "CRC_Prob_55_59": {
+      "type": "Simple",
+      "distributed_transition": [
+        {
+          "distribution": 0.00068,
+          "transition": "CRC_Subsite_Branch"
+        },
+        {
+          "distribution": 0.99932,
+          "transition": "CRC_Annual_Delay"
+        }
+      ]
+    },
+    "CRC_Prob_60_64": {
+      "type": "Simple",
+      "distributed_transition": [
+        {
+          "distribution": 0.00108,
+          "transition": "CRC_Subsite_Branch"
+        },
+        {
+          "distribution": 0.99892,
+          "transition": "CRC_Annual_Delay"
+        }
+      ]
+    },
+    "CRC_Prob_65_69": {
+      "type": "Simple",
+      "distributed_transition": [
+        {
+          "distribution": 0.00155,
+          "transition": "CRC_Subsite_Branch"
+        },
+        {
+          "distribution": 0.99845,
+          "transition": "CRC_Annual_Delay"
+        }
+      ]
+    },
+    "CRC_Prob_70_74": {
+      "type": "Simple",
+      "distributed_transition": [
+        {
+          "distribution": 0.00195,
+          "transition": "CRC_Subsite_Branch"
+        },
+        {
+          "distribution": 0.99805,
+          "transition": "CRC_Annual_Delay"
+        }
+      ]
+    },
+    "CRC_Prob_75_plus": {
+      "type": "Simple",
+      "distributed_transition": [
+        {
+          "distribution": 0.00225,
+          "transition": "CRC_Subsite_Branch"
+        },
+        {
+          "distribution": 0.99775,
+          "transition": "CRC_Annual_Delay"
+        }
+      ]
+    },
+    "CRC_Annual_Delay": {
+      "type": "Delay",
+      "exact": {
+        "quantity": 1,
+        "unit": "years"
+      },
+      "direct_transition": "CRC_Annual_Check"
+    },
+    "CRC_Subsite_Branch": {
+      "type": "Simple",
+      "remarks": [
+        "CRC anatomical subsite distribution (ECIS 2020):",
+        "  Colon (right/transverse/left): ~55%",
+        "  Sigmoid colon:                 ~25%",
+        "  Rectum:                        ~20%"
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.55,
+          "transition": "Onset_Colon_Cancer"
+        },
+        {
+          "distribution": 0.25,
+          "transition": "Onset_Sigmoid_Cancer"
+        },
+        {
+          "distribution": 0.2,
+          "transition": "Onset_Rectal_Cancer"
+        }
+      ]
+    },
+    "Onset_Colon_Cancer": {
+      "type": "ConditionOnset",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "363406005",
+          "display": "Malignant neoplasm of colon (disorder)"
+        }
+      ],
+      "direct_transition": "CRC_Staging_Encounter",
+      "assign_to_attribute": "colorectal_cancer"
+    },
+    "Onset_Sigmoid_Cancer": {
+      "type": "ConditionOnset",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "363410008",
+          "display": "Malignant neoplasm of sigmoid colon (disorder)"
+        }
+      ],
+      "direct_transition": "CRC_Staging_Encounter",
+      "assign_to_attribute": "colorectal_cancer"
+    },
+    "Onset_Rectal_Cancer": {
+      "type": "ConditionOnset",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "363351006",
+          "display": "Malignant neoplasm of rectum (disorder)"
+        }
+      ],
+      "direct_transition": "CRC_Staging_Encounter",
+      "assign_to_attribute": "colorectal_cancer"
+    },
+    "CRC_Staging_Encounter": {
+      "type": "Encounter",
+      "encounter_class": "ambulatory",
+      "reason": "colorectal_cancer",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "11429006",
+          "display": "Consultation (procedure)"
+        }
+      ],
+      "direct_transition": "CRC_Colonoscopy"
+    },
+    "CRC_Colonoscopy": {
+      "type": "Procedure",
+      "remarks": [
+        "Total colonoscopy \u2014 mandatory staging procedure per ESMO 2023."
+      ],
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "73761001",
+          "display": "Colonoscopy (procedure)"
+        }
+      ],
+      "duration": {
+        "low": 30,
+        "high": 60,
+        "unit": "minutes"
+      },
+      "reason": "colorectal_cancer",
+      "direct_transition": "CRC_Stage_Branch"
+    },
+    "CRC_Stage_Branch": {
+      "type": "Simple",
+      "remarks": [
+        "Stage distribution at diagnosis (Eurocare-6 / ECIS 2020):",
+        "  Stage I:   ~20%",
+        "  Stage II:  ~25%",
+        "  Stage III: ~30%",
+        "  Stage IV:  ~25%"
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.2,
+          "transition": "CRC_Surgery_Curative"
+        },
+        {
+          "distribution": 0.25,
+          "transition": "CRC_Surgery_Adjuvant"
+        },
+        {
+          "distribution": 0.3,
+          "transition": "CRC_Surgery_Chemo"
+        },
+        {
+          "distribution": 0.25,
+          "transition": "CRC_Palliative_Chemo"
+        }
+      ]
+    },
+    "CRC_Surgery_Curative": {
+      "type": "Procedure",
+      "remarks": [
+        "Stage I: surgical resection alone. ESMO 2023."
+      ],
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "442285009",
+          "display": "Excision of intestinal structure (procedure)"
+        }
+      ],
+      "duration": {
+        "low": 2,
+        "high": 4,
+        "unit": "hours"
+      },
+      "reason": "colorectal_cancer",
+      "direct_transition": "End_CRC_Encounter"
+    },
+    "CRC_Surgery_Adjuvant": {
+      "type": "Procedure",
+      "remarks": [
+        "Stage II: surgery. Adjuvant capecitabine in high-risk stage II."
+      ],
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "442285009",
+          "display": "Excision of intestinal structure (procedure)"
+        }
+      ],
+      "duration": {
+        "low": 2,
+        "high": 4,
+        "unit": "hours"
+      },
+      "reason": "colorectal_cancer",
+      "direct_transition": "End_CRC_Encounter"
+    },
+    "CRC_Surgery_Chemo": {
+      "type": "MedicationOrder",
+      "remarks": [
+        "Stage III: surgery + FOLFOX (oxaliplatin + 5-FU + leucovorin).",
+        "RxNorm 32592: oxaliplatin 5 MG/ML Injectable Solution."
+      ],
+      "codes": [
+        {
+          "system": "RxNorm",
+          "code": "32592",
+          "display": "oxaliplatin 5 MG/ML Injectable Solution"
+        }
+      ],
+      "reason": "colorectal_cancer",
+      "prescription": {
+        "refills": 11,
+        "as_needed": false,
+        "instructions": "IV infusion per FOLFOX oncology protocol"
+      },
+      "direct_transition": "End_CRC_Encounter"
+    },
+    "CRC_Palliative_Chemo": {
+      "type": "MedicationOrder",
+      "remarks": [
+        "Stage IV: FOLFOX/FOLFIRI + bevacizumab or cetuximab depending on RAS status.",
+        "Bevacizumab preferred in RAS-mutated; cetuximab in RAS wild-type.",
+        "RxNorm 358055: bevacizumab 25 MG/ML Injectable Solution."
+      ],
+      "codes": [
+        {
+          "system": "RxNorm",
+          "code": "358055",
+          "display": "bevacizumab 25 MG/ML Injectable Solution"
+        }
+      ],
+      "reason": "colorectal_cancer",
+      "prescription": {
+        "refills": 11,
+        "as_needed": false,
+        "instructions": "IV infusion per oncology protocol"
+      },
+      "direct_transition": "End_CRC_Encounter"
+    },
+    "End_CRC_Encounter": {
+      "type": "EncounterEnd",
+      "direct_transition": "CRC_Followup_Delay"
+    },
+    "CRC_Followup_Delay": {
+      "type": "Delay",
+      "range": {
+        "low": 3,
+        "high": 6,
+        "unit": "months"
+      },
+      "direct_transition": "CRC_Surveillance_Encounter"
+    },
+    "CRC_Surveillance_Encounter": {
+      "type": "Encounter",
+      "encounter_class": "ambulatory",
+      "reason": "colorectal_cancer",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "11429006",
+          "display": "Consultation (procedure)"
+        }
+      ],
+      "direct_transition": "CEA_Measurement"
+    },
+    "CEA_Measurement": {
+      "type": "Observation",
+      "remarks": [
+        "Carcinoembryonic antigen (CEA) \u2014 standard follow-up marker in European CRC surveillance."
+      ],
+      "category": "laboratory",
+      "unit": "ng/mL",
+      "codes": [
+        {
+          "system": "LOINC",
+          "code": "2857-1",
+          "display": "CEA [Mass/volume] in Serum or Plasma"
+        }
+      ],
+      "range": {
+        "low": 1,
+        "high": 15
+      },
+      "direct_transition": "End_CRC_Surveillance"
+    },
+    "End_CRC_Surveillance": {
+      "type": "EncounterEnd",
+      "distributed_transition": [
+        {
+          "distribution": 0.05,
+          "transition": "Terminal"
+        },
+        {
+          "distribution": 0.95,
+          "transition": "CRC_Followup_Delay"
+        }
+      ]
+    },
+    "Terminal": {
+      "type": "Terminal"
+    }
+  }
+}

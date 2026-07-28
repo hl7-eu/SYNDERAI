@@ -1,0 +1,605 @@
+{
+  "name": "Breast Cancer (European Calibration)",
+  "remarks": [
+    "=======================================================================",
+    "SYNTHEA MODULE: Breast Cancer \u2014 European Epidemiology Edition",
+    "=======================================================================",
+    "Calibrated against:",
+    "  - ECIS / IARC GLOBOCAN 2020: Europe-specific incidence and survival",
+    "  - ECDC Cancer Burden report 2022",
+    "  - ESMO Clinical Practice Guidelines: Early and Advanced Breast Cancer 2023",
+    "  - EU Council Recommendation on cancer screening (2022)",
+    "  - Eurocare-6 survival study",
+    "  - ECIBC: European Commission Initiative on Breast Cancer (screening)",
+    "",
+    "Key calibration data (ECIS/GLOBOCAN 2020 \u2014 Europe, female population):",
+    "  Most common cancer in European women",
+    "  Age-standardised incidence: ~92 per 100,000 women/year",
+    "  Cumulative risk to age 75: ~7.4% (1 in 13 women)",
+    "  5-year prevalence: ~1.4% of total population (both sexes)",
+    "  5-year survival (Eurocare-6): ~87% \u2014 one of best in world",
+    "  Mammography screening: 50-69 years in most EU countries",
+    "",
+    "Age-specific incidence per 100,000 women/year (ECIS 2020):",
+    "  30-34 years :  ~12",
+    "  35-39 years :  ~30",
+    "  40-44 years :  ~75",
+    "  45-49 years : ~130",
+    "  50-54 years : ~165",
+    "  55-59 years : ~175",
+    "  60-64 years : ~185",
+    "  65-69 years : ~190",
+    "  70-74 years : ~185"
+  ],
+  "states": {
+    "Initial": {
+      "type": "Initial",
+      "direct_transition": "Sex_Guard"
+    },
+    "Sex_Guard": {
+      "type": "Guard",
+      "remarks": [
+        "Breast cancer occurs in women in ~99% of cases. Male BC modelled at ~1%."
+      ],
+      "allow": {
+        "condition_type": "Or",
+        "conditions": [
+          {
+            "condition_type": "Gender",
+            "gender": "F"
+          },
+          {
+            "condition_type": "And",
+            "conditions": [
+              {
+                "condition_type": "Gender",
+                "gender": "M"
+              },
+              {
+                "condition_type": "Age",
+                "operator": ">=",
+                "quantity": 55,
+                "unit": "years"
+              }
+            ]
+          }
+        ]
+      },
+      "direct_transition": "Age_Guard"
+    },
+    "Age_Guard": {
+      "type": "Guard",
+      "allow": {
+        "condition_type": "Age",
+        "operator": ">=",
+        "quantity": 30,
+        "unit": "years"
+      },
+      "direct_transition": "Mammography_Screening_Check"
+    },
+    "Mammography_Screening_Check": {
+      "type": "Simple",
+      "remarks": [
+        "EU screening: biennial mammography 50-69 years in most member states.",
+        "ECIBC recommends extending to 45-74 (2022 update).",
+        "Screening improves stage at detection \u2014 modelled in stage branch."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.7,
+          "transition": "BC_Annual_Check"
+        },
+        {
+          "distribution": 0.3,
+          "transition": "Mammography_Procedure"
+        }
+      ]
+    },
+    "Mammography_Procedure": {
+      "type": "Procedure",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "71651007",
+          "display": "Mammography (procedure)"
+        }
+      ],
+      "duration": {
+        "low": 15,
+        "high": 30,
+        "unit": "minutes"
+      },
+      "direct_transition": "BC_Annual_Check"
+    },
+    "BC_Annual_Check": {
+      "type": "Simple",
+      "conditional_transition": [
+        {
+          "condition": {
+            "condition_type": "Age",
+            "operator": "<",
+            "quantity": 40,
+            "unit": "years"
+          },
+          "transition": "BC_Prob_30_39"
+        },
+        {
+          "condition": {
+            "condition_type": "Age",
+            "operator": "<",
+            "quantity": 50,
+            "unit": "years"
+          },
+          "transition": "BC_Prob_40_49"
+        },
+        {
+          "condition": {
+            "condition_type": "Age",
+            "operator": "<",
+            "quantity": 60,
+            "unit": "years"
+          },
+          "transition": "BC_Prob_50_59"
+        },
+        {
+          "condition": {
+            "condition_type": "Age",
+            "operator": "<",
+            "quantity": 70,
+            "unit": "years"
+          },
+          "transition": "BC_Prob_60_69"
+        },
+        {
+          "transition": "BC_Prob_70_plus"
+        }
+      ]
+    },
+    "BC_Prob_30_39": {
+      "type": "Simple",
+      "remarks": [
+        "ECIS 2020: ~20/100,000/year average across 30-39 band."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.0002,
+          "transition": "BC_Subtype_Branch"
+        },
+        {
+          "distribution": 0.9998,
+          "transition": "BC_Annual_Delay"
+        }
+      ]
+    },
+    "BC_Prob_40_49": {
+      "type": "Simple",
+      "remarks": [
+        "~100/100,000/year."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.001,
+          "transition": "BC_Subtype_Branch"
+        },
+        {
+          "distribution": 0.999,
+          "transition": "BC_Annual_Delay"
+        }
+      ]
+    },
+    "BC_Prob_50_59": {
+      "type": "Simple",
+      "remarks": [
+        "~170/100,000/year \u2014 peak incidence band."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.0017,
+          "transition": "BC_Subtype_Branch"
+        },
+        {
+          "distribution": 0.9983,
+          "transition": "BC_Annual_Delay"
+        }
+      ]
+    },
+    "BC_Prob_60_69": {
+      "type": "Simple",
+      "remarks": [
+        "~188/100,000/year."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.00188,
+          "transition": "BC_Subtype_Branch"
+        },
+        {
+          "distribution": 0.99812,
+          "transition": "BC_Annual_Delay"
+        }
+      ]
+    },
+    "BC_Prob_70_plus": {
+      "type": "Simple",
+      "remarks": [
+        "~175/100,000/year; incidence plateaus post-70."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.00175,
+          "transition": "BC_Subtype_Branch"
+        },
+        {
+          "distribution": 0.99825,
+          "transition": "BC_Annual_Delay"
+        }
+      ]
+    },
+    "BC_Annual_Delay": {
+      "type": "Delay",
+      "exact": {
+        "quantity": 1,
+        "unit": "years"
+      },
+      "direct_transition": "BC_Annual_Check"
+    },
+    "BC_Subtype_Branch": {
+      "type": "Simple",
+      "remarks": [
+        "Molecular subtype distribution (ECIS / St Gallen 2023):",
+        "  Luminal A (HR+/HER2-):  ~50%",
+        "  Luminal B (HR+/HER2+):  ~20%",
+        "  HER2-enriched:          ~10%",
+        "  Triple-negative:        ~15%",
+        "  Other / unknown:         ~5%"
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.5,
+          "transition": "Onset_BC_Luminal_A"
+        },
+        {
+          "distribution": 0.2,
+          "transition": "Onset_BC_Luminal_B"
+        },
+        {
+          "distribution": 0.1,
+          "transition": "Onset_BC_HER2"
+        },
+        {
+          "distribution": 0.15,
+          "transition": "Onset_BC_TNBC"
+        },
+        {
+          "distribution": 0.05,
+          "transition": "Onset_BC_Other"
+        }
+      ]
+    },
+    "Onset_BC_Luminal_A": {
+      "type": "ConditionOnset",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "254837009",
+          "display": "Malignant neoplasm of breast (disorder)"
+        }
+      ],
+      "direct_transition": "BC_Staging_Encounter",
+      "assign_to_attribute": "breast_cancer"
+    },
+    "Onset_BC_Luminal_B": {
+      "type": "ConditionOnset",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "254837009",
+          "display": "Malignant neoplasm of breast (disorder)"
+        }
+      ],
+      "direct_transition": "BC_Staging_Encounter",
+      "assign_to_attribute": "breast_cancer"
+    },
+    "Onset_BC_HER2": {
+      "type": "ConditionOnset",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "254837009",
+          "display": "Malignant neoplasm of breast (disorder)"
+        }
+      ],
+      "direct_transition": "BC_Staging_Encounter",
+      "assign_to_attribute": "breast_cancer"
+    },
+    "Onset_BC_TNBC": {
+      "type": "ConditionOnset",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "254837009",
+          "display": "Malignant neoplasm of breast (disorder)"
+        }
+      ],
+      "direct_transition": "BC_Staging_Encounter",
+      "assign_to_attribute": "breast_cancer"
+    },
+    "Onset_BC_Other": {
+      "type": "ConditionOnset",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "254837009",
+          "display": "Malignant neoplasm of breast (disorder)"
+        }
+      ],
+      "direct_transition": "BC_Staging_Encounter",
+      "assign_to_attribute": "breast_cancer"
+    },
+    "BC_Staging_Encounter": {
+      "type": "Encounter",
+      "encounter_class": "ambulatory",
+      "reason": "breast_cancer",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "11429006",
+          "display": "Consultation (procedure)"
+        }
+      ],
+      "direct_transition": "BC_Biopsy"
+    },
+    "BC_Biopsy": {
+      "type": "Procedure",
+      "remarks": [
+        "Core needle biopsy \u2014 mandatory per ESMO 2023 for pathological confirmation."
+      ],
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "44578009",
+          "display": "Core needle biopsy of breast (procedure)"
+        }
+      ],
+      "duration": {
+        "low": 20,
+        "high": 40,
+        "unit": "minutes"
+      },
+      "reason": "breast_cancer",
+      "direct_transition": "BC_Stage_Branch"
+    },
+    "BC_Stage_Branch": {
+      "type": "Simple",
+      "remarks": [
+        "Stage distribution at diagnosis (Eurocare-6 / ECIS 2020):",
+        "  Stage I:   ~35% (improved by screening)",
+        "  Stage II:  ~35%",
+        "  Stage III: ~20%",
+        "  Stage IV:   ~10%"
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.35,
+          "transition": "BC_Surgery_BCS"
+        },
+        {
+          "distribution": 0.35,
+          "transition": "BC_Surgery_Mastectomy"
+        },
+        {
+          "distribution": 0.2,
+          "transition": "BC_Neoadjuvant_Chemo"
+        },
+        {
+          "distribution": 0.1,
+          "transition": "BC_Metastatic_Treatment"
+        }
+      ]
+    },
+    "BC_Surgery_BCS": {
+      "type": "Procedure",
+      "remarks": [
+        "Breast-conserving surgery (lumpectomy) + sentinel node biopsy. ESMO 2023 preferred for stage I-II."
+      ],
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "392090004",
+          "display": "Wide local excision of lesion of breast (procedure)"
+        }
+      ],
+      "duration": {
+        "low": 1,
+        "high": 2,
+        "unit": "hours"
+      },
+      "reason": "breast_cancer",
+      "direct_transition": "BC_Radiotherapy"
+    },
+    "BC_Radiotherapy": {
+      "type": "Procedure",
+      "remarks": [
+        "Post-BCS radiotherapy \u2014 standard across EU; reduces local recurrence by 50%."
+      ],
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "228748004",
+          "display": "Radiotherapy of breast (procedure)"
+        }
+      ],
+      "duration": {
+        "low": 3,
+        "high": 5,
+        "unit": "weeks"
+      },
+      "reason": "breast_cancer",
+      "direct_transition": "BC_Hormonal_Therapy"
+    },
+    "BC_Surgery_Mastectomy": {
+      "type": "Procedure",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "1231734007",
+          "display": "Mastectomy (procedure)"
+        }
+      ],
+      "duration": {
+        "low": 2,
+        "high": 4,
+        "unit": "hours"
+      },
+      "reason": "breast_cancer",
+      "direct_transition": "BC_Hormonal_Therapy"
+    },
+    "BC_Hormonal_Therapy": {
+      "type": "MedicationOrder",
+      "remarks": [
+        "Letrozole 2.5mg OD \u2014 AI preferred for post-menopausal HR+ breast cancer.",
+        "ESMO 2023: 5-10 years of adjuvant endocrine therapy for HR+ disease.",
+        "RxNorm 190311: letrozole 2.5 MG Oral Tablet."
+      ],
+      "codes": [
+        {
+          "system": "RxNorm",
+          "code": "190311",
+          "display": "letrozole 2.5 MG Oral Tablet"
+        }
+      ],
+      "reason": "breast_cancer",
+      "prescription": {
+        "refills": 11,
+        "as_needed": false,
+        "instructions": "Take once daily for 5-10 years. Annual review."
+      },
+      "direct_transition": "End_BC_Initial_Encounter"
+    },
+    "BC_Neoadjuvant_Chemo": {
+      "type": "MedicationOrder",
+      "remarks": [
+        "Stage III neoadjuvant: anthracycline + taxane based regimen.",
+        "AC-T (doxorubicin/cyclophosphamide then paclitaxel) \u2014 standard EU regimen.",
+        "RxNorm 3639: doxorubicin hydrochloride 2 MG/ML Injectable Solution."
+      ],
+      "codes": [
+        {
+          "system": "RxNorm",
+          "code": "3639",
+          "display": "doxorubicin hydrochloride 2 MG/ML Injectable Solution"
+        }
+      ],
+      "reason": "breast_cancer",
+      "prescription": {
+        "refills": 7,
+        "as_needed": false,
+        "instructions": "IV infusion per AC-T oncology protocol"
+      },
+      "direct_transition": "End_BC_Initial_Encounter"
+    },
+    "BC_Metastatic_Treatment": {
+      "type": "MedicationOrder",
+      "remarks": [
+        "Stage IV HR+/HER2-: CDK4/6 inhibitor + AI is first-line EU standard.",
+        "Palbociclib + letrozole \u2014 PALOMA-2 trial; EMA approved.",
+        "RxNorm 1860484: palbociclib 125 MG Oral Capsule."
+      ],
+      "codes": [
+        {
+          "system": "RxNorm",
+          "code": "1860484",
+          "display": "palbociclib 125 MG Oral Capsule"
+        }
+      ],
+      "reason": "breast_cancer",
+      "prescription": {
+        "refills": 11,
+        "as_needed": false,
+        "instructions": "Take once daily for 21 days then 7 days off. Repeat cycle."
+      },
+      "direct_transition": "End_BC_Initial_Encounter"
+    },
+    "End_BC_Initial_Encounter": {
+      "type": "EncounterEnd",
+      "direct_transition": "BC_FiveYear_Check"
+    },
+    "BC_Followup_Delay": {
+      "type": "Delay",
+      "range": {
+        "low": 5,
+        "high": 7,
+        "unit": "months"
+      },
+      "direct_transition": "BC_Surveillance_Encounter"
+    },
+    "BC_Surveillance_Encounter": {
+      "type": "Encounter",
+      "encounter_class": "ambulatory",
+      "reason": "breast_cancer",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "11429006",
+          "display": "Consultation (procedure)"
+        }
+      ],
+      "direct_transition": "BC_Annual_Mammography"
+    },
+    "BC_Annual_Mammography": {
+      "type": "Procedure",
+      "remarks": [
+        "Annual mammography for 10 years post-treatment \u2014 ESMO follow-up guidelines."
+      ],
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "71651007",
+          "display": "Mammography (procedure)"
+        }
+      ],
+      "duration": {
+        "low": 15,
+        "high": 30,
+        "unit": "minutes"
+      },
+      "reason": "breast_cancer",
+      "direct_transition": "End_BC_Surveillance"
+    },
+    "End_BC_Surveillance": {
+      "type": "EncounterEnd",
+      "distributed_transition": [
+        {
+          "distribution": 0.02,
+          "transition": "Terminal"
+        },
+        {
+          "distribution": 0.98,
+          "transition": "BC_Followup_Delay"
+        }
+      ]
+    },
+    "Terminal": {
+      "type": "Terminal"
+    },
+    "BC_Remission": {
+      "type": "ConditionEnd",
+      "remarks": [
+        "Breast cancer in remission after 5-year surveillance."
+      ],
+      "referenced_by_attribute": "breast_cancer",
+      "direct_transition": "Terminal"
+    },
+    "BC_FiveYear_Check": {
+      "type": "Delay",
+      "remarks": [
+        "5-year post-treatment surveillance period."
+      ],
+      "exact": {
+        "quantity": 5,
+        "unit": "years"
+      },
+      "direct_transition": "BC_Remission"
+    }
+  }
+}

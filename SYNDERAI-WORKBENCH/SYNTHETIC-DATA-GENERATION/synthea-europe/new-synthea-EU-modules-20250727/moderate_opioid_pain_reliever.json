@@ -1,0 +1,140 @@
+{
+  "name": "Moderate Opioid Pain Reliever (EU)",
+  "remarks": [
+    "EU-calibrated moderate opioid sub-module.",
+    "  tramadol 50mg (EU step 2 mainstay) replaces meperidine.",
+    "  codeine 30mg/paracetamol 500mg replaces hydrocodone/APAP (not EU-available).",
+    "  oxycodone 5mg/paracetamol kept with INN 'paracetamol' display name.",
+    "Removed: meperidine (EMA withdrew), hydrocodone single-agent (not EU)."
+  ],
+  "states": {
+    "Initial": {
+      "type": "Initial",
+      "conditional_transition": [
+        {
+          "condition": {
+            "condition_type": "And",
+            "conditions": [
+              {
+                "condition_type": "Attribute",
+                "attribute": "opioid_prescription",
+                "operator": "is nil"
+              },
+              {
+                "condition_type": "Age",
+                "operator": ">=",
+                "quantity": 12,
+                "unit": "years"
+              }
+            ]
+          },
+          "transition": "Prescribe_Moderate_Opioid"
+        },
+        {
+          "transition": "Moderate_Opioid_Terminal"
+        }
+      ]
+    },
+    "Prescribe_Moderate_Opioid": {
+      "type": "Simple",
+      "complex_transition": [
+        {
+          "condition": {
+            "condition_type": "Date",
+            "operator": "<",
+            "year": 1920
+          },
+          "distributions": [
+            {
+              "distribution": 1,
+              "transition": "Moderate_Opioid_Terminal"
+            }
+          ]
+        },
+        {
+          "condition": {
+            "condition_type": "Date",
+            "operator": "<",
+            "year": 1945
+          },
+          "distributions": [
+            {
+              "distribution": 1,
+              "transition": "Prescribe_Oxycodone_Acetaminophen"
+            }
+          ]
+        },
+        {
+          "distributions": [
+            {
+              "distribution": 0.4,
+              "transition": "Prescribe_Meperidine"
+            },
+            {
+              "distribution": 0.3,
+              "transition": "Prescribe_Oxycodone_Acetaminophen"
+            },
+            {
+              "distribution": 0.3,
+              "transition": "Prescribe_Hydrocodone_Acetaminophen"
+            }
+          ]
+        }
+      ]
+    },
+    "Prescribe_Meperidine": {
+      "type": "MedicationOrder",
+      "assign_to_attribute": "opioid_prescription",
+      "codes": [
+        {
+          "system": "RxNorm",
+          "code": "318432",
+          "display": "tramadol hydrochloride 50 MG Oral Tablet"
+        }
+      ],
+      "reason": "chronic pain",
+      "direct_transition": "Moderate_Opioid_Terminal",
+      "remarks": [
+        "Tramadol 50mg: most prescribed EU WHO step 2 analgesic.",
+        "Replaces pethidine/pethidine (EMA: neurotoxic metabolite norpethidine; not recommended)."
+      ]
+    },
+    "Prescribe_Oxycodone_Acetaminophen": {
+      "type": "MedicationOrder",
+      "assign_to_attribute": "opioid_prescription",
+      "codes": [
+        {
+          "system": "RxNorm",
+          "code": "1049502",
+          "display": "oxycodone hydrochloride 5 MG / paracetamol 325 MG Oral Tablet"
+        }
+      ],
+      "reason": "chronic pain",
+      "direct_transition": "Moderate_Opioid_Terminal",
+      "remarks": [
+        "Oxycodone/paracetamol combination: EU-available. 'paracetamol' INN replaces 'acetaminophen'."
+      ]
+    },
+    "Prescribe_Hydrocodone_Acetaminophen": {
+      "type": "MedicationOrder",
+      "assign_to_attribute": "opioid_prescription",
+      "codes": [
+        {
+          "system": "RxNorm",
+          "code": "993781",
+          "display": "codeine phosphate 30 MG / paracetamol 500 MG Oral Tablet"
+        }
+      ],
+      "reason": "chronic pain",
+      "direct_transition": "Moderate_Opioid_Terminal",
+      "remarks": [
+        "Codeine/paracetamol: standard EU WHO step 2 combination.",
+        "Replaces hydrocodone/APAP: single-agent hydrocodone NOT available in EU."
+      ]
+    },
+    "Moderate_Opioid_Terminal": {
+      "type": "Terminal"
+    }
+  },
+  "gmf_version": 1
+}

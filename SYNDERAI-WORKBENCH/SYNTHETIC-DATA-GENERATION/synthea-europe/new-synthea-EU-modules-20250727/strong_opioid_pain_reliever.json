@@ -1,0 +1,119 @@
+{
+  "name": "Strong Opioid Pain Reliever (EU)",
+  "remarks": [
+    "EU-calibrated strong opioid sub-module.",
+    "  State 1 'Prescribe_Oxycodone': now morphine sulfate 10mg (EU gold standard).",
+    "  State 2 'Prescribe_Methadone': now oxycodone HCl 10mg INN (EU second-line).",
+    "Removed: oxycodone-brand brand, methadone for non-specialist pain, US capitalisation."
+  ],
+  "states": {
+    "Initial": {
+      "type": "Initial",
+      "conditional_transition": [
+        {
+          "condition": {
+            "condition_type": "And",
+            "conditions": [
+              {
+                "condition_type": "Attribute",
+                "attribute": "opioid_prescription",
+                "operator": "is nil"
+              },
+              {
+                "condition_type": "Age",
+                "operator": ">=",
+                "quantity": 12,
+                "unit": "years"
+              }
+            ]
+          },
+          "transition": "Prescribe_Strong_Opioid"
+        },
+        {
+          "transition": "Strong_Opioid_Terminal"
+        }
+      ]
+    },
+    "Prescribe_Strong_Opioid": {
+      "type": "Simple",
+      "complex_transition": [
+        {
+          "condition": {
+            "condition_type": "Date",
+            "operator": "<",
+            "year": 1920
+          },
+          "distributions": [
+            {
+              "distribution": 1,
+              "transition": "Strong_Opioid_Terminal"
+            }
+          ]
+        },
+        {
+          "condition": {
+            "condition_type": "Date",
+            "operator": "<",
+            "year": 1947
+          },
+          "distributions": [
+            {
+              "distribution": 1,
+              "transition": "Prescribe_Oxycodone"
+            }
+          ]
+        },
+        {
+          "distributions": [
+            {
+              "distribution": 0.6,
+              "transition": "Prescribe_Oxycodone"
+            },
+            {
+              "distribution": 0.4,
+              "transition": "Prescribe_Methadone"
+            }
+          ]
+        }
+      ]
+    },
+    "Prescribe_Oxycodone": {
+      "type": "MedicationOrder",
+      "assign_to_attribute": "opioid_prescription",
+      "codes": [
+        {
+          "system": "RxNorm",
+          "code": "892297",
+          "display": "morphine sulfate 10 MG Oral Tablet"
+        }
+      ],
+      "reason": "chronic pain",
+      "direct_transition": "Strong_Opioid_Terminal",
+      "remarks": [
+        "Morphine 10mg: EU gold-standard WHO step 3 analgesic.",
+        "Replaces oxycodone-brand (US brand). oxyCODONE capitalisation was a US artefact."
+      ]
+    },
+    "Prescribe_Methadone": {
+      "type": "MedicationOrder",
+      "assign_to_attribute": "opioid_prescription",
+      "codes": [
+        {
+          "system": "RxNorm",
+          "code": "1049648",
+          "display": "oxycodone hydrochloride 10 MG Oral Tablet"
+        }
+      ],
+      "reason": "chronic pain",
+      "direct_transition": "Strong_Opioid_Terminal",
+      "remarks": [
+        "Oxycodone 10mg (INN): EU second-line strong opioid.",
+        "Replaces methadone (rarely used for non-cancer pain in EU)."
+      ]
+    },
+    "Strong_Opioid_Terminal": {
+      "type": "Terminal"
+    }
+  },
+  "gmf_version": 1
+}

@@ -1,0 +1,364 @@
+{
+  "name": "Atrial Fibrillation Europe",
+  "remarks": [
+    "European calibration of atrial fibrillation (v2 — fixed).",
+    "",
+    "CHANGES vs v1:",
+    "  Bug 1 — Removed AF_Complication_Check / AF_Stroke.",
+    "           stroke_europe.json already handles stroke for AF patients via",
+    "           Stroke_High_Risk_Age_Check (reads atrial_fibrillation == true).",
+    "           Having a second stroke source was double-counting CVA 230690007",
+    "           and is the primary cause of the observed 13% stroke prevalence.",
+    "  Bug 2 — Removed AF_Complication_Check infinite loop (98.5% → looped forever).",
+    "           End_AF_Review now routes directly back to AF_Followup_Delay.",
+    "  Added  — Alcoholism risk modifier: patients with alcoholism == true",
+    "           (set by substance_use_europe_v2) have ~2× AF incidence,",
+    "           consistent with ESC 2020 evidence on alcohol and AF.",
+    "",
+    "USAGE NOTE:",
+    "  This module REPLACES atrial_fibrillation.json (US module).",
+    "  Remove atrial_fibrillation.json from the modules directory.",
+    "  The US module reads atrial_fibrillation_risk (set by cardiovascular.json)",
+    "  and was firing independently, adding 9-10% additional AF on top of this",
+    "  module's 6-8%, together producing the observed 17% cohort prevalence.",
+    "",
+    "CALIBRATION:",
+    "  Lancet Reg Health Europe 2024: AF affects 1.5-2% of EU adults currently;",
+    "  lifetime risk ~1 in 3-5 after age 45 (ESC Atlas 2020).",
+    "  Target cohort prevalence (mean age 52.6): ~3-5%.",
+    "  Age-stratified annual incidence (ESC 2020):",
+    "    55-64: 0.5%/year | 65-74: 1.2%/year | 75+: 2.5%/year"
+  ],
+  "states": {
+    "Initial": {
+      "type": "Initial",
+      "direct_transition": "Age_Guard"
+    },
+    "Age_Guard": {
+      "type": "Guard",
+      "remarks": [
+        "AF is rare before 55; model onset from 55 onwards."
+      ],
+      "allow": {
+        "condition_type": "Age",
+        "operator": ">=",
+        "quantity": 55,
+        "unit": "years"
+      },
+      "direct_transition": "AF_Naive_Guard"
+    },
+    "AF_Naive_Guard": {
+      "type": "Guard",
+      "remarks": [
+        "Only proceed if patient has not already been diagnosed with AF."
+      ],
+      "allow": {
+        "condition_type": "Attribute",
+        "attribute": "atrial_fibrillation",
+        "operator": "is nil"
+      },
+      "direct_transition": "AF_Annual_Delay"
+    },
+    "AF_Annual_Delay": {
+      "type": "Delay",
+      "exact": {
+        "quantity": 1,
+        "unit": "years"
+      },
+      "direct_transition": "AF_Alcohol_Risk_Check"
+    },
+    "AF_Age_Check": {
+      "type": "Simple",
+      "remarks": [
+        "Age-stratified annual AF onset probability."
+      ],
+      "conditional_transition": [
+        {
+          "condition": {
+            "condition_type": "Age",
+            "operator": "<",
+            "quantity": 65,
+            "unit": "years"
+          },
+          "transition": "AF_Prob_55_64"
+        },
+        {
+          "condition": {
+            "condition_type": "Age",
+            "operator": "<",
+            "quantity": 75,
+            "unit": "years"
+          },
+          "transition": "AF_Prob_65_74"
+        },
+        {
+          "transition": "AF_Prob_75_plus"
+        }
+      ]
+    },
+    "AF_Prob_55_64": {
+      "type": "Simple",
+      "remarks": [
+        "ESC: ~0.5%/year incidence in 55-64 age group."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.005,
+          "transition": "Diagnose_AF"
+        },
+        {
+          "distribution": 0.995,
+          "transition": "AF_Annual_Delay"
+        }
+      ]
+    },
+    "AF_Prob_65_74": {
+      "type": "Simple",
+      "remarks": [
+        "ESC: ~1.2%/year incidence in 65-74 age group."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.012,
+          "transition": "Diagnose_AF"
+        },
+        {
+          "distribution": 0.988,
+          "transition": "AF_Annual_Delay"
+        }
+      ]
+    },
+    "AF_Prob_75_plus": {
+      "type": "Simple",
+      "remarks": [
+        "ESC: ~2.5%/year incidence in 75+ age group."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.025,
+          "transition": "Diagnose_AF"
+        },
+        {
+          "distribution": 0.975,
+          "transition": "AF_Annual_Delay"
+        }
+      ]
+    },
+    "Diagnose_AF": {
+      "type": "ConditionOnset",
+      "assign_to_attribute": "atrial_fibrillation",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "49436004",
+          "display": "Atrial fibrillation (disorder)"
+        }
+      ],
+      "direct_transition": "Set_AF_Boolean"
+    },
+    "Set_AF_Boolean": {
+      "type": "SetAttribute",
+      "attribute": "atrial_fibrillation",
+      "value": true,
+      "direct_transition": "AF_Initial_Encounter"
+    },
+    "AF_Initial_Encounter": {
+      "type": "Encounter",
+      "encounter_class": "ambulatory",
+      "reason": "Diagnose_AF",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "11429006",
+          "display": "Consultation (procedure)"
+        }
+      ],
+      "direct_transition": "AF_ECG"
+    },
+    "AF_ECG": {
+      "type": "Procedure",
+      "reason": "Diagnose_AF",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "29303009",
+          "display": "Electrocardiographic procedure (procedure)"
+        }
+      ],
+      "direct_transition": "AF_CHA2DS2_Check"
+    },
+    "AF_CHA2DS2_Check": {
+      "type": "Simple",
+      "remarks": [
+        "ESC ABC pathway: anticoagulation for CHA2DS2-VASc ≥2 in men, ≥3 in women.",
+        "Simplified: 80% of AF patients qualify for anticoagulation."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.8,
+          "transition": "Prescribe_NOAC"
+        },
+        {
+          "distribution": 0.2,
+          "transition": "AF_Rate_Control"
+        }
+      ]
+    },
+    "Prescribe_NOAC": {
+      "type": "MedicationOrder",
+      "reason": "Diagnose_AF",
+      "codes": [
+        {
+          "system": "RxNorm",
+          "code": "1592417",
+          "display": "rivaroxaban 20 MG Oral Tablet"
+        }
+      ],
+      "direct_transition": "AF_Rate_Control"
+    },
+    "AF_Rate_Control": {
+      "type": "MedicationOrder",
+      "reason": "Diagnose_AF",
+      "codes": [
+        {
+          "system": "RxNorm",
+          "code": "834357",
+          "display": "bisoprolol fumarate 5 MG Oral Tablet"
+        }
+      ],
+      "direct_transition": "End_AF_Initial_Encounter"
+    },
+    "End_AF_Initial_Encounter": {
+      "type": "EncounterEnd",
+      "direct_transition": "AF_Followup_Delay"
+    },
+    "AF_Followup_Delay": {
+      "type": "Delay",
+      "range": {
+        "low": 10,
+        "high": 14,
+        "unit": "months"
+      },
+      "direct_transition": "AF_Annual_Review"
+    },
+    "AF_Annual_Review": {
+      "type": "Encounter",
+      "encounter_class": "ambulatory",
+      "reason": "Diagnose_AF",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "390906007",
+          "display": "Follow-up encounter (procedure)"
+        }
+      ],
+      "direct_transition": "End_AF_Review"
+    },
+    "End_AF_Review": {
+      "type": "EncounterEnd",
+      "direct_transition": "AF_Followup_Delay"
+    },
+    "Terminal": {
+      "type": "Terminal"
+    },
+    "AF_Alcohol_Risk_Check": {
+      "type": "Simple",
+      "remarks": [
+        "Alcohol is an established AF risk factor (ESC 2020).",
+        "Patients with alcoholism attribute (set by substance_use_europe_v2)",
+        "are routed to boosted incidence states (~2x baseline rates)."
+      ],
+      "conditional_transition": [
+        {
+          "condition": {
+            "condition_type": "Attribute",
+            "attribute": "alcoholism",
+            "operator": "==",
+            "value": true
+          },
+          "transition": "AF_Age_Check_High_Alcohol"
+        },
+        {
+          "transition": "AF_Age_Check"
+        }
+      ]
+    },
+    "AF_Age_Check_High_Alcohol": {
+      "type": "Simple",
+      "remarks": [
+        "Alcohol-boosted age-stratified AF incidence."
+      ],
+      "conditional_transition": [
+        {
+          "condition": {
+            "condition_type": "Age",
+            "operator": "<",
+            "quantity": 65,
+            "unit": "years"
+          },
+          "transition": "AF_Prob_Alco_55_64"
+        },
+        {
+          "condition": {
+            "condition_type": "Age",
+            "operator": "<",
+            "quantity": 75,
+            "unit": "years"
+          },
+          "transition": "AF_Prob_Alco_65_74"
+        },
+        {
+          "transition": "AF_Prob_Alco_75_plus"
+        }
+      ]
+    },
+    "AF_Prob_Alco_55_64": {
+      "type": "Simple",
+      "remarks": [
+        "Alcohol-boosted AF incidence: 1.0%/year."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.01,
+          "transition": "Diagnose_AF"
+        },
+        {
+          "distribution": 0.99,
+          "transition": "AF_Annual_Delay"
+        }
+      ]
+    },
+    "AF_Prob_Alco_65_74": {
+      "type": "Simple",
+      "remarks": [
+        "Alcohol-boosted AF incidence: 2.4%/year."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.024,
+          "transition": "Diagnose_AF"
+        },
+        {
+          "distribution": 0.976,
+          "transition": "AF_Annual_Delay"
+        }
+      ]
+    },
+    "AF_Prob_Alco_75_plus": {
+      "type": "Simple",
+      "remarks": [
+        "Alcohol-boosted AF incidence: 5.0%/year."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.05,
+          "transition": "Diagnose_AF"
+        },
+        {
+          "distribution": 0.95,
+          "transition": "AF_Annual_Delay"
+        }
+      ]
+    }
+  }
+}
