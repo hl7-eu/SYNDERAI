@@ -6,6 +6,6 @@
 
 is intentionally empty due to size limitations, with the exception of
 
-- **synthea-europe**: folder containing European modules for generating synthetic data using Synthea(TM)
+- **synthea-europe**: folder containing European Synthea modules for generating synthetic data, also the original US ones are included
 
 Please contact authors/contributors.
