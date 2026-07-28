@@ -49,8 +49,8 @@ while (!feof($medicationshandle)) {
           "sectionentryslicename" => "medicationStatementOrRequest"
         ];
       } else {
-        lognlsev(1, ERROR, "Cannot map RXNORM $rxnorm " . trim($item[6]));
-        registerMapMissing("Cannot map RXNORM $rxnorm " . trim($item[6]));
+        lognlsev(1, ERROR, "......... Cannot map RXNORM $rxnorm " . trim($item[6]));
+        registerMapMissing("......... Cannot map RXNORM $rxnorm " . trim($item[6]));
         $cfound = [
           "rxnorm" => [
             "code" => $rxnorm,

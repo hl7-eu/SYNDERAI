@@ -68,7 +68,7 @@
 
   STATIC STUDY DATA (hardcoded for the BEUDIS fictitious study)
     Identifier : FBEUDIS7395z67927  (system: https://clinicaltrials.eu)
-    Title      : "The Big EU Diabetis Study (BEUDIS) Phase 4"
+    Title      : "The Big EU Diabetes Study (BEUDIS) Phase 4"
     Purpose    : #treatment
     Phase      : #phase-4
     Condition  : SCT#44054006  Diabetes mellitus type 2
@@ -110,6 +110,12 @@ Usage: #inline
 {{ addHEAD_th("Status") }}
 {{ addHEAD_trend() -}}
 
+{{ addHTML_tr() }}
+{{ addHTML_td("Big EU Diabetes Study (BEUDIS) Phase 4") }}
+{{ addHTML_td("candidate") }}
+{{ addHTML_trend() -}}
+
+
 * id = "{{ researchstudyinstanceid }}"
 
 {#
@@ -126,9 +132,9 @@ Usage: #inline
   The multi-line `description` uses FSH's triple-quote syntax and includes
   Markdown bold formatting, which is valid within FSH string values.
 #}
-* title = "The Big EU Diabetis Study (BEUDIS) Phase 4"
+* title = "The Big EU Diabetes Study (BEUDIS) Phase 4"
 * description = """
-This fictous study aims on treating **Diabetis Type 2** patients in the European Union with a brand new drug called "Combattente"
+This fictous study aims on treating **Diabetes Type 2** patients in the European Union with a brand new drug called "Combattente"
 """
 * primaryPurposeType = #treatment
 * phase = #phase-4
@@ -152,7 +158,7 @@ This fictous study aims on treating **Diabetis Type 2** patients in the European
 * text.status = #generated
 * text.div = """
 <div xmlns="http://www.w3.org/1999/xhtml">
-tbd
+The Big EU Diabetes Study (BEUDIS) Phase 4
 </div>
 """
 
@@ -188,16 +194,12 @@ Usage: #inline
 * study = Reference(urn:uuid:{{ researchstudyinstanceid }})
 
 {#
-  ── Patient identifier on the subject record ───────────────────────────────
-  Two individual[] slices: the identifier type (PT = Patient) and the ECI.
-  Note: [+] is used for both the type slice and the system/value pair, each
-  as separate slices of `individual`. This establishes the patient's ECI as
-  the participant identifier in the study.
+  ── Patient reference subject record ───────────────────────────────
+  This establishes the link to the patient
+  the participant in the study.
 #}
-* individual[+].type = $v2-0203#PT
-* individual[+].use = #official
-* individual[=].system = "http://ec.europa.eu/identifier/eci"
-* individual[=].value = "{{ patient.eci }}"
+* individual = Reference(urn:uuid:{{ patient.instanceid }}) "{{ patient.name }}"
+
 
 {#
   ── Combined HTML narrative ──────────────────────────────────────────────────

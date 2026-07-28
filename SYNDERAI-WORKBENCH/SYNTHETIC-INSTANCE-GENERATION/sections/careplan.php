@@ -230,8 +230,16 @@ if ($pdat->age >= 60) {
     "supportingImmunization" => $lastinfluenzavaccinationRef === "" ? NULL : $lastinfluenzavaccinationRef
   ];
   $imrecomminstanceid = uuid();
+  
   list($FSHvaccrecomm, $HTMLvaccrecomm, $HEADvaccrecomm, $irinstance) =
-    twigit(["instanceid" => $imrecomminstanceid, "patient" => $pdat, "immunizationrecommendation" => $irdata], "immunizationrecommendation");
+    twigit(
+      [
+        "instanceid" => $imrecomminstanceid, 
+        "patient" => $pdat, 
+        "immunizationrecommendation" => $irdata
+      ],
+      "immunizationrecommendation");
+  
   $pdat->careplanentries[] = [
       'id' => $imrecomminstanceid ,
       'instance' => $irinstance,

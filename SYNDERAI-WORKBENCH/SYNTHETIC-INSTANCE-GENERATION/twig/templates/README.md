@@ -43,6 +43,7 @@
 This directory contains all Twig template files used by the SYNDERAI pipeline to generate:
 
 - **FSH instances** — FHIR Shorthand source that is later compiled by SUSHI into FHIR R4 resources.
+- **CDA instances** – CDA XML instance fragments or a complete compiled CDA document
 - **HTML table body rows** — assembled into the `Patient.text.div` narrative and into standalone HTML fragments for report viewers.
 - **HTML table head rows** — optional column header rows that accompany the body rows above.
 
@@ -52,7 +53,7 @@ Each template produces exactly **three tagged sections** in its output (see next
 
 ## Output Structure — the Three Sections
 
-Every template must contain the three section-marker lines below, in this order. Each marker must appear at the very beginning of its line and is stripped from the final output by the SYNDERAI post-processor. The content of a section may be empty, but the marker itself is always required.
+For FSH type of templates, every template must contain the three section-marker lines below, in this order. Each marker must appear at the very beginning of its line and is stripped from the final output by the SYNDERAI post-processor. The content of a section may be empty, but the marker itself is always required.
 
 ```
 %%FSH%%    ← mandatory — FSH instance definition follows
@@ -102,7 +103,7 @@ list($fsh, $html, $head, $instanceDE, $instanceDU) =
             "patient"      => $pdat,
             "device"       => $sdata,
         ],
-        "device-use-eps"   // template name (without .twig extension)
+        "device-use-eps"   // template name (without .fsh/.cda .twig extension)
     );
 ```
 

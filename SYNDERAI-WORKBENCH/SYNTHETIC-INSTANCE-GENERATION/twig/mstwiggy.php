@@ -339,6 +339,33 @@ function twigit($data, $with) {
 
         return $retval;
 
+    }
+    if (is_file("$templatedir/$with.cda.twig")) {
+
+        // ---------------------------------------------------------------------
+        // CDA template path
+        // The rendered string must contain delimiter:
+        //   %%CDA%%  — marks the start of the FHIR Shorthand block
+        // ---------------------------------------------------------------------
+        $rendition = $twig->render("$with.cda.twig", $data);
+
+        // Validate that all three required delimiters are present
+        if (!str_contains($rendition, '%%CDA%%'))
+            echo "+++Error: twig rendition does not contain required %%CDA%% tag!\n";
+
+        // Split on %%CDA%%
+        $tmpcda = explode('%%CDA%%', $rendition);
+        $tmpcda = trim($tmpcda[1]);
+
+        $tmpcda .= "\n";   // ensure a trailing newline
+
+        // Build the return array:
+        //   [0] CDA string (XML)
+        $retval = [];
+        $retval[] = $tmpcda;
+
+        return $retval;
+
     } elseif (is_file("$templatedir/$with.ish.twig")) {
 
         // ---------------------------------------------------------------------

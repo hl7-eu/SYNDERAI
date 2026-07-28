@@ -33,7 +33,7 @@
  *        synthesise ISH discharge definitions for HDR artifacts.
  *     d. Locate the geographically nearest primary-care facility and hospital.
  *     e. Call emitFSH() for every requested artifact type and write FSH files
- *        to the output directory.
+ *        to the output directory, or emitCDA if CDA is the output artifact
  *     f. Append a statistics record to the CSV stats file.
  *
  *   Phase II — Post-processing
@@ -45,9 +45,16 @@
  * SUPPORTED ARTIFACT TYPES
  * ============================================================================
  *
- *   EPS  — European Patient Summary (IPS-compliant)
- *   LAB  — EU Laboratory Report (one FSH file per lab date)
- *   HDR  — Hospital Discharge Report
+ *   HL7 Europe
+ *   ----------
+ *   EPS  — European Patient Summary (IPS-compliant), with Care Plans
+ *          and randomly interspersed Clinical Research Study Data - FHIR
+ *   LAB  — EU Laboratory Report (one FSH file per lab date) - FHIR
+ *   HDR  — Hospital Discharge Report - FHIR
+ * 
+ *   HL7 Affiliates
+ *   --------------
+ *   AZ   - Acute Care The Netherlands - CDA 
  *
  * ============================================================================
  * CLI OPTIONS
@@ -67,6 +74,7 @@
  *                             previously generated statistics CSV file.
  *                             Looks in the current directory first, then in
  *                             STATSDIR if not found.
+ *   --nopost                 Prevents from running post-processing (only emits FSH)
  *   --help                   Shows this page
  *
  * ============================================================================
@@ -115,15 +123,6 @@
  * Controls which data getters are loaded per artifact. Populated before
  * Phase I and consumed by includeConditionally() to avoid loading unused data.
  *
- *   EPS: encounters, rxnormsct, cvxsct, conditions, medications, immunizations,
- *        procedures, allergiesintolerances, careplans, vitalsigns, pregnancies,
- *        devices, recentlabresults, lnsctspecimen, inpatientencounters
- *
- *   LAB: labresults, lnsctspecimen, annotations, conditions
- *
- *   HDR: conditions, procedures, medications, rxnormsct, recentlabresults,
- *        lnsctspecimen, encounters, inpatientencounters
- *
  * ============================================================================
  * GLOBAL VARIABLES
  * ============================================================================
@@ -150,6 +149,7 @@
  * ============================================================================
  *
  *   emitFSH($pdat, $thisartifact)      — generate FSH for one patient/artifact
+ *   emitCDA($pdat, $thisartifact)      — generate CDA for one patient/artifact
  *   liveExecuteCommand($cmd)           — run a shell command with live output
  *   parseCLiOptions($shortOpts, $longOpts) — parse & validate CLI arguments
  *
@@ -199,6 +199,7 @@ include_once("lib/loinc.php");
 include_once("lib/atc.php");
 include_once("lib/ish-parser.php");
 include_once("lib/clinical-story-matcher.php");
+include_once("lib/bsn.php");
 
 /* TWIG parts ( new style FSH and HTML Generation ) */
 include_once("twig/mstwiggy.php");
@@ -242,8 +243,14 @@ $ISARERUN = FALSE;
  *  populated from the statistics CSV when $ISARERUN is TRUE. */
 $STORYFOR = array();
 
+/**
+ * @var bool $PERFORMPOSTPROCESSING default TRUE
+ * post processing yes (sushi + validate + concert xml/json) or no (only emit FSH)
+ */
+$PERFORMPOSTPROCESSING = TRUE;
+
 /* Announce the script version */
-lognl(1, "SYNDERAI 7.2 as of 2026-05");
+lognl(1, "SYNDERAI 7.3 as of 2026-07");
 
 
 // ============================================================================
@@ -265,6 +272,7 @@ $longOpts = array(
     "artifacts:",   // required value: comma-separated artifact type codes
     "ish",          // flag: also process manually crafted HDR ISH files
     "rerun:",       // required value: path to statistics file for a re-run
+    "nopost",       // flag: prevents post-processing (only emits FSH)
     "help",         // flag: show help page and exit
 );
 
@@ -315,7 +323,8 @@ foreach ($options as $opt => $val) {
 
     } elseif ($opt === 'ish') {
         $PROCESSISH = TRUE;
-
+    } elseif ($opt === 'nopost') {
+        $PERFORMPOSTPROCESSING = FALSE;
     } elseif ($opt === 'rerun') {
         // Resolve the statistics file path: check current directory first,
         // then STATSDIR. Load all ECI/storyid pairs if the file is found.
@@ -389,17 +398,41 @@ if ($ARTIFACTS === NULL) {
 
 /** @var array $COMPONENTS  Artifact type => list of required component names. */
 $COMPONENTS["EPS"] = [
-    'encounters', 'rxnormsct', 'cvxsct', 'conditions', 'medications',
-    'immunizations', 'procedures', 'allergiesintolerances', 'careplans',
-    'vitalsigns', 'pregnancies', 'devices', 'recentlabresults',
-    'lnsctspecimen', 'inpatientencounters'
+    'encounters',
+    'rxnormsct',
+    'cvxsct',
+    'conditions',
+    'medications',
+    'immunizations',
+    'procedures',
+    'allergiesintolerances',
+    'careplans',
+    'vitalsigns',
+    'pregnancies',
+    'devices',
+    'recentlabresults',
+    'lnsctspecimen',
+    'inpatientencounters'
 ];
 $COMPONENTS["LAB"] = [
-    'labresults', 'lnsctspecimen', 'annotations', 'conditions'
+    'labresults',
+    'lnsctspecimen',
+    'annotations',
+    'conditions'
 ];
 $COMPONENTS["HDR"] = [
-    'conditions', 'procedures', 'medications', 'rxnormsct', 'vitalsigns',
-    'recentlabresults', 'lnsctspecimen', 'encounters', 'inpatientencounters'
+    'conditions',
+    'procedures',
+    'medications',
+    'rxnormsct',
+    'vitalsigns',
+    'recentlabresults',
+    'lnsctspecimen',
+    'encounters',
+    'inpatientencounters'
+];
+$COMPONENTS["AZ"] = [
+    'encounters'
 ];
 
 $targetpats = count($SELPATIENT) > 0 ? count($SELPATIENT) : $SELCOUNT;
@@ -434,7 +467,7 @@ if (!testAIavailability() and USE_AI) {
  * Validate that all required Synthea CSV source files are present.
  * The script halts with an error if any file is missing.
  */
-lognl(1, "... check base data\n");
+lognl(1, "... check base source data\n");
 $DESIREDFILES = [
     'encounters', 'conditions', 'procedures', 'immunizations',
     'medications', 'allergies', 'supplies', 'careplans',
@@ -442,7 +475,7 @@ $DESIREDFILES = [
 ];
 foreach ($DESIREDFILES as $f) {
     if (!is_file(SYNTHEADIR . "/$f.csv")) {
-        lognlsev(1, ERROR, "+++ No $f.csv in " . SYNTHEADIR . "\n");
+        lognlsev(1, ERROR, "+++ No base data source file $f.csv in " . SYNTHEADIR . "\n");
         exit;
     }
 }
@@ -458,11 +491,13 @@ foreach ($DESIREDFILES as $f) {
 //   street1, street2, street3, city, postcode, country, phone, latitude, longitude
 // ============================================================================
 
+$preselectionineffect = FALSE;
+
 $patienthandle = fopen(EUROPEDEMOGRAPHICS, "r");
 $row           = 0;
 $PATIENTS      = array();
 $arnames       = array();
-$preselectionineffect = count($SELPATIENT) > 0 or $SELCOUNTRIES !== NULL;
+$preselectionineffect = ((count($SELPATIENT) > 0) or ($SELCOUNTRIES !== NULL));
 
 while (($csvline = fgetcsv($patienthandle, NULL, "\t", '"', '\\')) !== FALSE) {
     $row++;
@@ -480,12 +515,14 @@ while (($csvline = fgetcsv($patienthandle, NULL, "\t", '"', '\\')) !== FALSE) {
                 $thiseci = $csvline[6];
                 if (in_array($thiseci, $SELPATIENT))
                     $candiate = array_combine($arnames, $csvline);
-            } elseif ($SELCOUNTRIES) {
+            }
+            if ($SELCOUNTRIES) {
                 // Filter by country code(s) from --countries
                 $thiscountry = $csvline[7];
                 if (in_array($thiscountry, $SELCOUNTRIES))
                     $candiate = array_combine($arnames, $csvline);
-            } else {
+            } 
+            if (!(count($SELPATIENT) > 0 or $SELCOUNTRIES)) {
                 $candiate = array_combine($arnames, $csvline);
             }
         } else {
@@ -1087,6 +1124,10 @@ foreach ($PATIENTS as $pdat) {
         if (!isset($pdat->inpatientencounters) or $pdat->inpatientencounters === NULL)
                 lognlsev(2, ERROR, "...... +++ Patient's clinical story candidate has missing inpatient encounters for a proper HDR, which is undesireable\n");
     }
+    if (in_array("AZ", $ARTIFACTS)) {
+        // invent a test BSN
+        $pdat->bsn = generateBSN99999();
+    }
     
     if ($pdat->match === NULL)
         lognl(1, "+++ No match found or stored for age=$age and gender=$gender\n");
@@ -1263,19 +1304,24 @@ foreach ($PATIENTS as $pdat) {
     }
 
     // -------------------------------------------------------------------------
-    // FSH EMISSION
+    // FSH/CDA EMISSION
     // Call emitFSH() for each requested artifact type. Track per-artifact
     // counts for the statistics file and running totals.
     // -------------------------------------------------------------------------
-    lognl(2, "...... emitting FSH\n");
+    lognl(2, "...... emitting artifact(s)\n");
     $allcount = 0;
     $stat     = array();
     foreach ($ARTIFACTS as $a) {
         lognl(2, "......... for $a\n");
-        $count      = emitFSH($pdat, $a);
-        $allcount  += $count;
+        if ($a === "AZ") {
+            $count = emitCDA($pdat, $a);
+            
+        } else {
+            $count = emitFSH($pdat, $a);
+        }
+        $allcount += $count;
         lognl(3, "............ # of examples emitted: $count\n");
-        $stat[$a]   = $count;
+        $stat[$a] = $count;
     }
 
     // -------------------------------------------------------------------------
@@ -1319,7 +1365,7 @@ fclose($clinicalcandidateshandle);
 // Only executed when at least one FSH file was emitted in Phase I.
 // ============================================================================
 
-if ($TOTALEXAMPLEFILES > 0) {
+if ($TOTALEXAMPLEFILES > 0 and $PERFORMPOSTPROCESSING) {
     lognl(1, "*** Phase II: post-processing by creating FHIR from FSH and copy results");
     foreach ($ARTIFACTS as $a) {
         if (is_file("synderai-make-fhir.sh")) {
@@ -1335,8 +1381,11 @@ if ($TOTALEXAMPLEFILES > 0) {
     }
     lognlsev(1, SUCCESS, "*** konec");
 } else {
-    lognl(1, "+++ Phase II: post-processing omitted as there were no example files emitted for any candidate");
-    lognlsev(1, ERROR, "*** konec (with errors)");
+    lognl(1, "+++ Phase II: post-processing omitted as there were no example files emitted for any candidate or post-processing was disabled");
+    if ($PERFORMPOSTPROCESSING)
+        lognlsev(1, ERROR, "*** konec (with errors)");
+    else
+        lognlsev(1, SUCCESS, "*** konec");
 }
 
 exit;
@@ -1348,7 +1397,7 @@ exit;
 
 
 /**
- * Generate FSH example file(s) for a single patient and one artifact type.
+ * Generate FSH/CDA example file(s) for a single patient and one artifact type.
  *
  * This function is the core FSH assembly engine. It is called once per patient
  * per artifact type and handles the three supported artifact types (HDR, EPS,
@@ -1589,6 +1638,24 @@ function emitFSH($pdat, $thisartifact) {
         include("sections/recentlabobservationEPS.php");
         include("sections/device.php");
 
+        // Include randomly Clinical Research Study Data 
+        // fake research study if about diabetes mellitus type 2
+        // so only include patients that have a diagnosis of diabetes mellitus type 2
+        // which is SNOMED 44054006 Diabetes mellitus type 2 (disorder)
+        // and only 50/50 of them, not everybody
+        $doresearchstudyaddition = FALSE;
+        foreach ($pdat->conditions as $sdata) {
+            if ($sdata["code"]["code"] === "44054006") {
+                // var_dump($sdata);
+                if (rand(1, 100) > 50) {
+                    lognl(2, "............ patient elegible for research study...");
+                    $doresearchstudyaddition = TRUE;
+                }
+            }
+        }
+        if ($doresearchstudyaddition)
+            include("sections/researchstudyandsubject.php");
+
         // Use the most recent lab observation date (if present) as the composition date, today otherwise
         $maxfoundix  = $pdat->labobservations !== NULL ? max(array_keys($pdat->labobservations)) : date('Y-m-d\TH:i:s\Z') ;
         $composition = [
@@ -1806,9 +1873,42 @@ function emitFSH($pdat, $thisartifact) {
         }
     }
 
+    
+
     return $outputcount;
 }
 
+function emitCDA($pdat, $thisartifact) {
+
+    $outputcount = 0;
+
+    // =========================================================================
+    // AZ ARTIFACT PATH
+    // Emit CDA fragments
+    // =========================================================================
+    // emit all AZs
+    if ($thisartifact === "AZ") {
+
+        // Build composite patient name for convenient use in templates
+        $pdat->name = (is_array($pdat->given) ? implode(" ", $pdat->given) : $pdat->given) . " " . $pdat->family;
+
+        list($OUTCDA) =
+            twigit(
+                [
+                    "patient" => $pdat
+                ],
+                "az-recordTarget"
+            );
+        echo "\n$OUTCDA\n";
+        if (!is_dir(FSHOUTPUTDIR . "/$thisartifact"))
+            mkdir(FSHOUTPUTDIR . "/$thisartifact");
+        $fn = FSHOUTPUTDIR . "/$thisartifact/__" . $pdat->eci . "-az-example.cda.xml";
+        file_put_contents($fn, $OUTCDA);
+        $outputcount++;
+    }
+
+    return $outputcount; 
+}
 
 /**
  * Execute a shell command and stream its output to the browser/console in real time.

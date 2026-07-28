@@ -1,0 +1,69 @@
+{#
+  ============================================================================
+  TEMPLATE: az-recordTarget.cda.twig
+  ============================================================================
+
+  AUTHOR   KH
+  SINCE    2027-07-27
+  ============================================================================
+#}
+
+%%CDA%% {# ── Section marker required by the CDA pre-processor ─────────────── #}
+
+<recordTarget>
+  <!-- patiënt: {{ patient.name }} uit {{ patient.postcode }} {{ patient.city }} -->
+  <patientRole>
+    <!-- BSN -->
+    <id extension="{{ patient.bsn }}" root="2.16.840.1.113883.2.4.6.3"/>
+    <addr>
+{# --- #}
+{# disintegrate street, guess houseNumber #}
+{% if patient.street1 is not empty %}
+      <!-- {{ patient.street1 }}, {{ patient.postcode }} {{ patient.city }} -->
+{% set parts = patient.street1|split(' ') %}
+{% set lastPart = parts|last %}
+{# Check digits, optional letter suffix and ranges #}
+{% if lastPart matches '/^[0-9]+[-a-zA-Z0-9]*$/' %}
+{# Reconstruct street name without the last part #}
+{% set streetName = parts|slice(0, parts|length - 1)|join(' ') %}
+{% set houseNumber = lastPart %}
+      <streetName>{{ streetName }}</streetName>
+      <houseNumber>{{ houseNumber }}</houseNumber>
+{% else %}
+      <streetName>{{ patient.street1 }}</streetName>
+{% endif %} {# lastPart matches #}
+{% endif %} {# patient.street1 is not empty #}
+{# --- #}
+{% if patient.street2 is not empty %}
+      <streetName>{{ patient.street2 }}</streetName>
+{% endif %}
+{# --- #}
+{% if patient.street3 is not empty %}
+      <streetName>{{ patient.street3 }}</streetName>
+{% endif %}
+{# --- #}
+      <postalCode>{{ patient.postcode }}</postalCode>
+      <city>{{ patient.city }}</city>
+      <country>{{ patient.countryname }}</country>
+    </addr>
+    <telecom use="HP" value="tel:{{ patient.phone }}"/>
+    <patient classCode="PSN" determinerCode="INSTANCE">
+      <name>
+        <!-- {{ patient.name }} -->
+{% for g in patient.given %}
+        <given>{{ g }}</given>
+{% endfor %}
+        <family>{{ patient.family }}</family>
+      </name>
+{# --- #}
+{% set genderMap = {
+  'male':    'M',
+  'female':  'F',
+  'unknown': 'UN'
+} %}
+      <administrativeGenderCode codeSystem="2.16.840.1.113883.5.1" code="{{ genderMap[patient.gender]|default('code not found') }}"/>
+      <birthTime value="{{ patient.birthdate|date('Ymd') }}"/>
+{# --- #}
+    </patient>
+  </patientRole>
+</recordTarget>

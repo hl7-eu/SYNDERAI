@@ -41,8 +41,8 @@ while (!feof($immunizationshandle)) {
       }
     } else {
       $info = isset($item[6]) ? trim($item[6]) : "";
-      lognlsev(1, ERROR, "Cannot map CVX $cvxcode " . $info);
-      registerMapMissing("Cannot map CVX $cvxcode " . $info);
+      lognlsev(1, ERROR, "......... Cannot map CVX $cvxcode " . $info);
+      registerMapMissing("......... Cannot map CVX $cvxcode " . $info);
       $themap = NULL;
     }
     if ($themap !== NULL) {        
@@ -88,8 +88,8 @@ while (!feof($immunizationshandle)) {
         lognlsev(1, ERROR, "+++ DATE len<7 $date");
       }
     } else {
-      lognlsev(1, ERROR, "Cannot map CVX $cvxcode $cvxdisplay");
-      registerMapMissing("Cannot map CVX $cvxcode $cvxdisplay");
+      lognlsev(1, ERROR, "......... Cannot map CVX $cvxcode $cvxdisplay");
+      registerMapMissing("......... Cannot map CVX $cvxcode $cvxdisplay");
     }
   }
 }
