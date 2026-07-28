@@ -9,6 +9,6 @@ is intentionally empty due to size limitations, with the exception of
 - **25-tipster***: files containing European data demographic synthetic data and generated clinical candidates
 - ***.php**: scripts for caching mass data
 
-The folder synthea_sample_data_generated contains all generated synthetic data (see DATA-GENERATION)
+The folder `synthea_sample_data_generated*` contains all generated synthetic data (see DATA-GENERATION)
 
 Please contact authors/contributors.
