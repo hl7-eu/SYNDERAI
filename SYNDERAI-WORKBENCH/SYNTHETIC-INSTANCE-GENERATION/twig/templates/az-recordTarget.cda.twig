@@ -10,50 +10,35 @@
 
 %%CDA%% {# ── Section marker required by the CDA pre-processor ─────────────── #}
 
-<recordTarget>
+<recordTarget typeCode="RCT" contextControlCode="OP">
   <!-- patiënt: {{ patient.name }} uit {{ patient.postcode }} {{ patient.city }} -->
   <patientRole>
     <!-- BSN -->
     <id extension="{{ patient.bsn }}" root="2.16.840.1.113883.2.4.6.3"/>
-    <addr>
+    <addr use="HP">
 {# --- #}
-{# disintegrate street, guess houseNumber #}
-{% if patient.street1 is not empty %}
-      <!-- {{ patient.street1 }}, {{ patient.postcode }} {{ patient.city }} -->
-{% set parts = patient.street1|split(' ') %}
-{% set lastPart = parts|last %}
-{# Check digits, optional letter suffix and ranges #}
-{% if lastPart matches '/^[0-9]+[-a-zA-Z0-9]*$/' %}
-{# Reconstruct street name without the last part #}
-{% set streetName = parts|slice(0, parts|length - 1)|join(' ') %}
-{% set houseNumber = lastPart %}
-      <streetName>{{ streetName }}</streetName>
-      <houseNumber>{{ houseNumber }}</houseNumber>
-{% else %}
-      <streetName>{{ patient.street1 }}</streetName>
-{% endif %} {# lastPart matches #}
-{% endif %} {# patient.street1 is not empty #}
-{# --- #}
-{% if patient.street2 is not empty %}
-      <streetName>{{ patient.street2 }}</streetName>
+{% if patient.street is not empty %}
+      <streetName>{{ patient.street }}</streetName>
+{% if patient.housenumber is not empty %}
+      <houseNumber>{{ patient.housenumber }}</houseNumber>
 {% endif %}
-{# --- #}
-{% if patient.street3 is not empty %}
-      <streetName>{{ patient.street3 }}</streetName>
+{% if patient.additional is not empty %}
+      <additionalLocator>{{ patient.additional }}</additionalLocator>
+{% endif %}
 {% endif %}
 {# --- #}
       <postalCode>{{ patient.postcode }}</postalCode>
       <city>{{ patient.city }}</city>
-      <country>{{ patient.countryname }}</country>
+      <country code="NL" codeSystem="1.0.3166.1.2.2">Nederland</country>
     </addr>
     <telecom use="HP" value="tel:{{ patient.phone }}"/>
     <patient classCode="PSN" determinerCode="INSTANCE">
       <name>
         <!-- {{ patient.name }} -->
 {% for g in patient.given %}
-        <given>{{ g }}</given>
+        <given qualifier="BR">{{ g }}</given>
 {% endfor %}
-        <family>{{ patient.family }}</family>
+        <family qualifier="BR">XXX_{{ patient.family }}</family>
       </name>
 {# --- #}
 {% set genderMap = {

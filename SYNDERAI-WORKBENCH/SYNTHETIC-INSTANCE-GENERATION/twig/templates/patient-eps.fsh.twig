@@ -73,9 +73,8 @@
   │ patient.eci          │ string   │ European Citizen Identifier.                     │
   │ patient.match        │ string?  │ Optional external MR identifier.                 │
   │ patient.localid      │ string?  │ Optional local MR identifier.                    │
-  │ patient.street1      │ string?  │ Optional address line 1.                         │
-  │ patient.street2      │ string?  │ Optional address line 2.                         │
-  │ patient.street3      │ string?  │ Optional address line 3.                         │
+  │ patient.line         │ string?  │ Optional address line.                           │
+  │ patient.additional   │ string?  │ Optional addtional locator.                      │
   │ patient.postcode     │ string   │ Postal code.                                     │
   │ patient.city         │ string   │ City name.                                       │
   │ patient.countryname  │ string   │ Full country name — used in address and as       │
@@ -162,14 +161,11 @@ Usage: #inline
 #}
 * address[+].use = #home
 * address[=].type = #physical
-{% if patient.street1 is not empty %}
-* address[=].line[+] = "{{ patient.street1 }}"
+{% if patient.line is not empty %}
+* address[=].line[+] = "{{ patient.line }}"
+{% if patient.additional is not empty %}
+* address[=].line[+] = "{{ patient.additional }}"
 {% endif %}
-{% if patient.street2 is not empty %}
-* address[=].line[+] = "{{ patient.street2 }}"
-{% endif %}
-{% if patient.street3 is not empty %}
-* address[=].line[+] = "{{ patient.street3 }}"
 {% endif %}
 * address[=].postalCode = "{{ patient.postcode }}"
 * address[=].city = "{{ patient.city }}"

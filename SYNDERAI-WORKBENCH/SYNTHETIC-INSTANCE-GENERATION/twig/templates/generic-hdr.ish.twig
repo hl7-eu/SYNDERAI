@@ -96,7 +96,7 @@
                 `# closest hospital will be dectected by SYNDERAI` documents
                 this intent.
 
-    Only `street1` is included in the address (not street2 or street3).
+    Only `street` and `housenumber` is included in the address (not additional).
 
   ENCOUNTER BLOCK — FLAT REASON OBJECT
     Unlike the encounter in encounter-eu-hdr_fsh.twig where `encounter.reason`
@@ -177,7 +177,7 @@
   │ patient.gender                       │ string   │ Gender code.                                 │
   │ patient.postcode                     │ string?  │ Postal code (conditional).                   │
   │ patient.city                         │ string?  │ City name (conditional).                     │
-  │ patient.street1                      │ string?  │ Street address line 1 (conditional).         │
+  │ patient.line                         │ string?  │ Street address line (conditional).         │
   │ patient.countrycode                  │ string   │ ISO 3166-1 country code.                     │
   │ patient.phone                        │ string   │ Phone number.                                │
   │ patient.language                     │ string   │ Language / locale identifier (→ nameset).    │
@@ -251,7 +251,7 @@
   ══════════════════════════════════════════════════════════════════════════════
   PATIENT BLOCK
   Unique ISH-only fields: nameset (language/locale), latitude, longitude.
-  Only street1 is included — street2/street3 are not emitted.
+  Only `street` and `housenumber` is included in the address (not additional).
   latitude/longitude enable SYNDERAI to detect the nearest hospital automatically.
   ══════════════════════════════════════════════════════════════════════════════
 #}
@@ -269,8 +269,8 @@ patient
 {% if patient.city is not empty %}
   city {{ patient.city }}
 {% endif %}
-{% if patient.street1 is not empty %}
-  street {{ patient.street1 }}
+{% if patient.line is not empty %}
+  street {{ patient.line }}
 {% endif %}
   country {{ patient.countrycode }}
   phone {{ patient.phone }}

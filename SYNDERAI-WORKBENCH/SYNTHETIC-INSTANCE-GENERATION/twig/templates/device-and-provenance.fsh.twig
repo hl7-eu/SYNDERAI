@@ -151,7 +151,7 @@ Usage: #inline
 {% endfor %}
 
 {# Timestamp of data generation #}
-* recorded = "{{ provenance.date }}"
+* recorded = "{{ provenance.date|date('Y-m-d\\TH:i:s\\Z') }}"
 
 {# Fixed activity: data creation event #}
 * activity.coding = http://terminology.hl7.org/CodeSystem/v3-DataOperation#CREATE "create"

@@ -218,8 +218,16 @@ Usage: #inline
 {% set sectioncount = sectioncount + 1 %}
 // section, slice {{ slicename }}
 //
-{# Always a named slice — slicename is always the dict key #}
-* section[{{ slicename }}]
+{# 
+  Always give priority to a named slice — slicename is then always the dict key.
+  If slicename is empty the just add the section without a slicename
+#}
+{% set realslice = slicename %}
+{% if realslice is empty %}
+{% set realslice = "+" %}
+{% endif %}
+
+* section[{{ realslice }}]
   * title = "{{ section.title }}"
   * code = {{ section.code }} "{{ section.display }}"
 {# section.text is pre-built XHTML from the PHP caller; | raw prevents escaping #}
