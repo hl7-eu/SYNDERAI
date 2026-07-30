@@ -85,7 +85,7 @@
  *   e.g. 25_tipster_eu_demographics_31k_202509
  *     Tab-separated synthetic EU patient demographics.
  *     Columns: language, given, family, gender, birthdate, age, eci,
- *              countrycode, street1, street2, street3, city, postcode,
+ *              countrycode, street, housenumber, additional, city, postcode,
  *              country, phone, latitude, longitude
  *
  *   SYNTHETICDATA clinical candidates from Synthea,
@@ -204,6 +204,10 @@ include_once("lib/bsn.php");
 /* TWIG parts ( new style FSH and HTML Generation ) */
 include_once("twig/mstwiggy.php");
 
+/* EPS condition consolidation functions */
+require_once("lib/eps-condition-adapter.php");
+use SynderAI\epsConditionAdapter;
+
 /** Record script start time for elapsed-time logging via logmeterinit(). */
 $STARTTIMER = time();
 
@@ -262,6 +266,7 @@ lognl(1, "SYNDERAI 7.3 as of 2026-07");
 //   --artifacts <a>[,<a>]      Comma-separated artifact types (EPS, LAB, HDR)
 //   --ish                      Enable ISH file import (flag, no value)
 //   --rerun     <file>         Path to statistics file for a re-run
+//   --nopost                   Prevents post-processing (only emits FSH)
 //   --help                     Help page
 // ============================================================================
 
@@ -376,6 +381,7 @@ SYNDERAI command line options
                               previously generated statistics CSV file.
                               Looks in the current directory first, then in
                               STATSDIR if not found.
+    --nopost                 Prevents post-processing (only emits FSH)
     --help                   Shows this page
 
 HELP;
@@ -488,7 +494,7 @@ foreach ($DESIREDFILES as $f) {
 //
 // CSV columns (tab-separated):
 //   language, given, family, gender, birthdate, age, eci, countrycode,
-//   street1, street2, street3, city, postcode, country, phone, latitude, longitude
+//   street, housenumber, additional, city, postcode, country, phone, latitude, longitude
 // ============================================================================
 
 $preselectionineffect = FALSE;
@@ -578,13 +584,18 @@ include("getters/providers.php");
 include("getters/vitalsignscodes.php");
 
 /** RXNORM → SNOMED CT mapping table (needed for EPS and HDR). */
-if (includeConditionally("rxnormsct")) include("getters/rxnormsct.php");
+if (includeConditionally("rxnormsct"))
+    include("getters/rxnormsct.php");
 
 /** CVX → SNOMED CT mapping table (needed for EPS immunizations). */
-if (includeConditionally("cvxsct")) include("getters/cvxsct.php");
+if (includeConditionally("cvxsct"))
+    include("getters/cvxsct.php");
 
 /** LOINC → SNOMED CT specimen mapping table (needed for LAB, EPS, HDR). */
-if (includeConditionally("lnsctspecimen")) include("getters/lnsctspecimen.php");
+if (includeConditionally("lnsctspecimen"))
+    include("getters/lnsctspecimen.php");
+
+
 
 /**
  * Encounter class filters (needed by EPS and HDR).
@@ -594,7 +605,8 @@ if (includeConditionally("lnsctspecimen")) include("getters/lnsctspecimen.php");
  */
 $CLINICALPROCEDUREENCOUNTERS = array();
 $INPATIENTENCOUNTERS         = array();
-if (includeConditionally("encounters")) include("getters/encounters.php");
+if (includeConditionally("encounters"))
+    include("getters/encounters.php");
 
 // ============================================================================
 // STATISTICS FILE INITIALISATION
@@ -894,7 +906,7 @@ foreach ($PATIENTS as $pdat) {
                     ? TRUE
                     : in_array($mdat[0], $matchingpreselectioncriteriacandidates);
 
-                // echo "K:" . $mdat[0] . "\n";
+                // if ($matchingagerange and $matchinggender) echo "K:" . ($matchingagerange ? "+" : "-") . ($matchinggender ? "+" : "-") . (in_array($mdat[0], $matchingpreselectioncriteriacandidates) ? "+" : "-") . "\n";
                 if ($matchingagerange and $matchinggender and $matchingpreselectioncriteria)
                     $matches[] = $mdat;
             }
@@ -930,21 +942,28 @@ foreach ($PATIENTS as $pdat) {
     // and populate properties on $pdat.
     // -------------------------------------------------------------------------
 
-    if (includeConditionally("conditions"))            include("getters/conditions.php");
-    if (includeConditionally("procedures"))            include("getters/procedures.php");
-    if (includeConditionally("inpatientencounters"))   include("getters/inpatientencounters.php");
+    if (includeConditionally("conditions"))
+        include("getters/conditions.php");
+    if (includeConditionally("procedures"))
+        include("getters/procedures.php");
+    if (includeConditionally("inpatientencounters"))
+        include("getters/inpatientencounters.php");
 
     if (!$PROCESSISH) {
         // non-ISH patients must get these information from their clinical story candidate
-        if (includeConditionally("medications"))           include("getters/medications.php");
-        if (includeConditionally("immunizations"))         include("getters/immunizations.php");
-        if (includeConditionally("allergiesintolerances")) include("getters/allergiesintolerances.php");
-        if (includeConditionally("careplans"))             include("getters/careplans.php");
-        if (includeConditionally("vitalsigns"))            include("getters/vitalsigns.php");
-        if (includeConditionally("pregnancies"))           include("getters/pregnancies.php");
+        if (includeConditionally("medications"))
+            include("getters/medications.php");
+        if (includeConditionally("immunizations"))
+            include("getters/immunizations.php");
+        if (includeConditionally("allergiesintolerances"))
+            include("getters/allergiesintolerances.php");
+        if (includeConditionally("careplans"))
+            include("getters/careplans.php");
+        if (includeConditionally("vitalsigns"))
+            include("getters/vitalsigns.php");
+        if (includeConditionally("pregnancies"))
+            include("getters/pregnancies.php");
     }
-
-    // var_dump($pdat->conditions);var_dump($pdat->procedures);exit;
 
     // -------------------------------------------------------------------------
     // HOSPITAL STAY ASSEMBLY (HDR prerequisite)
@@ -1126,7 +1145,7 @@ foreach ($PATIENTS as $pdat) {
     }
     if (in_array("AZ", $ARTIFACTS)) {
         // invent a test BSN
-        $pdat->bsn = generateBSN99999();
+        $pdat->bsn = generateBSN9999();
     }
     
     if ($pdat->match === NULL)
@@ -1315,7 +1334,6 @@ foreach ($PATIENTS as $pdat) {
         lognl(2, "......... for $a\n");
         if ($a === "AZ") {
             $count = emitCDA($pdat, $a);
-            
         } else {
             $count = emitFSH($pdat, $a);
         }
@@ -1581,8 +1599,142 @@ function emitFSH($pdat, $thisartifact) {
     // =========================================================================
     if ($thisartifact === "EPS") {
 
-        // emit all EPSs
+        // count all emited all EPSs
         $outputcount = 0;
+
+        /**
+         * Condition summarisation for the patient summary.
+         *
+         * Synthea writes one condition entry per clinical episode, which is correct for
+         * a longitudinal record. A patient summary needs one entry per problem carrying
+         * its current status. This call performs that reduction.
+         *
+         * Two passes run in sequence, and are kept separate on purpose:
+         *
+         *   1. Suppression. Removes what does not belong in a summary: resolved acute
+         *      illness, symptoms and signs, administrative items. Conditions that
+         *      resolved but still govern treatment are restated as history concepts
+         *      rather than dropped, so a resolved stroke becomes a recorded history of
+         *      cerebrovascular accident. Allergies and pregnancy status are routed to
+         *      their own sections.
+         *
+         *   2. Consolidation. Merges episodes of one problem into a single entry with
+         *      the earliest onset, the current status and an episode count. Overlapping
+         *      concepts collapse to the most specific one asserted. Staged conditions
+         *      keep the highest stage reached together with the earliest onset.
+         *
+         * Merging the two passes would let several episodes of an acute infection be
+         * consolidated into a recurrent problem no clinician ever asserted. Suppression
+         * removes those episodes before consolidation can see them.
+         *
+         * The return value has the same shape as the input and substitutes directly for
+         * $pdat->conditions downstream. Two caveats. The 'start', 'end' and 'active'
+         * fields are recomputed rather than copied, because consolidation moves onset
+         * and abatement across a group. Three keys are added: clinicalStatus, episodes,
+         * and for a restated concept convertedFrom. These are needed because a
+         * condition present now that previously resolved has an empty 'end', which is
+         * indistinguishable from one that never resolved. Construct the adapter with
+         * annotate: false for a strictly identical shape, at the cost of that
+         * distinction.
+         *
+         * $adapter->lastReport() returns what was removed and why. Each dropped record
+         * carries a summaryReason field, so any decision can be traced without
+         * re-running the filter.
+         *
+         * Typical reduction is from around sixteen entries per patient to around four.
+         *
+         * @see lib/eps-condition-adapter.php
+         * @see https://synderai.net/index.php?menu=epsca
+         */
+        $adapter = new epsConditionAdapter();
+        $filteredConditions = $adapter->summarise($pdat->conditions);
+
+        // =====================================================================
+        // Output
+        // =====================================================================
+        $report = $adapter->lastReport();
+
+        lognl(2, "............ Results of the EPS condition adapter run");
+        lognl(2,
+            sprintf(
+                "............... %d source condition entries -> %d problems, %d routed, %d dropped",
+                $report['in'],
+                $report['stats']['problems'],
+                $report['stats']['routed'],
+                $report['stats']['dropped']
+            )
+        );
+
+        lognl(3, "............... Problem List");
+        lognl(3, sprintf("...............   %-12s %-12s %-4s %-12s %-12s %s\n", 'CODE', 'STATUS', 'EP', 'ONSET', 'ABATED', 'DISPLAY'));
+        foreach ($filteredConditions as $p) {
+            lognl(3, sprintf
+                (
+                    "...............   %-12s %-12s %-4d %-12s %-12s %s\n",
+                    $p['code']['code'],
+                    $p['clinicalStatus'],
+                    $p['episodes'],
+                    $p['start'],
+                    $p['end'] !== '' ? $p['end'] : '-',
+                    $p['code']['display']
+                )
+            );
+        }
+
+        lognl(3, "............... Dropped");
+        $byCode = [];
+        foreach ($report['dropped'] as $d) {
+            $byCode[$d['code']['code']]['n'] = ($byCode[$d['code']['code']]['n'] ?? 0) + 1;
+            $byCode[$d['code']['code']]['display'] = $d['code']['display'];
+            $byCode[$d['code']['code']]['reason'] = $d['summaryReason'] ?? '';
+        }
+        foreach ($byCode as $code => $info) {
+            lognl(3,
+                sprintf
+                    (
+                    "...............   %dx  %-12s %-38s %s\n",
+                    $info['n'],
+                    $code,
+                    substr($info['display'], 0, 36),
+                    $info['reason']
+                )
+            );
+        }
+
+        // ---------------------------------------------------------------------
+        // Diagnostic on the 'active' field. Not part of the pipeline.
+        // ---------------------------------------------------------------------
+
+        $check = epsConditionAdapter::inspectActiveField($pdat->conditions);
+        lognl(3, "............ 'active' Field Check");
+        lognl(3, sprintf
+            (
+                "...............   every value is flag digit + start date, flag agreeing with 'end': %s\n",
+                $check['consistent'] ? 'yes' : 'NO - see rows below'
+            ));
+        if (!$check['consistent']) {
+            foreach ($check['rows'] as $r) {
+                if (!$r['agrees']) {
+                    lognl(3, 
+                        sprintf
+                            (
+                                "...............     index %d  code %s  active=%s  start=%s  end=%s\n",
+                                $r['index'],
+                                $r['code'],
+                                $r['active'],
+                                $r['start'],
+                                $r['end'] ?: '(none)'
+                            ));
+                }
+            }
+        }
+        lognl(3, "...............   The field carries nothing 'end' does not. The adapter derives status from 'end' and ignores 'active'.");
+
+        // preserve $pdat->conditions as $pdat->originalConditions (for later reconstruction after EPS pipeline for other artifacts)
+        // make $pdat->conditions the new $filteredConditions for proper EPS condition emission
+        $pdat->originalConditions = $pdat->conditions;
+        $pdat->conditions = $filteredConditions;
+        exit;
 
         // Assign a fresh resource instance ID for this EPS
         $pdat->instanceid = uuid();
@@ -1656,8 +1808,34 @@ function emitFSH($pdat, $thisartifact) {
         if ($doresearchstudyaddition)
             include("sections/researchstudyandsubject.php");
 
-        // Use the most recent lab observation date (if present) as the composition date, today otherwise
-        $maxfoundix  = $pdat->labobservations !== NULL ? max(array_keys($pdat->labobservations)) : date('Y-m-d\TH:i:s\Z') ;
+        // Use the most recent date of lab observations, conditions, procedures or immunizations (if present) as the composition date, today otherwise
+        $maxdates = array();
+        if ($pdat->labobservations !== NULL) {
+            $maxdates[] = max(array_keys($pdat->labobservations));
+        }
+        if ($pdat->conditions !== NULL) {
+            $maxdates[] = max(array_merge(
+                array_column($pdat->conditions, 'start'),
+                array_column($pdat->conditions, 'end')
+            ));
+        }
+        if ($pdat->procedures !== NULL) {
+            $maxdates[] = max(array_column($pdat->procedures, 'date'));
+        }
+        if ($pdat->medications !== NULL) {
+            $maxdates[] = max(array_merge(
+                array_column($pdat->medications, 'start'),
+                array_column($pdat->medications, 'end')
+            ));
+        }
+        if ($pdat->immunizations !== NULL) {
+            $maxdates[] = max(array_column($pdat->immunizations, 'date'));
+        }
+        if (count($maxdates) === 0)
+            $maxfoundix = date('Y-m-d\TH:i:s\Z');
+        else
+            $maxfoundix = max($maxdates);
+
         $composition = [
             "instanceid" => uuid(),
             "identifier" => uuid(),
@@ -1899,7 +2077,7 @@ function emitCDA($pdat, $thisartifact) {
                 ],
                 "az-recordTarget"
             );
-        echo "\n$OUTCDA\n";
+        // echo "\n$OUTCDA\n";
         if (!is_dir(FSHOUTPUTDIR . "/$thisartifact"))
             mkdir(FSHOUTPUTDIR . "/$thisartifact");
         $fn = FSHOUTPUTDIR . "/$thisartifact/__" . $pdat->eci . "-az-example.cda.xml";
