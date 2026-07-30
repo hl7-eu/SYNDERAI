@@ -33,8 +33,8 @@ $pdat->researchstudysentries[] = [
   "sectionentryslicename" => ""
 ];
 
-// non-mandatory section
-$sections['sectionResearchStudyConsent'] = [
+// non-mandatory section, no-name
+$sections[] = [
   'title' => 'Research study consent',
   'code' => '$loinc#77602-1',
   'display' => "Research study consent",
