@@ -35,7 +35,7 @@ function elfProef(string $input, array $weights, bool $positiveSum): bool
  * Accepteert 8- of 9-cijferige invoer. 8-cijferige nummers worden met een
  * voorloopnul aangevuld. Nummers die met "00" beginnen zijn ongeldig.
  */
-function validateBSN(string|int $input): bool
+function validateBSN($input): bool
 {
     $input = (string) $input;
 
@@ -94,24 +94,31 @@ function completeBSN(string|int $stem): ?string
 }
 
 /**
- * Genereer een willekeurig geldig BSN
+ * Genereer een willekeurig geldig BSN 8 cijfers + mod-11-proef
  */
 function generateBSN(): string
 {
     do {
-        $candidate = str_pad((string) random_int(0, 999999999), 9, '0', STR_PAD_LEFT);
+        $candidate = str_pad((string) random_int(10000000, 99999999), 8, '0', STR_PAD_LEFT);
+        // echo "1 $candidate\n";
+        $candidate = completeBSN($candidate);
+        // echo "2 $candidate\n";
     } while (!validateBSN($candidate));
 
     return $candidate;
 }
 
 /**
- * Genereer een willekeurig geldig BSN, met 99999 aan het begin
+ * Genereer een willekeurig geldig BSN, BSN 8 cijfers + mod-11-proef
+ * met 4x "9" = 9999 aan het begin, dan 4 random cijfers + mod-11-proef
  */
-function generateBSN99999(): string
+function generateBSN9999(): string
 {
     do {
-        $candidate = str_pad((string) "99999" . rand(0, 8888), 9, '0', STR_PAD_LEFT);
+        $candidate = str_pad((string) "9999" . rand(1000, 8888), 8, '0', STR_PAD_LEFT);
+        // echo "3 $candidate\n";
+        $candidate = completeBSN($candidate);
+        // echo "4 $candidate\n";
     } while (!validateBSN($candidate));
 
     return $candidate;
