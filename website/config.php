@@ -59,6 +59,11 @@ $MENU = [
         "file" => "SUMMARY-EU-SNOMED.md"
     ],
     [
+        "title" => "Conditions for the EPS",
+        "menu" => "epsca",
+        "file" => "EPS-CONDITION-ADAPTATION.md"
+    ],
+    [
         "title" => "Policy",
         "menu" => "policy",
         "file" => "SYNDERAI-SYNTHETIC-DATA-POLICY.md"
@@ -94,7 +99,7 @@ $NAV = [
     ['type' => 'group', 'label' => 'Data',
                         'items' => ['examples', 'dashboards', 'downloads']],
     ['type' => 'group', 'label' => 'Project',
-                        'items' => ['progress', 'future', 'eu', 'eus', 'policy']],
+                        'items' => ['progress', 'future', 'eu', 'eus', 'epsca', 'policy']],
 ];
 
 /*
