@@ -54,6 +54,7 @@ function getClinicalStoryCandidatesWithMatchingPreselections($preselarr) {
         foreach ($INPATIENTENCOUNTERS as $c) {
             $founde[$c["candid"]] = $c["candid"];
         }
+        lognl(2, "............ Candidates with matching conditions: " . count($founde) . "\n");
     }
 
     // ------------------------------------------------------------------
