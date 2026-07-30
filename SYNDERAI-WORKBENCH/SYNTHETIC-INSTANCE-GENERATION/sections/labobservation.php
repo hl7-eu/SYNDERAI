@@ -161,6 +161,7 @@ foreach ($pdat->labobservations as $ldate => $lbspd) {
             // this is numeric, overwrite value['type'] with 'Quantity'
             $value['type'] = "Quantity";
           }
+          $rr1["isNumeric"] = $isnumeric;
         }
       } else {
         // no AI but add the "placeholder reference range"
@@ -169,7 +170,8 @@ foreach ($pdat->labobservations as $ldate => $lbspd) {
           "high" => NULL,
           "unit" => $labi["valueunit"],
           "display" => NULL,
-          "text" => NULL
+          "text" => NULL,
+          "isNumeric" => NULL
         ];
       }
     
