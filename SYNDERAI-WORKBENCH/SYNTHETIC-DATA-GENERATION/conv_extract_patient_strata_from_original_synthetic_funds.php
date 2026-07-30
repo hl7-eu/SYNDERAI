@@ -63,6 +63,8 @@ $lines = "uuid" . $DELIMITER . "age" . $DELIMITER . "gender" . "\n";
 foreach ($clinicalpatients as $l) {
     $lines .= $l . "\n";
 }
-file_put_contents(SYNTHETICDATA . "/25_tipster_clinicalcandidates_" . $kcount  . "k_" . $cdate . ".csv", $lines);
+$fn = SYNTHETICDATA . "/25_tipster_clinicalcandidates_" . $kcount  . "k_" . $cdate . ".csv";
+file_put_contents($fn, $lines);
+echo "Written to $fn\n";
 
 ?>
