@@ -6,7 +6,7 @@ define("SYNTHEADIR",               SYNTHETICDATA . "/synthea_sample_data_generat
 define("SYNTHEAINTL",              SYNTHETICDATA . "/synthea-international-202507");
 define("MAPPINGS",                 "../MAPPINGS");
 // define("EUROPEDEMOGRAPHICS",       SYNTHETICDATA . "/25_tipster_eu_demographics_31k_202509.csv");
-define("EUROPEDEMOGRAPHICS",       SYNTHETICDATA . "/25_tipster_eu_demographics_nuts2_v5.tsv");
+define("EUROPEDEMOGRAPHICS",       SYNTHETICDATA . "/25_tipster_eu_demographics_nuts2_v12.tsv");
 define("SYNTHEAPATIENTSTRATA",     SYNTHETICDATA . "/25_tipster_clinicalcandidates_37k_202607.csv");
 
 /** Severity constants used by lognlsev(). */
