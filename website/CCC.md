@@ -12,9 +12,7 @@ Dr. Kai U. Heitmann, HL7 Europe
 <img style="float: right; width: 100px; margin-left: 10px;" src="img/partners.png"> </img>
 SYNDERAI has started to partner with other initiatives and companies to assure the assets created are sustainable.
 
-We evaluate the High-Performance FHIR Server from [fire.ly](https://fire.lfirely-server-trial/) for the synthetic examples,
-we have a [compelling rendering](https://ehds.hamster.nl) of the EHDS examples next to the original [vi7eti](https:vi7eti.net) and investigate Fast Continuous validation, drift
-detection and releases evidence with [MedVertical](https://medverticacom).
+We evaluate the High-Performance FHIR Server from [fire.ly](https://fire.ly) for the synthetic examples, we have a [compelling rendering](https://ehds.hamster.nl) of the EHDS examples next to the original [vi7eti](https//:vi7eti.net) and investigate Fast Continuous validation, drift detection and releases evidence with [MedVertical](https://medvertical.com).
 
 ## Acknowledgements
 
