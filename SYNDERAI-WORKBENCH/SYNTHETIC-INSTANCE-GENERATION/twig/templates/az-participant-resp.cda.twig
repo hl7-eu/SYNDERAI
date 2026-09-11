@@ -1,0 +1,36 @@
+%%CDA%% {# ── Section marker required by the CDA pre-processor ─────────────── #}
+ 
+{# Inhoudsverantwoordelijke #}
+<participant typeCode="RESP">
+    <!-- inhoudsverantwoordelijke: {{ provider.practitioner.family }} uit {{ provider.city }} -->
+    <participantRole classCode="ASSIGNED">
+        <id root="2.16.840.1.113883.2.4.6.1" extension="10000002"/>
+        <code code="01.015" codeSystem="2.16.840.1.113883.2.4.15.111" displayName="Huisarts"/>
+        <addr use="WP"> {# adrestype #}
+            {#
+            <streetName>Knolweg</streetName>
+            <houseNumber>45</houseNumber>
+            #}
+            <postalCode>{{ provider.postcode }}</postalCode>
+            <city>{{ provider.city }}</city>
+            <country code="NL" codeSystem="1.0.3166.1.2.2">Nederland</country>
+        </addr>
+        {#
+        <telecom use="WP" value="tel:31211234567"/>
+        <telecom use="WP" value="mailto:huisarts@zorgverlener.org"/>
+        #}
+        <playingEntity classCode="PSN" determinerCode="INSTANCE">
+            <name>
+                {% for g in provider.practitioner.given %}
+                <given qualifier="BR">{{ g }}</given>
+                {% endfor %}
+                <family qualifier="BR">XXX_{{ provider.practitioner.family }}</family>
+            </name>
+        </playingEntity>
+        <scopingEntity classCode="ORG" determinerCode="INSTANCE">
+            <id root="2.16.528.1.1007.3.3" extension="00001111"/>
+            <code code="Z3" codeSystem="2.16.840.1.113883.2.4.15.1060" displayName="Huisartspraktijk"/>
+            <desc>{{ provider.name }}</desc>
+        </scopingEntity>
+    </participantRole>
+</participant>

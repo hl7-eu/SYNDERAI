@@ -14,9 +14,7 @@
  *                                     missing-map tracking
  */
 
-/* GENERAL SYNDERAI INCLUDES */
-include_once("config.php");
-
+/* GENERAL SYNDERAI INCLUDES prerequisite: config.php is loaded */
 
 // =============================================================================
 // SECTION 1 — Component & Configuration
@@ -281,11 +279,18 @@ function random_str(
  *
  * @return void
  */
-function lognl($level, $text) {
+function lognonl($level, $text) {
     if (DEBUGLEVEL >= $level) {
         $text = str_replace("\n", "", $text);
         logmeterinit();
-        echo sprintf("%s\n", $text);
+        echo sprintf("%s", $text);
+    }
+}
+function lognl($level, $text)
+{
+    if (DEBUGLEVEL >= $level) {
+        lognonl($level, $text);
+        echo "\n";
     }
 }
 
@@ -305,7 +310,7 @@ function lognl($level, $text) {
  * Messages whose severity is not one of the above are silently suppressed.
  *
  * @param  int    $level     Minimum DEBUGLEVEL required to emit this message.
- * @param  string $severity  One of: "ERROR", "WARN", "INFO", "SUCCESS".
+ * @param  int    $severity  One of: int constants ERROR, WARNING, INFO, SUCCESS, FATAL. On FATAL a condition is raised.
  * @param  string $text      The message to log.
  *
  * @return void

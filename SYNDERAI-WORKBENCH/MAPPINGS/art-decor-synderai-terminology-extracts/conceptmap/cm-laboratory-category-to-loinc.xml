@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<conceptMap id="2.16.840.1.113883.3.1937.777.100.24.9" displayName="Laboratory category to LOINC" effectiveDate="2026-09-11T00:00:00" statusCode="draft" lastModifiedDate="2026-09-11T00:00:00" url="http://art-decor.org/decor/services/" ident="synderai-">
+        <desc language="en-US">
+            <p>Maps the laboratory categories of the SYNDERAI Synthea pipeline to LOINC. The source is the local code system cs-synthea-laboratory-category (2.16.840.1.113883.3.1937.777.100.5.3), whose concepts are LOINC Class names. The target is, wherever LOINC offers one, the study set code of the ATTACH.LAB class, which names a discipline rather than a single test. Two
+                    rows have no such code and carry a LOINC Part instead; both are marked in the comment, because a Part is not a LOINC term and does not belong in Observation.code or DiagnosticReport.code. Every target was checked on loinc.org on 2026-09-11 for its long common name and active status.</p>
+            <div class="__artdecor_box aswarning">
+                <p>This material contains content from LOINC
+                        (http://loinc.org). LOINC is copyright © 1995-today, Regenstrief Institute, Inc. and the Logical Observation Identifiers Names and Codes (LOINC) Committee and is available at no cost under the license at loinc.org. LOINC® is a registered United States trademark of Regenstrief Institute, Inc.</p>
+                <p>Derived artefact, not published by Regenstrief.</p>
+            </div>
+        </desc>
+        <publishingAuthority name="SYNDERAI" inherited="project"/>
+        <purpose language="en-US">Report level category for synthetic laboratory data.</purpose>
+        <sourceScope ref="2.16.840.1.113883.3.1937.777.100.5.3" flexibility="dynamic" displayName="Synthea laboratory category" canonicalUri="http://synderai.net/fhir/CodeSystem/cs-synthea-laboratory-category"/>
+        <targetScope ref="2.16.840.1.113883.6.1" flexibility="dynamic" displayName="LOINC" canonicalUri="http://loinc.org/vs"/>
+        <issueAssociation count="0"/>
+        <group>
+            <source codeSystem="2.16.840.1.113883.3.1937.777.100.5.3" displayName="Synthea laboratory category" canonicalUri="http://synderai.net/fhir/CodeSystem/cs-synthea-laboratory-category"/>
+            <target codeSystem="2.16.840.1.113883.6.1" displayName="Logical Observation Identifier Names and Codes" canonicalUri="http://loinc.org"/>
+            <element code="HEM_BC" displayName="HEM/BC">
+                    <target code="18723-7" relationship="wider" displayName="Hematology studies (set)">
+                        <comment language="en-US">the LOINC class HEM/BC covers haematology and blood cell counts; the set code names haematology alone</comment>
+                    </target>
+                </element>
+            <element code="CHEM" displayName="CHEM">
+                    <target code="18719-5" relationship="equal" displayName="Chemistry studies (set)"/>
+                </element>
+            <element code="COAG" displayName="COAG">
+                    <target code="18720-3" relationship="equal" displayName="Coagulation studies (set)"/>
+                </element>
+            <element code="UA" displayName="UA">
+                    <target code="18729-4" relationship="equal" displayName="Urinalysis studies (set)"/>
+                </element>
+            <element code="ALLERGY" displayName="ALLERGY">
+                    <target code="20662-3" relationship="relatedto" displayName="Allergens tested for in Serum">
+                        <comment language="en-US">LOINC has no allergy studies set code, 18726-0 is Radiology studies. 20662-3 is an observation bound to serum rather than a study set, so it carries a specimen the category does not state</comment>
+                    </target>
+                </element>
+            <element code="MICRO" displayName="MICRO">
+                    <target code="18725-2" relationship="equal" displayName="Microbiology studies (set)"/>
+                </element>
+            <element code="PANEL_MICRO" displayName="PANEL.MICRO">
+                    <target code="18725-2" relationship="wider" displayName="Microbiology studies (set)">
+                        <comment language="en-US">LOINC has no set code for microbiology panels; this collapses onto the target of MICRO</comment>
+                    </target>
+                </element>
+            <element code="PATH" displayName="PATH">
+                    <target code="27898-6" relationship="equal" displayName="Pathology studies (set)"/>
+                </element>
+            <element code="MOLPATH" displayName="MOLPATH">
+                    <target code="26435-8" relationship="equal" displayName="Molecular pathology studies (set)"/>
+                </element>
+            <element code="PATH_PROTOCOLS_BRST" displayName="PATH.PROTOCOLS.BRST">
+                    <target code="85904-1" relationship="narrower" displayName="Cancer pathology panel - Breast cancer specimen by CAP cancer protocols">
+                        <comment language="en-US">the category names a family of CAP breast protocols, the target one panel out of it; the target claims more specificity than the source carries</comment>
+                    </target>
+                </element>
+            <element code="PATH_PROTOCOLS_GENER" displayName="PATH.PROTOCOLS.GENER">
+                    <target code="LP207911-1" relationship="relatedto" displayName="Cancer pathology panel">
+                        <comment language="en-US">CAVE: LP207911-1 is a LOINC Part of type Component, not a LOINC term. It names the analyte, not an orderable or reportable code, and does not belong in Observation.code or DiagnosticReport.code. Kept because LOINC offers no set code for this category</comment>
+                    </target>
+                </element>
+            <element code="PANEL_DRUG_TOX" displayName="PANEL.DRUG/TOX">
+                    <target code="18728-6" relationship="equal" displayName="Toxicology studies (set)">
+                        <comment language="en-US">code replaced, old 72479-9 was Drugs of abuse panel - Blood by Screen method, which binds a specimen and a method the category does not state</comment>
+                    </target>
+                </element>
+            <element code="SPEC" displayName="SPEC">
+                    <target code="LP7846-1" relationship="relatedto" displayName="Specimen information">
+                        <comment language="en-US">CAVE: LP7846-1 is the LOINC Part of type Class for SPEC itself, not a LOINC term. The row therefore names the category rather than translating it, and the code does not belong in Observation.code or DiagnosticReport.code. Kept because LOINC offers no set code for specimen information</comment>
+                    </target>
+                </element>
+        </group>
+    </conceptMap>

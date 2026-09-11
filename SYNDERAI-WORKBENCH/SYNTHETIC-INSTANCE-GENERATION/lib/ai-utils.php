@@ -378,6 +378,8 @@ function getAIsuggestedMedicationDosage($patage, $patgender, $conditions4ai, $me
     In that case the '* dosage.text' shall use '1 tablet' or '1 capsule' and the frequency.
 
     Return ONLY the FSH as pure text.
+    If you want to emit an error message such as "I'm sorry, but you did not specify a medication." do that 
+    always with preceding "// " to indicate a proper FSH comment.
 AIP;
     $prompt = trim($prompt);
 

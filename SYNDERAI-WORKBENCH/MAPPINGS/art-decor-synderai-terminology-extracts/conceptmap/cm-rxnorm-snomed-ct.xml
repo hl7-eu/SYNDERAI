@@ -1,0 +1,1306 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<conceptMap id="2.16.840.1.113883.3.1937.777.100.24.4" displayName="RxNorm 2 SNOMED-CT" effectiveDate="2026-09-09T22:00:00" statusCode="draft" lastModifiedDate="2026-09-09T22:00:00" url="http://art-decor.org/decor/services/" ident="synderai-">
+        <desc language="en-US">
+                <p>Maps RxNorm concepts to SNOMED CT medicinal products. The source codes are those emitted by the SYNDERAI Synthea pipeline; they cannot be corrected upstream and a number of them are not valid RxNorm identifiers. Every such code is nevertheless mapped, so that the synthetic data always carries a SNOMED CT code, and every affected row opens its comment with CAVE: RXCUI is not
+                    valid, for synthetic consistency mapped based on display name. Three relationship values are used. equivalent means the target denotes what the source display name describes. wider means the target is a broader SNOMED CT concept, chosen because SNOMED CT has no clinical drug at that strength or in that dose form: the mapping then drops the strength, and where the dose form does
+                    not fit either, the dose form as well. unmatched means SNOMED CT has no usable concept at all. 390 rows in total: 365 equivalent, 24 wider, 1 unmatched.</p>
+                <div class="__artdecor_box aswarning">
+                    <p>This artefact includes content from SNOMED Clinical Terms® (SNOMED CT®) which is copyright of the International Health Terminology Standards Development Organisation (IHTSDO). Implementers of these artefacts must have the appropriate SNOMED CT Affiliate license - for more information contact http://www.snomed.org/snomed-ct/getsnomed-ct or info@snomed.org.</p>
+                    <p>This material contains content from RxNorm, a product of the US National Library of Medicine.</p>
+                </div>
+            </desc>
+        <publishingAuthority name="SYNDERAI" inherited="project"/>
+        <purpose language="en-US">Medication axis for synthetic data.</purpose>
+        <copyright language="en-US" inherited="true">This artefact includes content from SNOMED Clinical Terms® (SNOMED CT®) which is copyright of the International Health Terminology Standards Development Organisation (IHTSDO). Implementers of these artefacts must have the appropriate SNOMED CT Affiliate license - for more information contact http://www.snomed.org/snomed-ct/getsnomed-ct or info@snomed.org.</copyright>
+        <sourceScope ref="2.16.840.1.113883.3.1937.777.100.11.14" flexibility="dynamic" displayName="Medicinal Products (RxNorm)" canonicalUri="http://synderai.net/fhir/ValueSet/vs-medicinal-products-rx-norm"/>
+        <targetScope ref="2.16.840.1.113883.3.1937.777.100.11.15" flexibility="dynamic" displayName="SNOMED-CT Codes" canonicalUri="http://synderai.net/fhir/ValueSet/vs-medicinal-products-snomed"/>
+        <issueAssociation count="0"/>
+        <group>
+            <source codeSystem="2.16.840.1.113883.6.88" displayName="RxNorm" canonicalUri="http://www.nlm.nih.gov/research/umls/rxnorm"/>
+            <target codeSystem="2.16.840.1.113883.6.96" displayName="SNOMED Clinical Terms" canonicalUri="http://snomed.info/sct"/>
+            <element code="238100" displayName="lorazepam 2 MG/ML Injectable Solution">
+                    <target code="1193826002" relationship="equivalent" displayName="Lorazepam 2 mg/mL solution for injection"/>
+                </element>
+            <element code="1870230" displayName="NDA020800 0.3 ML Epinephrine 1 MG/ML Auto-Injector">
+                    <target code="781862008" relationship="equivalent" displayName="Epinephrine 1 mg/mL solution for injection"/>
+                </element>
+            <element code="1599803" displayName="24 HR Donepezil hydrochloride 10 MG / Memantine hydrochloride 28 MG Extended Release Oral Capsule">
+                    <target code="779057002" relationship="wider" displayName="Donepezil and memantine only product in oral dose form">
+                        <comment language="en-US">SNOMED CT has no donepezil 10 mg and memantine 28 mg prolonged-release capsule, so the target drops strengths and dose form. Retargeted from 1172743009, which states different strengths.</comment>
+                    </target>
+                </element>
+            <element code="1431987" displayName="24 HR tacrolimus 5 MG Extended Release Oral Capsule">
+                    <target code="1163324000" relationship="equivalent" displayName="Tacrolimus 5 mg prolonged-release oral capsule"/>
+                </element>
+            <element code="206905" displayName="ibuprofen 400 MG Oral Tablet [Ibu]">
+                    <target code="329653008" relationship="equivalent" displayName="Ibuprofen 400 mg oral tablet"/>
+                </element>
+            <element code="1648755" displayName="nitrofurantoin, macrocrystals 25 MG / nitrofurantoin, monohydrate 75 MG Oral Capsule">
+                    <target code="377545002" relationship="equivalent" displayName="Nitrofurantoin macrocrystal 25 mg and nitrofurantoin monohydrate 75 mg oral capsule"/>
+                </element>
+            <element code="562251" displayName="amoxicillin 250 MG / clavulanate 125 MG Oral Tablet">
+                    <target code="323563001" relationship="equivalent" displayName="Amoxicillin 250 mg and clavulanic acid (as clavulanate potassium) 125 mg oral tablet"/>
+                </element>
+            <element code="849574" displayName="naproxen sodium 220 MG Oral Tablet">
+                    <target code="779973006" relationship="wider" displayName="Naproxen only product in oral dose form">
+                        <comment language="en-US">SNOMED CT has naproxen sodium 220 mg only as a capsule, so the target drops strength and dose form. Retargeted from 420276008.</comment>
+                    </target>
+                </element>
+            <element code="313782" displayName="acetaminophen 325 MG Oral Tablet">
+                    <target code="370150001" relationship="equivalent" displayName="Acetaminophen 325 mg oral tablet"/>
+                </element>
+            <element code="308136" displayName="amlodipine 2.5 MG Oral Tablet">
+                    <target code="1153431000" relationship="equivalent" displayName="Amlodipine (as amlodipine besylate) 2.5 mg oral tablet"/>
+                </element>
+            <element code="310965" displayName="ibuprofen 200 MG Oral Tablet">
+                    <target code="1162422005" relationship="equivalent" displayName="Ibuprofen (as ibuprofen sodium) 200 mg oral tablet"/>
+                </element>
+            <element code="309309" displayName="ciprofloxacin 500 MG Oral Tablet">
+                    <target code="783330006" relationship="equivalent" displayName="Ciprofloxacin (as ciprofloxacin hydrochloride) 500 mg oral tablet"/>
+                </element>
+            <element code="314231" displayName="simvastatin 10 MG Oral Tablet">
+                    <target code="319996000" relationship="equivalent" displayName="Simvastatin 10 mg oral tablet"/>
+                </element>
+            <element code="310798" displayName="hydrochlorothiazide 25 MG Oral Tablet">
+                    <target code="376209006" relationship="equivalent" displayName="Hydrochlorothiazide 25 mg oral tablet"/>
+                </element>
+            <element code="314076" displayName="lisinopril 10 MG Oral Tablet">
+                    <target code="318859000" relationship="equivalent" displayName="Lisinopril 10 mg oral tablet"/>
+                </element>
+            <element code="630208" displayName="albuterol 0.83 MG/ML Inhalation Solution">
+                    <target code="376561007" relationship="equivalent" displayName="Albuterol (as albuterol sulfate) 830 microgram/mL solution for inhalation"/>
+                </element>
+            <element code="198335" displayName="sulfamethoxazole 800 MG / trimethoprim 160 MG Oral Tablet">
+                    <target code="324359004" relationship="equivalent" displayName="Sulfamethoxazole 800 mg and trimethoprim 160 mg oral tablet"/>
+                </element>
+            <element code="856987" displayName="acetaminophen 300 MG / hydrocodone bitartrate 5 MG Oral Tablet">
+                    <target code="420397007" relationship="equivalent" displayName="Acetaminophen 300 mg and hydrocodone bitartrate 5 mg oral tablet"/>
+                </element>
+            <element code="310325" displayName="ferrous sulfate 325 MG Oral Tablet">
+                    <target code="895498001" relationship="equivalent" displayName="Ferrous sulfate 325 mg prolonged-release oral tablet"/>
+                </element>
+            <element code="834102" displayName="penicillin V potassium 500 MG Oral Tablet">
+                    <target code="1231308002" relationship="equivalent" displayName="Penicillin V (as penicillin V potassium) 500 mg oral tablet"/>
+                </element>
+            <element code="308182" displayName="amoxicillin 250 MG Oral Capsule">
+                    <target code="323509004" relationship="equivalent" displayName="Amoxicillin 250 mg oral capsule"/>
+                </element>
+            <element code="309362" displayName="clopidogrel 75 MG Oral Tablet">
+                    <target code="783586007" relationship="equivalent" displayName="Clopidogrel (as clopidogrel bisulfate) 75 mg oral tablet"/>
+                </element>
+            <element code="312961" displayName="simvastatin 20 MG Oral Tablet">
+                    <target code="319997009" relationship="equivalent" displayName="Simvastatin 20 mg oral tablet"/>
+                </element>
+            <element code="866412" displayName="24 HR metoprolol succinate 100 MG Extended Release Oral Tablet">
+                    <target code="879980009" relationship="equivalent" displayName="Metoprolol tartrate (as metoprolol succinate) 100 mg prolonged-release oral tablet"/>
+                </element>
+            <element code="705129" displayName="nitroglycerin 0.4 MG/ACTUAT Mucosal Spray">
+                    <target code="425176000" relationship="equivalent" displayName="Nitroglycerin 400 microgram/actuation sublingual spray"/>
+                </element>
+            <element code="1665060" displayName="cefazolin 2000 MG Injection">
+                    <target code="1287106002" relationship="equivalent" displayName="Cefazolin (as cefazolin sodium) 2 g powder for solution for infusion and/or injection vial"/>
+                </element>
+            <element code="1740467" displayName="2 ML ondansetron 2 MG/ML Injection">
+                    <target code="782032003" relationship="equivalent" displayName="Ondansetron (as ondansetron hydrochloride) 2 mg/mL solution for injection"/>
+                </element>
+            <element code="1234995" displayName="rocuronium bromide 10 MG/ML Injectable Solution">
+                    <target code="782091007" relationship="equivalent" displayName="Rocuronium bromide 10 mg/mL solution for injection"/>
+                </element>
+            <element code="542347" displayName="isoflurane 999 MG/ML Inhalation Solution">
+                    <target code="784978007" relationship="equivalent" displayName="Isoflurane 999 mg/mL solution for inhalation"/>
+                </element>
+            <element code="904419" displayName="alendronic acid 10 MG Oral Tablet">
+                    <target code="783144007" relationship="equivalent" displayName="Alendronic acid (as alendronate sodium) 10 mg oral tablet"/>
+                </element>
+            <element code="198440" displayName="acetaminophen 500 MG Oral Tablet">
+                    <target code="322236009" relationship="equivalent" displayName="Acetaminophen 500 mg oral tablet"/>
+                </element>
+            <element code="313988" displayName="furosemide 40 MG Oral Tablet">
+                    <target code="317972000" relationship="equivalent" displayName="Furosemide 40 mg oral tablet"/>
+                </element>
+            <element code="200033" displayName="carvedilol 25 MG Oral Tablet">
+                    <target code="318632005" relationship="equivalent" displayName="Carvedilol 25 mg oral tablet"/>
+                </element>
+            <element code="314077" displayName="lisinopril 20 MG Oral Tablet">
+                    <target code="318860005" relationship="equivalent" displayName="Lisinopril 20 mg oral tablet"/>
+                </element>
+            <element code="979492" displayName="losartan potassium 50 MG Oral Tablet">
+                    <target code="318956006" relationship="equivalent" displayName="Losartan potassium 50 mg oral tablet"/>
+                </element>
+            <element code="203160" displayName="losartan potassium 50 MG Oral Tablet">
+                    <target code="318956006" relationship="equivalent" displayName="Losartan potassium 50 mg oral tablet"/>
+                </element>
+            <element code="861467" displayName="meperidine hydrochloride 50 MG Oral Tablet">
+                    <target code="783110000" relationship="equivalent" displayName="Meperidine hydrochloride 50 mg oral tablet"/>
+                </element>
+            <element code="243670" displayName="aspirin 81 MG Oral Tablet">
+                    <target code="765570009" relationship="equivalent" displayName="Aspirin 81 mg gastro-resistant oral tablet"/>
+                </element>
+            <element code="197380" displayName="atenolol 25 MG Oral Tablet">
+                    <target code="318434003" relationship="equivalent" displayName="Atenolol 25 mg oral tablet"/>
+                </element>
+            <element code="200345" displayName="simvastatin 80 MG Oral Tablet">
+                    <target code="320006003" relationship="equivalent" displayName="Simvastatin 80 mg oral tablet"/>
+                </element>
+            <element code="197884" displayName="lisinopril 40 MG Oral Tablet">
+                    <target code="376772000" relationship="equivalent" displayName="Lisinopril 40 mg oral tablet"/>
+                </element>
+            <element code="855812" displayName="prasugrel 10 MG Oral Tablet">
+                    <target code="783368008" relationship="equivalent" displayName="Prasugrel (as prasugrel hydrochloride) 10 mg oral tablet"/>
+                </element>
+            <element code="860975" displayName="24 HR metformin hydrochloride 500 MG Extended Release Oral Tablet">
+                    <target code="765507008" relationship="equivalent" displayName="Metformin hydrochloride 500 mg prolonged-release oral tablet"/>
+                </element>
+            <element code="1049630" displayName="diphenhydramine hydrochloride 25 MG Oral Tablet">
+                    <target code="320726008" relationship="equivalent" displayName="Diphenhydramine hydrochloride 25 mg oral tablet"/>
+                </element>
+            <element code="897685" displayName="verapamil hydrochloride 80 MG Oral Tablet [Calan]">
+                    <target code="318205007" relationship="equivalent" displayName="Verapamil hydrochloride 80 mg oral tablet"/>
+                </element>
+            <element code="855332" displayName="warfarin sodium 5 MG Oral Tablet">
+                    <target code="319735007" relationship="equivalent" displayName="Warfarin sodium 5 mg oral tablet"/>
+                </element>
+            <element code="197604" displayName="digoxin 0.125 MG Oral Tablet">
+                    <target code="317896006" relationship="equivalent" displayName="Digoxin 125 microgram oral tablet"/>
+                </element>
+            <element code="197541" displayName="colchicine 0.6 MG Oral Tablet">
+                    <target code="443200007" relationship="equivalent" displayName="Colchicine 600 microgram oral tablet"/>
+                </element>
+            <element code="197319" displayName="allopurinol 100 MG Oral Tablet">
+                    <target code="330061001" relationship="equivalent" displayName="Allopurinol 100 mg oral tablet"/>
+                </element>
+            <element code="617296" displayName="amoxicillin 500 MG / clavulanate 125 MG Oral Tablet">
+                    <target code="323539009" relationship="equivalent" displayName="Amoxicillin 500 mg and clavulanic acid (as clavulanate potassium) 125 mg oral tablet"/>
+                </element>
+            <element code="198014" displayName="naproxen 500 MG Oral Tablet">
+                    <target code="1217386004" relationship="equivalent" displayName="Naproxen (as naproxen sodium) 500 mg oral tablet"/>
+                </element>
+            <element code="1719286" displayName="10 ML furosemide 10 MG/ML Injection">
+                    <target code="781903001" relationship="equivalent" displayName="Furosemide 10 mg/mL solution for injection"/>
+                </element>
+            <element code="309097" displayName="cefuroxime 250 MG Oral Tablet">
+                    <target code="778691005" relationship="wider" displayName="Cefuroxime only product in oral dose form">
+                        <comment language="en-US">SNOMED CT has no cefuroxime 250 mg oral tablet, so the target drops the strength. Retargeted from 376969002, which states 300 mg.</comment>
+                    </target>
+                </element>
+            <element code="1049221" displayName="acetaminophen 325 MG / oxycodone hydrochloride 5 MG Oral Tablet">
+                    <target code="377343008" relationship="equivalent" displayName="Acetaminophen 325 mg and oxycodone hydrochloride 5 mg oral tablet"/>
+                </element>
+            <element code="209387" displayName="acetaminophen 325 MG Oral Tablet [Tylenol]">
+                    <target code="370150001" relationship="equivalent" displayName="Acetaminophen 325 mg oral tablet"/>
+                </element>
+            <element code="857005" displayName="acetaminophen 325 MG / hydrocodone bitartrate 7.5 MG Oral Tablet">
+                    <target code="421739003" relationship="equivalent" displayName="Acetaminophen 325 mg and hydrocodone bitartrate 7.5 mg oral tablet"/>
+                </element>
+            <element code="245314" displayName="albuterol 5 MG/ML Inhalation Solution">
+                    <target code="1197460000" relationship="equivalent" displayName="Albuterol (as albuterol sulfate) 5 mg/mL solution for inhalation"/>
+                </element>
+            <element code="198031" displayName="24 HR nicotine 0.292 MG/HR Transdermal System">
+                    <target code="1371042008" relationship="equivalent" displayName="Nicotine 7 mg/24 hour prolonged-release transdermal patch"/>
+                </element>
+            <element code="1373463" displayName="canagliflozin 100 MG Oral Tablet">
+                    <target code="703682001" relationship="equivalent" displayName="Canagliflozin 100 mg oral tablet"/>
+                </element>
+            <element code="308192" displayName="amoxicillin 500 MG Oral Tablet">
+                    <target code="374646004" relationship="equivalent" displayName="Amoxicillin 500 mg oral tablet"/>
+                </element>
+            <element code="198405" displayName="ibuprofen 100 MG Oral Tablet">
+                    <target code="370192006" relationship="equivalent" displayName="Ibuprofen 100 mg oral tablet"/>
+                </element>
+            <element code="313820" displayName="acetaminophen 160 MG Chewable Tablet">
+                    <target code="398980002" relationship="equivalent" displayName="Acetaminophen 160 mg chewable tablet"/>
+                </element>
+            <element code="834061" displayName="penicillin V potassium 250 MG Oral Tablet">
+                    <target code="323416001" relationship="equivalent" displayName="Penicillin V (as penicillin V potassium) 250 mg oral tablet"/>
+                </element>
+            <element code="309045" displayName="cefaclor 250 MG Oral Capsule">
+                    <target code="323791006" relationship="equivalent" displayName="Cefaclor 250 mg oral capsule"/>
+                </element>
+            <element code="197454" displayName="cephalexin 500 MG Oral Tablet">
+                    <target code="783072003" relationship="equivalent" displayName="Cephalexin 500 mg oral tablet"/>
+                </element>
+            <element code="311700" displayName="midazolam 1 MG/ML Injectable Solution">
+                    <target code="782000003" relationship="equivalent" displayName="Midazolam (as midazolam hydrochloride) 1 mg/mL solution for injection"/>
+                </element>
+            <element code="1729584" displayName="remifentanil 2 MG Injection">
+                    <target code="333989001" relationship="equivalent" displayName="Remifentanil (as remifentanil hydrochloride) 2 mg powder for solution for injection vial"/>
+                </element>
+            <element code="308971" displayName="carbamazepine 20 MG/ML Oral Suspension [Tegretol]">
+                    <target code="322891009" relationship="equivalent" displayName="Carbamazepine 20 mg/mL oral suspension"/>
+                </element>
+            <element code="312938" displayName="sertraline 100 MG Oral Tablet">
+                    <target code="783380000" relationship="equivalent" displayName="Sertraline (as sertraline hydrochloride) 100 mg oral tablet"/>
+                </element>
+            <element code="665078" displayName="loratadine 5 MG Chewable Tablet">
+                    <target code="423979005" relationship="equivalent" displayName="Loratadine 5 mg chewable tablet"/>
+                </element>
+            <element code="966222" displayName="levothyroxine sodium 0.075 MG Oral Tablet">
+                    <target code="783647004" relationship="equivalent" displayName="Levothyroxine sodium anhydrous 75 microgram oral tablet"/>
+                </element>
+            <element code="477045" displayName="chlorpheniramine maleate 2 MG/ML Oral Solution">
+                    <target code="778740002" relationship="wider" displayName="Chlorpheniramine only product in oral dose form">
+                        <comment language="en-US">SNOMED CT has no chlorpheniramine oral solution, so the target drops strength and dose form. Retargeted from 784659009, which additionally contains ibuprofen and pseudoephedrine.</comment>
+                    </target>
+                </element>
+            <element code="106258" displayName="hydrocortisone 10 MG/ML Topical Cream">
+                    <target code="779490007" relationship="wider" displayName="Hydrocortisone only product in cutaneous dose form">
+                        <comment language="en-US">SNOMED CT has no plain hydrocortisone 1 percent cream, so the target drops the strength. Retargeted from 331722005, which additionally contains urea.</comment>
+                    </target>
+                </element>
+            <element code="997501" displayName="fexofenadine hydrochloride 60 MG Oral Tablet">
+                    <target code="376716006" relationship="equivalent" displayName="Fexofenadine hydrochloride 60 mg oral tablet"/>
+                </element>
+            <element code="310436" displayName="galantamine 4 MG Oral Tablet">
+                    <target code="323381002" relationship="equivalent" displayName="Galantamine (as galantamine hydrobromide) 4 mg oral tablet"/>
+                </element>
+            <element code="197378" displayName="astemizole 10 MG Oral Tablet">
+                    <target code="427388006" relationship="equivalent" displayName="Astemizole 10 mg oral tablet"/>
+                </element>
+            <element code="993770" displayName="acetaminophen 300 MG / codeine phosphate 15 MG Oral Tablet">
+                    <target code="377261001" relationship="equivalent" displayName="Acetaminophen 300 mg and codeine phosphate 15 mg oral tablet"/>
+                </element>
+            <element code="835603" displayName="tramadol hydrochloride 50 MG Oral Tablet">
+                    <target code="374896000" relationship="equivalent" displayName="Tramadol hydrochloride 50 mg oral tablet"/>
+                </element>
+            <element code="1534809" displayName="168 HR ethinyl estradiol 0.00146 MG/HR / norelgestromin 0.00625 MG/HR Transdermal System">
+                    <target code="1371272008" relationship="equivalent" displayName="Ethinyl estradiol 35 microgram/24 hour and norelgestromin 150 microgram/24 hour prolonged-release transdermal patch"/>
+                </element>
+            <element code="389221" displayName="etonogestrel 68 MG Drug Implant">
+                    <target code="785088001" relationship="equivalent" displayName="Etonogestrel 68 mg prolonged-release subcutaneous implant"/>
+                </element>
+            <element code="105585" displayName="methotrexate 2.5 MG Oral Tablet">
+                    <target code="1162454001" relationship="equivalent" displayName="Methotrexate (as methotrexate sodium) 2.5 mg oral tablet"/>
+                </element>
+            <element code="212033" displayName="aspirin 325 MG Oral Tablet">
+                    <target code="370166004" relationship="equivalent" displayName="Aspirin 325 mg oral tablet"/>
+                </element>
+            <element code="198039" displayName="nitroglycerin 0.4 MG Sublingual Tablet">
+                    <target code="375631002" relationship="equivalent" displayName="Nitroglycerin 400 microgram sublingual tablet"/>
+                </element>
+            <element code="749196" displayName="clopidogrel 300 MG Oral Tablet">
+                    <target code="429540001" relationship="equivalent" displayName="Clopidogrel (as clopidogrel bisulfate) 300 mg oral tablet"/>
+                </element>
+            <element code="859419" displayName="rosuvastatin calcium 40 MG Oral Tablet">
+                    <target code="408024009" relationship="equivalent" displayName="Rosuvastatin (as rosuvastatin calcium) 40 mg oral tablet"/>
+                </element>
+            <element code="197591" displayName="diazepam 5 MG Oral Tablet">
+                    <target code="321197008" relationship="equivalent" displayName="Diazepam 5 mg oral tablet"/>
+                </element>
+            <element code="199224" displayName="anastrozole 1 MG Oral Tablet">
+                    <target code="327373002" relationship="equivalent" displayName="Anastrozole 1 mg oral tablet"/>
+                </element>
+            <element code="1601380" displayName="palbociclib 100 MG Oral Capsule">
+                    <target code="863986006" relationship="equivalent" displayName="Palbociclib 100 mg oral capsule"/>
+                </element>
+            <element code="996740" displayName="memantine hydrochloride 2 MG/ML Oral Solution">
+                    <target code="785131000" relationship="equivalent" displayName="Memantine hydrochloride 2 mg/mL oral solution"/>
+                </element>
+            <element code="1659131" displayName="piperacillin 2000 MG / tazobactam 250 MG Injection">
+                    <target code="1074911000202101" relationship="equivalent" displayName="Piperacillin (as piperacillin sodium) 2 g and tazobactam (as tazobactam sodium) 250 mg powder for solution for infusion vial"/>
+                </element>
+            <element code="1361048" displayName="heparin sodium, porcine 100 UNT/ML Injectable Solution">
+                    <target code="784464000" relationship="equivalent" displayName="Heparin (as porcine heparin sodium) 100 unit/mL solution for injection"/>
+                </element>
+            <element code="1116635" displayName="ticagrelor 90 MG Oral Tablet">
+                    <target code="704465002" relationship="equivalent" displayName="Ticagrelor 90 mg oral tablet"/>
+                </element>
+            <element code="1659149" displayName="piperacillin 4000 MG / tazobactam 500 MG Injection">
+                    <target code="323671007" relationship="equivalent" displayName="Piperacillin (as piperacillin sodium) 4 g and tazobactam (as tazobactam sodium) 500 mg powder for solution for injection vial"/>
+                </element>
+            <element code="197381" displayName="atenolol 50 MG Oral Tablet">
+                    <target code="318420003" relationship="equivalent" displayName="Atenolol 50 mg oral tablet"/>
+                </element>
+            <element code="617310" displayName="atorvastatin 20 MG Oral Tablet">
+                    <target code="1145420004" relationship="equivalent" displayName="Atorvastatin (as atorvastatin calcium) 20 mg oral tablet"/>
+                </element>
+            <element code="751616" displayName="nebivolol 10 MG Oral Tablet [Bystolic]">
+                    <target code="783359006" relationship="equivalent" displayName="Nebivolol (as nebivolol hydrochloride) 10 mg oral tablet"/>
+                </element>
+            <element code="617311" displayName="atorvastatin 40 MG Oral Tablet">
+                    <target code="1145421000" relationship="equivalent" displayName="Atorvastatin (as atorvastatin calcium) 40 mg oral tablet"/>
+                </element>
+            <element code="979485" displayName="losartan potassium 25 MG Oral Tablet">
+                    <target code="318955005" relationship="equivalent" displayName="Losartan potassium 25 mg oral tablet"/>
+                </element>
+            <element code="617312" displayName="atorvastatin 10 MG Oral Tablet">
+                    <target code="1145419005" relationship="equivalent" displayName="Atorvastatin (as atorvastatin calcium) 10 mg oral tablet"/>
+                </element>
+            <element code="311354" displayName="lisinopril 5 MG Oral Tablet">
+                    <target code="318858008" relationship="equivalent" displayName="Lisinopril 5 mg oral tablet"/>
+                </element>
+            <element code="311034" displayName="insulin, regular, human 100 UNT/ML Injectable Solution">
+                    <target code="792877004" relationship="equivalent" displayName="Human regular insulin 100 unit/mL solution for injection"/>
+                </element>
+            <element code="997488" displayName="fexofenadine hydrochloride 30 MG Oral Tablet">
+                    <target code="371748006" relationship="equivalent" displayName="Fexofenadine hydrochloride 30 mg oral tablet"/>
+                </element>
+            <element code="351266" displayName="buprenorphine 2 MG / naloxone 0.5 MG Sublingual Tablet">
+                    <target code="784700008" relationship="equivalent" displayName="Buprenorphine 2 mg and naloxone hydrochloride 500 microgram sublingual tablet"/>
+                </element>
+            <element code="1736854" displayName="cisplatin 50 MG Injection">
+                    <target code="784941009" relationship="equivalent" displayName="Cisplatin 50 mg powder for solution for injection vial"/>
+                </element>
+            <element code="583214" displayName="paclitaxel 100 MG Injection">
+                    <target code="416803003" relationship="equivalent" displayName="Paclitaxel 100 mg powder for suspension for injection vial"/>
+                </element>
+            <element code="351109" displayName="budesonide 0.25 MG/ML Inhalation Suspension">
+                    <target code="1255204003" relationship="equivalent" displayName="Budesonide 250 microgram/mL suspension for nebulizer"/>
+                </element>
+            <element code="105078" displayName="penicillin G 375 MG/ML Injectable Solution">
+                    <target code="323398002" relationship="equivalent" displayName="Penicillin G sodium 600 mg powder for solution for injection vial"/>
+                </element>
+            <element code="200243" displayName="sevoflurane 1000 MG/ML Inhalation Solution">
+                    <target code="1285093003" relationship="equivalent" displayName="Sevoflurane 1 mL/mL solution for inhalation"/>
+                </element>
+            <element code="686924" displayName="carvedilol 3.125 MG Oral Tablet">
+                    <target code="318633000" relationship="equivalent" displayName="Carvedilol 3.125 mg oral tablet"/>
+                </element>
+            <element code="259255" displayName="atorvastatin 80 MG Oral Tablet">
+                    <target code="1145422007" relationship="equivalent" displayName="Atorvastatin (as atorvastatin calcium) 80 mg oral tablet"/>
+                </element>
+            <element code="866436" displayName="24 HR metoprolol succinate 50 MG Extended Release Oral Tablet">
+                    <target code="879979006" relationship="equivalent" displayName="Metoprolol tartrate (as metoprolol succinate) 50 mg prolonged-release oral tablet"/>
+                </element>
+            <element code="979480" displayName="losartan potassium 100 MG Oral Tablet">
+                    <target code="407784004" relationship="equivalent" displayName="Losartan potassium 100 mg oral tablet"/>
+                </element>
+            <element code="200032" displayName="carvedilol 12.5 MG Oral Tablet">
+                    <target code="318631003" relationship="equivalent" displayName="Carvedilol 12.5 mg oral tablet"/>
+                </element>
+            <element code="904475" displayName="pravastatin sodium 40 MG Oral Tablet">
+                    <target code="320014009" relationship="equivalent" displayName="Pravastatin sodium 40 mg oral tablet"/>
+                </element>
+            <element code="833135" displayName="milnacipran hydrochloride 100 MG Oral Tablet">
+                    <target code="441732000" relationship="equivalent" displayName="Milnacipran hydrochloride 100 mg oral tablet"/>
+                </element>
+            <element code="141918" displayName="terfenadine 60 MG Oral Tablet">
+                    <target code="320795003" relationship="equivalent" displayName="Terfenadine 60 mg oral tablet"/>
+                </element>
+            <element code="2563431" displayName="aspirin 81 MG Oral Capsule [Vazalore]">
+                    <target code="765570009" relationship="equivalent" displayName="Aspirin 81 mg gastro-resistant oral tablet"/>
+                </element>
+            <element code="866511" displayName="metoprolol tartrate 100 MG Oral Tablet">
+                    <target code="318474009" relationship="equivalent" displayName="Metoprolol tartrate 100 mg oral tablet"/>
+                </element>
+            <element code="896758" displayName="labetalol hydrochloride 100 MG Oral Tablet">
+                    <target code="318445000" relationship="equivalent" displayName="Labetalol hydrochloride 100 mg oral tablet"/>
+                </element>
+            <element code="197905" displayName="lovastatin 40 MG Oral Tablet">
+                    <target code="376839008" relationship="equivalent" displayName="Lovastatin 40 mg oral tablet"/>
+                </element>
+            <element code="200096" displayName="irbesartan 300 MG Oral Tablet">
+                    <target code="318970006" relationship="equivalent" displayName="Irbesartan 300 mg oral tablet"/>
+                </element>
+            <element code="1649987" displayName="doxycycline hyclate 100 MG">
+                    <target code="1156033004" relationship="equivalent" displayName="Doxycycline (as doxycycline hyclate) 100 mg oral capsule"/>
+                </element>
+            <element code="997223" displayName="donepezil hydrochloride 10 MG Oral Tablet">
+                    <target code="323365007" relationship="equivalent" displayName="Donepezil hydrochloride 10 mg oral tablet"/>
+                </element>
+            <element code="1100184" displayName="donepezil hydrochloride 23 MG Oral Tablet">
+                    <target code="447211000" relationship="equivalent" displayName="Donepezil hydrochloride 23 mg oral tablet"/>
+                </element>
+            <element code="866427" displayName="24 HR metoprolol succinate 25 MG Extended Release Oral Tablet">
+                    <target code="879978003" relationship="equivalent" displayName="Metoprolol tartrate (as metoprolol succinate) 25 mg prolonged-release oral tablet"/>
+                </element>
+            <element code="311353" displayName="lisinopril 2.5 MG Oral Tablet">
+                    <target code="318857003" relationship="equivalent" displayName="Lisinopril 2.5 mg oral tablet"/>
+                </element>
+            <element code="198211" displayName="simvastatin 40 MG Oral Tablet">
+                    <target code="320000009" relationship="equivalent" displayName="Simvastatin 40 mg oral tablet"/>
+                </element>
+            <element code="197887" displayName="hydrochlorothiazide 25 MG / lisinopril 20 MG Oral Tablet">
+                    <target code="377469001" relationship="equivalent" displayName="Hydrochlorothiazide 25 mg and lisinopril 20 mg oral tablet"/>
+                </element>
+            <element code="200031" displayName="carvedilol 6.25 MG Oral Tablet">
+                    <target code="318635007" relationship="equivalent" displayName="Carvedilol 6.25 mg oral tablet"/>
+                </element>
+            <element code="904481" displayName="pravastatin sodium 80 MG Oral Tablet">
+                    <target code="419699008" relationship="equivalent" displayName="Pravastatin sodium 80 mg oral tablet"/>
+                </element>
+            <element code="197886" displayName="hydrochlorothiazide 12.5 MG / lisinopril 20 MG Oral Tablet">
+                    <target code="318880006" relationship="equivalent" displayName="Hydrochlorothiazide 12.5 mg and lisinopril 20 mg oral tablet"/>
+                </element>
+            <element code="310385" displayName="fluoxetine 20 MG Oral Capsule">
+                    <target code="321949006" relationship="equivalent" displayName="Fluoxetine (as fluoxetine hydrochloride) 20 mg oral capsule"/>
+                </element>
+            <element code="751623" displayName="nebivolol 5 MG Oral Tablet [Bystolic]">
+                    <target code="783361002" relationship="equivalent" displayName="Nebivolol (as nebivolol hydrochloride) 5 mg oral tablet"/>
+                </element>
+            <element code="979468" displayName="hydrochlorothiazide 12.5 MG / losartan potassium 50 MG Oral Tablet">
+                    <target code="318959004" relationship="equivalent" displayName="Hydrochlorothiazide 12.5 mg and losartan potassium 50 mg oral tablet"/>
+                </element>
+            <element code="198240" displayName="tamoxifen 10 MG Oral Tablet">
+                    <target code="783376005" relationship="equivalent" displayName="Tamoxifen (as tamoxifen citrate) 10 mg oral tablet"/>
+                </element>
+            <element code="562366" displayName="desflurane 1000 MG/ML Inhalation Solution">
+                    <target code="1285018008" relationship="equivalent" displayName="Desflurane 1 mL/mL solution for inhalation"/>
+                </element>
+            <element code="859751" displayName="rosuvastatin calcium 20 MG Oral Tablet">
+                    <target code="408037007" relationship="equivalent" displayName="Rosuvastatin (as rosuvastatin calcium) 20 mg oral tablet"/>
+                </element>
+            <element code="1363309" displayName="chlorpheniramine maleate 4 MG Oral Tablet">
+                    <target code="783069005" relationship="equivalent" displayName="Chlorpheniramine maleate 4 mg oral tablet"/>
+                </element>
+            <element code="904467" displayName="pravastatin sodium 20 MG Oral Tablet">
+                    <target code="320013003" relationship="equivalent" displayName="Pravastatin sodium 20 mg oral tablet"/>
+                </element>
+            <element code="596926" displayName="duloxetine 20 MG Delayed Release Oral Capsule">
+                    <target code="765990009" relationship="equivalent" displayName="Duloxetine (as duloxetine hydrochloride) 20 mg gastro-resistant oral capsule"/>
+                </element>
+            <element code="483438" displayName="pregabalin 100 MG Oral Capsule">
+                    <target code="415161007" relationship="equivalent" displayName="Pregabalin 100 mg oral capsule"/>
+                </element>
+            <element code="349201" displayName="valsartan 160 MG Oral Tablet">
+                    <target code="375035005" relationship="equivalent" displayName="Valsartan 160 mg oral tablet"/>
+                </element>
+            <element code="636045" displayName="hydrochlorothiazide 25 MG / valsartan 320 MG Oral Tablet">
+                    <target code="420960008" relationship="equivalent" displayName="Hydrochlorothiazide 25 mg and valsartan 320 mg oral tablet"/>
+                </element>
+            <element code="1734919" displayName="cyclophosphamide 1000 MG Injection">
+                    <target code="1148475005" relationship="equivalent" displayName="Cyclophosphamide 1 g powder for solution for injection vial"/>
+                </element>
+            <element code="866924" displayName="metoprolol tartrate 25 MG Oral Tablet">
+                    <target code="409226009" relationship="equivalent" displayName="Metoprolol tartrate 25 mg oral tablet"/>
+                </element>
+            <element code="979471" displayName="hydrochlorothiazide 25 MG / losartan potassium 100 MG Oral Tablet">
+                    <target code="395497004" relationship="equivalent" displayName="Hydrochlorothiazide 25 mg and losartan potassium 100 mg oral tablet"/>
+                </element>
+            <element code="212446" displayName="azithromycin 250 MG Oral Tablet [Zithromax]">
+                    <target code="1145423002" relationship="equivalent" displayName="Azithromycin 250 mg oral tablet"/>
+                </element>
+            <element code="197511" displayName="ciprofloxacin 250 MG Oral Tablet">
+                    <target code="783329001" relationship="equivalent" displayName="Ciprofloxacin (as ciprofloxacin hydrochloride) 250 mg oral tablet"/>
+                </element>
+            <element code="898346" displayName="amlodipine 10 MG / benazepril hydrochloride 40 MG Oral Capsule">
+                    <target code="1149522000" relationship="equivalent" displayName="Amlodipine (as amlodipine besylate) 10 mg and benazepril hydrochloride 40 mg oral capsule"/>
+                </element>
+            <element code="1873983" displayName="ribociclib 200 MG Oral Tablet">
+                    <target code="895598003" relationship="equivalent" displayName="Ribociclib (as ribociclib succinate) 200 mg oral tablet"/>
+                </element>
+            <element code="856481" displayName="24 HR propranolol hydrochloride 160 MG Extended Release Oral Capsule">
+                    <target code="765898001" relationship="equivalent" displayName="Propranolol hydrochloride 160 mg prolonged-release oral capsule"/>
+                </element>
+            <element code="313212" displayName="tenecteplase 50 MG Injection">
+                    <target code="766186001" relationship="equivalent" displayName="Tenecteplase 50 mg powder for solution for injection vial"/>
+                </element>
+            <element code="200064" displayName="letrozole 2.5 MG Oral Tablet">
+                    <target code="327377001" relationship="equivalent" displayName="Letrozole 2.5 mg oral tablet"/>
+                </element>
+            <element code="562508" displayName="amoxicillin 875 MG / clavulanate 125 MG Oral Tablet">
+                    <target code="392259005" relationship="equivalent" displayName="Amoxicillin 875 mg and clavulanic acid (as clavulanate potassium) 125 mg oral tablet"/>
+                </element>
+            <element code="808917" displayName="fosfomycin 3000 MG Powder for Oral Solution">
+                    <target code="1263405000" relationship="equivalent" displayName="Fosfomycin (as fosfomycin tromethamine) 3 g granules for oral solution sachet"/>
+                </element>
+            <element code="312617" displayName="prednisone 5 MG Oral Tablet">
+                    <target code="373994007" relationship="equivalent" displayName="Prednisone 5 mg oral tablet"/>
+                </element>
+            <element code="309078" displayName="cefpodoxime 200 MG Oral Tablet">
+                    <target code="1153579005" relationship="equivalent" displayName="Cefpodoxime (as cefpodoxime proxetil) 200 mg oral tablet"/>
+                </element>
+            <element code="1014678" displayName="cetirizine hydrochloride 10 MG Oral Tablet">
+                    <target code="320818006" relationship="equivalent" displayName="Cetirizine hydrochloride 10 mg oral tablet"/>
+                </element>
+            <element code="866514" displayName="metoprolol tartrate 50 MG Oral Tablet">
+                    <target code="318475005" relationship="equivalent" displayName="Metoprolol tartrate 50 mg oral tablet"/>
+                </element>
+            <element code="351137" displayName="albuterol 0.21 MG/ML Inhalation Solution">
+                    <target code="375336001" relationship="equivalent" displayName="Albuterol (as albuterol sulfate) 210 microgram/mL solution for inhalation"/>
+                </element>
+            <element code="643066" displayName="efavirenz 600 MG / emtricitabine 200 MG / tenofovir disoproxil fumarate 300 MG Oral Tablet">
+                    <target code="424646001" relationship="equivalent" displayName="Efavirenz 600 mg and emtricitabine 200 mg and tenofovir disoproxil fumarate 300 mg oral tablet"/>
+                </element>
+            <element code="226719" displayName="etoposide 100 MG Injection [Etopophos]">
+                    <target code="326924006" relationship="equivalent" displayName="Etoposide (as etoposide phosphate) 100 mg powder for solution for injection vial"/>
+                </element>
+            <element code="898342" displayName="amlodipine 10 MG / benazepril hydrochloride 20 MG Oral Capsule">
+                    <target code="1149523005" relationship="equivalent" displayName="Amlodipine (as amlodipine besylate) 10 mg and benazepril hydrochloride 20 mg oral capsule"/>
+                </element>
+            <element code="859747" displayName="rosuvastatin calcium 10 MG Oral Tablet">
+                    <target code="408036003" relationship="equivalent" displayName="Rosuvastatin (as rosuvastatin calcium) 10 mg oral tablet"/>
+                </element>
+            <element code="284215" displayName="clindamycin 300 MG Oral Capsule">
+                    <target code="1231776004" relationship="equivalent" displayName="Clindamycin (as clindamycin hydrochloride) 300 mg oral capsule"/>
+                </element>
+            <element code="898690" displayName="benazepril hydrochloride 20 MG Oral Tablet">
+                    <target code="376520007" relationship="equivalent" displayName="Benazepril hydrochloride 20 mg oral tablet"/>
+                </element>
+            <element code="854255" displayName="enoxaparin sodium 100 MG/ML Injectable Solution">
+                    <target code="781857007" relationship="equivalent" displayName="Enoxaparin sodium 100 mg/mL solution for injection"/>
+                </element>
+            <element code="1665021" displayName="ceftriaxone 1000 MG Injection">
+                    <target code="323990001" relationship="equivalent" displayName="Ceftriaxone (as ceftriaxone sodium) 1 g powder for solution for injection vial"/>
+                </element>
+            <element code="1807513" displayName="vancomycin 1000 MG Injection">
+                    <target code="1231469008" relationship="equivalent" displayName="Vancomycin (as vancomycin hydrochloride) 1 g powder for solution for infusion and/or injection vial"/>
+                </element>
+            <element code="197885" displayName="hydrochlorothiazide 12.5 MG / lisinopril 10 MG Oral Tablet">
+                    <target code="318884002" relationship="equivalent" displayName="Hydrochlorothiazide 12.5 mg and lisinopril 10 mg oral tablet"/>
+                </element>
+            <element code="309845" displayName="diazepam 5 MG/ML Injectable Solution">
+                    <target code="781828008" relationship="equivalent" displayName="Diazepam 5 mg/mL emulsion for injection"/>
+                </element>
+            <element code="856980" displayName="acetaminophen 300 MG / hydrocodone bitartrate 10 MG Oral Tablet">
+                    <target code="421907000" relationship="equivalent" displayName="Acetaminophen 300 mg and hydrocodone bitartrate 10 mg oral tablet"/>
+                </element>
+            <element code="200094" displayName="irbesartan 75 MG Oral Tablet">
+                    <target code="318968002" relationship="equivalent" displayName="Irbesartan 75 mg oral tablet"/>
+                </element>
+            <element code="861646" displayName="pitavastatin calcium 1 MG Oral Tablet [Livalo]">
+                    <target code="1303293006" relationship="equivalent" displayName="Pitavastatin (as pitavastatin calcium) 1 mg oral tablet"/>
+                </element>
+            <element code="311372" displayName="loratadine 10 MG Oral Tablet">
+                    <target code="320822001" relationship="equivalent" displayName="Loratadine 10 mg oral tablet"/>
+                </element>
+            <element code="896766" displayName="labetalol hydrochloride 300 MG Oral Tablet">
+                    <target code="376570005" relationship="equivalent" displayName="Labetalol hydrochloride 300 mg oral tablet"/>
+                </element>
+            <element code="1652673" displayName="doxycycline monohydrate 50 MG Oral Tablet">
+                    <target code="419208003" relationship="equivalent" displayName="Doxycycline 50 mg oral tablet"/>
+                </element>
+            <element code="859749" displayName="rosuvastatin calcium 10 MG Oral Tablet [Crestor]">
+                    <target code="408036003" relationship="equivalent" displayName="Rosuvastatin (as rosuvastatin calcium) 10 mg oral tablet"/>
+                </element>
+            <element code="898719" displayName="benazepril hydrochloride 40 MG Oral Tablet">
+                    <target code="376521006" relationship="equivalent" displayName="Benazepril hydrochloride 40 mg oral tablet"/>
+                </element>
+            <element code="904458" displayName="pravastatin sodium 10 MG Oral Tablet">
+                    <target code="320012008" relationship="equivalent" displayName="Pravastatin sodium 10 mg oral tablet"/>
+                </element>
+            <element code="205305" displayName="telmisartan 80 MG Oral Tablet">
+                    <target code="318987008" relationship="equivalent" displayName="Telmisartan 80 mg oral tablet"/>
+                </element>
+            <element code="1091392" displayName="methylphenidate hydrochloride 20 MG Oral Tablet">
+                    <target code="323359007" relationship="equivalent" displayName="Methylphenidate hydrochloride 20 mg oral tablet"/>
+                </element>
+            <element code="898356" displayName="amlodipine 5 MG / benazepril hydrochloride 20 MG Oral Capsule">
+                    <target code="1149509008" relationship="equivalent" displayName="Amlodipine (as amlodipine besylate) 5 mg and benazepril hydrochloride 20 mg oral capsule"/>
+                </element>
+            <element code="859424" displayName="rosuvastatin calcium 5 MG Oral Tablet">
+                    <target code="409108001" relationship="equivalent" displayName="Rosuvastatin (as rosuvastatin calcium) 5 mg oral tablet"/>
+                </element>
+            <element code="200095" displayName="irbesartan 150 MG Oral Tablet">
+                    <target code="318969005" relationship="equivalent" displayName="Irbesartan 150 mg oral tablet"/>
+                </element>
+            <element code="608139" displayName="atomoxetine 100 MG Oral Capsule">
+                    <target code="419897007" relationship="equivalent" displayName="Atomoxetine (as atomoxetine hydrochloride) 100 mg oral capsule"/>
+                </element>
+            <element code="898723" displayName="benazepril hydrochloride 5 MG Oral Tablet">
+                    <target code="376516008" relationship="equivalent" displayName="Benazepril hydrochloride 5 mg oral tablet"/>
+                </element>
+            <element code="1049635" displayName="acetaminophen 325 MG / oxycodone hydrochloride 2.5 MG Oral Tablet">
+                    <target code="426352005" relationship="equivalent" displayName="Acetaminophen 325 mg and oxycodone hydrochloride 2.5 mg oral tablet"/>
+                </element>
+            <element code="309043" displayName="12 HR cefaclor 500 MG Extended Release Oral Tablet">
+                    <target code="1286884007" relationship="equivalent" displayName="Cefaclor 500 mg prolonged-release oral tablet"/>
+                </element>
+            <element code="898687" displayName="benazepril hydrochloride 10 MG Oral Tablet">
+                    <target code="376518009" relationship="equivalent" displayName="Benazepril hydrochloride 10 mg oral tablet"/>
+                </element>
+            <element code="351136" displayName="albuterol 0.417 MG/ML Inhalation Solution">
+                    <target code="375337005" relationship="equivalent" displayName="Albuterol sulfate 417 microgram/mL solution for inhalation"/>
+                </element>
+            <element code="763138" displayName="reteplase 10 UNT Injection">
+                    <target code="766162003" relationship="equivalent" displayName="Reteplase 10 unit powder for solution for injection vial"/>
+                </element>
+            <element code="212389" displayName="carvedilol 12.5 MG Oral Tablet [Coreg]">
+                    <target code="318631003" relationship="equivalent" displayName="Carvedilol 12.5 mg oral tablet"/>
+                </element>
+            <element code="896762" displayName="labetalol hydrochloride 200 MG Oral Tablet">
+                    <target code="318446004" relationship="equivalent" displayName="Labetalol hydrochloride 200 mg oral tablet"/>
+                </element>
+            <element code="856448" displayName="propranolol hydrochloride 10 MG Oral Tablet">
+                    <target code="318352004" relationship="equivalent" displayName="Propranolol hydrochloride 10 mg oral tablet"/>
+                </element>
+            <element code="1114085" displayName="100 ML zoledronic acid 0.04 MG/ML Injection">
+                    <target code="1178983003" relationship="equivalent" displayName="Zoledronic acid 40 microgram/mL solution for infusion"/>
+                </element>
+            <element code="1999667" displayName="bictegravir 50 MG / emtricitabine 200 MG / tenofovir alafenamide 25 MG Oral Tablet">
+                    <target code="1304317003" relationship="equivalent" displayName="Bictegravir (as bictegravir sodium) 50 mg and emtricitabine 200 mg and tenofovir alafenamide (as tenofovir alafenamide fumarate) 25 mg oral tablet"/>
+                </element>
+            <element code="197904" displayName="lovastatin 20 MG Oral Tablet">
+                    <target code="376836001" relationship="equivalent" displayName="Lovastatin 20 mg oral tablet"/>
+                </element>
+            <element code="197379" displayName="atenolol 100 MG Oral Tablet">
+                    <target code="318421004" relationship="equivalent" displayName="Atenolol 100 mg oral tablet"/>
+                </element>
+            <element code="261962" displayName="ramipril 10 MG Oral Capsule">
+                    <target code="318906001" relationship="equivalent" displayName="Ramipril 10 mg oral capsule"/>
+                </element>
+            <element code="1014676" displayName="cetirizine hydrochloride 5 MG Oral Tablet">
+                    <target code="371746005" relationship="equivalent" displayName="Cetirizine hydrochloride 5 mg oral tablet"/>
+                </element>
+            <element code="597195" displayName="carboplatin 10 MG/ML Injectable Solution">
+                    <target code="1193764009" relationship="equivalent" displayName="Carboplatin 10 mg/mL solution for injection"/>
+                </element>
+            <element code="854919" displayName="bisoprolol fumarate 5 MG / hydrochlorothiazide 6.25 MG Oral Tablet">
+                    <target code="1153514005" relationship="equivalent" displayName="Bisoprolol fumarate 5 mg and hydrochlorothiazide 6.25 mg oral tablet"/>
+                </element>
+            <element code="858817" displayName="enalapril maleate 10 MG Oral Tablet">
+                    <target code="318853004" relationship="equivalent" displayName="Enalapril maleate 10 mg oral tablet"/>
+                </element>
+            <element code="312750" displayName="quinapril 5 MG Oral Tablet">
+                    <target code="318885001" relationship="equivalent" displayName="Quinapril (as quinapril hydrochloride) 5 mg oral tablet"/>
+                </element>
+            <element code="310261" displayName="exemestane 25 MG Oral Tablet">
+                    <target code="327384009" relationship="equivalent" displayName="Exemestane 25 mg oral tablet"/>
+                </element>
+            <element code="349200" displayName="valsartan 320 MG Oral Tablet">
+                    <target code="376487009" relationship="equivalent" displayName="Valsartan 320 mg oral tablet"/>
+                </element>
+            <element code="312615" displayName="prednisone 20 MG Oral Tablet">
+                    <target code="325456002" relationship="equivalent" displayName="Prednisone 20 mg oral tablet"/>
+                </element>
+            <element code="2047241" displayName="baricitinib 2 MG Oral Tablet">
+                    <target code="895403001" relationship="equivalent" displayName="Baricitinib 2 mg oral tablet"/>
+                </element>
+            <element code="200284" displayName="hydrochlorothiazide 12.5 MG / valsartan 80 MG Oral Tablet">
+                    <target code="377488008" relationship="equivalent" displayName="Hydrochlorothiazide 12.5 mg and valsartan 80 mg oral tablet"/>
+                </element>
+            <element code="856578" displayName="propranolol hydrochloride 80 MG Oral Tablet">
+                    <target code="318354003" relationship="equivalent" displayName="Propranolol hydrochloride 80 mg oral tablet"/>
+                </element>
+            <element code="856457" displayName="propranolol hydrochloride 20 MG Oral Tablet">
+                    <target code="374912003" relationship="equivalent" displayName="Propranolol hydrochloride 20 mg oral tablet"/>
+                </element>
+            <element code="198188" displayName="ramipril 2.5 MG Oral Capsule">
+                    <target code="318901006" relationship="equivalent" displayName="Ramipril 2.5 mg oral capsule"/>
+                </element>
+            <element code="861650" displayName="pitavastatin calcium 2 MG Oral Tablet [Livalo]">
+                    <target code="1303292001" relationship="equivalent" displayName="Pitavastatin (as pitavastatin calcium) 2 mg oral tablet"/>
+                </element>
+            <element code="476349" displayName="ezetimibe 10 MG / simvastatin 20 MG Oral Tablet">
+                    <target code="414177002" relationship="equivalent" displayName="Ezetimibe 10 mg and simvastatin 20 mg oral tablet"/>
+                </element>
+            <element code="349251" displayName="tenofovir disoproxil fumarate 300 MG Oral Tablet">
+                    <target code="407808007" relationship="equivalent" displayName="Tenofovir disoproxil (as tenofovir disoproxil fumarate) 245 mg oral tablet"/>
+                </element>
+            <element code="349491" displayName="lamivudine 300 MG Oral Tablet">
+                    <target code="407791001" relationship="equivalent" displayName="Lamivudine 300 mg oral tablet"/>
+                </element>
+            <element code="597730" displayName="lopinavir 200 MG / ritonavir 50 MG Oral Tablet">
+                    <target code="419600002" relationship="equivalent" displayName="Lopinavir 200 mg and ritonavir 50 mg oral tablet"/>
+                </element>
+            <element code="1721613" displayName="cobicistat 150 MG / elvitegravir 150 MG / emtricitabine 200 MG / tenofovir alafenamide 10 MG Oral Tablet">
+                    <target code="734150006" relationship="equivalent" displayName="Cobicistat 150 mg and elvitegravir 150 mg and emtricitabine 200 mg and tenofovir alafenamide (as tenofovir alafenamide fumarate) 10 mg oral tablet"/>
+                </element>
+            <element code="349353" displayName="hydrochlorothiazide 25 MG / valsartan 160 MG Oral Tablet">
+                    <target code="409298002" relationship="equivalent" displayName="Hydrochlorothiazide 25 mg and valsartan 160 mg oral tablet"/>
+                </element>
+            <element code="317150" displayName="ritonavir 100 MG Oral Capsule">
+                    <target code="324841009" relationship="equivalent" displayName="Ritonavir 100 mg oral capsule"/>
+                </element>
+            <element code="402109" displayName="fosamprenavir 700 MG Oral Tablet">
+                    <target code="783324006" relationship="equivalent" displayName="Fosamprenavir (as fosamprenavir calcium) 700 mg oral tablet"/>
+                </element>
+            <element code="403875" displayName="emtricitabine 200 MG Oral Capsule">
+                    <target code="409211007" relationship="equivalent" displayName="Emtricitabine 200 mg oral capsule"/>
+                </element>
+            <element code="2003249" displayName="lamivudine 300 MG / tenofovir disoproxil fumarate 300 MG Oral Tablet">
+                    <target code="1268683002" relationship="equivalent" displayName="Lamivudine 300 mg and tenofovir disoproxil fumarate 300 mg oral tablet"/>
+                </element>
+            <element code="1433873" displayName="dolutegravir 50 MG Oral Tablet">
+                    <target code="768304003" relationship="equivalent" displayName="Dolutegravir (as dolutegravir sodium) 50 mg oral tablet"/>
+                </element>
+            <element code="866419" displayName="24 HR metoprolol succinate 200 MG Extended Release Oral Tablet">
+                    <target code="879981008" relationship="equivalent" displayName="Metoprolol tartrate (as metoprolol succinate) 200 mg prolonged-release oral tablet"/>
+                </element>
+            <element code="308460" displayName="azithromycin 250 MG Oral Tablet">
+                    <target code="1145423002" relationship="equivalent" displayName="Azithromycin 250 mg oral tablet"/>
+                </element>
+            <element code="1116758" displayName="chloroquine phosphate 500 MG Oral Tablet">
+                    <target code="374504004" relationship="equivalent" displayName="Chloroquine phosphate 500 mg oral tablet"/>
+                </element>
+            <element code="313185" displayName="tacrine 10 MG Oral Capsule">
+                    <target code="386083009" relationship="equivalent" displayName="Tacrine 10 mg oral capsule"/>
+                </element>
+            <element code="898372" displayName="benazepril hydrochloride 20 MG / hydrochlorothiazide 25 MG Oral Tablet">
+                    <target code="395525001" relationship="equivalent" displayName="Benazepril hydrochloride 20 mg and hydrochlorothiazide 25 mg oral tablet"/>
+                </element>
+            <element code="199663" displayName="zidovudine 300 MG Oral Tablet">
+                    <target code="376938001" relationship="equivalent" displayName="Zidovudine 300 mg oral tablet"/>
+                </element>
+            <element code="349483" displayName="valsartan 40 MG Oral Tablet">
+                    <target code="416515008" relationship="equivalent" displayName="Valsartan 40 mg oral tablet"/>
+                </element>
+            <element code="349477" displayName="efavirenz 600 MG Oral Tablet">
+                    <target code="395518008" relationship="equivalent" displayName="Efavirenz 600 mg oral tablet"/>
+                </element>
+            <element code="476556" displayName="emtricitabine 200 MG / tenofovir disoproxil fumarate 300 MG Oral Tablet">
+                    <target code="1197411005" relationship="equivalent" displayName="Emtricitabine 200 mg and tenofovir disoproxil (as tenofovir disoproxil fumarate) 245 mg oral tablet"/>
+                </element>
+            <element code="1359269" displayName="darunavir 800 MG Oral Tablet">
+                    <target code="1137337006" relationship="equivalent" displayName="Darunavir (as darunavir ethanolate) 800 mg oral tablet"/>
+                </element>
+            <element code="1483744" displayName="naltrexone hydrochloride 50 MG Oral Tablet">
+                    <target code="323281004" relationship="equivalent" displayName="Naltrexone hydrochloride 50 mg oral tablet"/>
+                </element>
+            <element code="856519" displayName="propranolol hydrochloride 40 MG Oral Tablet">
+                    <target code="318353009" relationship="equivalent" displayName="Propranolol hydrochloride 40 mg oral tablet"/>
+                </element>
+            <element code="744842" displayName="raltegravir 400 MG Oral Tablet">
+                    <target code="1149431002" relationship="equivalent" displayName="Raltegravir (as raltegravir potassium) 400 mg oral tablet"/>
+                </element>
+            <element code="979464" displayName="hydrochlorothiazide 12.5 MG / losartan potassium 100 MG Oral Tablet">
+                    <target code="444639002" relationship="equivalent" displayName="Hydrochlorothiazide 12.5 mg and losartan potassium 100 mg oral tablet"/>
+                </element>
+            <element code="664741" displayName="atazanavir 300 MG Oral Capsule">
+                    <target code="424264002" relationship="equivalent" displayName="Atazanavir (as atazanavir sulfate) 300 mg oral capsule"/>
+                </element>
+            <element code="979494" displayName="losartan potassium 50 MG Oral Tablet [Cozaar]">
+                    <target code="318956006" relationship="equivalent" displayName="Losartan potassium 50 mg oral tablet"/>
+                </element>
+            <element code="858813" displayName="enalapril maleate 5 MG Oral Tablet">
+                    <target code="318851002" relationship="equivalent" displayName="Enalapril maleate 5 mg oral tablet"/>
+                </element>
+            <element code="854905" displayName="bisoprolol fumarate 5 MG Oral Tablet">
+                    <target code="318590006" relationship="equivalent" displayName="Bisoprolol fumarate 5 mg oral tablet"/>
+                </element>
+            <element code="854916" displayName="bisoprolol fumarate 2.5 MG / hydrochlorothiazide 6.25 MG Oral Tablet">
+                    <target code="1153515006" relationship="equivalent" displayName="Bisoprolol fumarate 2.5 mg and hydrochlorothiazide 6.25 mg oral tablet"/>
+                </element>
+            <element code="349199" displayName="valsartan 80 MG Oral Tablet">
+                    <target code="375034009" relationship="equivalent" displayName="Valsartan 80 mg oral tablet"/>
+                </element>
+            <element code="858810" displayName="enalapril maleate 20 MG Oral Tablet">
+                    <target code="318855006" relationship="equivalent" displayName="Enalapril maleate 20 mg oral tablet"/>
+                </element>
+            <element code="313760" displayName="zalcitabine 0.75 MG Oral Tablet">
+                    <target code="324818001" relationship="equivalent" displayName="Zalcitabine 750 microgram oral tablet"/>
+                </element>
+            <element code="313110" displayName="stavudine 40 MG Oral Capsule">
+                    <target code="324837005" relationship="equivalent" displayName="Stavudine 40 mg oral capsule"/>
+                </element>
+            <element code="284988" displayName="didanosine 400 MG Delayed Release Oral Capsule">
+                    <target code="324811007" relationship="equivalent" displayName="Didanosine 400 mg gastro-resistant oral capsule"/>
+                </element>
+            <element code="617320" displayName="atorvastatin 40 MG Oral Tablet [Lipitor]">
+                    <target code="1145421000" relationship="equivalent" displayName="Atorvastatin (as atorvastatin calcium) 40 mg oral tablet"/>
+                </element>
+            <element code="198189" displayName="ramipril 5 MG Oral Capsule">
+                    <target code="318902004" relationship="equivalent" displayName="Ramipril 5 mg oral capsule"/>
+                </element>
+            <element code="856569" displayName="24 HR propranolol hydrochloride 80 MG Extended Release Oral Capsule">
+                    <target code="765970000" relationship="equivalent" displayName="Propranolol hydrochloride 80 mg prolonged-release oral capsule"/>
+                </element>
+            <element code="672149" displayName="lapatinib 250 MG Oral Tablet">
+                    <target code="783597007" relationship="equivalent" displayName="Lapatinib (as lapatinib ditosylate) 250 mg oral tablet"/>
+                </element>
+            <element code="856556" displayName="propranolol hydrochloride 60 MG Oral Tablet">
+                    <target code="374917009" relationship="equivalent" displayName="Propranolol hydrochloride 60 mg oral tablet"/>
+                </element>
+            <element code="1657981" displayName="20 ML tocilizumab 20 MG/ML Injection">
+                    <target code="895440009" relationship="equivalent" displayName="Tocilizumab 20 mg/mL solution for injection"/>
+                </element>
+            <element code="197903" displayName="lovastatin 10 MG Oral Tablet">
+                    <target code="376835002" relationship="equivalent" displayName="Lovastatin 10 mg oral tablet"/>
+                </element>
+            <element code="898362" displayName="benazepril hydrochloride 10 MG / hydrochlorothiazide 12.5 MG Oral Tablet">
+                    <target code="377227003" relationship="equivalent" displayName="Benazepril hydrochloride 10 mg and hydrochlorothiazide 12.5 mg oral tablet"/>
+                </element>
+            <element code="898353" displayName="amlodipine 5 MG / benazepril hydrochloride 10 MG Oral Capsule">
+                    <target code="1149520008" relationship="equivalent" displayName="Amlodipine (as amlodipine besylate) 5 mg and benazepril hydrochloride 10 mg oral capsule"/>
+                </element>
+            <element code="864706" displayName="methadone hydrochloride 10 MG Oral Tablet">
+                    <target code="1157013009" relationship="equivalent" displayName="Methadone hydrochloride 10 mg oral tablet"/>
+                </element>
+            <element code="898367" displayName="benazepril hydrochloride 20 MG / hydrochlorothiazide 12.5 MG Oral Tablet">
+                    <target code="395524002" relationship="equivalent" displayName="Benazepril hydrochloride 20 mg and hydrochlorothiazide 12.5 mg oral tablet"/>
+                </element>
+            <element code="854901" displayName="bisoprolol fumarate 10 MG Oral Tablet">
+                    <target code="318591005" relationship="equivalent" displayName="Bisoprolol fumarate 10 mg oral tablet"/>
+                </element>
+            <element code="205326" displayName="lisinopril 30 MG Oral Tablet">
+                    <target code="374040006" relationship="equivalent" displayName="Lisinopril 30 mg oral tablet"/>
+                </element>
+            <element code="476350" displayName="ezetimibe 10 MG / simvastatin 40 MG Oral Tablet">
+                    <target code="414178007" relationship="equivalent" displayName="Ezetimibe 10 mg and simvastatin 40 mg oral tablet"/>
+                </element>
+            <element code="200346" displayName="cefdinir 300 MG Oral Capsule">
+                    <target code="375987007" relationship="equivalent" displayName="Cefdinir 300 mg oral capsule"/>
+                </element>
+            <element code="200082" displayName="lamivudine 150 MG / zidovudine 300 MG Oral Tablet">
+                    <target code="324860002" relationship="equivalent" displayName="Lamivudine 150 mg and zidovudine 300 mg oral tablet"/>
+                </element>
+            <element code="205304" displayName="telmisartan 40 MG Oral Tablet">
+                    <target code="318986004" relationship="equivalent" displayName="Telmisartan 40 mg oral tablet"/>
+                </element>
+            <element code="2284960" displayName="remdesivir 100 MG Injection">
+                    <target code="870522000" relationship="equivalent" displayName="Remdesivir 100 mg powder for solution for injection vial"/>
+                </element>
+            <element code="617314" displayName="atorvastatin 10 MG Oral Tablet [Lipitor]">
+                    <target code="1145419005" relationship="equivalent" displayName="Atorvastatin (as atorvastatin calcium) 10 mg oral tablet"/>
+                </element>
+            <element code="1664986" displayName="aztreonam 2000 MG Injection">
+                    <target code="1236773006" relationship="equivalent" displayName="Aztreonam 2 g powder for solution for infusion and/or injection vial"/>
+                </element>
+            <element code="200285" displayName="hydrochlorothiazide 12.5 MG / valsartan 160 MG Oral Tablet">
+                    <target code="395521005" relationship="equivalent" displayName="Hydrochlorothiazide 12.5 mg and valsartan 160 mg oral tablet"/>
+                </element>
+            <element code="1658084" displayName="ado-trastuzumab emtansine 100 MG Injection">
+                    <target code="1209070003" relationship="equivalent" displayName="Trastuzumab emtansine 100 mg powder for solution for infusion and/or injection vial"/>
+                </element>
+            <element code="252559" displayName="budesonide 0.5 MG/ML Inhalation Suspension">
+                    <target code="1255203009" relationship="equivalent" displayName="Budesonide 500 microgram/mL suspension for nebulizer"/>
+                </element>
+            <element code="859863" displayName="saquinavir mesylate 500 MG Oral Tablet">
+                    <target code="783384009" relationship="equivalent" displayName="Saquinavir (as saquinavir mesylate) 500 mg oral tablet"/>
+                </element>
+            <element code="312962" displayName="simvastatin 5 MG Oral Tablet">
+                    <target code="376834003" relationship="equivalent" displayName="Simvastatin 5 mg oral tablet"/>
+                </element>
+            <element code="751620" displayName="nebivolol 2.5 MG Oral Tablet [Bystolic]">
+                    <target code="783360001" relationship="equivalent" displayName="Nebivolol (as nebivolol hydrochloride) 2.5 mg oral tablet"/>
+                </element>
+            <element code="213432" displayName="telmisartan 80 MG Oral Tablet [Micardis]">
+                    <target code="318987008" relationship="equivalent" displayName="Telmisartan 80 mg oral tablet"/>
+                </element>
+            <element code="727711" displayName="0.67 ML anakinra 149 MG/ML Prefilled Syringe">
+                    <target code="784845004" relationship="equivalent" displayName="Anakinra 149 mg/mL solution for injection"/>
+                </element>
+            <element code="314203" displayName="quinapril 40 MG Oral Tablet">
+                    <target code="318894007" relationship="equivalent" displayName="Quinapril (as quinapril hydrochloride) 40 mg oral tablet"/>
+                </element>
+            <element code="310988" displayName="indinavir 400 MG Oral Capsule">
+                    <target code="324852003" relationship="equivalent" displayName="Indinavir (as indinavir sulfate) 400 mg oral capsule"/>
+                </element>
+            <element code="854908" displayName="bisoprolol fumarate 10 MG / hydrochlorothiazide 6.25 MG Oral Tablet">
+                    <target code="783066003" relationship="equivalent" displayName="Bisoprolol fumarate 10 mg and hydrochlorothiazide 6.25 mg oral tablet"/>
+                </element>
+            <element code="141962" displayName="azithromycin 250 MG Oral Capsule">
+                    <target code="1193668004" relationship="equivalent" displayName="Azithromycin 250 mg oral capsule"/>
+                </element>
+            <element code="859426" displayName="rosuvastatin calcium 5 MG Oral Tablet [Crestor]">
+                    <target code="409108001" relationship="equivalent" displayName="Rosuvastatin (as rosuvastatin calcium) 5 mg oral tablet"/>
+                </element>
+            <element code="312749" displayName="quinapril 20 MG Oral Tablet">
+                    <target code="318887009" relationship="equivalent" displayName="Quinapril (as quinapril hydrochloride) 20 mg oral tablet"/>
+                </element>
+            <element code="198334" displayName="sulfamethoxazole 400 MG / trimethoprim 80 MG Oral Tablet">
+                    <target code="324357002" relationship="equivalent" displayName="Sulfamethoxazole 400 mg and trimethoprim 80 mg oral tablet"/>
+                </element>
+            <element code="197558" displayName="dapsone 25 MG Oral Tablet">
+                    <target code="370326007" relationship="equivalent" displayName="Dapsone 25 mg oral tablet"/>
+                </element>
+            <element code="198182" displayName="pyrimethamine 25 MG Oral Tablet">
+                    <target code="324913006" relationship="equivalent" displayName="Pyrimethamine 25 mg oral tablet"/>
+                </element>
+            <element code="860510" displayName="24 HR carvedilol phosphate 10 MG Extended Release Oral Capsule">
+                    <target code="1208574009" relationship="equivalent" displayName="Carvedilol phosphate 10 mg prolonged-release oral capsule"/>
+                </element>
+            <element code="312748" displayName="quinapril 10 MG Oral Tablet">
+                    <target code="318886000" relationship="equivalent" displayName="Quinapril (as quinapril hydrochloride) 10 mg oral tablet"/>
+                </element>
+            <element code="979092" displayName="hydroxychloroquine sulfate 200 MG Oral Tablet">
+                    <target code="330037008" relationship="equivalent" displayName="Hydroxychloroquine sulfate 200 mg oral tablet"/>
+                </element>
+            <element code="859753" displayName="rosuvastatin calcium 20 MG Oral Tablet [Crestor]">
+                    <target code="408037007" relationship="equivalent" displayName="Rosuvastatin (as rosuvastatin calcium) 20 mg oral tablet"/>
+                </element>
+            <element code="1747691" displayName="emtricitabine 200 MG / tenofovir alafenamide 25 MG Oral Tablet">
+                    <target code="1304126009" relationship="equivalent" displayName="Emtricitabine 200 mg and tenofovir alafenamide (as tenofovir alafenamide fumarate) 25 mg oral tablet"/>
+                </element>
+            <element code="476351" displayName="ezetimibe 10 MG / simvastatin 80 MG Oral Tablet">
+                    <target code="414179004" relationship="equivalent" displayName="Ezetimibe 10 mg and simvastatin 80 mg oral tablet"/>
+                </element>
+            <element code="858804" displayName="enalapril maleate 2.5 MG Oral Tablet">
+                    <target code="318850001" relationship="equivalent" displayName="Enalapril maleate 2.5 mg oral tablet"/>
+                </element>
+            <element code="904477" displayName="pravastatin sodium 40 MG Oral Tablet [Pravachol]">
+                    <target code="320014009" relationship="equivalent" displayName="Pravastatin sodium 40 mg oral tablet"/>
+                </element>
+            <element code="866516" displayName="metoprolol tartrate 50 MG Oral Tablet [Lopressor]">
+                    <target code="318475005" relationship="equivalent" displayName="Metoprolol tartrate 50 mg oral tablet"/>
+                </element>
+            <element code="282755" displayName="telmisartan 20 MG Oral Tablet">
+                    <target code="134463001" relationship="equivalent" displayName="Telmisartan 20 mg oral tablet"/>
+                </element>
+            <element code="861654" displayName="pitavastatin calcium 4 MG Oral Tablet [Livalo]">
+                    <target code="1303129005" relationship="equivalent" displayName="Pitavastatin (as pitavastatin calcium) 4 mg oral tablet"/>
+                </element>
+            <element code="860516" displayName="24 HR carvedilol phosphate 20 MG Extended Release Oral Capsule">
+                    <target code="1208575005" relationship="equivalent" displayName="Carvedilol phosphate 20 mg prolonged-release oral capsule"/>
+                </element>
+            <element code="898359" displayName="amlodipine 5 MG / benazepril hydrochloride 40 MG Oral Capsule">
+                    <target code="1149511004" relationship="equivalent" displayName="Amlodipine (as amlodipine besylate) 5 mg and benazepril hydrochloride 40 mg oral capsule"/>
+                </element>
+            <element code="845488" displayName="ramipril 1.25 MG Oral Capsule">
+                    <target code="318900007" relationship="equivalent" displayName="Ramipril 1.25 mg oral capsule"/>
+                </element>
+            <element code="898350" displayName="amlodipine 2.5 MG / benazepril hydrochloride 10 MG Oral Capsule">
+                    <target code="1149525003" relationship="equivalent" displayName="Amlodipine (as amlodipine besylate) 2.5 mg and benazepril hydrochloride 10 mg oral capsule"/>
+                </element>
+            <element code="199885" displayName="levofloxacin 500 MG Oral Tablet">
+                    <target code="324634001" relationship="equivalent" displayName="Levofloxacin 500 mg oral tablet"/>
+                </element>
+            <element code="352001" displayName="valsartan 320 MG Oral Tablet [Diovan]">
+                    <target code="376487009" relationship="equivalent" displayName="Valsartan 320 mg oral tablet"/>
+                </element>
+            <element code="859421" displayName="rosuvastatin calcium 40 MG Oral Tablet [Crestor]">
+                    <target code="408024009" relationship="equivalent" displayName="Rosuvastatin (as rosuvastatin calcium) 40 mg oral tablet"/>
+                </element>
+            <element code="1940648" displayName="neratinib 40 MG Oral Tablet">
+                    <target code="895585007" relationship="equivalent" displayName="Neratinib (as neratinib maleate) 40 mg oral tablet"/>
+                </element>
+            <element code="1190766" displayName="atropine sulfate 0.31 MG/ML Ophthalmic Solution">
+                    <target code="785231005" relationship="equivalent" displayName="Atropine sulfate 310 microgram/mL eye solution"/>
+                </element>
+            <element code="308429" displayName="atovaquone 150 MG/ML Oral Suspension">
+                    <target code="376943008" relationship="equivalent" displayName="Atovaquone 150 mg/mL oral suspension"/>
+                </element>
+            <element code="636042" displayName="hydrochlorothiazide 12.5 MG / valsartan 320 MG Oral Tablet">
+                    <target code="421207006" relationship="equivalent" displayName="Hydrochlorothiazide 12.5 mg and valsartan 320 mg oral tablet"/>
+                </element>
+            <element code="979487" displayName="losartan potassium 25 MG Oral Tablet [Cozaar]">
+                    <target code="318955005" relationship="equivalent" displayName="Losartan potassium 25 mg oral tablet"/>
+                </element>
+            <element code="106892" displayName="insulin isophane  human 70 UNT/ML / insulin  regular  human 30 UNT/ML Injectable Suspension [Humulin]">
+                    <target code="784510001" relationship="equivalent" displayName="Human isophane insulin 70 unit/mL and recombinant human regular insulin 30 unit/mL solution for injection"/>
+                </element>
+            <element code="1664463" displayName="24 HR tacrolimus 1 MG Extended Release Oral Tablet">
+                    <target code="1163327007" relationship="equivalent" displayName="Tacrolimus 1 mg prolonged-release oral tablet"/>
+                </element>
+            <element code="1049625" displayName="Acetaminophen 325 MG / Oxycodone Hydrochloride 10 MG Oral Tablet [Percocet]">
+                    <target code="413391006" relationship="equivalent" displayName="Acetaminophen 325 mg and oxycodone hydrochloride 10 mg oral tablet"/>
+                </element>
+            <element code="1860491" displayName="12 HR Hydrocodone Bitartrate 10 MG Extended Release Oral Capsule">
+                    <target code="779484008" relationship="wider" displayName="Hydrocodone only product in oral dose form">
+                        <comment language="en-US">SNOMED CT has no hydrocodone prolonged-release capsule, so the target drops strength and dose form. Retargeted from 429392006, which additionally contains ibuprofen.</comment>
+                    </target>
+                </element>
+            <element code="895996" displayName="120 ACTUAT fluticasone propionate 0.044 MG/ACTUAT Metered Dose Inhaler [Flovent]">
+                    <target code="779314003" relationship="wider" displayName="Fluticasone only product in pulmonary dose form">
+                        <comment language="en-US">SNOMED CT has no fluticasone propionate 44 microgram/actuation inhaler, so the target drops the strength. Retargeted from 766423004, which is a nasal spray.</comment>
+                    </target>
+                </element>
+            <element code="896209" displayName="60 ACTUAT Fluticasone propionate 0.25 MG/ACTUAT / salmeterol 0.05 MG/ACTUAT Dry Powder Inhaler">
+                    <target code="770309008" relationship="equivalent" displayName="Fluticasone propionate 250 microgram and salmeterol (as salmeterol xinafoate) 50 microgram/actuation powder for inhalation"/>
+                </element>
+            <element code="349094" displayName="budesonide 0.125 MG/ML Inhalation Suspension">
+                    <target code="778560007" relationship="wider" displayName="Budesonide only product in pulmonary dose form">
+                        <comment language="en-US">SNOMED CT has no budesonide 0.125 mg/mL inhalation suspension, so the target drops strength and dose form. Retargeted from 770281007, which is a powder for inhalation.</comment>
+                    </target>
+                </element>
+            <element code="745752" displayName="NDA021457 200 ACTUAT albuterol 0.09 MG/ACTUAT Metered Dose Inhaler [ProAir]">
+                    <target code="780410007" relationship="wider" displayName="Albuterol only product in pulmonary dose form">
+                        <comment language="en-US">SNOMED CT has no albuterol 90 microgram/actuation metered dose inhaler, so the target drops the strength. Retargeted from 770302004, which is a powder for inhalation.</comment>
+                    </target>
+                </element>
+            <element code="245134" displayName="72 HR Fentanyl 0.025 MG/HR Transdermal System">
+                    <target code="769510009" relationship="equivalent" displayName="Fentanyl 25 microgram/hour prolonged-release transdermal patch"/>
+                </element>
+            <element code="1010604" displayName="buprenorphine 8 MG / naloxone 2 MG Sublingual Film">
+                    <target code="778566001" relationship="wider" displayName="Buprenorphine and naloxone only product in oromucosal dose form">
+                        <comment language="en-US">SNOMED CT has the 8 mg / 2 mg strength only as a sublingual tablet, so the target drops strength and dose form. Retargeted from 784701007.</comment>
+                    </target>
+                </element>
+            <element code="997229" displayName="donepezil hydrochloride 5 MG Oral Tablet">
+                    <target code="323364006" relationship="equivalent" displayName="Donepezil hydrochloride 5 mg oral tablet"/>
+                </element>
+            <element code="1545658" displayName="empagliflozin 10 MG Oral Tablet">
+                    <target code="703896005" relationship="equivalent" displayName="Empagliflozin 10 mg oral tablet"/>
+                </element>
+            <element code="1232086" displayName="rivaroxaban 20 MG Oral Tablet">
+                    <target code="704474000" relationship="equivalent" displayName="Rivaroxaban 20 mg oral tablet"/>
+                </element>
+            <element code="1797890" displayName="fluticasone furoate 0.0275 MG/ACTUAT Metered Dose Nasal Spray">
+                    <target code="425984002" relationship="equivalent" displayName="Fluticasone furoate 27.5 microgram/actuation nasal spray"/>
+                </element>
+            <element code="197583" displayName="dexamethasone 6 MG Oral Tablet">
+                    <target code="412335008" relationship="equivalent" displayName="Dexamethasone 6 mg oral tablet"/>
+                </element>
+            <element code="483450" displayName="pregabalin 75 MG Oral Capsule">
+                    <target code="415167006" relationship="equivalent" displayName="Pregabalin 75 mg oral capsule"/>
+                </element>
+            <element code="835726" displayName="acamprosate calcium 333 MG Delayed Release Oral Tablet">
+                    <target code="323342002" relationship="equivalent" displayName="Acamprosate calcium 333 mg gastro-resistant oral tablet"/>
+                </element>
+            <element code="314153" displayName="orlistat 120 MG Oral Capsule">
+                    <target code="317893003" relationship="equivalent" displayName="Orlistat 120 mg oral capsule"/>
+                </element>
+            <element code="198427" displayName="lamotrigine 100 MG Oral Tablet">
+                    <target code="322982006" relationship="equivalent" displayName="Lamotrigine 100 mg oral tablet"/>
+                </element>
+            <element code="433844" displayName="24 HR indapamide 1.5 MG Extended Release Oral Tablet">
+                    <target code="765498009" relationship="equivalent" displayName="Indapamide 1.5 mg prolonged-release oral tablet"/>
+                </element>
+            <element code="314111" displayName="mirtazapine 30 MG Oral Tablet">
+                    <target code="321998002" relationship="equivalent" displayName="Mirtazapine 30 mg oral tablet"/>
+                </element>
+            <element code="312941" displayName="sertraline 50 MG Oral Tablet">
+                    <target code="783381001" relationship="equivalent" displayName="Sertraline (as sertraline hydrochloride) 50 mg oral tablet"/>
+                </element>
+            <element code="251857" displayName="ramipril 5 MG Oral Tablet">
+                    <target code="408051007" relationship="equivalent" displayName="Ramipril 5 mg oral tablet"/>
+                </element>
+            <element code="1191138" displayName="doxorubicin hydrochloride 2 MG/ML Injectable Solution">
+                    <target code="781850009" relationship="equivalent" displayName="Doxorubicin hydrochloride 2 mg/mL solution for injection"/>
+                </element>
+            <element code="349332" displayName="escitalopram 10 MG Oral Tablet">
+                    <target code="407915000" relationship="equivalent" displayName="Escitalopram (as escitalopram oxalate) 10 mg oral tablet"/>
+                </element>
+            <element code="725021" displayName="24 HR rivastigmine 0.192 MG/HR Transdermal System">
+                    <target code="1371092009" relationship="equivalent" displayName="Rivastigmine 4.6 mg/24 hour prolonged-release transdermal patch">
+                        <comment language="en-US">0.192 mg/hour equals the 4.6 mg/24 hour patch</comment>
+                    </target>
+                </element>
+            <element code="311289" displayName="levetiracetam 500 MG Oral Tablet">
+                    <target code="323054005" relationship="equivalent" displayName="Levetiracetam 500 mg oral tablet"/>
+                </element>
+            <element code="485032" displayName="tiotropium 0.018 MG Inhalation Powder">
+                    <target code="785983008" relationship="equivalent" displayName="Tiotropium (as tiotropium bromide) 18 microgram/actuation powder for inhalation"/>
+                </element>
+            <element code="313586" displayName="venlafaxine 75 MG Oral Tablet">
+                    <target code="783387002" relationship="equivalent" displayName="Venlafaxine (as venlafaxine hydrochloride) 75 mg oral tablet"/>
+                </element>
+            <element code="1116124" displayName="leuprolide acetate 7.5 MG/ML Injectable Suspension">
+                    <target code="785214003" relationship="equivalent" displayName="Leuprolide acetate 7.5 mg/mL suspension for injection"/>
+                </element>
+            <element code="861007" displayName="metformin hydrochloride 500 MG Oral Tablet">
+                    <target code="325278007" relationship="equivalent" displayName="Metformin hydrochloride 500 mg oral tablet"/>
+                </element>
+            <element code="966221" displayName="levothyroxine sodium 0.05 MG Oral Tablet">
+                    <target code="783645007" relationship="equivalent" displayName="Levothyroxine sodium anhydrous 50 microgram oral tablet"/>
+                </element>
+            <element code="1656356" displayName="sacubitril 97 MG / valsartan 103 MG Oral Tablet [Entresto]">
+                    <target code="1162718004" relationship="equivalent" displayName="Sacubitril 97 mg and valsartan 103 mg oral tablet"/>
+                </element>
+            <element code="197361" displayName="amlodipine 5 MG Oral Tablet">
+                    <target code="783049000" relationship="equivalent" displayName="Amlodipine (as amlodipine besylate) 5 mg oral tablet"/>
+                </element>
+            <element code="29046" displayName="indapamide 1.5 MG Oral Tablet">
+                    <target code="765498009" relationship="equivalent" displayName="Indapamide 1.5 mg prolonged-release oral tablet"/>
+                </element>
+            <element code="1011483" displayName="cetirizine hydrochloride 10 MG Oral Tablet">
+                    <target code="320818006" relationship="equivalent" displayName="Cetirizine hydrochloride 10 mg oral tablet">
+                        <comment language="en-US">CAVE: RXCUI is not valid, for synthetic consistency mapped based on display name. RXCUI 1011483 is the branded drug component cetirizine hydrochloride 10 MG [Zyrtec] in RxNorm and carries no dose form.</comment>
+                    </target>
+                </element>
+            <element code="135447" displayName="donepezil hydrochloride 5 MG Oral Tablet">
+                    <target code="323364006" relationship="equivalent" displayName="Donepezil hydrochloride 5 mg oral tablet">
+                        <comment language="en-US">CAVE: RXCUI is not valid, for synthetic consistency mapped based on display name. RXCUI 135447 is the ingredient donepezil in RxNorm.</comment>
+                    </target>
+                </element>
+            <element code="1545653" displayName="empagliflozin 10 MG Oral Tablet">
+                    <target code="703896005" relationship="equivalent" displayName="Empagliflozin 10 mg oral tablet">
+                        <comment language="en-US">CAVE: RXCUI is not valid, for synthetic consistency mapped based on display name. RXCUI 1545653 is the ingredient empagliflozin in RxNorm.</comment>
+                    </target>
+                </element>
+            <element code="1592417" displayName="rivaroxaban 20 MG Oral Tablet">
+                    <target code="704474000" relationship="equivalent" displayName="Rivaroxaban 20 mg oral tablet">
+                        <comment language="en-US">CAVE: RXCUI is not valid, for synthetic consistency mapped based on display name. RXCUI 1592417 is unknown to RxNorm.</comment>
+                    </target>
+                </element>
+            <element code="1860486" displayName="naltrexone hydrochloride 50 MG Oral Tablet">
+                    <target code="323281004" relationship="equivalent" displayName="Naltrexone hydrochloride 50 mg oral tablet">
+                        <comment language="en-US">CAVE: RXCUI is not valid, for synthetic consistency mapped based on display name. RXCUI 1860486 is unknown to RxNorm.</comment>
+                    </target>
+                </element>
+            <element code="187832" displayName="pregabalin 75 MG Oral Capsule">
+                    <target code="415167006" relationship="equivalent" displayName="Pregabalin 75 mg oral capsule">
+                        <comment language="en-US">CAVE: RXCUI is not valid, for synthetic consistency mapped based on display name. RXCUI 187832 is the ingredient pregabalin in RxNorm.</comment>
+                    </target>
+                </element>
+            <element code="203602" displayName="leuprolide 7.5 MG Injection">
+                    <target code="1237197004" relationship="equivalent" displayName="Leuprolide acetate 7.5 mg powder for suspension for injection syringe">
+                        <comment language="en-US">CAVE: RXCUI is not valid, for synthetic consistency mapped based on display name. RXCUI 203602 is unknown to RxNorm. Retargeted from 785214003, which states a concentration of 7.5 mg/mL rather than a dose of 7.5 mg.</comment>
+                    </target>
+                </element>
+            <element code="215414" displayName="acamprosate calcium 333 MG Oral Tablet">
+                    <target code="323342002" relationship="equivalent" displayName="Acamprosate calcium 333 mg gastro-resistant oral tablet">
+                        <comment language="en-US">CAVE: RXCUI is not valid, for synthetic consistency mapped based on display name. RXCUI 215414 is unknown to RxNorm. Acamprosate is manufactured only as a gastro-resistant tablet.</comment>
+                    </target>
+                </element>
+            <element code="225569" displayName="Orlistat 120 MG Oral Capsule">
+                    <target code="317893003" relationship="equivalent" displayName="Orlistat 120 mg oral capsule">
+                        <comment language="en-US">CAVE: RXCUI is not valid, for synthetic consistency mapped based on display name. RXCUI 225569 is unknown to RxNorm.</comment>
+                    </target>
+                </element>
+            <element code="301542" displayName="mirtazapine 30 MG Oral Tablet">
+                    <target code="321998002" relationship="equivalent" displayName="Mirtazapine 30 mg oral tablet">
+                        <comment language="en-US">CAVE: RXCUI is not valid, for synthetic consistency mapped based on display name. RXCUI 301542 is the ingredient rosuvastatin in RxNorm, a different drug.</comment>
+                    </target>
+                </element>
+            <element code="312034" displayName="sertraline hydrochloride 50 MG Oral Tablet">
+                    <target code="783381001" relationship="equivalent" displayName="Sertraline (as sertraline hydrochloride) 50 mg oral tablet">
+                        <comment language="en-US">CAVE: RXCUI is not valid, for synthetic consistency mapped based on display name. RXCUI 312034 is unknown to RxNorm.</comment>
+                    </target>
+                </element>
+            <element code="35208" displayName="ramipril 5 MG Oral Tablet">
+                    <target code="408051007" relationship="equivalent" displayName="Ramipril 5 mg oral tablet">
+                        <comment language="en-US">CAVE: RXCUI is not valid, for synthetic consistency mapped based on display name. RXCUI 35208 is the ingredient quinapril in RxNorm, a different drug.</comment>
+                    </target>
+                </element>
+            <element code="722131" displayName="ramipril 5 MG Oral Capsule">
+                    <target code="318902004" relationship="equivalent" displayName="Ramipril 5 mg oral capsule">
+                        <comment language="en-US">CAVE: RXCUI is not valid, for synthetic consistency mapped based on display name. RXCUI 722131 is amlodipine 10 MG / valsartan 320 MG Oral Tablet in RxNorm, a different drug.</comment>
+                    </target>
+                </element>
+            <element code="727316" displayName="Epinephrine 0.3 MG Auto-Injector">
+                    <target code="779141004" relationship="wider" displayName="Epinephrine only product in parenteral dose form">
+                        <comment language="en-US">CAVE: RXCUI is not valid, for synthetic consistency mapped based on display name. RXCUI 727316 is NDA019430 0.3 ML epinephrine 0.5 MG/ML Auto-Injector in RxNorm. SNOMED CT has no auto-injector, so the target drops strength and dose form.</comment>
+                    </target>
+                </element>
+            <element code="745679" displayName="albuterol 0.1 MG/ACTUAT Metered Dose Inhaler">
+                    <target code="770300007" relationship="equivalent" displayName="Albuterol (as albuterol sulfate) 100 microgram/actuation pressurized suspension for inhalation">
+                        <comment language="en-US">CAVE: RXCUI is not valid, for synthetic consistency mapped based on display name. RXCUI 745679 is unknown to RxNorm and the source data uses it for both albuterol 0.1 MG/ACTUAT Metered Dose Inhaler and salbutamol 0.1 MG/ACTUAT Inhalant Solution.</comment>
+                    </target>
+                </element>
+            <element code="746763" displayName="beclomethasone dipropionate 0.1 MG/ACTUAT Inhalant Solution">
+                    <target code="320537007" relationship="equivalent" displayName="Beclomethasone dipropionate 100 microgram/actuation pressurized solution for inhalation">
+                        <comment language="en-US">CAVE: RXCUI is not valid, for synthetic consistency mapped based on display name. RXCUI 746763 is NDA020503 200 ACTUAT albuterol 0.09 MG/ACTUAT Metered Dose Inhaler [Proventil] in RxNorm, a different drug.</comment>
+                    </target>
+                </element>
+            <element code="834357" displayName="bisoprolol fumarate 5 MG Oral Tablet">
+                    <target code="318590006" relationship="equivalent" displayName="Bisoprolol fumarate 5 mg oral tablet">
+                        <comment language="en-US">CAVE: RXCUI is not valid, for synthetic consistency mapped based on display name. RXCUI 834357 is 3 ML amiodarone hydrochloride 50 MG/ML Prefilled Syringe in RxNorm, a different drug.</comment>
+                    </target>
+                </element>
+            <element code="898004" displayName="venlafaxine 75 MG Oral Tablet">
+                    <target code="783387002" relationship="equivalent" displayName="Venlafaxine (as venlafaxine hydrochloride) 75 mg oral tablet">
+                        <comment language="en-US">CAVE: RXCUI is not valid, for synthetic consistency mapped based on display name. RXCUI 898004 is hydromorphone hydrochloride 1.3 MG Oral Capsule in RxNorm, a different drug.</comment>
+                    </target>
+                </element>
+            <element code="1010600" displayName="buprenorphine 8 MG / naloxone 2 MG Sublingual Film">
+                    <target code="778566001" relationship="wider" displayName="Buprenorphine and naloxone only product in oromucosal dose form">
+                        <comment language="en-US">CAVE: RXCUI is not valid, for synthetic consistency mapped based on display name. RxNorm knows 1010600 as buprenorphine 2 MG / naloxone 0.5 MG Sublingual Film. SNOMED CT has the 8 mg / 2 mg strength only as a sublingual tablet (784701007), so the target drops both strength and dose form.</comment>
+                    </target>
+                </element>
+            <element code="1367439" displayName="21 DAY ethinyl estradiol 0.000625 MG/HR / etonogestrel 0.005 MG/HR Vaginal System [NuvaRing]">
+                    <target code="1078051000202107" relationship="wider" displayName="Ethinylestradiol and etonogestrel only product in vaginal dose form">
+                        <comment language="en-US">SNOMED CT has no clinical drug for the vaginal ring, so the target drops the strength.</comment>
+                    </target>
+                </element>
+            <element code="1797831" displayName="fluticasone furoate 0.027 MG/ACTUAT Nasal Spray">
+                    <target code="425984002" relationship="equivalent" displayName="Fluticasone furoate 27.5 microgram/actuation nasal spray">
+                        <comment language="en-US">CAVE: RXCUI is not valid, for synthetic consistency mapped based on display name. RXCUI 1797831 is the dose form concept Metered Dose Nasal Spray in RxNorm, not a product.</comment>
+                    </target>
+                </element>
+            <element code="1804799" displayName="alteplase 100 MG Injection">
+                    <target code="778262003" relationship="wider" displayName="Alteplase only product in parenteral dose form">
+                        <comment language="en-US">SNOMED CT has alteplase only as 2, 10, 20 and 50 mg vials, so the target drops the strength.</comment>
+                    </target>
+                </element>
+            <element code="1860484" displayName="palbociclib 125 MG Oral Capsule">
+                    <target code="863984009" relationship="equivalent" displayName="Palbociclib 125 mg oral capsule">
+                        <comment language="en-US">CAVE: RXCUI is not valid, for synthetic consistency mapped based on display name. RXCUI 1860484 is unknown to RxNorm.</comment>
+                    </target>
+                </element>
+            <element code="1860487" displayName="pembrolizumab 25 MG/ML Injectable Solution">
+                    <target code="787885003" relationship="equivalent" displayName="Pembrolizumab 25 mg/mL solution for injection">
+                        <comment language="en-US">CAVE: RXCUI is not valid, for synthetic consistency mapped based on display name. RXCUI 1860487 is unknown to RxNorm.</comment>
+                    </target>
+                </element>
+            <element code="1860488" displayName="dexamethasone 6 MG Oral Tablet">
+                    <target code="412335008" relationship="equivalent" displayName="Dexamethasone 6 mg oral tablet">
+                        <comment language="en-US">CAVE: RXCUI is not valid, for synthetic consistency mapped based on display name. RXCUI 1860488 is unknown to RxNorm. The same product is also mapped from 197583, which is the valid RXCUI.</comment>
+                    </target>
+                </element>
+            <element code="190311" displayName="letrozole 2.5 MG Oral Tablet">
+                    <target code="327377001" relationship="equivalent" displayName="Letrozole 2.5 mg oral tablet">
+                        <comment language="en-US">CAVE: RXCUI is not valid, for synthetic consistency mapped based on display name. RXCUI 190311 is unknown to RxNorm. The same product is also mapped from 200064, which is the valid RXCUI.</comment>
+                    </target>
+                </element>
+            <element code="2001499" displayName="Vitamin B12 5 MG/ML Injectable Solution">
+                    <target code="778885005" relationship="wider" displayName="Cyanocobalamin only product in parenteral dose form">
+                        <comment language="en-US">SNOMED CT has cyanocobalamin for injection only at 1 mg/mL, so the target drops the strength.</comment>
+                    </target>
+                </element>
+            <element code="2397641" displayName="semaglutide 2.4 MG/DOSE Pen Injector">
+                    <target code="780440009" relationship="wider" displayName="Semaglutide only product in parenteral dose form">
+                        <comment language="en-US">CAVE: RXCUI is not valid, for synthetic consistency mapped based on display name. RXCUI 2397641 is unknown to RxNorm. SNOMED CT has no pen injector and no 2.4 mg/dose product, so the target drops strength and presentation.</comment>
+                    </target>
+                </element>
+            <element code="28439" displayName="lamotrigine 100 MG Oral Tablet">
+                    <target code="322982006" relationship="equivalent" displayName="Lamotrigine 100 mg oral tablet">
+                        <comment language="en-US">CAVE: RXCUI is not valid, for synthetic consistency mapped based on display name. RXCUI 28439 is the ingredient lamotrigine in RxNorm. The same product is also mapped from 198427, which is the valid RXCUI.</comment>
+                    </target>
+                </element>
+            <element code="32592" displayName="oxaliplatin 5 MG/ML Injectable Solution">
+                    <target code="1193787001" relationship="equivalent" displayName="Oxaliplatin 5 mg/mL solution for infusion">
+                        <comment language="en-US">CAVE: RXCUI is not valid, for synthetic consistency mapped based on display name. RXCUI 32592 is the ingredient oxaliplatin in RxNorm; the valid clinical drug is 1736776.</comment>
+                    </target>
+                </element>
+            <element code="358055" displayName="bevacizumab 25 MG/ML Injectable Solution">
+                    <target code="781788003" relationship="equivalent" displayName="Bevacizumab 25 mg/mL solution for injection">
+                        <comment language="en-US">CAVE: RXCUI is not valid, for synthetic consistency mapped based on display name. RXCUI 358055 is unknown to RxNorm.</comment>
+                    </target>
+                </element>
+            <element code="3639" displayName="doxorubicin hydrochloride 2 MG/ML Injectable Solution">
+                    <target code="781850009" relationship="equivalent" displayName="Doxorubicin hydrochloride 2 mg/mL solution for injection">
+                        <comment language="en-US">CAVE: RXCUI is not valid, for synthetic consistency mapped based on display name. RXCUI 3639 is the ingredient doxorubicin in RxNorm. The same product is also mapped from 1191138, which is the valid RXCUI.</comment>
+                    </target>
+                </element>
+            <element code="748856" displayName="{24 (drospirenone 3 MG / ethinyl estradiol 0.02 MG Oral Tablet) / 4 (inert ingredients 1 MG Oral Tablet) } Pack [Yaz 28 Day]">
+                    <target code="779081009" relationship="wider" displayName="Drospirenone and ethinyl estradiol only product in oral dose form">
+                        <comment language="en-US">SNOMED CT does not model packs, so the target drops the pack, the strengths and the inert tablets.</comment>
+                    </target>
+                </element>
+            <element code="748879" displayName="{21 (ethinyl estradiol 0.03 MG / levonorgestrel 0.15 MG Oral Tablet) / 7 (inert ingredients 1 MG Oral Tablet) } Pack [Levora 0.15/30 28 Day]">
+                    <target code="779205005" relationship="wider" displayName="Ethinyl estradiol and levonorgestrel only product in oral dose form">
+                        <comment language="en-US">SNOMED CT does not model packs, so the target drops the pack, the strengths and the inert tablets.</comment>
+                    </target>
+                </element>
+            <element code="748962" displayName="{28 (norethindrone 0.35 MG Oral Tablet) } Pack [Camila 28 Day]">
+                    <target code="780030000" relationship="wider" displayName="Norethindrone only product in oral dose form">
+                        <comment language="en-US">SNOMED CT does not model packs, so the target drops the pack and the strength.</comment>
+                    </target>
+                </element>
+            <element code="749762" displayName="{7 (ethinyl estradiol 0.01 MG Oral Tablet) / 84 (ethinyl estradiol 0.03 MG / levonorgestrel 0.15 MG Oral Tablet) } Pack [Seasonique]">
+                    <target code="779205005" relationship="wider" displayName="Ethinyl estradiol and levonorgestrel only product in oral dose form">
+                        <comment language="en-US">SNOMED CT does not model packs, so the target drops the pack and the varying strengths.</comment>
+                    </target>
+                </element>
+            <element code="751905" displayName="{7 (ethinyl estradiol 0.035 MG / norgestimate 0.18 MG Oral Tablet) / 7 (ethinyl estradiol 0.035 MG / norgestimate 0.215 MG Oral Tablet) / 7 (ethinyl estradiol 0.035 MG / norgestimate 0.25 MG Oral Tablet) / 7 (inert ingredients 1 MG Oral Tablet) } Pack [Trinessa 28 Day]">
+                    <target code="779208007" relationship="wider" displayName="Ethinyl estradiol and norgestimate only product in oral dose form">
+                        <comment language="en-US">SNOMED CT does not model packs, so the target drops the pack, the three phases and the inert tablets.</comment>
+                    </target>
+                </element>
+            <element code="757594" displayName="{28 (norethindrone 0.35 MG Oral Tablet) } Pack [Jolivette 28 Day]">
+                    <target code="780030000" relationship="wider" displayName="Norethindrone only product in oral dose form">
+                        <comment language="en-US">CAVE: RXCUI is not valid, for synthetic consistency mapped based on display name. RXCUI 757594 is unknown to RxNorm. SNOMED CT does not model packs, so the target drops the pack and the strength.</comment>
+                    </target>
+                </element>
+            <element code="978950" displayName="{5 (dienogest 2 MG / estradiol valerate 2 MG Oral Tablet) / 17 (dienogest 3 MG / estradiol valerate 2 MG Oral Tablet) / 2 (estradiol valerate 1 MG Oral Tablet) / 2 (estradiol valerate 3 MG Oral Tablet) / 2 (inert ingredients 1 MG Oral Tablet) } Pack [Natazia 28 Day]">
+                    <target code="466801000221109" relationship="wider" displayName="Dienogest and estradiol only product">
+                        <comment language="en-US">SNOMED CT does not model packs and has no dienogest and estradiol product with a dose form, so the target drops the pack, the phases and the dose form.</comment>
+                    </target>
+                </element>
+            <element code="833036" displayName="rivastigmine 0.192 MG/HR Transdermal System">
+                    <target code="1371092009" relationship="equivalent" displayName="Rivastigmine 4.6 mg/24 hour prolonged-release transdermal patch">
+                        <comment language="en-US">CAVE: RXCUI is not valid, for synthetic consistency mapped based on display name. RXCUI 833036 is acetaminophen 750 MG / hydrocodone bitartrate 7.5 MG Oral Tablet in RxNorm. The same product is also mapped from 725021, which is the valid RXCUI. 0.192 mg/hour equals 4.6 mg/24 hours.</comment>
+                    </target>
+                </element>
+            <element code="854873" displayName="levetiracetam 500 MG Oral Tablet">
+                    <target code="323054005" relationship="equivalent" displayName="Levetiracetam 500 mg oral tablet">
+                        <comment language="en-US">CAVE: RXCUI is not valid, for synthetic consistency mapped based on display name. RXCUI 854873 is zolpidem tartrate 10 MG Oral Tablet in RxNorm. The same product is also mapped from 311289, which is the valid RXCUI.</comment>
+                    </target>
+                </element>
+            <element code="856783" displayName="amitriptyline hydrochloride 25 MG Oral Tablet">
+                    <target code="321746008" relationship="equivalent" displayName="Amitriptyline hydrochloride 25 mg oral tablet">
+                        <comment language="en-US">CAVE: RXCUI is not valid, for synthetic consistency mapped based on display name. RXCUI 856783 is amitriptyline hydrochloride 10 MG Oral Tablet in RxNorm, a different strength.</comment>
+                    </target>
+                </element>
+            <element code="896184" displayName="tiotropium 0.018 MG Inhalation Powder">
+                    <target code="785983008" relationship="equivalent" displayName="Tiotropium (as tiotropium bromide) 18 microgram/actuation powder for inhalation">
+                        <comment language="en-US">CAVE: RXCUI is not valid, for synthetic consistency mapped based on display name. RXCUI 896184 is 60 ACTUAT fluticasone propionate 0.1 MG/ACTUAT / salmeterol 0.05 MG/ACTUAT Dry Powder Inhaler in RxNorm. The same product is also mapped from 485032, which is the valid RXCUI.</comment>
+                    </target>
+                </element>
+            <element code="896199" displayName="fluticasone propionate 0.25 MG/ACTUAT / salmeterol 0.05 MG/ACTUAT Dry Powder Inhaler">
+                    <target code="770309008" relationship="equivalent" displayName="Fluticasone propionate 250 microgram and salmeterol (as salmeterol xinafoate) 50 microgram/actuation powder for inhalation">
+                        <comment language="en-US">CAVE: RXCUI is not valid, for synthetic consistency mapped based on display name. RXCUI 896199 is unknown to RxNorm. The same product is also mapped from 896209, which is the valid RXCUI.</comment>
+                    </target>
+                </element>
+            <element code="1437975" displayName="glycopyrrolate 1.5 MG Oral Tablet [Glycate]">
+                    <target code="779406008" relationship="wider" displayName="Glycopyrronium only product in oral dose form">
+                        <comment language="en-US">SNOMED CT has glycopyrronium oral tablets only at 1 mg (375441008) and 2 mg (375430006), so the target drops the strength.</comment>
+                    </target>
+                </element>
+            <element code="235389" displayName="mestranol / norethynodrel">
+                    <target relationship="unmatched">
+                        <comment language="en-US">SNOMED CT has no product concept combining mestranol and norethynodrel; norethynodrel exists only as 776942006 Norethynodrel only product, without mestranol.</comment>
+                    </target>
+                </element>
+        </group>
+    </conceptMap>

@@ -1,0 +1,46 @@
+{#
+  ============================================================================
+  TEMPLATE: az-mcci-wrapper.cda.twig
+  ============================================================================
+
+  AUTHOR   KH
+  SINCE    2027-08-05
+  ============================================================================
+#}
+
+%%CDA%% {# ── Section marker required by the CDA pre-processor ─────────────── #}
+
+<MCCI_IN200101 xmlns="urn:hl7-org:v3" xmlns:sdtc="urn:hl7-org:sdtc" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <!-- overdrachtsconcerns: {{ ccount }}, allergieën/intoleranties: {{ aicount }}, alerts: {{ acount }}, medicatieafspraken: {{ mcount }} -->
+    <id root="2.16.840.1.113883.2.4.6.6.1.1" extension="{{ wrapperid }}"/>
+    <creationTime value="{{ 'now' | date('YmdHis') }}"/>
+    <versionCode code="NICTIZEd2005-Okt"/>
+    <interactionId extension="MCCI_IN200101" root="2.16.840.1.113883.1.6"/>
+    <profileId root="2.16.840.1.113883.2.4.3.11.1" extension="810"/>
+    <transmissionQuantity value="{{ transmissionQuantity }}"/>
+    {# acknowlegment with invented id #}
+    <acknowledgement typeCode="AA">
+        <targetTransmission>
+            <id extension="{{ getUUID() }}" root="1.2.3.999"/>
+        </targetTransmission>
+    </acknowledgement>
+    {# reciever (Nictiz testabonnee id) and sender (always het LSP) #}
+    <receiver>
+        <device>
+            <id root="2.16.840.1.113883.2.4.6.6" extension="70000003"/>
+        </device>
+    </receiver>
+    <sender>
+        <device>
+            <id root="2.16.840.1.113883.2.4.6.6" extension="1"/>
+        </device>
+    </sender>
+    {# overdrachtconcerns #}
+    {{ overdrachtconcerns | raw -}}
+    {# allergie/intoleranties #}
+    {{ allergieintoleranties | raw -}}
+    {# alerts #}
+    {{ alerts | raw -}}
+    {# medications #}
+    {{ medications | raw -}}
+</MCCI_IN200101>

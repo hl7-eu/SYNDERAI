@@ -11,9 +11,8 @@
 %%CDA%% {# ── Section marker required by the CDA pre-processor ─────────────── #}
 
 <recordTarget typeCode="RCT" contextControlCode="OP">
-  <!-- patiënt: {{ patient.name }} uit {{ patient.postcode }} {{ patient.city }} -->
+  <!-- patiënt: {{ patient.name }} uit {{ patient.postcode }} {{ patient.city }} * {{ patient.birthdate|date('d M Y') }} -->
   <patientRole>
-    <!-- BSN -->
     <id extension="{{ patient.bsn }}" root="2.16.840.1.113883.2.4.6.3"/>
     <addr use="HP">
 {# --- #}

@@ -72,49 +72,52 @@ if ($PROCESSISH) {
         if ($reasonproperties["code"] !== $ipe["reason"]["code"]) $ipe["procedure"]["code"] = $reasonproperties["code"]; // this is a replacement
         if (strlen($reasonproperties['fullySpecifiedName']) > 0) $reasondisplay = $reasonproperties['fullySpecifiedName'];
 
-        $found[] = [
-          "procedure" => [
-            "code" => $ipe["procedure"]["code"],
-            "system" => "\$sct",
-            "display" => $proceduredisplay,
-            "preferredTerm" => $procedureproperties['preferredTerm'],
-            "fullySpecifiedName" => $procedureproperties['fullySpecifiedName'],
-          ],
-          "reason" => [
-            "code" => $ipe["reason"]["code"],
-            "system" => "\$sct",
-            "display" => $reasondisplay,
-            "preferredTerm" => isset($reasonproperties['preferredTerm']) ? $reasonproperties['preferredTerm'] : "",
-            "fullySpecifiedName" => isset($reasonproperties['fullySpecifiedName']) ? $reasonproperties['fullySpecifiedName'] : "",
-          ],
-          "discharge" => $ipe["discharge"],
-          "start" => $ipe["start"],
-          "end" => $ipe["end"],
-          "startexact" => $ipe["startexact"],
-          "endexact" => $ipe["endexact"],
-          "encounterid" => $ipe["encounterid"]
-        ];
-        lognl (2, sprintf(
-          "......... Hospital encounter from %s to %s (ID %s)",
-          $ipe["start"],
-          $ipe["end"],
-          $ipe["encounterid"]
-        ));
-        lognl (3, sprintf(
-          "............ admission reason: %s -> procedure performed: %s",
-          $reasondisplay,
-          $proceduredisplay
-        ));
-        // var_dump($ipe);
-        lognl (2, sprintf(
-          "............ discharge synthesis: %s",
-          $ipe["discharge"]["text"]
-        ));
-        lognl (3, sprintf(
-          "............ discharge code: %s %s",
-          $ipe["discharge"]["code"],
-          $ipe["discharge"]["display"]
-        ));
+        if (isset($ipe["discharge"]["text"]) && strlen($ipe["discharge"]["text"]) > 0) {
+          // only if we have discharge information for this encounter
+          $found[] = [
+            "procedure" => [
+              "code" => $ipe["procedure"]["code"],
+              "system" => "\$sct",
+              "display" => $proceduredisplay,
+              "preferredTerm" => $procedureproperties['preferredTerm'],
+              "fullySpecifiedName" => $procedureproperties['fullySpecifiedName'],
+            ],
+            "reason" => [
+              "code" => $ipe["reason"]["code"],
+              "system" => "\$sct",
+              "display" => $reasondisplay,
+              "preferredTerm" => isset($reasonproperties['preferredTerm']) ? $reasonproperties['preferredTerm'] : "",
+              "fullySpecifiedName" => isset($reasonproperties['fullySpecifiedName']) ? $reasonproperties['fullySpecifiedName'] : "",
+            ],
+            "discharge" => $ipe["discharge"],
+            "start" => $ipe["start"],
+            "end" => $ipe["end"],
+            "startexact" => $ipe["startexact"],
+            "endexact" => $ipe["endexact"],
+            "encounterid" => $ipe["encounterid"]
+          ];
+          lognl(2, sprintf(
+            "......... Hospital encounter from %s to %s (ID %s)",
+            $ipe["start"],
+            $ipe["end"],
+            $ipe["encounterid"]
+          ));
+          lognl(3, sprintf(
+            "............ admission reason: %s -> procedure performed: %s",
+            $reasondisplay,
+            $proceduredisplay
+          ));
+          // var_dump($ipe);
+          lognl(2, sprintf(
+            "............ discharge synthesis: %s",
+            $ipe["discharge"]["text"]
+          ));
+          lognl(3, sprintf(
+            "............ discharge code: %s %s",
+            $ipe["discharge"]["code"],
+            $ipe["discharge"]["display"]
+          ));
+        }
       }
     }
   }

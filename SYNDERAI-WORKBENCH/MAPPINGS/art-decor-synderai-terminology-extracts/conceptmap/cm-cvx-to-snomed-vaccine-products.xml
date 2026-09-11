@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<conceptMap id="2.16.840.1.113883.3.1937.777.100.24.3" displayName="CVX to SNOMED Vaccine Products" effectiveDate="2026-09-09T23:00:00" statusCode="draft" lastModifiedDate="2026-09-09T23:00:00" url="http://art-decor.org/decor/services/" ident="synderai-">
+        <desc language="en-US">
+                <p>Maps the CVX codes the SYNDERAI Synthea pipeline emits to SNOMED CT vaccine products. The targets are product concepts below 787859002 |Vaccine product|; they carry no dose form, which is deliberate at this stage. Two relationship values are used: equivalent, where the SNOMED CT concept denotes what the CVX code describes, and wider, where SNOMED CT has no concept at that level
+                    of detail — a carrier protein, a preparation, a preservative, or a manufacturer that CVX distinguishes and SNOMED CT does not. 24 rows in total: 15 equivalent, 9 wider. Against the previous version two targets were corrected (CVX 113 pointed at the tetanus single component without diphtheria, CVX 33 at the 20-valent conjugate rather than the 23-valent polysaccharide vaccine),
+                    one was sharpened from a containing to an only concept (CVX 114), and three pairs that had collapsed onto one target were separated (20 against 115, 8 against 43, 83 against 52). The codes 03 and 08 are carried in addition to 3 and 8 because the pipeline emits them with a leading zero.</p>
+                <div class="__artdecor_box aswarning">
+                    <p>This artefact includes content from SNOMED Clinical Terms® (SNOMED CT®) which is copyright of the International Health Terminology Standards Development Organisation (IHTSDO). Implementers of these artefacts must have the appropriate SNOMED CT Affiliate license - for more information contact http://www.snomed.org/snomed-ct/getsnomed-ct or info@snomed.org.</p>
+                </div>
+            </desc>
+        <publishingAuthority name="SYNDERAI" inherited="project"/>
+        <purpose language="en-US">Immunization axis for synthetic data.</purpose>
+        <copyright language="en-US" inherited="true">This artefact includes content from SNOMED Clinical Terms® (SNOMED CT®) which is copyright of the International Health Terminology Standards Development Organisation (IHTSDO). Implementers of these artefacts must have the appropriate SNOMED CT Affiliate license - for more information contact http://www.snomed.org/snomed-ct/getsnomed-ct or info@snomed.org.</copyright>
+        <sourceScope ref="2.16.840.1.113883.3.1937.777.100.11.13" flexibility="dynamic" displayName="Subset Vaccine Administered Code Set (CVX)" canonicalUri="http://synderai.net/fhir/ValueSet/vs-subset-vaccine-administered-code-set-cvx"/>
+        <targetScope ref="2.16.840.1.113883.3.1937.777.100.11.10" flexibility="dynamic" displayName="Vaccine Product extensional (SNOMED)"/>
+        <issueAssociation count="0"/>
+        <group>
+            <source codeSystem="2.16.840.1.113883.12.292" displayName="Vaccine Administered" canonicalUri="http://hl7.org/fhir/sid/cvx"/>
+            <target codeSystem="2.16.840.1.113883.6.96" displayName="SNOMED Clinical Terms" canonicalUri="http://snomed.info/sct"/>
+            <element code="3" displayName="measles, mumps and rubella virus vaccine">
+                    <target code="2241000221103" relationship="equivalent" displayName="Vaccine product containing only live attenuated Measles morbillivirus and Mumps orthorubulavirus and Rubella virus antigens (medicinal product)">
+                        <comment language="en-US">Retargeted from 871831003. All MMR vaccines are live attenuated, so the live attenuated concept is the exact match.</comment>
+                    </target>
+                </element>
+            <element code="03" displayName="measles, mumps and rubella virus vaccine">
+                    <target code="2241000221103" relationship="equivalent" displayName="Vaccine product containing only live attenuated Measles morbillivirus and Mumps orthorubulavirus and Rubella virus antigens (medicinal product)">
+                        <comment language="en-US">The Synthea pipeline emits this code with a leading zero. It denotes the same CVX concept as CVX 3 and is carried separately so that the value as delivered resolves.</comment>
+                    </target>
+                </element>
+            <element code="8" displayName="hepatitis B vaccine, pediatric or pediatric/adolescent dosage">
+                    <target code="1296864005" relationship="equivalent" displayName="Pediatric vaccine product containing only adsorbed Hepatitis B virus recombinant surface antigen (medicinal product)">
+                        <comment language="en-US">Retargeted from 871822003, which does not distinguish the paediatric from the adult presentation.</comment>
+                    </target>
+                </element>
+            <element code="08" displayName="hepatitis B vaccine, pediatric or pediatric/adolescent dosage">
+                    <target code="1296864005" relationship="equivalent" displayName="Pediatric vaccine product containing only adsorbed Hepatitis B virus recombinant surface antigen (medicinal product)">
+                        <comment language="en-US">The Synthea pipeline emits this code with a leading zero. It denotes the same CVX concept as CVX 8 and is carried separately so that the value as delivered resolves.</comment>
+                    </target>
+                </element>
+            <element code="10" displayName="poliovirus vaccine, inactivated">
+                    <target code="871740006" relationship="equivalent" displayName="Vaccine product containing only inactivated whole Human poliovirus antigen (medicinal product)"/>
+                </element>
+            <element code="20" displayName="diphtheria, tetanus toxoids and acellular pertussis vaccine">
+                    <target code="1297217008" relationship="equivalent" displayName="Pediatric vaccine product containing only acellular Bordetella pertussis and Clostridium tetani toxoid and Corynebacterium diphtheriae toxoid antigens (medicinal product)">
+                        <comment language="en-US">Retargeted from 871875004, which CVX 115 also used, so DTaP and Tdap were indistinguishable. The paediatric concept carries the full diphtheria dose and separates the two.</comment>
+                    </target>
+                </element>
+            <element code="21" displayName="varicella virus vaccine">
+                    <target code="2221000221107" relationship="wider" displayName="Vaccine product containing only live attenuated Human alphaherpesvirus 3 antigen (medicinal product)">
+                        <comment language="en-US">SNOMED CT has no concept that separates the varicella vaccine from the live zoster vaccine: both are live attenuated Human alphaherpesvirus 3, and zoster appears only as a synonym on the VZV concepts. CVX 121 maps to the same target. The parent concept 871919004 was not used because it would also cover the recombinant vaccine of CVX 187.</comment>
+                    </target>
+                </element>
+            <element code="33" displayName="pneumococcal polysaccharide vaccine, 23 valent">
+                    <target code="1119220001" relationship="equivalent" displayName="Vaccine product containing only Streptococcus pneumoniae Danish serotype 1, 2, 3, 4, 5, 6B, 7F, 8, 9N, 9V, 10A, 11A, 12F, 14, 15B, 17F, 18C, 19A, 19F, 20, 22F, 23F, and 33F capsular polysaccharide antigens (medicinal product)">
+                        <comment language="en-US">Retargeted from 1252709000, which is the 20-valent conjugate vaccine. CVX 33 is the 23-valent unconjugated polysaccharide vaccine.</comment>
+                    </target>
+                </element>
+            <element code="43" displayName="hepatitis B vaccine, adult dosage">
+                    <target code="1296676008" relationship="wider" displayName="Vaccine product containing only adsorbed Hepatitis B virus recombinant surface antigen (medicinal product)">
+                        <comment language="en-US">SNOMED CT marks only the paediatric presentation (1296864005) and the high dose presentation (1296677004); the adult dose is the unmarked form and has no concept of its own.</comment>
+                    </target>
+                </element>
+            <element code="49" displayName="Haemophilus influenzae type b vaccine, PRP-OMP conjugate">
+                    <target code="2041000221105" relationship="wider" displayName="Vaccine product containing only Haemophilus influenzae type b capsular polysaccharide antigen conjugated (medicinal product)">
+                        <comment language="en-US">Retargeted from 871764007. The carrier protein is not represented: SNOMED CT has a concept only for PRP-T (1010689004, conjugated to tetanus toxoid), not for PRP-OMP.</comment>
+                    </target>
+                </element>
+            <element code="52" displayName="hepatitis A vaccine, adult dosage">
+                    <target code="865997008" relationship="equivalent" displayName="Adult vaccine product containing only Hepatitis A virus antigen (medicinal product)">
+                        <comment language="en-US">Retargeted from 871751006, which CVX 83 also used, so the adult and the paediatric presentation were indistinguishable.</comment>
+                    </target>
+                </element>
+            <element code="62" displayName="human papilloma virus vaccine, quadrivalent">
+                    <target code="2001000221108" relationship="equivalent" displayName="Vaccine product containing only Human papillomavirus 6, 11, 16 and 18 antigens (medicinal product)"/>
+                </element>
+            <element code="83" displayName="hepatitis A vaccine, pediatric/adolescent dosage, 2 dose schedule">
+                    <target code="871750007" relationship="equivalent" displayName="Pediatric vaccine product containing only Hepatitis A virus antigen (medicinal product)">
+                        <comment language="en-US">Retargeted from 871751006, see CVX 52. The two dose schedule is administration information and is not part of the product.</comment>
+                    </target>
+                </element>
+            <element code="113" displayName="tetanus and diphtheria toxoids, adsorbed, preservative free, for adult use (5 Lf of tetanus toxoid and 2 Lf of diphtheria toxoid)">
+                    <target code="871827009" relationship="wider" displayName="Vaccine product containing only Clostridium tetani and low dose Corynebacterium diphtheriae antigens (medicinal product)">
+                        <comment language="en-US">Retargeted from 777725002, which is the tetanus toxoid single component without diphtheria. Td carries both antigens. The 5 Lf tetanus content, the absence of preservative and the adsorption are not represented at this level.</comment>
+                    </target>
+                </element>
+            <element code="114" displayName="meningococcal polysaccharide (groups A, C, Y and W-135) diphtheria toxoid conjugate vaccine (MCV4P)">
+                    <target code="1971000221105" relationship="equivalent" displayName="Vaccine product containing only Neisseria meningitidis serogroup A, C, W135 and Y capsular polysaccharide conjugated antigens (medicinal product)">
+                        <comment language="en-US">Retargeted from 836401009, which was a containing rather than an only concept and named no serogroups. The P in MCV4P is the polysaccharide conjugate, which this concept states.</comment>
+                    </target>
+                </element>
+            <element code="115" displayName="tetanus toxoid, reduced diphtheria toxoid, and acellular pertussis vaccine, adsorbed">
+                    <target code="462321000124107" relationship="equivalent" displayName="Vaccine product containing only low dose acellular Bordetella pertussis and Clostridium tetani and low dose Corynebacterium diphtheriae antigens (medicinal product)">
+                        <comment language="en-US">Retargeted from 871875004, see CVX 20. Low dose acellular pertussis and low dose diphtheria is exactly Tdap.</comment>
+                    </target>
+                </element>
+            <element code="119" displayName="rotavirus, live, monovalent vaccine">
+                    <target code="871761004" relationship="equivalent" displayName="Vaccine product containing only Rotavirus antigen (medicinal product)"/>
+                </element>
+            <element code="121" displayName="zoster vaccine, live">
+                    <target code="2221000221107" relationship="wider" displayName="Vaccine product containing only live attenuated Human alphaherpesvirus 3 antigen (medicinal product)">
+                        <comment language="en-US">Same target as CVX 21, see the comment there. SNOMED CT has no zoster specific vaccine product concept.</comment>
+                    </target>
+                </element>
+            <element code="133" displayName="pneumococcal conjugate vaccine, 13 valent">
+                    <target code="51451000087105" relationship="equivalent" displayName="Vaccine product containing only Streptococcus pneumoniae Danish serotype 1, 3, 4, 5, 6A, 6B, 7F, 9V, 14, 18C, 19A, 19F, and 23F capsular polysaccharide antigens conjugated (medicinal product)"/>
+                </element>
+            <element code="187" displayName="zoster vaccine recombinant">
+                    <target code="1156183006" relationship="equivalent" displayName="Vaccine product containing only Human alphaherpesvirus 3 recombinant surface glycoprotein E antigen (medicinal product)">
+                        <comment language="en-US">The recombinant adjuvanted zoster vaccine. Its glycoprotein E subunit antigen distinguishes it cleanly from the live attenuated vaccine of CVX 21 and CVX 121.</comment>
+                    </target>
+                </element>
+            <element code="140" displayName="Influenza, seasonal, injectable, preservative free">
+                    <target code="2211000221102" relationship="wider" displayName="Vaccine product containing only influenza A virus subtypes H1N1 and H3N2 and influenza B virus Victoria lineage antigens (medicinal product)">
+                        <comment language="en-US">Retargeted from 1181000221105. Trivalent is represented, the split virion preparation and the absence of preservative are not.</comment>
+                    </target>
+                </element>
+            <element code="207" displayName="SARS-COV-2 (COVID-19) vaccine, mRNA, spike protein, LNP, preservative free, 100 mcg/0.5mL dose or 50 mcg/0.25mL dose">
+                    <target code="1287964002" relationship="wider" displayName="Vaccine product containing only severe acute respiratory syndrome coronavirus 2 encoding B lineage spike protein messenger ribonucleic acid (medicinal product)">
+                        <comment language="en-US">Retargeted from 1119349007. SNOMED CT does not separate the Moderna from the Pfizer product on the antigen level: both are monovalent B lineage mRNA vaccines and differ only in manufacturer and dose. CVX 208 maps to the same target.</comment>
+                    </target>
+                </element>
+            <element code="208" displayName="SARS-COV-2 (COVID-19) vaccine, mRNA, spike protein, LNP, preservative free, 30 mcg/0.3mL dose">
+                    <target code="1287964002" relationship="wider" displayName="Vaccine product containing only severe acute respiratory syndrome coronavirus 2 encoding B lineage spike protein messenger ribonucleic acid (medicinal product)">
+                        <comment language="en-US">Same target as CVX 207, see the comment there.</comment>
+                    </target>
+                </element>
+            <element code="212" displayName="SARS-COV-2 (COVID-19) vaccine, vector non-replicating, recombinant spike protein-Ad26, preservative free, 0.5 mL">
+                    <target code="29061000087103" relationship="wider" displayName="Vaccine product containing only recombinant non-replicating viral vector encoding severe acute respiratory syndrome coronavirus 2 spike protein (medicinal product)">
+                        <comment language="en-US">The Ad26 vector has no concept of its own, only the vector class.</comment>
+                    </target>
+                </element>
+        </group>
+    </conceptMap>

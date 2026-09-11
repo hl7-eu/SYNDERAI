@@ -77,6 +77,10 @@ foreach ($pdat->labobservations as $ldate => $lbspd) {
         'system' => $labi["valuesystem"] === "snomed" ? "\$sct" :$labi["valuesystem"],
         'display' => $labi["valuedisplay"]
       ];
+      if ($labi["valuetype"] === "CodeableConcept") {
+        var_dump($labi);
+        // var_dump($value);
+      }
       if (USE_AI) {
         $labtestai = $labi["code"]["display"] . " " . $labi["value"] . " " . $labi["valueunit"];
         $labtestmd5 = $pdat->age . $pdat->gender . $labi["code"]["display"] . $labi["valueunit"];

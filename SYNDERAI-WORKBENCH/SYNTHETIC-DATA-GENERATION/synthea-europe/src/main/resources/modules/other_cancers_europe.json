@@ -1,0 +1,695 @@
+{
+  "name": "Other Malignant Neoplasms Europe",
+  "remarks": [
+    "European calibration of the malignant neoplasms not covered by a dedicated module.",
+    "NEW in R4.",
+    "",
+    "R3 modelled only breast, prostate and colorectal cancer plus a little",
+    "haematology (AML, multiple myeloma); lung cancer had a module that never ran.",
+    "Those four solid-tumour sites are roughly 48% of European cancer incidence, so",
+    "about half the oncological burden had no representation at all. Total cancer in",
+    "R3 was 3.2% lifetime / 1.83% period against a European survivor prevalence of",
+    "4-5%, and the site mix was heavily distorted.",
+    "",
+    "This module covers the thirteen next most common sites in one age- and",
+    "sex-stratified hazard, so the burden lands in plausible people rather than",
+    "requiring thirteen separate modules.",
+    "",
+    "Calibrated against: ECIS / IARC GLOBOCAN 2020-2022 Europe, ECDC Cancer Burden",
+    "2022. Combined annual incidence for these sites is ~52% of all-cancer",
+    "incidence, applied by age band:",
+    "  25-39 0.026% | 40-49 0.094% | 50-59 0.234% | 60-69 0.494%",
+    "  70-79 0.780% | 80+   0.936%",
+    "Site shares are normalised European incidence shares within this set, given",
+    "separately for women and men; uterus, ovary and cervix are female-only and",
+    "their share is redistributed across the remaining sites for men.",
+    "",
+    "Known omission: brain and CNS tumours (~2% of incidence) are not included.",
+    "SNOMED's generic brain concept (126952004) is 'Neoplasm of brain', which is not",
+    "malignancy-specific, and no unambiguous malignant rollup was used here.",
+    "",
+    "All thirteen concept IDs verified against SNOMED CT International 20260801.",
+    "Staging follows the European late-detection pattern (~55% stage III-IV)."
+  ],
+  "states": {
+    "Initial": {
+      "type": "Initial",
+      "direct_transition": "Age_Guard"
+    },
+    "Age_Guard": {
+      "type": "Guard",
+      "allow": {
+        "condition_type": "Age",
+        "operator": ">=",
+        "quantity": 25,
+        "unit": "years"
+      },
+      "direct_transition": "Naive_Guard"
+    },
+    "Naive_Guard": {
+      "type": "Guard",
+      "allow": {
+        "condition_type": "Attribute",
+        "attribute": "other_cancer",
+        "operator": "is nil"
+      },
+      "direct_transition": "Annual_Delay"
+    },
+    "Annual_Delay": {
+      "type": "Delay",
+      "exact": {
+        "quantity": 1,
+        "unit": "years"
+      },
+      "direct_transition": "Age_Check"
+    },
+    "Age_Check": {
+      "type": "Simple",
+      "conditional_transition": [
+        {
+          "condition": {
+            "condition_type": "Age",
+            "operator": "<",
+            "quantity": 40,
+            "unit": "years"
+          },
+          "transition": "Prob_25_39"
+        },
+        {
+          "condition": {
+            "condition_type": "Age",
+            "operator": "<",
+            "quantity": 50,
+            "unit": "years"
+          },
+          "transition": "Prob_40_49"
+        },
+        {
+          "condition": {
+            "condition_type": "Age",
+            "operator": "<",
+            "quantity": 60,
+            "unit": "years"
+          },
+          "transition": "Prob_50_59"
+        },
+        {
+          "condition": {
+            "condition_type": "Age",
+            "operator": "<",
+            "quantity": 70,
+            "unit": "years"
+          },
+          "transition": "Prob_60_69"
+        },
+        {
+          "condition": {
+            "condition_type": "Age",
+            "operator": "<",
+            "quantity": 80,
+            "unit": "years"
+          },
+          "transition": "Prob_70_79"
+        },
+        {
+          "transition": "Prob_80_plus"
+        }
+      ]
+    },
+    "Prob_25_39": {
+      "type": "Simple",
+      "remarks": [
+        "0.026% annual incidence."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.00026,
+          "transition": "Cancer_Site_Branch"
+        },
+        {
+          "distribution": 0.99974,
+          "transition": "Annual_Delay"
+        }
+      ]
+    },
+    "Prob_40_49": {
+      "type": "Simple",
+      "remarks": [
+        "0.094% annual incidence."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.00094,
+          "transition": "Cancer_Site_Branch"
+        },
+        {
+          "distribution": 0.99906,
+          "transition": "Annual_Delay"
+        }
+      ]
+    },
+    "Prob_50_59": {
+      "type": "Simple",
+      "remarks": [
+        "0.234% annual incidence."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.00234,
+          "transition": "Cancer_Site_Branch"
+        },
+        {
+          "distribution": 0.99766,
+          "transition": "Annual_Delay"
+        }
+      ]
+    },
+    "Prob_60_69": {
+      "type": "Simple",
+      "remarks": [
+        "0.494% annual incidence."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.00494,
+          "transition": "Cancer_Site_Branch"
+        },
+        {
+          "distribution": 0.99506,
+          "transition": "Annual_Delay"
+        }
+      ]
+    },
+    "Prob_70_79": {
+      "type": "Simple",
+      "remarks": [
+        "0.780% annual incidence."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.0078,
+          "transition": "Cancer_Site_Branch"
+        },
+        {
+          "distribution": 0.9922,
+          "transition": "Annual_Delay"
+        }
+      ]
+    },
+    "Prob_80_plus": {
+      "type": "Simple",
+      "remarks": [
+        "0.936% annual incidence."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.00936,
+          "transition": "Cancer_Site_Branch"
+        },
+        {
+          "distribution": 0.99064,
+          "transition": "Annual_Delay"
+        }
+      ]
+    },
+    "Cancer_Site_Branch": {
+      "type": "Simple",
+      "remarks": [
+        "Site shares are normalised ECIS/GLOBOCAN European incidence shares",
+        "within this set of thirteen sites, separately by sex."
+      ],
+      "complex_transition": [
+        {
+          "condition": {
+            "condition_type": "Gender",
+            "gender": "F"
+          },
+          "distributions": [
+            {
+              "distribution": 0.08,
+              "transition": "Onset_Bladder"
+            },
+            {
+              "distribution": 0.12,
+              "transition": "Onset_Melanoma"
+            },
+            {
+              "distribution": 0.06,
+              "transition": "Onset_Stomach"
+            },
+            {
+              "distribution": 0.06,
+              "transition": "Onset_Kidney"
+            },
+            {
+              "distribution": 0.08,
+              "transition": "Onset_Pancreas"
+            },
+            {
+              "distribution": 0.08,
+              "transition": "Onset_Lymphoma"
+            },
+            {
+              "distribution": 0.03,
+              "transition": "Onset_Larynx"
+            },
+            {
+              "distribution": 0.1,
+              "transition": "Onset_Thyroid"
+            },
+            {
+              "distribution": 0.04,
+              "transition": "Onset_Liver"
+            },
+            {
+              "distribution": 0.03,
+              "transition": "Onset_Esophagus"
+            },
+            {
+              "distribution": 0.13,
+              "transition": "Onset_Uterus"
+            },
+            {
+              "distribution": 0.1,
+              "transition": "Onset_Ovary"
+            },
+            {
+              "distribution": 0.09,
+              "transition": "Onset_Cervix"
+            }
+          ]
+        },
+        {
+          "condition": {
+            "condition_type": "Gender",
+            "gender": "M"
+          },
+          "distributions": [
+            {
+              "distribution": 0.2,
+              "transition": "Onset_Bladder"
+            },
+            {
+              "distribution": 0.13,
+              "transition": "Onset_Melanoma"
+            },
+            {
+              "distribution": 0.1,
+              "transition": "Onset_Stomach"
+            },
+            {
+              "distribution": 0.1,
+              "transition": "Onset_Kidney"
+            },
+            {
+              "distribution": 0.09,
+              "transition": "Onset_Pancreas"
+            },
+            {
+              "distribution": 0.09,
+              "transition": "Onset_Lymphoma"
+            },
+            {
+              "distribution": 0.09,
+              "transition": "Onset_Larynx"
+            },
+            {
+              "distribution": 0.04,
+              "transition": "Onset_Thyroid"
+            },
+            {
+              "distribution": 0.09,
+              "transition": "Onset_Liver"
+            },
+            {
+              "distribution": 0.07,
+              "transition": "Onset_Esophagus"
+            }
+          ]
+        }
+      ]
+    },
+    "Onset_Bladder": {
+      "type": "ConditionOnset",
+      "assign_to_attribute": "other_cancer",
+      "target_encounter": "Cancer_Staging_Encounter",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "399326009",
+          "display": "Malignant neoplasm of urinary bladder (disorder)"
+        }
+      ],
+      "direct_transition": "Cancer_Staging_Encounter"
+    },
+    "Onset_Melanoma": {
+      "type": "ConditionOnset",
+      "assign_to_attribute": "other_cancer",
+      "target_encounter": "Cancer_Staging_Encounter",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "372244006",
+          "display": "Malignant melanoma (disorder)"
+        }
+      ],
+      "direct_transition": "Cancer_Staging_Encounter"
+    },
+    "Onset_Stomach": {
+      "type": "ConditionOnset",
+      "assign_to_attribute": "other_cancer",
+      "target_encounter": "Cancer_Staging_Encounter",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "363349007",
+          "display": "Malignant neoplasm of stomach (disorder)"
+        }
+      ],
+      "direct_transition": "Cancer_Staging_Encounter"
+    },
+    "Onset_Kidney": {
+      "type": "ConditionOnset",
+      "assign_to_attribute": "other_cancer",
+      "target_encounter": "Cancer_Staging_Encounter",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "363518003",
+          "display": "Malignant neoplasm of kidney (disorder)"
+        }
+      ],
+      "direct_transition": "Cancer_Staging_Encounter"
+    },
+    "Onset_Pancreas": {
+      "type": "ConditionOnset",
+      "assign_to_attribute": "other_cancer",
+      "target_encounter": "Cancer_Staging_Encounter",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "363418001",
+          "display": "Malignant neoplasm of pancreas (disorder)"
+        }
+      ],
+      "direct_transition": "Cancer_Staging_Encounter"
+    },
+    "Onset_Lymphoma": {
+      "type": "ConditionOnset",
+      "assign_to_attribute": "other_cancer",
+      "target_encounter": "Cancer_Staging_Encounter",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "118601006",
+          "display": "Non-Hodgkin's lymphoma (disorder)"
+        }
+      ],
+      "direct_transition": "Cancer_Staging_Encounter"
+    },
+    "Onset_Larynx": {
+      "type": "ConditionOnset",
+      "assign_to_attribute": "other_cancer",
+      "target_encounter": "Cancer_Staging_Encounter",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "363429002",
+          "display": "Malignant neoplasm of larynx (disorder)"
+        }
+      ],
+      "direct_transition": "Cancer_Staging_Encounter"
+    },
+    "Onset_Thyroid": {
+      "type": "ConditionOnset",
+      "assign_to_attribute": "other_cancer",
+      "target_encounter": "Cancer_Staging_Encounter",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "363478007",
+          "display": "Malignant neoplasm of thyroid gland (disorder)"
+        }
+      ],
+      "direct_transition": "Cancer_Staging_Encounter"
+    },
+    "Onset_Liver": {
+      "type": "ConditionOnset",
+      "assign_to_attribute": "other_cancer",
+      "target_encounter": "Cancer_Staging_Encounter",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "93870000",
+          "display": "Malignant neoplasm of liver (disorder)"
+        }
+      ],
+      "direct_transition": "Cancer_Staging_Encounter"
+    },
+    "Onset_Esophagus": {
+      "type": "ConditionOnset",
+      "assign_to_attribute": "other_cancer",
+      "target_encounter": "Cancer_Staging_Encounter",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "363402007",
+          "display": "Malignant neoplasm of esophagus (disorder)"
+        }
+      ],
+      "direct_transition": "Cancer_Staging_Encounter"
+    },
+    "Onset_Uterus": {
+      "type": "ConditionOnset",
+      "assign_to_attribute": "other_cancer",
+      "target_encounter": "Cancer_Staging_Encounter",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "371973000",
+          "display": "Malignant neoplasm of uterus (disorder)"
+        }
+      ],
+      "direct_transition": "Cancer_Staging_Encounter"
+    },
+    "Onset_Ovary": {
+      "type": "ConditionOnset",
+      "assign_to_attribute": "other_cancer",
+      "target_encounter": "Cancer_Staging_Encounter",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "363443007",
+          "display": "Malignant neoplasm of ovary (disorder)"
+        }
+      ],
+      "direct_transition": "Cancer_Staging_Encounter"
+    },
+    "Onset_Cervix": {
+      "type": "ConditionOnset",
+      "assign_to_attribute": "other_cancer",
+      "target_encounter": "Cancer_Staging_Encounter",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "363354003",
+          "display": "Malignant neoplasm of cervix uteri (disorder)"
+        }
+      ],
+      "direct_transition": "Cancer_Staging_Encounter"
+    },
+    "Cancer_Staging_Encounter": {
+      "type": "Encounter",
+      "encounter_class": "outpatient",
+      "reason": "other_cancer",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "185347001",
+          "display": "Encounter for problem (procedure)"
+        }
+      ],
+      "direct_transition": "Cancer_Imaging"
+    },
+    "Cancer_Imaging": {
+      "type": "Procedure",
+      "reason": "other_cancer",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "77477000",
+          "display": "Computerized axial tomography (procedure)"
+        }
+      ],
+      "duration": {
+        "low": 20,
+        "high": 45,
+        "unit": "minutes"
+      },
+      "direct_transition": "Cancer_Biopsy"
+    },
+    "Cancer_Biopsy": {
+      "type": "Procedure",
+      "reason": "other_cancer",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "86273004",
+          "display": "Biopsy (procedure)"
+        }
+      ],
+      "duration": {
+        "low": 20,
+        "high": 60,
+        "unit": "minutes"
+      },
+      "direct_transition": "Cancer_Stage_Branch"
+    },
+    "Cancer_Stage_Branch": {
+      "type": "Simple",
+      "remarks": [
+        "ECIS 2022: roughly 55% of these sites present at stage III-IV in Europe."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.22,
+          "transition": "Cancer_Stage_I"
+        },
+        {
+          "distribution": 0.23,
+          "transition": "Cancer_Stage_II"
+        },
+        {
+          "distribution": 0.3,
+          "transition": "Cancer_Stage_III"
+        },
+        {
+          "distribution": 0.25,
+          "transition": "Cancer_Stage_IV"
+        }
+      ]
+    },
+    "Cancer_Stage_I": {
+      "type": "SetAttribute",
+      "attribute": "other_cancer_stage",
+      "value": 1,
+      "direct_transition": "Cancer_Surgery"
+    },
+    "Cancer_Stage_II": {
+      "type": "SetAttribute",
+      "attribute": "other_cancer_stage",
+      "value": 2,
+      "direct_transition": "Cancer_Surgery"
+    },
+    "Cancer_Stage_III": {
+      "type": "SetAttribute",
+      "attribute": "other_cancer_stage",
+      "value": 3,
+      "direct_transition": "Cancer_Chemotherapy"
+    },
+    "Cancer_Stage_IV": {
+      "type": "SetAttribute",
+      "attribute": "other_cancer_stage",
+      "value": 4,
+      "direct_transition": "Cancer_Palliative_Care"
+    },
+    "Cancer_Surgery": {
+      "type": "Procedure",
+      "reason": "other_cancer",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "396487001",
+          "display": "Excision of tumor (procedure)"
+        }
+      ],
+      "duration": {
+        "low": 60,
+        "high": 240,
+        "unit": "minutes"
+      },
+      "direct_transition": "End_Cancer_Encounter"
+    },
+    "Cancer_Chemotherapy": {
+      "type": "Procedure",
+      "reason": "other_cancer",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "367336001",
+          "display": "Chemotherapy (procedure)"
+        }
+      ],
+      "duration": {
+        "low": 90,
+        "high": 240,
+        "unit": "minutes"
+      },
+      "direct_transition": "Cancer_Radiotherapy"
+    },
+    "Cancer_Radiotherapy": {
+      "type": "Procedure",
+      "reason": "other_cancer",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "33195004",
+          "display": "Teleradiotherapy procedure (procedure)"
+        }
+      ],
+      "duration": {
+        "low": 15,
+        "high": 40,
+        "unit": "minutes"
+      },
+      "direct_transition": "End_Cancer_Encounter"
+    },
+    "Cancer_Palliative_Care": {
+      "type": "Procedure",
+      "reason": "other_cancer",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "103735009",
+          "display": "Palliative care (regime/therapy)"
+        }
+      ],
+      "duration": {
+        "low": 30,
+        "high": 60,
+        "unit": "minutes"
+      },
+      "direct_transition": "End_Cancer_Encounter"
+    },
+    "End_Cancer_Encounter": {
+      "type": "EncounterEnd",
+      "direct_transition": "Cancer_Followup_Delay"
+    },
+    "Cancer_Followup_Delay": {
+      "type": "Delay",
+      "range": {
+        "low": 4,
+        "high": 8,
+        "unit": "months"
+      },
+      "direct_transition": "Cancer_Surveillance_Encounter"
+    },
+    "Cancer_Surveillance_Encounter": {
+      "type": "Encounter",
+      "encounter_class": "outpatient",
+      "reason": "other_cancer",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "390906007",
+          "display": "Follow-up encounter (procedure)"
+        }
+      ],
+      "direct_transition": "End_Cancer_Surveillance"
+    },
+    "End_Cancer_Surveillance": {
+      "type": "EncounterEnd",
+      "direct_transition": "Cancer_Followup_Delay"
+    }
+  }
+}

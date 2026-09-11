@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<conceptMap id="2.16.840.1.113883.3.1937.777.100.24.6" displayName="Vaccine to ATC" effectiveDate="2026-09-10T12:00:00" statusCode="draft" lastModifiedDate="2026-09-10T12:00:00" url="http://art-decor.org/decor/services/" ident="synderai-">
+        <desc language="en-US">
+                <p>Maps SNOMED CT vaccine products to the ATC classification. Source is the value set Vaccine Product extensional (SNOMED) (2.16.840.1.113883.3.1937.777.100.11.10), target eHDSIVaccines (ATC) (2.16.840.1.113883.3.1937.777.100.11.12). The map starts from SNOMED rather than from CVX so that SNOMED CT stays the one axis every other classification hangs off; the CVX codes reach ATC
+                    through the concept map CVX to SNOMED-CT Vaccine Products (2.16.840.1.113883.3.1937.777.100.24.3). equivalent means the ATC code names the same vaccine, wider means ATC is the coarser of the two. 20 rows, 11 equivalent, 9 wider. One row needs the ATC group code rather than a substance code: 2221000221107 is the target of both the varicella and the live zoster vaccine, which ATC
+                    separates into J07BK01 and J07BK02, so only the group J07BK stays true for either use. Three codes of the source table were corrected, see the comments on the rows.</p>
+                <div class="__artdecor_box aswarning">
+                    <p>ATC codes are copyright of the WHO Collaborating Centre for Drug Statistics Methodology, Oslo, Norway. Use of ATC requires a licence for commercial purposes.</p>
+                    <p>This artefact includes content from SNOMED Clinical Terms® (SNOMED CT®) which is copyright of the International Health Terminology Standards Development Organisation (IHTSDO). Implementers of these artefacts must have the appropriate SNOMED CT Affiliate license - for more information contact http://www.snomed.org/snomed-ct/getsnomed-ct or info@snomed.org.</p>
+                </div>
+            </desc>
+        <publishingAuthority name="SYNDERAI" inherited="project"/>
+        <purpose language="en-US">Immunization axis for synthetic data, classification by ATC.</purpose>
+        <copyright language="en-US">ATC codes are copyright of the WHO Collaborating Centre for Drug Statistics Methodology, Oslo, Norway. Use of ATC requires a licence for commercial purposes.<p/> This artefact includes content from SNOMED Clinical Terms® (SNOMED CT®) which is copyright of the International Health Terminology Standards Development Organisation (IHTSDO). Implementers of these
+                artefacts must have the appropriate SNOMED CT Affiliate license - for more information contact http://www.snomed.org/snomed-ct/getsnomed-ct or info@snomed.org.<div data-source="inherited" style="border-top: 1px solid black">This artefact includes content from SNOMED Clinical Terms® (SNOMED CT®) which is copyright of the International Health Terminology Standards Development Organisation (IHTSDO). Implementers of these artefacts must have the appropriate SNOMED CT Affiliate license - for more information contact http://www.snomed.org/snomed-ct/getsnomed-ct or info@snomed.org.</div>
+        </copyright>
+        <sourceScope ref="2.16.840.1.113883.3.1937.777.100.11.10" flexibility="dynamic" displayName="Vaccine Product extensional (SNOMED)"/>
+        <targetScope ref="2.16.840.1.113883.3.1937.777.100.11.12" flexibility="dynamic" displayName="eHDSIVaccines (ATC)"/>
+        <issueAssociation count="0"/>
+        <group>
+            <source codeSystem="2.16.840.1.113883.6.96" displayName="SNOMED Clinical Terms" canonicalUri="http://snomed.info/sct"/>
+            <target codeSystem="2.16.840.1.113883.6.73" displayName="WHO Anatomical Therapeutic Chemical classification" canonicalUri="http://www.whocc.no/atc"/>
+            <element code="1119220001" displayName="Vaccine product containing only Streptococcus pneumoniae Danish serotype 1, 2, 3, 4, 5, 6B, 7F, 8, 9N, 9V, 10A, 11A, 12F, 14, 15B, 17F, 18C, 19A, 19F, 20, 22F, 23F, and 33F capsular polysaccharide antigens (medicinal product)">
+                    <target code="J07AL01" relationship="equivalent" displayName="pneumococcus, purified polysaccharides antigen"/>
+                </element>
+            <element code="1156183006" displayName="Vaccine product containing only Human alphaherpesvirus 3 recombinant surface glycoprotein E antigen (medicinal product)">
+                    <target code="J07BK03" relationship="equivalent" displayName="zoster, purified antigen"/>
+                </element>
+            <element code="1287964002" displayName="Vaccine product containing only severe acute respiratory syndrome coronavirus 2 encoding B lineage spike protein messenger ribonucleic acid (medicinal product)">
+                    <target code="J07BN01" relationship="wider" displayName="covid-19, RNA-based vaccine">
+                        <comment language="en-US">ATC does not separate the manufacturers or the lineage.</comment>
+                    </target>
+                </element>
+            <element code="1296676008" displayName="Vaccine product containing only adsorbed Hepatitis B virus recombinant surface antigen (medicinal product)">
+                    <target code="J07BC01" relationship="equivalent" displayName="hepatitis B, purified antigen"/>
+                </element>
+            <element code="1296864005" displayName="Pediatric vaccine product containing only adsorbed Hepatitis B virus recombinant surface antigen (medicinal product)">
+                    <target code="J07BC01" relationship="wider" displayName="hepatitis B, purified antigen">
+                        <comment language="en-US">ATC does not mark the paediatric presentation.</comment>
+                    </target>
+                </element>
+            <element code="1297217008" displayName="Pediatric vaccine product containing only acellular Bordetella pertussis and Clostridium tetani toxoid and Corynebacterium diphtheriae toxoid antigens (medicinal product)">
+                    <target code="J07AJ52" relationship="wider" displayName="pertussis, purified antigen, combinations with toxoids">
+                        <comment language="en-US">The source table stated J07AM01, which is tetanus toxoid alone. ATC files acellular pertussis combination vaccines under J07AJ52 and does not separate the paediatric DTaP from the adult Tdap.</comment>
+                    </target>
+                </element>
+            <element code="1971000221105" displayName="Vaccine product containing only Neisseria meningitidis serogroup A, C, W135 and Y capsular polysaccharide conjugated antigens (medicinal product)">
+                    <target code="J07AH08" relationship="equivalent" displayName="meningococcus A,C,Y,W-135, tetravalent purified polysaccharides antigen conjugated"/>
+                </element>
+            <element code="2001000221108" displayName="Vaccine product containing only Human papillomavirus 6, 11, 16 and 18 antigens (medicinal product)">
+                    <target code="J07BM01" relationship="equivalent" displayName="papillomavirus (human types 6, 11, 16, 18)">
+                        <comment language="en-US">The source table stated J07BM02, which is the bivalent vaccine against types 16 and 18. The quadrivalent vaccine is J07BM01.</comment>
+                    </target>
+                </element>
+            <element code="2041000221105" displayName="Vaccine product containing only Haemophilus influenzae type b capsular polysaccharide antigen conjugated (medicinal product)">
+                    <target code="J07AG01" relationship="equivalent" displayName="haemophilus influenzae B, purified antigen conjugated"/>
+                </element>
+            <element code="2211000221102" displayName="Vaccine product containing only influenza A virus subtypes H1N1 and H3N2 and influenza B virus Victoria lineage antigens (medicinal product)">
+                    <target code="J07BB02" relationship="wider" displayName="influenza, inactivated, split virus or surface antigen">
+                        <comment language="en-US">ATC classifies by preparation, not by valency; the trivalent composition is not represented.</comment>
+                    </target>
+                </element>
+            <element code="2221000221107" displayName="Vaccine product containing only live attenuated Human alphaherpesvirus 3 antigen (medicinal product)">
+                    <target code="J07BK" relationship="wider" displayName="Varicella zoster vaccines">
+                        <comment language="en-US">This SNOMED concept is the target of both CVX 21 varicella and CVX 121 zoster live, which ATC separates into J07BK01 and J07BK02. The group code J07BK covers both and is the only target that stays true for either use.</comment>
+                    </target>
+                </element>
+            <element code="2241000221103" displayName="Vaccine product containing only live attenuated Measles morbillivirus and Mumps orthorubulavirus and Rubella virus antigens (medicinal product)">
+                    <target code="J07BD52" relationship="equivalent" displayName="measles, combinations with mumps and rubella, live attenuated"/>
+                </element>
+            <element code="29061000087103" displayName="Vaccine product containing only recombinant non-replicating viral vector encoding severe acute respiratory syndrome coronavirus 2 spike protein (medicinal product)">
+                    <target code="J07BN02" relationship="equivalent" displayName="covid-19, viral vector, non-replicating">
+                        <comment language="en-US">The source table stated J07BX03, which the target value set does not contain. The current ATC code for non-replicating viral vector COVID-19 vaccines is J07BN02.</comment>
+                    </target>
+                </element>
+            <element code="462321000124107" displayName="Vaccine product containing only low dose acellular Bordetella pertussis and Clostridium tetani and low dose Corynebacterium diphtheriae antigens (medicinal product)">
+                    <target code="J07AJ52" relationship="wider" displayName="pertussis, purified antigen, combinations with toxoids">
+                        <comment language="en-US">The source table stated J07AM52, which is tetanus toxoid combined with tetanus immunoglobulin. ATC does not separate Tdap from DTaP; both carry J07AJ52.</comment>
+                    </target>
+                </element>
+            <element code="51451000087105" displayName="Vaccine product containing only Streptococcus pneumoniae Danish serotype 1, 3, 4, 5, 6A, 6B, 7F, 9V, 14, 18C, 19A, 19F, and 23F capsular polysaccharide antigens conjugated (medicinal product)">
+                    <target code="J07AL02" relationship="wider" displayName="pneumococcus, purified polysaccharides antigen conjugated">
+                        <comment language="en-US">ATC does not state the number of serotypes.</comment>
+                    </target>
+                </element>
+            <element code="865997008" displayName="Adult vaccine product containing only Hepatitis A virus antigen (medicinal product)">
+                    <target code="J07BC02" relationship="wider" displayName="hepatitis A, inactivated, whole virus">
+                        <comment language="en-US">ATC does not mark the adult presentation.</comment>
+                    </target>
+                </element>
+            <element code="871740006" displayName="Vaccine product containing only inactivated whole Human poliovirus antigen (medicinal product)">
+                    <target code="J07BF03" relationship="equivalent" displayName="poliomyelitis, trivalent, inactivated, whole virus"/>
+                </element>
+            <element code="871750007" displayName="Pediatric vaccine product containing only Hepatitis A virus antigen (medicinal product)">
+                    <target code="J07BC02" relationship="wider" displayName="hepatitis A, inactivated, whole virus">
+                        <comment language="en-US">ATC does not mark the paediatric presentation.</comment>
+                    </target>
+                </element>
+            <element code="871761004" displayName="Vaccine product containing only Rotavirus antigen (medicinal product)">
+                    <target code="J07BH01" relationship="equivalent" displayName="rota virus, live attenuated"/>
+                </element>
+            <element code="871827009" displayName="Vaccine product containing only Clostridium tetani and low dose Corynebacterium diphtheriae antigens (medicinal product)">
+                    <target code="J07AM51" relationship="equivalent" displayName="tetanus toxoid, combinations with diphtheria toxoid"/>
+                </element>
+        </group>
+    </conceptMap>

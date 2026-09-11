@@ -1,0 +1,116 @@
+ %%CDA%% {# ── Section marker required by the CDA pre-processor ─────────────── #}
+ 
+{#
+  ── Pre-calculations ─────────────────────────────────────────────────────────
+#}
+{% set parts = [
+    medication.dosagedisplay|default(''),
+    medication.routeOfAdministration.display|default('')
+]|filter(v => v is not empty) %}
+{% set doseringstekst = parts|join(', ') %}
+
+ <component typeCode="COMP" contextControlCode="OP">
+    <substanceAdministration classCode="SBADM" moodCode="RQO">
+      <!-- medication -->
+        <templateId root="2.16.840.1.113883.2.4.3.11.60.20.77.10.9235"/>
+        <templateId root="2.16.840.1.113883.2.4.3.11.60.20.77.10.9233"/>
+        <id extension="{{ medicationid }}" root="2.16.840.1.113883.2.4.6.6.100001111"/>
+        <code code="16076005" codeSystem="2.16.840.1.113883.6.96"/>
+        <text mediaType="text/plain">{{ doseringstekst }}</text>
+        <effectiveTime xsi:type="IVL_TS">
+            <low value="{{ medication.start|date('Ymd') }}"/>
+            {% if medication.end is not empty %}
+            <high value="{{ medication.end|date('Ymd') }}"/>
+            {% endif %}
+        </effectiveTime>
+{# <routeCode code="62" displayName="INHALATIE" codeSystem="2.16.840.1.113883.2.4.4.9" codeSystemName="G-Standaard tabel voor toedieningswegen: subtabel 0007"/> #}
+{% if medication.routeOfAdministration.code is not empty %}
+        <routeCode code="{{ medication.routeOfAdministration.code }}" codeSystem="2.16.840.1.113883.6.96" displayName="{{ medication.routeOfAdministration.display }}" />
+{% else %}
+         <routeCode nullFlavor="OTH"/>
+{% endif %}
+        <consumable>
+            <manufacturedProduct classCode="MANU">
+                <templateId root="2.16.840.1.113883.2.4.3.11.60.20.77.10.9254"/>
+                <manufacturedMaterial classCode="MMAT" determinerCode="KIND">
+{% if medication.snomed.code is not empty %}
+                  <code code="{{ medication.snomed.code }}" displayName="{{ medication.snomed.display }}" codeSystem="2.16.840.1.113883.6.96"/>
+                  {#<translation code="92495" displayName="FLUTICASON INHALATIEPOEDER 250 UG/DO" codeSystem="2.16.840.1.113883.2.4.4.1" codeSystemName="Generieke productcode"/>#}
+{% else %}
+                  <name>{{ medication.rxnorm.display }}</name>
+{% endif %}
+                </manufacturedMaterial>
+            </manufacturedProduct>
+        </consumable>
+        {# voorschrijver #}
+        <author>
+            <!-- voorschrijver -->
+            <time value="{{ medication.start|date('Ymd') }}"/>
+            <assignedAuthor>
+                <id root="2.16.528.1.1007.3.1" extension="10000002"/>
+                <code code="01.015" codeSystem="2.16.840.1.113883.2.4.15.111"/>
+                <assignedPerson>
+                    <name>
+                        {% for g in provider.practitioner.given %}
+                        <given qualifier="BR">{{ g }}</given>
+                        {% endfor %}
+                        <family qualifier="BR">XXX_{{ provider.practitioner.family }}</family>
+                     </name>
+                </assignedPerson>
+                <representedOrganization>
+                     <id root="2.16.528.1.1007.3.3" extension="00001111"/>
+                     <code code="Z3" codeSystem="2.16.840.1.113883.2.4.15.1060" displayName="Huisartspraktijk"/>
+                     <name>{{ provider.name }}</name>
+                </representedOrganization>
+            </assignedAuthor>
+        </author>
+        {#
+        <entryRelationship typeCode="COMP">
+            <sequenceNumber value="1"/>
+            <substanceAdministration classCode="SBADM" moodCode="RQO">
+                <templateId root="2.16.840.1.113883.2.4.3.11.60.20.77.10.9149"/>
+                <effectiveTime xsi:type="hl7nl:PIVL_TS" isFlexible="true" operator="A">
+                    <hl7nl:frequency>
+                        <hl7nl:numerator xsi:type="hl7nl:INT" value="2"/>
+                        <hl7nl:denominator xsi:type="hl7nl:PQ" value="1" unit="d"/>
+                    </hl7nl:frequency>
+                </effectiveTime>
+                <doseQuantity>
+                    <center value="1" unit="1">
+                        <translation value="1" code="208" codeSystem="2.16.840.1.113883.2.4.4.1.900.2" displayName="dosis"/>
+                    </center>
+                </doseQuantity>
+                <consumable xsi:nil="true"/>
+            </substanceAdministration>
+        </entryRelationship>
+        <!--<entryRelationship typeCode="RSON">
+            <observation classCode="OBS" moodCode="EVN">
+                <templateId root="2.16.840.1.113883.2.4.3.11.60.20.77.10.9160"/>
+                <code code="10" codeSystem="2.16.840.1.113883.2.4.3.11.60.20.77.5.2"/>
+                <value xsi:type="CE" code="R95" codeSystem="2.16.840.1.113883.2.4.4.31.1" displayName="Emfyseem/COPD"/>
+            </observation>
+        </entryRelationship>-->
+        <!-- Relatie naar OverdrachtConcern -->
+        <entryRelationship typeCode="REFR">
+            <act classCode="ACT" moodCode="EVN">
+                <id extension="EpisodeR95" root="2.16.528.1.1007.3.3.765332.1.12"/>
+                <code code="CONC" codeSystem="2.16.840.1.113883.5.6" codeSystemName="HL7ActClass" displayName="Concern"/>
+            </act>
+        </entryRelationship>
+        <!-- Relatie naar contactmoment -->
+        <entryRelationship typeCode="REFR">
+            <encounter classCode="ENC" moodCode="EVN">
+                <id extension="Contact03" root="2.16.840.1.113883.2.4.6.6.100001111"/>
+            </encounter>
+        </entryRelationship>
+        <!--Relatie naar medicamenteuze behandeling-->
+        <entryRelationship typeCode="COMP" inversionInd="true">
+            <procedure classCode="PROC" moodCode="EVN">
+                <templateId root="2.16.840.1.113883.2.4.3.11.60.20.77.10.9084"/>
+                <id root="2.16.840.1.113883.2.4.6.6.100001111" extension="#MB_01i3"/>
+                <code code="1" displayName="Medicamenteuze behandeling" codeSystem="2.16.840.1.113883.2.4.3.11.60.20.77.5.3"/>
+            </procedure>
+        </entryRelationship>
+        #}
+    </substanceAdministration>
+</component>

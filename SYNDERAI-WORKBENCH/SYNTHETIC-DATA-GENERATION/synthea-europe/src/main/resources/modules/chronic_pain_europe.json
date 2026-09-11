@@ -1,0 +1,501 @@
+{
+  "name": "Chronic Pain Europe",
+  "remarks": [
+    "European calibration of chronic pain as a coded diagnosis.",
+    "NEW in R4. No module anywhere in the tree emitted 82423001. R2 modelled it at",
+    "2.728%; R3 dropped it, and the 'chronic pain group' proxy (joint pain, muscle",
+    "pain, fibromyalgia) reached only 5.88% against a 19.0% European reference.",
+    "",
+    "That proxy was itself inflated: ~2,200 of the 2,878 patients carrying",
+    "57676002 Joint pain were mis-filed knee osteoarthritis (see the codes[0] bug",
+    "fixed in osteoarthritis_europe.json). Correcting that bug makes the group",
+    "worse, which is what this module is for.",
+    "",
+    "Calibrated against: Breivik et al. 2006 European Pain Survey (19% of adults",
+    "with chronic pain of moderate-severe intensity lasting > 6 months),",
+    "Pain Alliance Europe 2022, GBD 2019 Europe.",
+    "",
+    "Design: chronic pain is largely secondary, so the hazard is tiered on the",
+    "conditions that drive it, read by Active Condition rather than by attribute.",
+    "Episodes resolve at 5% per year, giving a steady state rather than unbounded",
+    "accumulation in older cohorts. The attribute is set false on resolution so a",
+    "patient can develop chronic pain again later.",
+    "",
+    "NOTE: the 19% target is a steady-state estimate from incidence and resolution",
+    "rates, not a simulation result. It needs a verification run.",
+    "R4 round 3: resolution rate halved."
+  ],
+  "states": {
+    "Initial": {
+      "type": "Initial",
+      "direct_transition": "Age_Guard"
+    },
+    "Age_Guard": {
+      "type": "Guard",
+      "allow": {
+        "condition_type": "Age",
+        "operator": ">=",
+        "quantity": 18,
+        "unit": "years"
+      },
+      "direct_transition": "Naive_Guard"
+    },
+    "Naive_Guard": {
+      "type": "Guard",
+      "remarks": [
+        "Allows re-onset after a resolved episode: the attribute is set false,",
+        "not left set, when Chronic_Pain_Resolves fires."
+      ],
+      "allow": {
+        "condition_type": "Or",
+        "conditions": [
+          {
+            "condition_type": "Attribute",
+            "attribute": "chronic_pain",
+            "operator": "is nil"
+          },
+          {
+            "condition_type": "Attribute",
+            "attribute": "chronic_pain",
+            "operator": "==",
+            "value": false
+          }
+        ]
+      },
+      "direct_transition": "Annual_Delay"
+    },
+    "Annual_Delay": {
+      "type": "Delay",
+      "exact": {
+        "quantity": 1,
+        "unit": "years"
+      },
+      "direct_transition": "Risk_Check"
+    },
+    "Risk_Check": {
+      "type": "Simple",
+      "remarks": [
+        "Chronic pain is largely secondary. The high tier reads the conditions that",
+        "drive it in European surveys - osteoarthritis, chronic low back pain,",
+        "rheumatoid arthritis, fibromyalgia, diabetic neuropathy, cancer - by Active",
+        "Condition rather than by attribute, so it does not depend on other modules",
+        "exposing one."
+      ],
+      "conditional_transition": [
+        {
+          "condition": {
+            "condition_type": "Or",
+            "conditions": [
+              {
+                "condition_type": "Active Condition",
+                "codes": [
+                  {
+                    "system": "SNOMED-CT",
+                    "code": "239873007",
+                    "display": "Osteoarthritis of knee (disorder)"
+                  }
+                ]
+              },
+              {
+                "condition_type": "Active Condition",
+                "codes": [
+                  {
+                    "system": "SNOMED-CT",
+                    "code": "239872002",
+                    "display": "Osteoarthritis of hip (disorder)"
+                  }
+                ]
+              },
+              {
+                "condition_type": "Active Condition",
+                "codes": [
+                  {
+                    "system": "SNOMED-CT",
+                    "code": "201834006",
+                    "display": "Localized  primary osteoarthritis of the hand (disorder)"
+                  }
+                ]
+              },
+              {
+                "condition_type": "Active Condition",
+                "codes": [
+                  {
+                    "system": "SNOMED-CT",
+                    "code": "278860009",
+                    "display": "Chronic low back pain (disorder)"
+                  }
+                ]
+              },
+              {
+                "condition_type": "Active Condition",
+                "codes": [
+                  {
+                    "system": "SNOMED-CT",
+                    "code": "69896004",
+                    "display": "Rheumatoid arthritis (disorder)"
+                  }
+                ]
+              },
+              {
+                "condition_type": "Active Condition",
+                "codes": [
+                  {
+                    "system": "SNOMED-CT",
+                    "code": "95417003",
+                    "display": "Primary fibromyalgia syndrome (disorder)"
+                  }
+                ]
+              },
+              {
+                "condition_type": "Active Condition",
+                "codes": [
+                  {
+                    "system": "SNOMED-CT",
+                    "code": "230572002",
+                    "display": "Diabetic neuropathy (disorder)"
+                  }
+                ]
+              },
+              {
+                "condition_type": "Attribute",
+                "attribute": "other_cancer",
+                "operator": "is not nil"
+              }
+            ]
+          },
+          "transition": "High_Age_Check"
+        },
+        {
+          "transition": "Low_Age_Check"
+        }
+      ]
+    },
+    "High_Age_Check": {
+      "type": "Simple",
+      "conditional_transition": [
+        {
+          "condition": {
+            "condition_type": "Age",
+            "operator": "<",
+            "quantity": 45,
+            "unit": "years"
+          },
+          "transition": "Prob_High_18_44"
+        },
+        {
+          "condition": {
+            "condition_type": "Age",
+            "operator": "<",
+            "quantity": 65,
+            "unit": "years"
+          },
+          "transition": "Prob_High_45_64"
+        },
+        {
+          "transition": "Prob_High_65_plus"
+        }
+      ]
+    },
+    "Low_Age_Check": {
+      "type": "Simple",
+      "conditional_transition": [
+        {
+          "condition": {
+            "condition_type": "Age",
+            "operator": "<",
+            "quantity": 45,
+            "unit": "years"
+          },
+          "transition": "Prob_Low_18_44"
+        },
+        {
+          "condition": {
+            "condition_type": "Age",
+            "operator": "<",
+            "quantity": 65,
+            "unit": "years"
+          },
+          "transition": "Prob_Low_45_64"
+        },
+        {
+          "transition": "Prob_Low_65_plus"
+        }
+      ]
+    },
+    "Prob_High_18_44": {
+      "type": "Simple",
+      "remarks": [
+        "3.50% annual incidence, high tier, age 18-44."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.035,
+          "transition": "Diagnose_Chronic_Pain"
+        },
+        {
+          "distribution": 0.965,
+          "transition": "Annual_Delay"
+        }
+      ]
+    },
+    "Prob_High_45_64": {
+      "type": "Simple",
+      "remarks": [
+        "5.00% annual incidence, high tier, age 45-64."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.05,
+          "transition": "Diagnose_Chronic_Pain"
+        },
+        {
+          "distribution": 0.95,
+          "transition": "Annual_Delay"
+        }
+      ]
+    },
+    "Prob_High_65_plus": {
+      "type": "Simple",
+      "remarks": [
+        "5.50% annual incidence, high tier, age 65-plus."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.055,
+          "transition": "Diagnose_Chronic_Pain"
+        },
+        {
+          "distribution": 0.945,
+          "transition": "Annual_Delay"
+        }
+      ]
+    },
+    "Prob_Low_18_44": {
+      "type": "Simple",
+      "remarks": [
+        "0.35% annual incidence, low tier, age 18-44."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.0035,
+          "transition": "Diagnose_Chronic_Pain"
+        },
+        {
+          "distribution": 0.9965,
+          "transition": "Annual_Delay"
+        }
+      ]
+    },
+    "Prob_Low_45_64": {
+      "type": "Simple",
+      "remarks": [
+        "0.60% annual incidence, low tier, age 45-64."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.006,
+          "transition": "Diagnose_Chronic_Pain"
+        },
+        {
+          "distribution": 0.994,
+          "transition": "Annual_Delay"
+        }
+      ]
+    },
+    "Prob_Low_65_plus": {
+      "type": "Simple",
+      "remarks": [
+        "0.80% annual incidence, low tier, age 65-plus."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.008,
+          "transition": "Diagnose_Chronic_Pain"
+        },
+        {
+          "distribution": 0.992,
+          "transition": "Annual_Delay"
+        }
+      ]
+    },
+    "Diagnose_Chronic_Pain": {
+      "type": "ConditionOnset",
+      "target_encounter": "Pain_Encounter",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "82423001",
+          "display": "Chronic pain (finding)"
+        }
+      ],
+      "direct_transition": "Pain_Encounter",
+      "assign_to_attribute": "chronic_pain",
+      "remarks": [
+        "assign_to_attribute stores the condition entry itself. It must NOT be followed",
+        "by SetAttribute chronic_pain = true: that would replace the entry with a",
+        "Boolean and every later state using reason: chronic_pain would throw",
+        "ClassCastException (Boolean cannot be cast to HealthRecord$Entry).",
+        "Clear_Chronic_Pain sets false only after the episode has ended, and the next",
+        "onset re-assigns the entry."
+      ]
+    },
+    "Pain_Encounter": {
+      "type": "Encounter",
+      "encounter_class": "ambulatory",
+      "reason": "chronic_pain",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "11429006",
+          "display": "Consultation (procedure)"
+        }
+      ],
+      "direct_transition": "Pain_Score"
+    },
+    "Pain_Score": {
+      "type": "Observation",
+      "category": "exam",
+      "unit": "{score}",
+      "codes": [
+        {
+          "system": "LOINC",
+          "code": "72514-3",
+          "display": "Pain severity - 0-10 verbal numeric rating [Score] - Reported"
+        }
+      ],
+      "range": {
+        "low": 4,
+        "high": 9
+      },
+      "direct_transition": "Pain_Management_Decision"
+    },
+    "Pain_Management_Decision": {
+      "type": "Simple",
+      "remarks": [
+        "EFIC / European chronic pain guidance: non-pharmacological first,",
+        "NSAIDs and paracetamol next, weak opioids in a minority."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.3,
+          "transition": "Pain_Physiotherapy"
+        },
+        {
+          "distribution": 0.35,
+          "transition": "Pain_Prescribe_NSAID"
+        },
+        {
+          "distribution": 0.2,
+          "transition": "Pain_Prescribe_Paracetamol"
+        },
+        {
+          "distribution": 0.15,
+          "transition": "End_Pain_Encounter"
+        }
+      ]
+    },
+    "Pain_Physiotherapy": {
+      "type": "Procedure",
+      "reason": "chronic_pain",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "722138006",
+          "display": "Physical therapy (regime/therapy)"
+        }
+      ],
+      "duration": {
+        "low": 30,
+        "high": 45,
+        "unit": "minutes"
+      },
+      "direct_transition": "End_Pain_Encounter"
+    },
+    "Pain_Prescribe_NSAID": {
+      "type": "MedicationOrder",
+      "reason": "chronic_pain",
+      "codes": [
+        {
+          "system": "RxNorm",
+          "code": "310965",
+          "display": "Ibuprofen 400 MG Oral Tablet"
+        }
+      ],
+      "direct_transition": "End_Pain_Encounter"
+    },
+    "Pain_Prescribe_Paracetamol": {
+      "type": "MedicationOrder",
+      "reason": "chronic_pain",
+      "codes": [
+        {
+          "system": "RxNorm",
+          "code": "198440",
+          "display": "Acetaminophen 500 MG Oral Tablet"
+        }
+      ],
+      "direct_transition": "End_Pain_Encounter"
+    },
+    "End_Pain_Encounter": {
+      "type": "EncounterEnd",
+      "direct_transition": "Pain_Review_Delay"
+    },
+    "Pain_Review_Delay": {
+      "type": "Delay",
+      "range": {
+        "low": 10,
+        "high": 14,
+        "unit": "months"
+      },
+      "direct_transition": "Pain_Resolution_Check"
+    },
+    "Pain_Resolution_Check": {
+      "type": "Simple",
+      "remarks": [
+        "R4 verification round 3 (2026-08-29): resolution 5% -> 2.5% per year.",
+        "Measured at 9.74% against a 19.0% Breivik reference (-49%). Steady state is",
+        "p = i/(i+r), so the blended effective incidence is 0.54%/year; halving r moves",
+        "the steady state to ~17.8% without inflating incidence. Chronic pain persists",
+        "by definition, so lengthening episodes is the more defensible lever than",
+        "generating more of them."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.025,
+          "transition": "Chronic_Pain_Resolves"
+        },
+        {
+          "distribution": 0.975,
+          "transition": "Pain_Review_Encounter"
+        }
+      ]
+    },
+    "Pain_Review_Encounter": {
+      "type": "Encounter",
+      "encounter_class": "ambulatory",
+      "reason": "chronic_pain",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "390906007",
+          "display": "Follow-up encounter (procedure)"
+        }
+      ],
+      "direct_transition": "End_Pain_Review"
+    },
+    "End_Pain_Review": {
+      "type": "EncounterEnd",
+      "direct_transition": "Pain_Review_Delay"
+    },
+    "Chronic_Pain_Resolves": {
+      "type": "ConditionEnd",
+      "condition_onset": "Diagnose_Chronic_Pain",
+      "direct_transition": "Clear_Chronic_Pain"
+    },
+    "Clear_Chronic_Pain": {
+      "type": "SetAttribute",
+      "attribute": "chronic_pain",
+      "value": false,
+      "direct_transition": "Naive_Guard"
+    }
+  }
+}

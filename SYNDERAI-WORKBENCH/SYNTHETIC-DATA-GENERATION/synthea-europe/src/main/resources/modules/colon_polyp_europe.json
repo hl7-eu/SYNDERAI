@@ -1,0 +1,210 @@
+{
+  "name": "Colon Polyp Europe",
+  "remarks": [
+    "European calibration of colonic polyps detected at endoscopy.",
+    "NEW in R4. No module emitted 68496003. R2 modelled it at 1.156%; R3 dropped it,",
+    "giving 0% against a 2.5% European reference.",
+    "Calibrated against: ESGE Guidelines 2022, EU colorectal screening programmes.",
+    "Detection-driven: onset from age 50, when European screening programmes start."
+  ],
+  "states": {
+    "Initial": {
+      "type": "Initial",
+      "direct_transition": "Age_Guard"
+    },
+    "Age_Guard": {
+      "type": "Guard",
+      "allow": {
+        "condition_type": "Age",
+        "operator": ">=",
+        "quantity": 50,
+        "unit": "years"
+      },
+      "direct_transition": "Naive_Guard"
+    },
+    "Naive_Guard": {
+      "type": "Guard",
+      "allow": {
+        "condition_type": "Attribute",
+        "attribute": "colon_polyp",
+        "operator": "is nil"
+      },
+      "direct_transition": "Annual_Delay"
+    },
+    "Annual_Delay": {
+      "type": "Delay",
+      "exact": {
+        "quantity": 1,
+        "unit": "years"
+      },
+      "direct_transition": "Age_Check"
+    },
+    "Age_Check": {
+      "type": "Simple",
+      "conditional_transition": [
+        {
+          "condition": {
+            "condition_type": "Age",
+            "operator": "<",
+            "quantity": 60,
+            "unit": "years"
+          },
+          "transition": "Prob_50_59"
+        },
+        {
+          "condition": {
+            "condition_type": "Age",
+            "operator": "<",
+            "quantity": 70,
+            "unit": "years"
+          },
+          "transition": "Prob_60_69"
+        },
+        {
+          "transition": "Prob_70_plus"
+        }
+      ]
+    },
+    "Prob_50_59": {
+      "type": "Simple",
+      "remarks": [
+        "0.300% annual incidence."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.003,
+          "transition": "Diagnose_Colon_Polyp"
+        },
+        {
+          "distribution": 0.997,
+          "transition": "Annual_Delay"
+        }
+      ]
+    },
+    "Prob_60_69": {
+      "type": "Simple",
+      "remarks": [
+        "0.500% annual incidence."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.005,
+          "transition": "Diagnose_Colon_Polyp"
+        },
+        {
+          "distribution": 0.995,
+          "transition": "Annual_Delay"
+        }
+      ]
+    },
+    "Prob_70_plus": {
+      "type": "Simple",
+      "remarks": [
+        "0.550% annual incidence."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.0055,
+          "transition": "Diagnose_Colon_Polyp"
+        },
+        {
+          "distribution": 0.9945,
+          "transition": "Annual_Delay"
+        }
+      ]
+    },
+    "Diagnose_Colon_Polyp": {
+      "type": "ConditionOnset",
+      "assign_to_attribute": "colon_polyp",
+      "target_encounter": "Polyp_Encounter",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "68496003",
+          "display": "Polyp of colon (disorder)"
+        }
+      ],
+      "direct_transition": "Polyp_Encounter"
+    },
+    "Polyp_Encounter": {
+      "type": "Encounter",
+      "encounter_class": "outpatient",
+      "reason": "colon_polyp",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "185347001",
+          "display": "Encounter for problem (procedure)"
+        }
+      ],
+      "direct_transition": "Colonoscopy"
+    },
+    "Colonoscopy": {
+      "type": "Procedure",
+      "reason": "colon_polyp",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "73761001",
+          "display": "Colonoscopy (procedure)"
+        }
+      ],
+      "duration": {
+        "low": 30,
+        "high": 60,
+        "unit": "minutes"
+      },
+      "direct_transition": "Polypectomy"
+    },
+    "Polypectomy": {
+      "type": "Procedure",
+      "reason": "colon_polyp",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "82035006",
+          "display": "Polypectomy of colon (procedure)"
+        }
+      ],
+      "duration": {
+        "low": 10,
+        "high": 25,
+        "unit": "minutes"
+      },
+      "direct_transition": "End_Polyp_Encounter"
+    },
+    "End_Polyp_Encounter": {
+      "type": "EncounterEnd",
+      "direct_transition": "Polyp_Surveillance_Delay"
+    },
+    "Polyp_Surveillance_Delay": {
+      "type": "Delay",
+      "remarks": [
+        "ESGE 2022: surveillance colonoscopy at 3-5 years depending on findings."
+      ],
+      "range": {
+        "low": 3,
+        "high": 5,
+        "unit": "years"
+      },
+      "direct_transition": "Polyp_Surveillance_Encounter"
+    },
+    "Polyp_Surveillance_Encounter": {
+      "type": "Encounter",
+      "encounter_class": "outpatient",
+      "reason": "colon_polyp",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "390906007",
+          "display": "Follow-up encounter (procedure)"
+        }
+      ],
+      "direct_transition": "End_Polyp_Surveillance"
+    },
+    "End_Polyp_Surveillance": {
+      "type": "EncounterEnd",
+      "direct_transition": "Polyp_Surveillance_Delay"
+    }
+  }
+}

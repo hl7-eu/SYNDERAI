@@ -1,0 +1,600 @@
+{
+  "name": "Rheumatoid Arthritis",
+  "remarks": [
+    "Rheumatoid arthritis (RA) is a chronic condition where joints and other organs are ",
+    "attacked by the body's own immune system. RA is treated aggressively and about 75% ",
+    "of cases go into remission within 5 years.",
+    "Information on treatment, prevalence, and incidence of specific arthritis types from the CDC: ",
+    "http://www.cdc.gov/arthritis/basics/types.html",
+    "Overall prevalence of arthritis: ",
+    "http://www.cdc.gov/arthritis/data_statistics/national-statistics.html",
+    "R4 (2026-08-29): birth lottery replaced by annual age/sex-stratified hazard.",
+    "R4 verification round 2 (2026-08-29): rates x2.5. The hazard rewrite moved RA from -80% to -61%; measured at 0.31% against a 0.8% EULAR reference."
+  ],
+  "states": {
+    "Initial": {
+      "type": "Initial",
+      "remarks": [
+        "R4 fix: was a 1% lottery at birth followed by a Delay of 25-80 years -",
+        "the same one-shot-plus-long-delay pattern that broke heart failure. A patient",
+        "only acquired RA if still being simulated when the delay expired, so R3",
+        "produced 0.163% 12-month prevalence against a 0.8% European reference (-80%).",
+        "Replaced by an annual age- and sex-stratified hazard.",
+        "European incidence ~40/100,000/year, female:male ~2.5:1, onset peaking 45-75",
+        "(EULAR 2022). Note the module ends the condition on DMARD remission (75% of",
+        "cases), so cumulative incidence must exceed the point-prevalence target."
+      ],
+      "direct_transition": "RA_Age_Guard"
+    },
+    "RA_Symptom1": {
+      "type": "Symptom",
+      "symptom": "Joint Pain",
+      "range": {
+        "low": 0,
+        "high": 50
+      },
+      "direct_transition": "RA_Symptom2"
+    },
+    "RA_Symptom2": {
+      "type": "Symptom",
+      "symptom": "Joint Stiffness",
+      "range": {
+        "low": 0,
+        "high": 50
+      },
+      "direct_transition": "RA_Symptom3"
+    },
+    "RA_Symptom3": {
+      "type": "Symptom",
+      "symptom": "Joint Swelling",
+      "range": {
+        "low": 0,
+        "high": 50
+      },
+      "direct_transition": "RA_Symptom4"
+    },
+    "RA_Symptom4": {
+      "type": "Symptom",
+      "symptom": "Fatigue",
+      "range": {
+        "low": 0,
+        "high": 20
+      },
+      "direct_transition": "RA_Symptom5"
+    },
+    "RA_Symptom5": {
+      "type": "Symptom",
+      "symptom": "Fever",
+      "range": {
+        "low": 0,
+        "high": 20
+      },
+      "direct_transition": "Rheumatoid_Arthritis"
+    },
+    "Rheumatoid_Arthritis": {
+      "type": "ConditionOnset",
+      "remarks": [
+        "======================================================================",
+        " RHEUMATOID ARTHRITIS                                                 ",
+        "======================================================================",
+        "Source: http://www.cdc.gov/arthritis/basics/rheumatoid.htm"
+      ],
+      "target_encounter": "RA_Diagnosis",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "69896004",
+          "display": "Rheumatoid arthritis (disorder)"
+        }
+      ],
+      "direct_transition": "RA_Diagnosis",
+      "assign_to_attribute": "rheumatoid_arthritis"
+    },
+    "RA_Diagnosis": {
+      "type": "Encounter",
+      "encounter_class": "ambulatory",
+      "reason": "Rheumatoid_Arthritis",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "185347001",
+          "display": "Encounter for problem (procedure)"
+        }
+      ],
+      "direct_transition": "RA_CarePlan"
+    },
+    "RA_CarePlan": {
+      "type": "CarePlanStart",
+      "assign_to_attribute": "ra_careplan",
+      "reason": "Rheumatoid_Arthritis",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "408869004",
+          "display": "Musculoskeletal care (regime/therapy)"
+        }
+      ],
+      "activities": [
+        {
+          "system": "SNOMED-CT",
+          "code": "183301007",
+          "display": "Physical exercises (regime/therapy)"
+        },
+        {
+          "system": "SNOMED-CT",
+          "code": "229580007",
+          "display": "Ice therapy (procedure)"
+        },
+        {
+          "system": "SNOMED-CT",
+          "code": "226234005",
+          "display": "Healthy diet (finding)"
+        }
+      ],
+      "direct_transition": "RA_Nonopioid_Pain_Medication"
+    },
+    "RA_Nonopioid_Pain_Medication": {
+      "type": "MedicationOrder",
+      "reason": "Rheumatoid_Arthritis",
+      "remarks": [
+        "A stronger NSAID pain reliever than the basic Aleve."
+      ],
+      "codes": [
+        {
+          "system": "RxNorm",
+          "code": "198014",
+          "display": "Naproxen 500 MG Oral Tablet"
+        }
+      ],
+      "conditional_transition": [
+        {
+          "condition": {
+            "condition_type": "Date",
+            "operator": ">=",
+            "year": 1990
+          },
+          "transition": "DMARD",
+          "remarks": [
+            "Aggressive treatment using DMARDs didn't start until the 1990's."
+          ]
+        },
+        {
+          "transition": "Corticosteroid"
+        }
+      ]
+    },
+    "DMARD": {
+      "type": "MedicationOrder",
+      "reason": "Rheumatoid_Arthritis",
+      "remarks": [
+        "Disease-Modifying Anti-Rheumatic Drugs (DMARDs) inhibit or halt the progression ",
+        "of rheumatoid arthritis. Although there are side effects, prompt treatment with DMARDs ",
+        "can put RA into remission before more serious damage occurs. Typical treatment with ",
+        "DMARDs is 40-50 months. See: https://www.ncbi.nlm.nih.gov/pubmed/10813279"
+      ],
+      "codes": [
+        {
+          "system": "RxNorm",
+          "code": "105585",
+          "display": "Methotrexate 2.5 MG Oral Tablet"
+        }
+      ],
+      "direct_transition": "Encounter_Ends_After_DMARD"
+    },
+    "Encounter_Ends_After_DMARD": {
+      "type": "EncounterEnd",
+      "direct_transition": "DMARD_Treatment_Period"
+    },
+    "DMARD_Treatment_Period": {
+      "type": "Delay",
+      "range": {
+        "low": 40,
+        "high": 60,
+        "unit": "months"
+      },
+      "direct_transition": "End_DMARD"
+    },
+    "End_DMARD": {
+      "type": "MedicationEnd",
+      "medication_order": "DMARD",
+      "distributed_transition": [
+        {
+          "distribution": 0.75,
+          "transition": "RA_Ends",
+          "remarks": [
+            "Treatment with DMARDs is fairly successful - 75% of cases go into remission."
+          ]
+        },
+        {
+          "distribution": 0.25,
+          "transition": "Living_With_RA"
+        }
+      ]
+    },
+    "Corticosteroid": {
+      "type": "MedicationOrder",
+      "reason": "Rheumatoid_Arthritis",
+      "remarks": [
+        "When introduced in higher levels than those produced by the body, corticosteroids ",
+        "inhibit inflammation. However, doctors prefer to use these for as short a time period ",
+        "as possible to avoid dangerous side effects."
+      ],
+      "codes": [
+        {
+          "system": "RxNorm",
+          "code": "312615",
+          "display": "predniSONE 20 MG Oral Tablet"
+        }
+      ],
+      "direct_transition": "Encounter_Ends_After_Corticosteroids"
+    },
+    "Encounter_Ends_After_Corticosteroids": {
+      "type": "EncounterEnd",
+      "direct_transition": "Corticosteroid_Treatment"
+    },
+    "Corticosteroid_Treatment": {
+      "type": "Delay",
+      "range": {
+        "low": 2,
+        "high": 4,
+        "unit": "weeks"
+      },
+      "direct_transition": "End_Corticosteroid"
+    },
+    "End_Corticosteroid": {
+      "type": "MedicationEnd",
+      "medication_order": "Corticosteroid",
+      "distributed_transition": [
+        {
+          "distribution": 0.2,
+          "transition": "RA_Ends",
+          "remarks": [
+            "Although treatment with DMARDs is far more successful, some patients with mild ",
+            "RA can go into remission after only basic treatment."
+          ]
+        },
+        {
+          "distribution": 0.8,
+          "transition": "Living_With_RA"
+        }
+      ]
+    },
+    "Living_With_RA": {
+      "type": "Delay",
+      "range": {
+        "low": 3,
+        "high": 15,
+        "unit": "years"
+      },
+      "remarks": [
+        "About 25% of severe RA cases result in total joint replacement. Source: ",
+        "http://www.uptodate.com/contents/total-joint-replacement-for-severe-rheumatoid-arthritis"
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.125,
+          "transition": "Setup_Knee_Replacement"
+        },
+        {
+          "distribution": 0.125,
+          "transition": "Setup_Hip_Replacement"
+        },
+        {
+          "distribution": 0.75,
+          "transition": "Terminal"
+        }
+      ]
+    },
+    "Setup_Knee_Replacement": {
+      "type": "SetAttribute",
+      "attribute": "joint_replacement",
+      "value": "knee",
+      "direct_transition": "Terminal"
+    },
+    "Setup_Hip_Replacement": {
+      "type": "SetAttribute",
+      "attribute": "joint_replacement",
+      "value": "hip",
+      "direct_transition": "Terminal"
+    },
+    "RA_Ends": {
+      "type": "ConditionEnd",
+      "condition_onset": "Rheumatoid_Arthritis",
+      "direct_transition": "End_RA_CarePlan"
+    },
+    "End_RA_CarePlan": {
+      "type": "CarePlanEnd",
+      "careplan": "RA_CarePlan",
+      "direct_transition": "End_RA_Nonopioid"
+    },
+    "End_RA_Nonopioid": {
+      "type": "MedicationEnd",
+      "medication_order": "RA_Nonopioid_Pain_Medication",
+      "direct_transition": "RA_Symptom1_Ends"
+    },
+    "RA_Symptom1_Ends": {
+      "type": "Symptom",
+      "symptom": "Joint Pain",
+      "exact": {
+        "quantity": 0
+      },
+      "direct_transition": "RA_Symptom2_Ends"
+    },
+    "RA_Symptom2_Ends": {
+      "type": "Symptom",
+      "symptom": "Joint Stiffness",
+      "exact": {
+        "quantity": 0
+      },
+      "direct_transition": "RA_Symptom3_Ends"
+    },
+    "RA_Symptom3_Ends": {
+      "type": "Symptom",
+      "symptom": "Joint Swelling",
+      "exact": {
+        "quantity": 0
+      },
+      "direct_transition": "RA_Symptom4_Ends"
+    },
+    "RA_Symptom4_Ends": {
+      "type": "Symptom",
+      "symptom": "Fatigue",
+      "exact": {
+        "quantity": 0
+      },
+      "direct_transition": "RA_Symptom5_Ends"
+    },
+    "RA_Symptom5_Ends": {
+      "type": "Symptom",
+      "symptom": "Fever",
+      "exact": {
+        "quantity": 0
+      },
+      "direct_transition": "Terminal"
+    },
+    "Terminal": {
+      "type": "Terminal"
+    },
+    "RA_Age_Guard": {
+      "type": "Guard",
+      "allow": {
+        "condition_type": "Age",
+        "operator": ">=",
+        "quantity": 30,
+        "unit": "years"
+      },
+      "direct_transition": "RA_Naive_Guard"
+    },
+    "RA_Naive_Guard": {
+      "type": "Guard",
+      "allow": {
+        "condition_type": "Attribute",
+        "attribute": "rheumatoid_arthritis",
+        "operator": "is nil"
+      },
+      "direct_transition": "Annual_RA_Delay"
+    },
+    "Annual_RA_Delay": {
+      "type": "Delay",
+      "exact": {
+        "quantity": 1,
+        "unit": "years"
+      },
+      "direct_transition": "RA_Sex_Check"
+    },
+    "RA_Sex_Check": {
+      "type": "Simple",
+      "conditional_transition": [
+        {
+          "condition": {
+            "condition_type": "Gender",
+            "gender": "F"
+          },
+          "transition": "RA_Female_Age_Check"
+        },
+        {
+          "transition": "RA_Male_Age_Check"
+        }
+      ]
+    },
+    "RA_Female_Age_Check": {
+      "type": "Simple",
+      "conditional_transition": [
+        {
+          "condition": {
+            "condition_type": "Age",
+            "operator": "<",
+            "quantity": 45,
+            "unit": "years"
+          },
+          "transition": "RA_Prob_Female_30_44"
+        },
+        {
+          "condition": {
+            "condition_type": "Age",
+            "operator": "<",
+            "quantity": 60,
+            "unit": "years"
+          },
+          "transition": "RA_Prob_Female_45_59"
+        },
+        {
+          "condition": {
+            "condition_type": "Age",
+            "operator": "<",
+            "quantity": 75,
+            "unit": "years"
+          },
+          "transition": "RA_Prob_Female_60_74"
+        },
+        {
+          "transition": "RA_Prob_Female_75_plus"
+        }
+      ]
+    },
+    "RA_Male_Age_Check": {
+      "type": "Simple",
+      "conditional_transition": [
+        {
+          "condition": {
+            "condition_type": "Age",
+            "operator": "<",
+            "quantity": 45,
+            "unit": "years"
+          },
+          "transition": "RA_Prob_Male_30_44"
+        },
+        {
+          "condition": {
+            "condition_type": "Age",
+            "operator": "<",
+            "quantity": 60,
+            "unit": "years"
+          },
+          "transition": "RA_Prob_Male_45_59"
+        },
+        {
+          "condition": {
+            "condition_type": "Age",
+            "operator": "<",
+            "quantity": 75,
+            "unit": "years"
+          },
+          "transition": "RA_Prob_Male_60_74"
+        },
+        {
+          "transition": "RA_Prob_Male_75_plus"
+        }
+      ]
+    },
+    "RA_Prob_Female_30_44": {
+      "type": "Simple",
+      "remarks": [
+        "0.040% annual incidence, female, age 30-44."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.001,
+          "transition": "RA_Symptom1"
+        },
+        {
+          "distribution": 0.999,
+          "transition": "Annual_RA_Delay"
+        }
+      ]
+    },
+    "RA_Prob_Female_45_59": {
+      "type": "Simple",
+      "remarks": [
+        "0.090% annual incidence, female, age 45-59."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.00225,
+          "transition": "RA_Symptom1"
+        },
+        {
+          "distribution": 0.99775,
+          "transition": "Annual_RA_Delay"
+        }
+      ]
+    },
+    "RA_Prob_Female_60_74": {
+      "type": "Simple",
+      "remarks": [
+        "0.110% annual incidence, female, age 60-74."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.00275,
+          "transition": "RA_Symptom1"
+        },
+        {
+          "distribution": 0.99725,
+          "transition": "Annual_RA_Delay"
+        }
+      ]
+    },
+    "RA_Prob_Female_75_plus": {
+      "type": "Simple",
+      "remarks": [
+        "0.080% annual incidence, female, age 75-plus."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.002,
+          "transition": "RA_Symptom1"
+        },
+        {
+          "distribution": 0.998,
+          "transition": "Annual_RA_Delay"
+        }
+      ]
+    },
+    "RA_Prob_Male_30_44": {
+      "type": "Simple",
+      "remarks": [
+        "0.016% annual incidence, male, age 30-44."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.0004,
+          "transition": "RA_Symptom1"
+        },
+        {
+          "distribution": 0.9996,
+          "transition": "Annual_RA_Delay"
+        }
+      ]
+    },
+    "RA_Prob_Male_45_59": {
+      "type": "Simple",
+      "remarks": [
+        "0.036% annual incidence, male, age 45-59."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.0009,
+          "transition": "RA_Symptom1"
+        },
+        {
+          "distribution": 0.9991,
+          "transition": "Annual_RA_Delay"
+        }
+      ]
+    },
+    "RA_Prob_Male_60_74": {
+      "type": "Simple",
+      "remarks": [
+        "0.044% annual incidence, male, age 60-74."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.0011,
+          "transition": "RA_Symptom1"
+        },
+        {
+          "distribution": 0.9989,
+          "transition": "Annual_RA_Delay"
+        }
+      ]
+    },
+    "RA_Prob_Male_75_plus": {
+      "type": "Simple",
+      "remarks": [
+        "0.032% annual incidence, male, age 75-plus."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.0008,
+          "transition": "RA_Symptom1"
+        },
+        {
+          "distribution": 0.9992,
+          "transition": "Annual_RA_Delay"
+        }
+      ]
+    }
+  },
+  "gmf_version": 1
+}

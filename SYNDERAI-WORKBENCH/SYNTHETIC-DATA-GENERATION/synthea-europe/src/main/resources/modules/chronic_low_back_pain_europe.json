@@ -1,0 +1,261 @@
+{
+  "name": "Chronic Low Back Pain Europe",
+  "remarks": [
+    "European calibration of chronic low back pain.",
+    "NEW in R4. No module emitted 278860009. R2 modelled it at 1.889%; R3 dropped it",
+    "entirely, giving 0% against an 8.0% European reference.",
+    "Calibrated against: EuroSpine / Airaksinen 2006, GBD 2019 Europe, Eurostat EHIS 2019.",
+    "Chronic by definition (pain persisting > 12 weeks), so no resolution pathway.",
+    "Rates integrate to ~12% cumulative by age 65, giving an adult population",
+    "prevalence of roughly 8%."
+  ],
+  "states": {
+    "Initial": {
+      "type": "Initial",
+      "direct_transition": "Age_Guard"
+    },
+    "Age_Guard": {
+      "type": "Guard",
+      "allow": {
+        "condition_type": "Age",
+        "operator": ">=",
+        "quantity": 25,
+        "unit": "years"
+      },
+      "direct_transition": "Naive_Guard"
+    },
+    "Naive_Guard": {
+      "type": "Guard",
+      "allow": {
+        "condition_type": "Attribute",
+        "attribute": "chronic_low_back_pain",
+        "operator": "is nil"
+      },
+      "direct_transition": "Annual_Delay"
+    },
+    "Annual_Delay": {
+      "type": "Delay",
+      "exact": {
+        "quantity": 1,
+        "unit": "years"
+      },
+      "direct_transition": "Age_Check"
+    },
+    "Age_Check": {
+      "type": "Simple",
+      "conditional_transition": [
+        {
+          "condition": {
+            "condition_type": "Age",
+            "operator": "<",
+            "quantity": 40,
+            "unit": "years"
+          },
+          "transition": "Prob_25_39"
+        },
+        {
+          "condition": {
+            "condition_type": "Age",
+            "operator": "<",
+            "quantity": 55,
+            "unit": "years"
+          },
+          "transition": "Prob_40_54"
+        },
+        {
+          "condition": {
+            "condition_type": "Age",
+            "operator": "<",
+            "quantity": 70,
+            "unit": "years"
+          },
+          "transition": "Prob_55_69"
+        },
+        {
+          "transition": "Prob_70_plus"
+        }
+      ]
+    },
+    "Prob_25_39": {
+      "type": "Simple",
+      "remarks": [
+        "0.200% annual incidence."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.002,
+          "transition": "Diagnose_Chronic_LBP"
+        },
+        {
+          "distribution": 0.998,
+          "transition": "Annual_Delay"
+        }
+      ]
+    },
+    "Prob_40_54": {
+      "type": "Simple",
+      "remarks": [
+        "0.350% annual incidence."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.0035,
+          "transition": "Diagnose_Chronic_LBP"
+        },
+        {
+          "distribution": 0.9965,
+          "transition": "Annual_Delay"
+        }
+      ]
+    },
+    "Prob_55_69": {
+      "type": "Simple",
+      "remarks": [
+        "0.450% annual incidence."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.0045,
+          "transition": "Diagnose_Chronic_LBP"
+        },
+        {
+          "distribution": 0.9955,
+          "transition": "Annual_Delay"
+        }
+      ]
+    },
+    "Prob_70_plus": {
+      "type": "Simple",
+      "remarks": [
+        "0.400% annual incidence."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.004,
+          "transition": "Diagnose_Chronic_LBP"
+        },
+        {
+          "distribution": 0.996,
+          "transition": "Annual_Delay"
+        }
+      ]
+    },
+    "Diagnose_Chronic_LBP": {
+      "type": "ConditionOnset",
+      "assign_to_attribute": "chronic_low_back_pain",
+      "target_encounter": "LBP_Encounter",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "278860009",
+          "display": "Chronic low back pain (disorder)"
+        }
+      ],
+      "direct_transition": "LBP_Encounter"
+    },
+    "LBP_Encounter": {
+      "type": "Encounter",
+      "encounter_class": "ambulatory",
+      "reason": "chronic_low_back_pain",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "11429006",
+          "display": "Consultation (procedure)"
+        }
+      ],
+      "direct_transition": "LBP_Physiotherapy"
+    },
+    "LBP_Physiotherapy": {
+      "type": "Procedure",
+      "reason": "chronic_low_back_pain",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "722138006",
+          "display": "Physical therapy (regime/therapy)"
+        }
+      ],
+      "duration": {
+        "low": 30,
+        "high": 45,
+        "unit": "minutes"
+      },
+      "direct_transition": "LBP_Analgesia_Decision"
+    },
+    "LBP_Analgesia_Decision": {
+      "type": "Simple",
+      "remarks": [
+        "NICE NG59 / European guidelines: NSAIDs first line, weak opioids second."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.45,
+          "transition": "LBP_Prescribe_NSAID"
+        },
+        {
+          "distribution": 0.2,
+          "transition": "LBP_Prescribe_Paracetamol"
+        },
+        {
+          "distribution": 0.35,
+          "transition": "End_LBP_Encounter"
+        }
+      ]
+    },
+    "LBP_Prescribe_NSAID": {
+      "type": "MedicationOrder",
+      "reason": "chronic_low_back_pain",
+      "codes": [
+        {
+          "system": "RxNorm",
+          "code": "310965",
+          "display": "Ibuprofen 400 MG Oral Tablet"
+        }
+      ],
+      "direct_transition": "End_LBP_Encounter"
+    },
+    "LBP_Prescribe_Paracetamol": {
+      "type": "MedicationOrder",
+      "reason": "chronic_low_back_pain",
+      "codes": [
+        {
+          "system": "RxNorm",
+          "code": "198440",
+          "display": "Acetaminophen 500 MG Oral Tablet"
+        }
+      ],
+      "direct_transition": "End_LBP_Encounter"
+    },
+    "End_LBP_Encounter": {
+      "type": "EncounterEnd",
+      "direct_transition": "LBP_Followup_Delay"
+    },
+    "LBP_Followup_Delay": {
+      "type": "Delay",
+      "range": {
+        "low": 10,
+        "high": 16,
+        "unit": "months"
+      },
+      "direct_transition": "LBP_Review_Encounter"
+    },
+    "LBP_Review_Encounter": {
+      "type": "Encounter",
+      "encounter_class": "ambulatory",
+      "reason": "chronic_low_back_pain",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "390906007",
+          "display": "Follow-up encounter (procedure)"
+        }
+      ],
+      "direct_transition": "End_LBP_Review"
+    },
+    "End_LBP_Review": {
+      "type": "EncounterEnd",
+      "direct_transition": "LBP_Followup_Delay"
+    }
+  }
+}

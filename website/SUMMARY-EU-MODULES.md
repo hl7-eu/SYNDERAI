@@ -1,6 +1,6 @@
 # SYNDERAI — EU Module Calibration Summary
 
-**Comparison: US baseline (2026-02-21) → EU calibrated set (2026-05-23)** *Produced from direct module diff of `original-synthea-US-modules-20260221` vs `new-synthea-EU-modules-20260523`*
+**Comparison: US baseline (2026-02-21) → EU calibrated set R3 (2026-05-23) → measured recalibration R4 (2026-08-29)** *Produced from direct module diff of `original-synthea-US-modules-20260221` vs `new-synthea-EU-modules-20260523`*
 
 ------
 
@@ -514,6 +514,183 @@ Dementia (~2% all adults / ~8% in ≥65s) and IHD (~3–4%) narrowly missed the 
 2. **Alzheimer's/dementia** required three patch rounds. The round-2 graph fix was a prerequisite before the rate problem even became visible — a subtle order-of-discovery issue. [Certain]
 3. **Top 10 prevalence ranking**: position 3 (allergic conditions) is intentionally broadly defined (lifetime exposure vs. active). Since the dashboard measures only active conditions — which is correct — the effective active prevalence will be lower than 25–35%. [Likely ~12–15% active] That nuance is noted in the table footnote.
 4. **The known cross-module SNOMED inconsistency** (230690007 in `hypertension_europe.json`/`outcomes.json` vs. 422504002 in `stroke_europe-v2.json`) is not listed as a resolved issue in the summary, because it isn't one — the module remarks confirm it was deliberately left unpatched. [Certain]
+
+------
+
+------
+
+# Round 2: Measured Calibration, R3 → R4 (2026-08-29)
+
+Everything above describes the **first** calibration step: replacing the US module set with European counterparts, done by editing modules against published reference prevalences. That produced release **R3**.
+
+This section describes the **second** step: measuring what R3 actually generated, finding out why it still missed, and correcting it into release **R4**. The difference in method matters — the first step reasoned from module remarks, the second measured 1.4 million condition records and then ran the corrections back through Synthea to confirm them.
+
+## Before anything else: the metric was wrong
+
+The R2 validation table (reproduced in [FUTURE-ACTIVITIES](FUTURE-ACTIVITIES.md)) compared Synthea record counts against European reference prevalences. Those are not the same quantity. Three distinct measures are in play:
+
+| | Measure | Correct for |
+| --- | --- | --- |
+| **L** | Lifetime — distinct patients ever carrying the code | Survivorship: "people living with a past MI", "ever diagnosed with breast cancer" |
+| **P** | 12-month period prevalence | Chronic disease. This is what WHO/Eurostat/EHIS-style references actually report |
+| **A** | Annual incidence | Acute, recurrent conditions |
+
+Using lifetime counts for an acute condition inflates it grotesquely. In R3, acute pharyngitis was **83 % lifetime but 6.3 % per year**; viral sinusitis **53.9 % lifetime but 2.2 % per year**. The R2 table's "+1,122 %" for viral sinusitis was largely a metric artefact, and so was much of its "−85 %" verdict on hypertension.
+
+All figures below state their basis. Nothing is compared across bases.
+
+## Three "MISSING" verdicts were table bugs, not data gaps
+
+Verified against SNOMED CT International, version 20260801. Three codes in the R2 validation table are valid concepts that do not mean what the row label says. Querying them was guaranteed to return zero:
+
+| R2 row label | Code used | What that code actually is | Correct code |
+| ------------ | --------- | -------------------------- | ------------ |
+| Osteoporosis | `64572001` | **Disease** — the root concept | `64859006` |
+| Dementia | `56193007` | **Oculomotor nerve structure** | `52448006` |
+| Malignant neoplasm of prostate | `363418001` | **Malignant neoplasm of pancreas** | `126906006` |
+
+A fourth is a near miss: `32798002` is *Parkinsonism*, not Parkinson's disease (`49049000`).
+
+Three of the eight ❌ MISSING verdicts in the original table were therefore measurement errors, not module failures. The genuine R3 gaps were COPD, depression, anxiety, generic osteoarthritis and Parkinson's.
+
+## What was actually broken in R3
+
+Reading the module tree against 1.4 million generated condition records found six defects, four of them structural rather than calibration errors.
+
+**1. Knee osteoarthritis was exported as "Joint pain."** `osteoarthritis_europe.json :: Diagnose_Knee_OA` carried two codes, with `57676002 Joint pain (finding)` first and `239873007 Osteoarthritis of knee` second. Synthea's CSV exporter writes only `codes[0]`. The `OA_Type_Branch` sends **55 % of all incident osteoarthritis** to that state, so the largest OA site was recorded as a symptom finding and knee OA never appeared in the output at all. It was the only multi-code `ConditionOnset` in the entire module tree.
+
+**2. `lung_cancer_europe.json` crashed patient generation.** The module loaded and its logic was sound, yet it produced zero cases. `LC_CT_Scan` was an `ImagingStudy` state whose `series` entry had no `instances` list; Synthea calls `s.instances.size()` unconditionally, so **every patient who reached it threw a NullPointerException and was discarded from the population entirely.** R3 was not missing lung cancer *codes* — it was missing the *patients*. A 400-patient control run produced 395 records; after the fix, 400 with three NSCLC and two SCLC.
+
+**3. Five more submodules were doing the same thing.** `hiv/hiv_baseline`, `encounter/sdoh_hrsn`, `encounter/depression_screening`, `allergies/outgrow_food_allergies`, `allergies/severe_allergic_reaction` and `snf/skilled_nursing_facility` were referenced by `CallSubmodule` but absent from the tree. Each threw `RuntimeException: Unknown submodule` and discarded the patient. This is why HIV never appeared in R3 output. All six were restored unmodified from stock Synthea.
+
+**4. Heart failure used an obsolete entry pattern.** `congestive_heart_failure_eu.json` drew a one-shot lottery at age 20 and then deferred onset by a fixed `Delay` of up to 65 years. A patient only acquired CHF if still being simulated when the delay expired, so realised prevalence collapsed to 0.043 % — a factor of ~50 below the module's own stated target. Two of its age buckets also overlapped by ten years, their labels and delays edited out of sync. `rheumatoid_arthritis.json` and `osteoporosis.json` shared the same pattern.
+
+**5. Three concepts had two or three independent generators.** `hypertension_europe.json` emitted stroke, IHD and CKD codes at 0.5 / 0.4 / 0.3 % per year for every hypertensive patient, unguarded and unaware of the modules that own those concepts. The stroke arm alone produced 3.19 % CVA prevalence against a 1.6 % reference. `diabetes_europe.json` emitted IHD independently as well. Revealingly, `stable_ischemic_heart_disease_europe.json` had its rates **exactly halved** against the values documented in its own remarks — evidently to offset the duplicates.
+
+**6. Depression episodes lasted six weeks.** Every exit from the review encounter fired `ConditionEnd` immediately, giving a mean episode duration of 68 days against a European median of about six months. Incidence was fine; duration was not. Separately, `anxiety_europe.json` created comorbid depression with no matching `ConditionEnd` at all, so those records never resolved.
+
+## Seven new modules
+
+Six conditions in the reference table were emitted by no module anywhere in the tree, and oncology was structurally incomplete.
+
+| New module | Concept | EU reference |
+| ---------- | ------- | -----------: |
+| `hyperlipidaemia_europe.json` | `55822004` | 22.0 % |
+| `metabolic_syndrome_europe.json` | `237602007` | 25.0 % |
+| `chronic_pain_europe.json` | `82423001` | 19.0 % |
+| `chronic_low_back_pain_europe.json` | `278860009` | 8.0 % |
+| `colon_polyp_europe.json` | `68496003` | 2.5 % |
+| `parkinson_europe.json` | `49049000` | 0.3 % |
+| `other_cancers_europe.json` | 13 sites | see below |
+
+Hyperlipidaemia and metabolic syndrome were the two largest single gaps in the table, and they sit directly upstream of the cardiovascular and diabetes modules that R3 otherwise calibrated well. A cohort with 34 % hypertension, 7.6 % type-2 diabetes and 0 % dyslipidaemia is not usable for cardiovascular risk work.
+
+### Malignant neoplasms were about half-covered
+
+R3 modelled breast, prostate and colorectal cancer plus a little haematology (AML, multiple myeloma); lung cancer had a module that never ran. Those four solid-tumour sites are roughly **48 % of European cancer incidence**, so about half the oncological burden had no representation. Total cancer measured 3.2 % lifetime against a European survivor prevalence of 4–5 %, with a heavily distorted site mix.
+
+`other_cancers_europe.json` adds the thirteen next most common sites in one age- and sex-stratified hazard: bladder, melanoma, stomach, kidney, pancreas, non-Hodgkin lymphoma, larynx, thyroid, liver, oesophagus, uterus, ovary, cervix. Site shares are normalised ECIS/GLOBOCAN European incidence shares, given separately for women and men; the three female-only sites' share is redistributed across the rest for men. Staging follows the European late-detection pattern (~55 % stage III–IV). All thirteen concept IDs verified against SNOMED CT International 20260801.
+
+Brain and CNS tumours (~2 % of incidence) are a documented omission: SNOMED's generic `126952004` is "Neoplasm of brain", which is not malignancy-specific, and no unambiguous malignant rollup was chosen.
+
+## The reference table's two dementia rows overlap
+
+The table lists **"Alzheimer disease G30" (1.5 %)** and **"Dementia F00–F03" (2.0 %)** as if disjoint. **ICD-10 F00 *is* Alzheimer dementia.** At the module's 65 % Alzheimer share — measured at 67 %, matching Alzheimer Europe 2022 and correct — 2.0 % all-dementia implies 1.3 % Alzheimer, not 1.5 %. The two targets cannot both be met.
+
+R4 calibrates all-dementia to the 2.0 % reference and leaves the subtype split alone. The "Dementia excluding AD" row should be retired in favour of an all-dementia row.
+
+## Results: R2 → R3 → R4
+
+Basis per row: **P** = 12-month period prevalence, **L** = lifetime, **A** = annual incidence. Bold marks rows within ±25 % of the European reference.
+
+| Condition | EU ref | R2 | R3 | **R4** | Basis |
+| --------- | -----: | -: | -: | -----: | :---: |
+| Essential hypertension | 32.0 % | -85 % | **+7 %** | **+13 %** | P |
+| Ischaemic heart disease | 4.5 % | -33 % | **-8 %** | **-6 %** | P |
+| Myocardial infarction | 1.8 % | -78 % | -26 % | **+13 %** | L |
+| Heart failure | 2.2 % | -99 % | -98 % | **+19 %** | P |
+| Atrial fibrillation | 2.5 % | -94 % | +32 % | **-2 %** | P |
+| Diabetes mellitus type 2 | 7.5 % | -86 % | **+1 %** | **+6 %** | P |
+| Prediabetes | 8.0 % | -41 % | **-18 %** | **-19 %** | P |
+| Obesity | 17.0 % | -65 % | **-16 %** | **-14 %** | P |
+| Hyperlipidaemia | 22.0 % | -93 % | -100 % | **-24 %** | P |
+| Metabolic syndrome | 25.0 % | -89 % | -100 % | **+11 %** | P |
+| COPD | 6.5 % | -100 % | **-18 %** | **-13 %** | P |
+| Asthma | 7.0 % | -100 % | **-24 %** | **-19 %** | P |
+| Viral sinusitis | 0.8 % | +1122 % | +176 % | **-7 %** | A |
+| Acute viral pharyngitis | 0.7 % | +687 % | +803 % | **+3 %** | A |
+| Depression | 6.9 % | -100 % | -62 % | **-6 %** | P |
+| Anxiety disorders (group) | 6.5 % | -100 % | **-13 %** | **-10 %** | P |
+| Panic disorder | 2.0 % | **+1 %** | **+10 %** | **+14 %** | P |
+| Osteoarthritis | 9.5 % | -100 % | -55 % | **+10 %** | P |
+| Rheumatoid arthritis | 0.8 % | -96 % | -80 % | **+2 %** | P |
+| Chronic low back pain | 8.0 % | -76 % | -100 % | -31 % | P |
+| Chronic pain | 19.0 % | -86 % | -69 % | -34 % | P |
+| Osteoporosis | 5.6 % | -100 % | -36 % | **-8 %** | P |
+| Breast cancer | 1.4 % | -82 % | **-21 %** | **-7 %** | L |
+| Prostate neoplasm | 1.1 % | -100 % | **-6 %** | **+25 %** | L |
+| Colorectal cancer | 0.7 % | -84 % | **-4 %** | **-11 %** | L |
+| Non-small cell lung cancer | 0.5 % | -76 % | -100 % | **+1 %** | L |
+| Stroke | 1.6 % | -94 % | +172 % | **+7 %** | L |
+| Alzheimer disease | 1.5 % | -63 % | **-3 %** | **-18 %** | P |
+| All dementia incl. AD | 2.0 % | -72 % | +58 % | **-3 %** | P |
+| Parkinson disease | 0.3 % | -100 % | -100 % | -31 % | P |
+| CKD stage 1 | 3.0 % | -31 % | -86 % | -43 % | P |
+| CKD stage 2 | 3.1 % | -41 % | **+25 %** | -29 % | P |
+| CKD stage 3 | 3.9 % | -66 % | **+9 %** | -29 % | P |
+| Polyp of colon | 2.5 % | -54 % | -100 % | **+0 %** | L |
+| Chronic sinusitis | 1.2 % | +104 % | +193 % | +44 % | P |
+| Acute infective cystitis | 1.5 % | -25 % | -26 % | -27 % | A |
+| Unhealthy alcohol behaviour | 7.6 % | -71 % | -34 % | -33 % | P |
+
+| | R2 | R3 | **R4** |
+| --- | -: | -: | -: |
+| Median absolute deviation | 86 % | 34 % | **13 %** |
+| Within ±25 % | 1/37 | 15/37 | **28/37** |
+| Within ±60 % | 7/37 | 22/37 | **37/37** |
+| ≥100 % off or absent | 10/37 | 10/37 | **0/37** |
+
+**R4 figures are the shipped production cohort**: 41,637 patients (39,990 living, 1,647 deceased) generated across all 291 European regions weighted by population share, 2026-08-29. Not a verification sample.
+
+Getting there took three verification runs of ~20,800 patients each. Run 1 measured the release; runs 2 and 3 measured corrections derived from the run before. Every correction was applied only after measurement, never from estimate alone. The production run then reproduced the calibration on European geography at twice the scale — median absolute deviation 13 % against the verification runs' 16 %.
+
+Two of those corrections are worth recording as method notes.
+
+**Prevalence does not scale linearly with incidence.** Tripling depression incidence produced only a 2.26× rise in prevalence, because the recurrence loop contributes cases that do not grow with first-onset incidence. Fitting p ∝ i^0.74 to the two measured points gave the next factor as ×1.55 rather than the linear ×1.38 — and depression landed at −7 %.
+
+**Risk-tiered modules move when their inputs move.** Atrial fibrillation drifted from +54 % to +62 % between runs without being touched, because run 2 enlarged the IHD and COPD populations it reads. Correcting one module's rates shifts everything downstream of it.
+
+## What remains
+
+Nine rows sit outside ±25 % in the production cohort, and no structural defects are known to be outstanding:
+
+| Row | dev | Note |
+| --- | --: | ---- |
+| Dementia excl. AD | −65 % | Artefact of the table's overlapping dementia rows. All-dementia is −3 %. Retire this row. |
+| Chronic sinusitis | +44 % | Improved from +193 %, but drifted up from +28 % in verification. Needs a further cut. |
+| CKD stage 1 | −43 % | Total CKD is right; per-stage period prevalence runs low because progression ends the previous stage. |
+| Chronic pain | −34 % | New module. Needs ~×1.9 on incidence. |
+| Unhealthy alcohol | −33 % | `substance_use-europe.json`, edited after R3 was generated, first measured in R4. |
+| Chronic low back pain | −31 % | New module, first calibration. |
+| Parkinson's disease | −31 % | n = 87 in the production cohort; partly noise. |
+| CKD stages 2 and 3 | −29 % each | As stage 1. |
+| Acute infective cystitis | −27 % | Borderline. |
+
+The CKD and dementia rows are questions about how the reference table defines its categories rather than about the modules. Everything else is rate tuning.
+
+## A note on deceased patients
+
+Synthea can be told to export only living patients (`generate.only_alive_patients`). SYNDERAI does **not** do this, and the reason is worth recording.
+
+Measured on identical cohorts, excluding deceased patients costs almost nothing overall — median absolute deviation 15 % with them, 14 % without — but it destroys one row:
+
+| | with deceased | living only |
+| --- | --: | --: |
+| Heart failure | +10 % | **−89 %** |
+
+Synthea does not simply omit the dead: it re-rolls any patient who dies, so someone who would have developed heart failure at 70 and died at 78 is replaced by someone who did not. That is survivor bias in the *living* cohort, and it falls hardest on the highest-mortality conditions. Stroke and Alzheimer shift mildly; heart failure collapses by a factor of ten.
+
+The generated funds therefore include deceased patients. Consumers that need a living cohort — European Patient Summary, Hospital Discharge Report, laboratory reports, medication — should filter on an empty `DEATHDATE` in `patients.csv`. Filtering downstream preserves an unbiased cohort for every other use case; having the generator discard them does not.
 
 ------
 

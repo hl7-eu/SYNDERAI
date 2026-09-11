@@ -1,0 +1,101 @@
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    name: Deploy
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: 17
+          distribution: 'zulu'
+
+      - name: Gradle cache
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-jdk17-${{ hashFiles('**/*.gradle*') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-jdk17
+            
+      - name: Create Artifacts
+        run: |
+          ./generate_samples.sh
+          # delete uncompressed output, sample zips are in ./samples/
+          rm -rf output/
+          ./gradlew uberJar javadoc graphviz
+          mkdir -p output/build/javadoc
+          mv build/docs/javadoc/* output/build/javadoc
+      
+      - name: Delete Previous master-branch-latest Tag
+        uses: dev-drprasad/delete-tag-and-release@v0.2.1
+        with:
+          delete_release: true
+          tag_name: master-branch-latest
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          
+      - name: Create Release
+        id: create_release 
+        # note id is referenced below in Deploy uberJar
+        uses: ncipollo/release-action@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          tag: master-branch-latest
+          draft: false
+          prerelease: true
+                
+      - name: Deploy UberJar
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }} 
+          # This pulls from the CREATE RELEASE step above, referencing its ID to get its outputs object, which include a `upload_url` 
+          asset_path: build/libs/synthea-with-dependencies.jar
+          asset_name: synthea-with-dependencies.jar
+          asset_content_type: application/java-archive
+        
+        # it's necessary to add another "publish" after the upload, otherwise the release is always listed as "draft"
+        # see https://github.com/actions/upload-release-asset/issues/34
+      - name: Publish Release
+        uses: ncipollo/release-action@v1
+        with:
+          allowUpdates: true
+          omitBodyDuringUpdate: true
+          replacesArtifacts: false
+          tag: master-branch-latest
+          token: ${{ secrets.GITHUB_TOKEN }}
+        
+      - name: Deploy to gh-pages
+        uses: peaceiris/actions-gh-pages@v3 
+        # note: watch for v4 to be released
+        with: 
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          keep_files: true
+          # do not create a .nojekyll file
+          enable_jekyll: true
+          publish_dir: ./output
+          user_name: 'Jason Walonoski'
+          user_email: 'jwalonoski@mitre.org'
+          commit_message: rebuild graphs, javadoc and binary distribution at
+          # note the commit SHA is appended automatically
+
+      - name: Push samples to sample repo
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+          SSH_DEPLOY_KEY: ${{ secrets.PUSH_SAMPLE_DATA_SSH_KEY }}
+        with:
+          source-directory: 'samples'
+          destination-github-username: 'synthetichealth'
+          destination-repository-name: 'synthea-sample-data'
+          target-directory: 'downloads/latest'
+          target-branch: main
+

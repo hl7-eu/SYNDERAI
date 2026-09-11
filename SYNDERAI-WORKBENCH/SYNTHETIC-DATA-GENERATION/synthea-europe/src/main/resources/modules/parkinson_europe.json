@@ -1,0 +1,236 @@
+{
+  "name": "Parkinson Disease Europe",
+  "remarks": [
+    "European calibration of Parkinson's disease.",
+    "NEW in R4. Absent from both R2 and R3 - no module emitted it. Note the R2/R3",
+    "reference table cites 32798002, which is Parkinsonism, not Parkinson's disease.",
+    "The correct concept is 49049000 (verified against SNOMED CT International",
+    "20260801).",
+    "Calibrated against: European Parkinson's Disease Association, GBD 2019 Europe.",
+    "Reference prevalence 0.3% of the total population; ~1.6% by age 80.",
+    "Chronic and progressive: no resolution pathway."
+  ],
+  "states": {
+    "Initial": {
+      "type": "Initial",
+      "direct_transition": "Age_Guard"
+    },
+    "Age_Guard": {
+      "type": "Guard",
+      "allow": {
+        "condition_type": "Age",
+        "operator": ">=",
+        "quantity": 50,
+        "unit": "years"
+      },
+      "direct_transition": "Naive_Guard"
+    },
+    "Naive_Guard": {
+      "type": "Guard",
+      "allow": {
+        "condition_type": "Attribute",
+        "attribute": "parkinson_disease",
+        "operator": "is nil"
+      },
+      "direct_transition": "Annual_Delay"
+    },
+    "Annual_Delay": {
+      "type": "Delay",
+      "exact": {
+        "quantity": 1,
+        "unit": "years"
+      },
+      "direct_transition": "Age_Check"
+    },
+    "Age_Check": {
+      "type": "Simple",
+      "conditional_transition": [
+        {
+          "condition": {
+            "condition_type": "Age",
+            "operator": "<",
+            "quantity": 60,
+            "unit": "years"
+          },
+          "transition": "Prob_50_59"
+        },
+        {
+          "condition": {
+            "condition_type": "Age",
+            "operator": "<",
+            "quantity": 70,
+            "unit": "years"
+          },
+          "transition": "Prob_60_69"
+        },
+        {
+          "condition": {
+            "condition_type": "Age",
+            "operator": "<",
+            "quantity": 80,
+            "unit": "years"
+          },
+          "transition": "Prob_70_79"
+        },
+        {
+          "transition": "Prob_80_plus"
+        }
+      ]
+    },
+    "Prob_50_59": {
+      "type": "Simple",
+      "remarks": [
+        "0.015% annual incidence."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.00015,
+          "transition": "Diagnose_Parkinson"
+        },
+        {
+          "distribution": 0.99985,
+          "transition": "Annual_Delay"
+        }
+      ]
+    },
+    "Prob_60_69": {
+      "type": "Simple",
+      "remarks": [
+        "0.050% annual incidence."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.0005,
+          "transition": "Diagnose_Parkinson"
+        },
+        {
+          "distribution": 0.9995,
+          "transition": "Annual_Delay"
+        }
+      ]
+    },
+    "Prob_70_79": {
+      "type": "Simple",
+      "remarks": [
+        "0.100% annual incidence."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.001,
+          "transition": "Diagnose_Parkinson"
+        },
+        {
+          "distribution": 0.999,
+          "transition": "Annual_Delay"
+        }
+      ]
+    },
+    "Prob_80_plus": {
+      "type": "Simple",
+      "remarks": [
+        "0.120% annual incidence."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.0012,
+          "transition": "Diagnose_Parkinson"
+        },
+        {
+          "distribution": 0.9988,
+          "transition": "Annual_Delay"
+        }
+      ]
+    },
+    "Diagnose_Parkinson": {
+      "type": "ConditionOnset",
+      "assign_to_attribute": "parkinson_disease",
+      "target_encounter": "Parkinson_Encounter",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "49049000",
+          "display": "Parkinson's disease (disorder)"
+        }
+      ],
+      "direct_transition": "Parkinson_Encounter"
+    },
+    "Parkinson_Encounter": {
+      "type": "Encounter",
+      "encounter_class": "ambulatory",
+      "reason": "parkinson_disease",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "11429006",
+          "display": "Consultation (procedure)"
+        }
+      ],
+      "direct_transition": "Parkinson_Neurology_Referral"
+    },
+    "Parkinson_Neurology_Referral": {
+      "type": "Procedure",
+      "reason": "parkinson_disease",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "183524004",
+          "display": "Referral to neurologist (procedure)"
+        }
+      ],
+      "duration": {
+        "low": 15,
+        "high": 30,
+        "unit": "minutes"
+      },
+      "direct_transition": "Prescribe_Levodopa"
+    },
+    "Prescribe_Levodopa": {
+      "type": "MedicationOrder",
+      "chronic": true,
+      "reason": "parkinson_disease",
+      "codes": [
+        {
+          "system": "RxNorm",
+          "code": "1092710",
+          "display": "Carbidopa 25 MG / Levodopa 100 MG Oral Tablet"
+        }
+      ],
+      "prescription": {
+        "refills": 11,
+        "as_needed": false,
+        "instructions": "Take three times daily"
+      },
+      "direct_transition": "End_Parkinson_Encounter"
+    },
+    "End_Parkinson_Encounter": {
+      "type": "EncounterEnd",
+      "direct_transition": "Parkinson_Followup_Delay"
+    },
+    "Parkinson_Followup_Delay": {
+      "type": "Delay",
+      "range": {
+        "low": 5,
+        "high": 7,
+        "unit": "months"
+      },
+      "direct_transition": "Parkinson_Review_Encounter"
+    },
+    "Parkinson_Review_Encounter": {
+      "type": "Encounter",
+      "encounter_class": "ambulatory",
+      "reason": "parkinson_disease",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "390906007",
+          "display": "Follow-up encounter (procedure)"
+        }
+      ],
+      "direct_transition": "End_Parkinson_Review"
+    },
+    "End_Parkinson_Review": {
+      "type": "EncounterEnd",
+      "direct_transition": "Parkinson_Followup_Delay"
+    }
+  }
+}

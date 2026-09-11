@@ -24,28 +24,29 @@ while (!feof($immunizationshandle)) {
     $expires = strtotime($date);
     $randdays = rand(28, 372);
     $expires = date('Y-m-d', strtotime("+$randdays day", $expires));
-    if (isset($MAP_CVX_2_SNOMED[$cvxcode])) {
-      $themap = $MAP_CVX_2_SNOMED[$cvxcode];
+    // map the source CVX to SNOMED CT
+    $snomed = map_concept($cvxcode, "cm-cvx-to-snomed-vaccine-products");
+    if ($snomed) {
+      // if map the source CVX to SNOMED succeeded fill in all possible additional information
+      // map SNOMED to ATC
+      $atc = map_concept($snomed["code"], "cm-snomed-vaccine-products-to-atc");
+      // find route
+      $route = map_concept($snomed["code"], "cm-vaccine-products-to-route-of-administration");
+      // find an appropriate site
+      $site = map_concept($snomed["code"], "cm-vaccine-products-to-administration-site");
       // get SNOMED right with code, display, route and site
-      $snomedproperties = get_SNOMED_properties($themap["snomed"]["code"], $cvxdisplay);  // might do a replacement on retired codes as well
+      $snomedproperties = get_SNOMED_properties($snomed["code"], $cvxdisplay);  // might do a replacement on retired codes as well
       if (strlen($snomedproperties["preferredTerm"]) === 0) {
         lognlsev(1, WARNING, "......... +++ vaccination: SNOMED code for CVX $cvxcode $cvxdisplay not found!");
         registerMapMissing("vaccination: SNOMED code for CVX $cvxcode $cvxdisplay not found");
       }
       // assume SNOMED for site and route are ok, maybe this needs to be verified later but the concept maps are all based on SNOMED
       // get ATC right
-      $atcproperties = get_ATC_properties($themap["atc"]["code"]);
+      $atcproperties = get_ATC_properties($atc["code"]);
       if (strlen($atcproperties["display"]) === 0) {
         lognlsev(1, WARNING, "......... +++ vaccination: information for ATC " . $themap["atc"]["code"] . " not found!");
         registerMapMissing("vaccination: information for ATC " . $themap["atc"]["code"] . " not found");
       }
-    } else {
-      $info = isset($item[6]) ? trim($item[6]) : "";
-      lognlsev(1, ERROR, "......... Cannot map CVX $cvxcode " . $info);
-      registerMapMissing("......... Cannot map CVX $cvxcode " . $info);
-      $themap = NULL;
-    }
-    if ($themap !== NULL) {        
       $found[$cvxcode] = [
         "date" => $date,
         "cvx" => [
@@ -66,16 +67,16 @@ while (!feof($immunizationshandle)) {
         ],
         "lotNumber" => $lot,
         "expires" => $expires,
-        "site" => [
-          "code" => $themap["site"]["code"],
+        "site" => $site !== NULL ? [
+          "code" => $site["code"],
           "system" => "\$sct",
-          "display" => $themap["site"]["display"],
-        ],
-        "route" => [
-          "code" => $themap["route"]["code"],
+          "display" => $site["display"],
+        ] : NULL,
+        "route" => $route !== NULL ? [
+          "code" => $route["code"],
           "system" => "\$sct",
-          "display" => $themap["route"]["display"],
-        ],
+          "display" => $route["display"],
+        ] : NULL,
         "sectionentryslicename" => "immunization"
       ];
       lognl(3, sprintf(
@@ -84,12 +85,14 @@ while (!feof($immunizationshandle)) {
         $date,
         $snomedproperties["preferredTerm"]
       ));
-      if (strlen($date)<7) {
+      if (strlen($date) < 7) {
         lognlsev(1, ERROR, "+++ DATE len<7 $date");
       }
     } else {
-      lognlsev(1, ERROR, "......... Cannot map CVX $cvxcode $cvxdisplay");
-      registerMapMissing("......... Cannot map CVX $cvxcode $cvxdisplay");
+      $info = isset($item[6]) ? trim($item[6]) : "";
+      lognlsev(1, ERROR, "......... Cannot map CVX $cvxcode " . $info);
+      registerMapMissing("......... Cannot map CVX $cvxcode " . $info);
+      $themap = NULL;
     }
   }
 }

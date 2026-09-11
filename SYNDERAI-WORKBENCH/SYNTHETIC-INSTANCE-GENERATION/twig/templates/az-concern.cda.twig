@@ -1,0 +1,137 @@
+{#
+  ============================================================================
+  TEMPLATE: az-concern.cda.twig
+  ============================================================================
+  KEZO Overdracht Concern   2.16.840.1.113883.2.4.3.11.60.66.10.212
+  KEZO Probleem             2.16.840.1.113883.2.4.3.11.60.66.10.213
+  value binding             ICPC-1-NL 2.16.840.1.113883.2.4.3.11.60.103.11.20
+ 
+  AUTHOR   KH
+  SINCE    2026-08-05
+  REVISED  2026-08-27  Corrections against the DECOR templates, see the
+                       revision notes at the end of this file.
+  ============================================================================
+#}
+ 
+%%CDA%% {# ── Section marker required by the CDA pre-processor ─────────────── #}
+ 
+{#
+  ── Pre-calculations ─────────────────────────────────────────────────────────
+  activeflag: first character of condition.active ("SYYYY-MM-DD").
+              "1" = active, "0" = inactive. Compared as a STRING; an integer
+              comparison behaves differently for an empty value under PHP 8.
+  inactive:   drives act/statusCode only. observation/statusCode is fixed to
+              "completed" by template .10.213 and must not be varied.
+  preferred:  display label. preferredTerm wins only when it is non-empty AND
+              differs from condition.code.display. This two-condition guard
+              differs from condition-eu, which overrides unconditionally.
+#}
+{% set activeflag = condition.active|slice(0, 1) %}
+{% set inactive = activeflag == '0' %}
+{% set preferred = condition.code.display %}
+{% if condition.code.preferredTerm is not empty and condition.code.display != condition.code.preferredTerm %}
+{% set preferred = condition.code.preferredTerm %}
+{% endif %}
+ 
+<component typeCode="COMP" contextControlCode="OP">
+   <!-- concern -->
+   <act classCode="ACT" moodCode="EVN">
+      <templateId root="2.16.840.1.113883.2.4.3.11.60.66.10.212"/>
+      <id extension="{{ episodeid|e('html') }}" root="2.16.528.1.1007.3.3.765332.1.12"/>
+      <code code="CONC" codeSystem="2.16.840.1.113883.5.6" displayName="Concern"/>
+{# act/text carries the episode title (kz-concept-905), not the diagnosis name #}
+{% if episodetitel is defined and episodetitel is not empty %}
+      <text>{{ episodetitel|e('html') }}</text>
+{% elseif icpcnl.display is not empty %}
+      <text>{{ icpcnl.display|e('html') }}</text>
+{% else %}
+      <text>{{ preferred|e('html') }}</text>
+{% endif %}
+{# --- #}
+{% if inactive %}
+      <statusCode code="completed"/>
+{% else %}
+      <statusCode code="active"/>
+{% endif %}
+{# --- #}
+{# effectiveTime is 0..1 R. An IVL_TS with neither low nor high is invalid,
+   hence the outer guard. The date filter returns today's date when its
+   argument is empty, hence the inner guards. #}
+{% if episode.start is not empty or episode.end is not empty %}
+      <effectiveTime>
+{% if episode.start is not empty %}
+         <low value="{{ episode.start|date('Ymd') }}"/>
+{% endif %}
+{% if episode.end is not empty %}
+         <high value="{{ episode.end|date('Ymd') }}"/>
+{% endif %}
+      </effectiveTime>
+{% endif %}
+{# --- #}
+{# author 0..* R (kz-concept-1103). Verify the structure against .10.9025
+   and .10.9028; the assignedAuthor shape below is an assumption. #}
+{% if concernauthor is defined and concernauthor is not empty %}
+      <author typeCode="AUT" contextControlCode="OP">
+         <time value="{{ concernauthor.time|date('Ymd') }}"/>
+         <assignedAuthor classCode="ASSIGNED">
+            <id extension="{{ concernauthor.uzi|e('html') }}" root="2.16.528.1.1007.3.1"/>
+         </assignedAuthor>
+      </author>
+{% endif %}
+{# --- #}
+      <entryRelationship typeCode="SUBJ">
+         <observation classCode="OBS" moodCode="EVN">
+            <templateId root="2.16.840.1.113883.2.4.3.11.60.66.10.213"/>
+            <id extension="{{ conditionid|e('html') }}" root="2.16.528.1.1007.3.3.765332.1.12"/>
+            <code code="282291009" codeSystem="2.16.840.1.113883.6.96" displayName="Diagnosis"/>
+{# --- #}
+{# statusCode is fixed to "completed" by .10.213. The activity state of the
+   problem lives in effectiveTime/high, not here. #}
+            <statusCode code="completed"/>
+{# --- #}
+{% if condition.start is not empty or condition.end is not empty %}
+            <effectiveTime>
+{% if condition.start is not empty %}
+               <low value="{{ condition.start|date('Ymd') }}"/>
+{% endif %}
+{% if condition.end is not empty %}
+               <high value="{{ condition.end|date('Ymd') }}"/>
+{% endif %}
+            </effectiveTime>
+{% endif %}
+{# --- #}
+            <!-- ICPC-1-NL 2.16.840.1.113883.2.4.4.31.1 code mapped from SNOMED as translation or marked as unknown -->
+{# 
+      Show ICPCNL if concept can be mapped from SNOMED.
+      If the concept cannot be mapped from SNOMED or exists but falls outside the bound ICPC-1-NL, 
+      then value set nullFlavor="OTH" is set.
+      A null-flavored CD carries no coding attributes, so codeSystem is omitted here.
+#}
+{% if icpcnl is not empty and icpcnl.code is not empty %}
+            <value xsi:type="CD" 
+                   code="{{ icpcnl.code|e('html') }}"
+                   codeSystem="{{ icpcnl.system }}"
+                   displayName="{{ icpcnl.display|e('html') }}">
+{% else %}
+            <value xsi:type="CD" nullFlavor="OTH">
+{% endif %}
+               <translation xsi:type="CD"
+                            code="{{ condition.code.code|e('html') }}"
+                            codeSystem="2.16.840.1.113883.6.96"
+                            displayName="{{ condition.code.display|e('html') }}"/>
+            </value>
+{# --- #}
+{# author 0..* R (kz-concept-1456), inclusion .10.9025 with time 1..1 R and
+   assignedAuthor 1..1 R #}
+{% if conditionauthor is defined and conditionauthor is not empty %}
+            <author typeCode="AUT" contextControlCode="OP">
+               <time value="{{ conditionauthor.time|date('Ymd') }}"/>
+               <assignedAuthor classCode="ASSIGNED">
+                  <id extension="{{ conditionauthor.uzi|e('html') }}" root="2.16.528.1.1007.3.1"/>
+               </assignedAuthor>
+            </author>
+{% endif %}
+         </observation>
+      </entryRelationship>
+   </act>
+</component>

@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<conceptMap id="2.16.840.1.113883.3.1937.777.100.24.2" displayName="Specimen to SNOMED" effectiveDate="2026-08-27T00:00:00" statusCode="draft" lastModifiedDate="2026-09-11T00:00:00" url="http://art-decor.org/decor/services/" ident="synderai-">
+        <desc language="en-US">
+                <p>Maps specimen types to SNOMED CT specimen concepts. Every target was confirmed active and a descendant of 123038009 |Specimen| in the SNOMED CT International Edition, version 20260801, via a Snowstorm ValueSet/$expand on ECL &lt;&lt;123038009 followed by a CodeSystem/$lookup. Two groups. The first uses LOINC System Part codes as source. Only four could be confirmed on loinc.org
+                    as Part Type System, so it holds four elements. The second carries all 73 specimen types through the local code system cs-specimen-label (2.16.840.1.113883.3.1937.777.100.5.1), so each target is reachable whether or not a LOINC code exists for it. Its source codes are the sanitised form of the specimen label, reduced to letters and digits with every other character replaced by
+                    an underscore. Rows added after 2026-09-10 were verified against version 20260901. The unmodified label is carried on each element as displayName and on the code system concept as the preferred designation.</p>
+                <div class="__artdecor_box aswarning">
+                    <p>This artefact includes content from SNOMED Clinical Terms® (SNOMED CT®) which is copyright of the International Health Terminology Standards Development Organisation (IHTSDO). Implementers of these artefacts must have the appropriate SNOMED CT Affiliate license - for more information contact http://www.snomed.org/snomed-ct/getsnomed-ct or info@snomed.org.</p>
+                    <p>This material contains content from LOINC (http://loinc.org). LOINC is copyright © 1995-today, Regenstrief Institute, Inc. and the Logical Observation Identifiers Names and Codes (LOINC) Committee and is available at no cost under the license at loinc.org. LOINC® is a registered United States trademark of Regenstrief Institute, Inc.</p>
+                    <p>Derived artefact, not published by Regenstrief, or SNOMED International. SNOMED CT content requires an Affiliate licence.</p>
+                </div>
+            </desc>
+        <publishingAuthority name="SYNDERAI" inherited="project"/>
+        <purpose language="en-US">Specimen axis for synthetic laboratory data.</purpose>
+        <copyright language="en-US" inherited="true">This artefact includes content from SNOMED Clinical Terms® (SNOMED CT®) which is copyright of the International Health Terminology Standards Development Organisation (IHTSDO). Implementers of these artefacts must have the appropriate SNOMED CT Affiliate license - for more information contact http://www.snomed.org/snomed-ct/getsnomed-ct or info@snomed.org.</copyright>
+        <sourceScope ref="2.16.840.1.113883.6.1" flexibility="dynamic" displayName="LOINC" canonicalUri="http://loinc.org/vs"/>
+        <targetScope ref="2.16.840.1.113883.6.96" flexibility="dynamic" displayName="SNOMED CT" canonicalUri="http://snomed.info/sct?fhir_vs"/>
+        <issueAssociation count="0"/>
+        <group>
+            <source codeSystem="2.16.840.1.113883.6.1" displayName="Logical Observation Identifier Names and Codes" canonicalUri="http://loinc.org"/>
+            <target codeSystem="2.16.840.1.113883.6.96" displayName="SNOMED Clinical Terms" canonicalUri="http://snomed.info/sct"/>
+            <element code="LP7486-6" displayName="Pleural fluid">
+                    <target code="418564007" relationship="equal" displayName="Pleural fluid specimen">
+                        <comment language="en-US">LOINC System part verified on loinc.org 2026-08-27</comment>
+                    </target>
+                </element>
+            <element code="LP7238-1" displayName="Body fluid">
+                    <target code="309051001" relationship="equal" displayName="Body fluid specimen">
+                        <comment language="en-US">LOINC System part verified on loinc.org 2026-08-27</comment>
+                    </target>
+                </element>
+            <element code="LP7565-7" displayName="Saliva">
+                    <target code="119342007" relationship="equal" displayName="Saliva specimen">
+                        <comment language="en-US">LOINC System part verified on loinc.org 2026-08-27</comment>
+                    </target>
+                </element>
+            <element code="LP213600-2" displayName="Bone marrow">
+                    <target code="119359002" relationship="equal" displayName="Bone marrow specimen">
+                        <comment language="en-US">LOINC System part verified on loinc.org 2026-08-27. code replaced, old 119376003 was Tissue specimen</comment>
+                    </target>
+                </element>
+        </group>
+        <group>
+            <source codeSystem="2.16.840.1.113883.3.1937.777.100.5.1" displayName="Specimen label" canonicalUri="http://synderai.net/fhir/CodeSystem/cs-specimen-label"/>
+            <target codeSystem="2.16.840.1.113883.6.96" displayName="SNOMED Clinical Terms" canonicalUri="http://snomed.info/sct"/>
+            <element code="Ser_Plas" displayName="Ser/Plas">
+                    <target code="122592007" relationship="equal" displayName="Acellular blood (serum or plasma) specimen"/>
+                </element>
+            <element code="PPP_Platelet_poor_plasma" displayName="PPP (Platelet poor plasma)">
+                    <target code="119362004" relationship="equal" displayName="Platelet poor plasma specimen"/>
+                </element>
+            <element code="PRP_Platelet_rich_plasma" displayName="PRP (Platelet rich plasma)">
+                    <target code="119363009" relationship="equal" displayName="Platelet rich plasma specimen"/>
+                </element>
+            <element code="Serum" displayName="Serum">
+                    <target code="119364003" relationship="equal" displayName="Serum specimen"/>
+                </element>
+            <element code="Plasma" displayName="Plasma">
+                    <target code="119361006" relationship="equal" displayName="Plasma specimen"/>
+                </element>
+            <element code="Blood" displayName="Blood">
+                    <target code="119297000" relationship="equal" displayName="Blood specimen"/>
+                </element>
+            <element code="Bld_ven_Venous_blood" displayName="Bld-ven (Venous blood)">
+                    <target code="122555007" relationship="equal" displayName="Venous blood specimen"/>
+                </element>
+            <element code="BldA_Arterial_blood" displayName="BldA (Arterial blood)">
+                    <target code="122552005" relationship="equal" displayName="Arterial blood specimen"/>
+                </element>
+            <element code="BldC_Capillary_blood" displayName="BldC (Capillary blood)">
+                    <target code="122554006" relationship="equal" displayName="Capillary blood specimen"/>
+                </element>
+            <element code="Bld" displayName="Bld">
+                    <target code="119297000" relationship="equal" displayName="Blood specimen"/>
+                </element>
+            <element code="Respiratory_System_Specimen" displayName="Respiratory System Specimen">
+                    <target code="258603007" relationship="equal" displayName="Specimen from respiratory system"/>
+                </element>
+            <element code="Ser_Plas_Bld" displayName="Ser/Plas/Bld">
+                    <target code="119297000" relationship="wider" displayName="Blood specimen">
+                        <comment language="en-US">the source stands for serum, plasma or whole blood; 119297000 subsumes all three, so the target is broader than the source</comment>
+                    </target>
+                </element>
+            <element code="RBC" displayName="RBC">
+                    <target code="119351004" relationship="equal" displayName="Erythrocyte specimen"/>
+                </element>
+            <element code="Bld_pos_growth" displayName="Bld.pos growth">
+                    <target code="446131002" relationship="wider" displayName="Blood specimen obtained for blood culture">
+                        <comment language="en-US">no specimen concept exists for a culture that showed growth; positive growth is a finding, not a property of the specimen</comment>
+                    </target>
+                </element>
+            <element code="Dried_blood_spot" displayName="Dried blood spot">
+                    <target code="440500007" relationship="equal" displayName="Dried blood spot specimen"/>
+                </element>
+            <element code="Urine" displayName="Urine">
+                    <target code="122575003" relationship="equal" displayName="Urine specimen"/>
+                </element>
+            <element code="Urine_Sed" displayName="Urine Sed">
+                    <target code="122567009" relationship="equal" displayName="Urine sediment specimen"/>
+                </element>
+            <element code="Mid_stream_urine" displayName="Mid-stream urine">
+                    <target code="258574006" relationship="equal" displayName="Mid-stream urine specimen">
+                        <comment language="en-US">display corrected to FSN</comment>
+                    </target>
+                </element>
+            <element code="Catheter_urine_indwelling" displayName="Catheter urine (indwelling)">
+                    <target code="446846006" relationship="equal" displayName="Urine specimen obtained via indwelling urinary catheter"/>
+                </element>
+            <element code="CSF" displayName="CSF">
+                    <target code="258450006" relationship="equal" displayName="Cerebrospinal fluid specimen">
+                        <comment language="en-US">code replaced, old 119295008 was Specimen obtained by aspiration</comment>
+                    </target>
+                </element>
+            <element code="Synv_fld_Synovial_fluid" displayName="Synv fld (Synovial fluid)">
+                    <target code="119332005" relationship="equal" displayName="Synovial fluid specimen"/>
+                </element>
+            <element code="Plr_fld_Pleural_fluid" displayName="Plr fld (Pleural fluid)">
+                    <target code="418564007" relationship="equal" displayName="Pleural fluid specimen"/>
+                </element>
+            <element code="Peritoneal_fluid" displayName="Peritoneal fluid">
+                    <target code="168139001" relationship="equal" displayName="Peritoneal fluid specimen">
+                        <comment language="en-US">display corrected to FSN</comment>
+                    </target>
+                </element>
+            <element code="Peritoneal_dialysis_fluid" displayName="Peritoneal dialysis fluid">
+                    <target code="168140004" relationship="equal" displayName="Peritoneal dialysate specimen">
+                        <comment language="en-US">code replaced, old 122586001 inactive since 2023</comment>
+                    </target>
+                </element>
+            <element code="Amnio_fld_Amniotic_fluid" displayName="Amnio fld (Amniotic fluid)">
+                    <target code="119373006" relationship="equal" displayName="Amniotic fluid specimen"/>
+                </element>
+            <element code="Pericardial_fluid" displayName="Pericardial fluid">
+                    <target code="122571007" relationship="equal" displayName="Pericardial fluid specimen">
+                        <comment language="en-US">code replaced, old 119370009 was Specimen from fistula</comment>
+                    </target>
+                </element>
+            <element code="Body_fld_Unspecified_body_fluid" displayName="Body fld (Unspecified body fluid)">
+                    <target code="309051001" relationship="equal" displayName="Body fluid specimen"/>
+                </element>
+            <element code="Saliva_Oral_fluid" displayName="Saliva (Oral fluid)">
+                    <target code="119342007" relationship="equal" displayName="Saliva specimen"/>
+                </element>
+            <element code="Sputum" displayName="Sputum">
+                    <target code="119334006" relationship="equal" displayName="Sputum specimen"/>
+                </element>
+            <element code="Lower_resp_sample" displayName="Lower resp sample">
+                    <target code="258606004" relationship="equal" displayName="Lower respiratory tract specimen">
+                        <comment language="en-US">display corrected to FSN</comment>
+                    </target>
+                </element>
+            <element code="BAL_Bronchoalveolar_lavage" displayName="BAL (Bronchoalveolar lavage)">
+                    <target code="258607008" relationship="equal" displayName="Bronchoalveolar lavage fluid specimen">
+                        <comment language="en-US">display corrected to FSN</comment>
+                    </target>
+                </element>
+            <element code="Nasopharyngeal_swab" displayName="Nasopharyngeal swab">
+                    <target code="258500001" relationship="equal" displayName="Nasopharyngeal swab"/>
+                </element>
+            <element code="Oropharyngeal_swab" displayName="Oropharyngeal swab">
+                    <target code="258529004" relationship="equal" displayName="Throat swab"/>
+                </element>
+            <element code="Nasopharyngeal_aspirate" displayName="Nasopharyngeal aspirate">
+                    <target code="258411007" relationship="equal" displayName="Nasopharyngeal aspirate"/>
+                </element>
+            <element code="Nasal_swab_anterior_nares" displayName="Nasal swab (anterior nares)">
+                    <target code="697989009" relationship="equal" displayName="Swab from anterior naris">
+                        <comment language="en-US">display corrected to FSN</comment>
+                    </target>
+                </element>
+            <element code="Stool_Feces" displayName="Stool (Feces)">
+                    <target code="119339001" relationship="equal" displayName="Stool specimen">
+                        <comment language="en-US">display corrected to FSN</comment>
+                    </target>
+                </element>
+            <element code="Gastric_fluid" displayName="Gastric fluid">
+                    <target code="258459007" relationship="equal" displayName="Gastric fluid specimen">
+                        <comment language="en-US">display corrected to FSN</comment>
+                    </target>
+                </element>
+            <element code="Gastric_aspirate" displayName="Gastric aspirate">
+                    <target code="168137004" relationship="equal" displayName="Gastric aspirate specimen">
+                        <comment language="en-US">display corrected to FSN</comment>
+                    </target>
+                </element>
+            <element code="Gastric_lavage" displayName="Gastric lavage">
+                    <target code="168138009" relationship="equal" displayName="Gastric lavage aspirate specimen">
+                        <comment language="en-US">display corrected to FSN</comment>
+                    </target>
+                </element>
+            <element code="Bile" displayName="Bile">
+                    <target code="119341000" relationship="equal" displayName="Bile specimen">
+                        <comment language="en-US">code replaced, old 119312001 fails the SCTID check digit</comment>
+                    </target>
+                </element>
+            <element code="Pancreatic_fluid" displayName="Pancreatic fluid">
+                    <target code="119343002" relationship="equal" displayName="Pancreatic fluid specimen">
+                        <comment language="en-US">code replaced, old 122564002 was Specimen from blood bag</comment>
+                    </target>
+                </element>
+            <element code="Saliva_oral_rinse" displayName="Saliva - oral rinse">
+                    <target code="1149105007" relationship="relatedto" displayName="Oropharyngeal washings">
+                        <comment language="en-US">code replaced; no oral rinse concept exists, this one is sited at the oropharynx</comment>
+                    </target>
+                </element>
+            <element code="Sweat" displayName="Sweat">
+                    <target code="122569007" relationship="equal" displayName="Sweat specimen"/>
+                </element>
+            <element code="Semen" displayName="Semen">
+                    <target code="119347001" relationship="equal" displayName="Seminal fluid specimen">
+                        <comment language="en-US">code replaced, old 119345009 was Menstrual blood specimen</comment>
+                    </target>
+                </element>
+            <element code="Vaginal_swab" displayName="Vaginal swab">
+                    <target code="258520000" relationship="equal" displayName="Vaginal swab">
+                        <comment language="en-US">code replaced, old 119345006 fails the SCTID check digit</comment>
+                    </target>
+                </element>
+            <element code="Cervical_swab" displayName="Cervical swab">
+                    <target code="258524009" relationship="equal" displayName="Cervical swab">
+                        <comment language="en-US">code replaced, old 1193641009 fails the SCTID check digit</comment>
+                    </target>
+                </element>
+            <element code="Urethral_swab" displayName="Urethral swab">
+                    <target code="258530009" relationship="equal" displayName="Urethral swab"/>
+                </element>
+            <element code="Endocervical_swab" displayName="Endocervical swab">
+                    <target code="444787003" relationship="equal" displayName="Swab of endocervix">
+                        <comment language="en-US">code replaced, old 119334008 fails the SCTID check digit</comment>
+                    </target>
+                </element>
+            <element code="Amniotic_fluid_supernatant" displayName="Amniotic fluid (supernatant)">
+                    <target code="119373006" relationship="wider" displayName="Amniotic fluid specimen">
+                        <comment language="en-US">no supernatant concept exists; the processed-fraction distinction is lost and this collapses onto row 18</comment>
+                    </target>
+                </element>
+            <element code="Bone_marrow" displayName="Bone marrow">
+                    <target code="119359002" relationship="equal" displayName="Bone marrow specimen">
+                        <comment language="en-US">code replaced, old 119376003 was Tissue specimen</comment>
+                    </target>
+                </element>
+            <element code="Tissue_unspecified" displayName="Tissue (unspecified)">
+                    <target code="119376003" relationship="equal" displayName="Tissue specimen">
+                        <comment language="en-US">code replaced, old 309051001 was Body fluid specimen</comment>
+                    </target>
+                </element>
+            <element code="Tumor" displayName="Tumor">
+                    <target code="258435002" relationship="equal" displayName="Tumor tissue specimen"/>
+                </element>
+            <element code="Cancer_specimen" displayName="Cancer specimen">
+                    <target code="258435002" relationship="wider" displayName="Tumor tissue specimen">
+                        <comment language="en-US">258435002 is defined by specimen source morphology 108369006 Neoplasm and so includes benign tumours; a cancer specimen is a subset of it</comment>
+                    </target>
+                </element>
+            <element code="Breast_tumor" displayName="Breast tumor">
+                    <target code="734343002" relationship="wider" displayName="Specimen from mass of breast">
+                        <comment language="en-US">no breast tumour specimen concept exists; 734343002 is defined by specimen source morphology 4147007 Mass, which need not be a tumour</comment>
+                    </target>
+                </element>
+            <element code="Breast_cancer_specimen" displayName="Breast cancer specimen">
+                    <target code="127457009" relationship="wider" displayName="Tissue specimen from breast">
+                        <comment language="en-US">no breast cancer specimen concept exists; tissue and topography are kept, the neoplastic morphology is lost</comment>
+                    </target>
+                </element>
+            <element code="Tears" displayName="Tears">
+                    <target code="122594008" relationship="equal" displayName="Tears specimen"/>
+                </element>
+            <element code="Lacrimal_fluid" displayName="Lacrimal fluid">
+                    <target code="258465007" relationship="equal" displayName="Lacrimal fluid specimen"/>
+                </element>
+            <element code="Ear_swab" displayName="Ear swab">
+                    <target code="309166000" relationship="equal" displayName="Ear swab specimen">
+                        <comment language="en-US">code replaced, old 1193641008 fails the SCTID check digit</comment>
+                    </target>
+                </element>
+            <element code="Tracheal_aspirate" displayName="Tracheal aspirate">
+                    <target code="445447003" relationship="equal" displayName="Specimen from trachea obtained by aspiration">
+                        <comment language="en-US">code replaced, old 119343002 is Pancreatic fluid specimen</comment>
+                    </target>
+                </element>
+            <element code="Sputum_tracheal_aspirate_Spt_tracheal_asp" displayName="Sputum - tracheal aspirate (Spt tracheal asp)">
+                    <target code="57741000052105" relationship="equal" displayName="Tracheal secretion specimen">
+                        <comment language="en-US">code replaced, old 258467004 was Nasopharyngeal washings</comment>
+                    </target>
+                </element>
+            <element code="Respiratory_sample_unspecified" displayName="Respiratory sample (unspecified)">
+                    <target code="258603007" relationship="equal" displayName="Specimen from respiratory system">
+                        <comment language="en-US">display corrected to FSN</comment>
+                    </target>
+                </element>
+            <element code="Colostrum" displayName="Colostrum">
+                    <target code="119329007" relationship="equal" displayName="Colostrum specimen"/>
+                </element>
+            <element code="Exhaled_air" displayName="Exhaled air">
+                    <target code="119336008" relationship="equal" displayName="Exhaled air specimen"/>
+                </element>
+            <element code="Drainage_fluid" displayName="Drainage fluid">
+                    <target code="258455001" relationship="equal" displayName="Drainage fluid specimen">
+                        <comment language="en-US">display corrected to FSN</comment>
+                    </target>
+                </element>
+            <element code="Exudate" displayName="Exudate">
+                    <target code="258441009" relationship="equal" displayName="Exudate specimen">
+                        <comment language="en-US">display corrected to FSN</comment>
+                    </target>
+                </element>
+            <element code="Calculus" displayName="Calculus">
+                    <target code="119350003" relationship="equal" displayName="Calculus specimen"/>
+                </element>
+            <element code="Implant_submitted_as_specimen" displayName="Implant (submitted as specimen)">
+                    <target code="439961009" relationship="equal" displayName="Implant submitted as specimen"/>
+                </element>
+            <element code="Contact_lens_submitted_as_specimen" displayName="Contact lens (submitted as specimen)">
+                    <target code="440473005" relationship="equal" displayName="Contact lens submitted as specimen"/>
+                </element>
+            <element code="Water" displayName="Water">
+                    <target code="119318008" relationship="equal" displayName="Water specimen"/>
+                </element>
+            <element code="Isolate" displayName="Isolate">
+                    <target code="119303007" relationship="equal" displayName="Microbial isolate specimen"/>
+                </element>
+            <element code="Specimen" displayName="Specimen">
+                    <target code="123038009" relationship="equal" displayName="Specimen">
+                        <comment language="en-US">root of the specimen hierarchy; carries no information beyond the fact that a specimen was taken</comment>
+                    </target>
+                </element>
+            <element code="HEM" displayName="HEM">
+                    <target code="119297000" relationship="relatedto" displayName="Blood specimen">
+                        <comment language="en-US">CAVE: HEM is a laboratory section, not a specimen type. It occurs in the source table as an artefact of the Synthea generation and has no clinically correct place on the LOINC System axis. Mapped to whole blood, the usual specimen of a haematology section so that synthetic data carries a code rather than plain text. The target is an interpretation
+                            of the section, not a statement about the specimen actually drawn.</comment>
+                    </target>
+                </element>
+            <element code="CHEM" displayName="CHEM">
+                    <target code="122592007" relationship="relatedto" displayName="Acellular blood (serum or plasma) specimen">
+                        <comment language="en-US">CAVE: CHEM is a laboratory section, not a specimen type. It occurs in the source table as an artefact of the Synthea generation and has no clinically correct place on the LOINC System axis. Mapped to serum or plasma, the usual specimen of a clinical chemistry section so that synthetic data carries a code rather than plain text. The target is an
+                            interpretation of the section, not a statement about the specimen actually drawn.</comment>
+                    </target>
+                </element>
+        </group>
+    </conceptMap>

@@ -1,0 +1,293 @@
+{
+  "name": "Hyperlipidaemia Europe",
+  "remarks": [
+    "European calibration of hyperlipidaemia / dyslipidaemia.",
+    "NEW in R4. No module anywhere in the tree emitted 55822004, so R3 reported 0%",
+    "against a 22.0% European reference - the single largest gap in the table, and",
+    "one that sits directly upstream of the cardiovascular and diabetes modules.",
+    "Calibrated against: EAS/ESC Dyslipidaemia Guidelines 2019, Eurostat EHIS 2019.",
+    "Rates integrate to ~24% cumulative by age 55 and ~50% by 75, giving an adult",
+    "population prevalence of roughly 22%.",
+    "Chronic: no resolution pathway, statin therapy is lifelong."
+  ],
+  "states": {
+    "Initial": {
+      "type": "Initial",
+      "direct_transition": "Age_Guard"
+    },
+    "Age_Guard": {
+      "type": "Guard",
+      "allow": {
+        "condition_type": "Age",
+        "operator": ">=",
+        "quantity": 30,
+        "unit": "years"
+      },
+      "direct_transition": "Naive_Guard"
+    },
+    "Naive_Guard": {
+      "type": "Guard",
+      "allow": {
+        "condition_type": "Attribute",
+        "attribute": "hyperlipidaemia",
+        "operator": "is nil"
+      },
+      "direct_transition": "Annual_Delay"
+    },
+    "Annual_Delay": {
+      "type": "Delay",
+      "exact": {
+        "quantity": 1,
+        "unit": "years"
+      },
+      "direct_transition": "Age_Check"
+    },
+    "Age_Check": {
+      "type": "Simple",
+      "conditional_transition": [
+        {
+          "condition": {
+            "condition_type": "Age",
+            "operator": "<",
+            "quantity": 45,
+            "unit": "years"
+          },
+          "transition": "Prob_30_44"
+        },
+        {
+          "condition": {
+            "condition_type": "Age",
+            "operator": "<",
+            "quantity": 55,
+            "unit": "years"
+          },
+          "transition": "Prob_45_54"
+        },
+        {
+          "condition": {
+            "condition_type": "Age",
+            "operator": "<",
+            "quantity": 65,
+            "unit": "years"
+          },
+          "transition": "Prob_55_64"
+        },
+        {
+          "transition": "Prob_65_plus"
+        }
+      ]
+    },
+    "Prob_30_44": {
+      "type": "Simple",
+      "remarks": [
+        "0.800% annual incidence."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.008,
+          "transition": "Diagnose_Hyperlipidaemia"
+        },
+        {
+          "distribution": 0.992,
+          "transition": "Annual_Delay"
+        }
+      ]
+    },
+    "Prob_45_54": {
+      "type": "Simple",
+      "remarks": [
+        "1.600% annual incidence."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.016,
+          "transition": "Diagnose_Hyperlipidaemia"
+        },
+        {
+          "distribution": 0.984,
+          "transition": "Annual_Delay"
+        }
+      ]
+    },
+    "Prob_55_64": {
+      "type": "Simple",
+      "remarks": [
+        "2.200% annual incidence."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.022,
+          "transition": "Diagnose_Hyperlipidaemia"
+        },
+        {
+          "distribution": 0.978,
+          "transition": "Annual_Delay"
+        }
+      ]
+    },
+    "Prob_65_plus": {
+      "type": "Simple",
+      "remarks": [
+        "2.000% annual incidence."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.02,
+          "transition": "Diagnose_Hyperlipidaemia"
+        },
+        {
+          "distribution": 0.98,
+          "transition": "Annual_Delay"
+        }
+      ]
+    },
+    "Diagnose_Hyperlipidaemia": {
+      "type": "ConditionOnset",
+      "assign_to_attribute": "hyperlipidaemia",
+      "target_encounter": "Lipid_Encounter",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "55822004",
+          "display": "Hyperlipidemia (disorder)"
+        }
+      ],
+      "direct_transition": "Lipid_Encounter"
+    },
+    "Lipid_Encounter": {
+      "type": "Encounter",
+      "encounter_class": "ambulatory",
+      "reason": "hyperlipidaemia",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "11429006",
+          "display": "Consultation (procedure)"
+        }
+      ],
+      "direct_transition": "Lipid_Panel"
+    },
+    "Lipid_Panel": {
+      "type": "DiagnosticReport",
+      "codes": [
+        {
+          "system": "LOINC",
+          "code": "57698-3",
+          "display": "Lipid panel with direct LDL - Serum or Plasma"
+        }
+      ],
+      "observations": [
+        {
+          "category": "laboratory",
+          "unit": "mg/dL",
+          "codes": [
+            {
+              "system": "LOINC",
+              "code": "2093-3",
+              "display": "Cholesterol [Mass/volume] in Serum or Plasma"
+            }
+          ],
+          "range": {
+            "low": 200,
+            "high": 310
+          }
+        },
+        {
+          "category": "laboratory",
+          "unit": "mg/dL",
+          "codes": [
+            {
+              "system": "LOINC",
+              "code": "18262-6",
+              "display": "Cholesterol in LDL [Mass/volume] in Serum or Plasma by Direct assay"
+            }
+          ],
+          "range": {
+            "low": 130,
+            "high": 220
+          }
+        },
+        {
+          "category": "laboratory",
+          "unit": "mg/dL",
+          "codes": [
+            {
+              "system": "LOINC",
+              "code": "2571-8",
+              "display": "Triglyceride [Mass/volume] in Serum or Plasma"
+            }
+          ],
+          "range": {
+            "low": 150,
+            "high": 400
+          }
+        }
+      ],
+      "direct_transition": "Statin_Decision"
+    },
+    "Statin_Decision": {
+      "type": "Simple",
+      "remarks": [
+        "EAS/ESC 2019: statin therapy for most diagnosed dyslipidaemia in Europe."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.7,
+          "transition": "Prescribe_Statin"
+        },
+        {
+          "distribution": 0.3,
+          "transition": "End_Lipid_Encounter"
+        }
+      ]
+    },
+    "Prescribe_Statin": {
+      "type": "MedicationOrder",
+      "chronic": true,
+      "reason": "hyperlipidaemia",
+      "codes": [
+        {
+          "system": "RxNorm",
+          "code": "314231",
+          "display": "Simvastatin 20 MG Oral Tablet"
+        }
+      ],
+      "prescription": {
+        "refills": 11,
+        "as_needed": false,
+        "instructions": "Take once daily in the evening"
+      },
+      "direct_transition": "End_Lipid_Encounter"
+    },
+    "End_Lipid_Encounter": {
+      "type": "EncounterEnd",
+      "direct_transition": "Lipid_Followup_Delay"
+    },
+    "Lipid_Followup_Delay": {
+      "type": "Delay",
+      "range": {
+        "low": 10,
+        "high": 14,
+        "unit": "months"
+      },
+      "direct_transition": "Lipid_Review_Encounter"
+    },
+    "Lipid_Review_Encounter": {
+      "type": "Encounter",
+      "encounter_class": "ambulatory",
+      "reason": "hyperlipidaemia",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "390906007",
+          "display": "Follow-up encounter (procedure)"
+        }
+      ],
+      "direct_transition": "End_Lipid_Review"
+    },
+    "End_Lipid_Review": {
+      "type": "EncounterEnd",
+      "direct_transition": "Lipid_Followup_Delay"
+    }
+  }
+}

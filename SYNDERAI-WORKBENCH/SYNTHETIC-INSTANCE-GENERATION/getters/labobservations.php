@@ -28,44 +28,59 @@ while (($item = fgetcsv($observationhandle, 10000, ",", '"', '\\')) !== FALSE) {
       $resultunit = $item[7];  // UCUM such as mL/min/{1.73_m2} or mmol/L or it is '{nominal}' or empty
       $resulttype = $item[8];  // numeric or text
       $resultvalue = trim($item[6]);
-      if ((strpos($resultvalue, "(qualifier value)") !== FALSE) or (strpos($resultvalue, "(finding)") !== FALSE)) {
-        // this is a SNOMED coded result
-        $thistype = "CodeableConcept";
-        $thissystem = "snomed";
-        $thisdisplay = "$resultvalue";
-        $thisunit = "";
-        $skey = array_search($resultvalue, array_column(SUPPORTED_SNOMED_LABRESULT_CODES, 'snomed'));
-        if ($skey === FALSE) {
-          lognlsev(1, ERROR, "......... +++ Not able to get answer code '$resultvalue'\n");
-          $thiscode = "$item[4]";
-          $thisdisplay = "$item[5]";
-        } else {
-          if (!isset(SUPPORTED_SNOMED_LABRESULT_CODES[$skey]["code"])) {
-            lognlsev(1, WARNING, "+++ Supported SNOMED Code not available for '$resultvalue' (key=$skey)");
-            // var_dump(SUPPORTED_SNOMED_LABRESULT_CODES[$skey]);
-          }
-          $thiscode = SUPPORTED_SNOMED_LABRESULT_CODES[$skey]['code'];
-          $thisdisplay = SUPPORTED_SNOMED_LABRESULT_CODES[$skey]['display'];
-        }
-        // echo "SCT: " . $thiscode . ":" . $thisdisplay . "\n";
-      } else if ($resulttype === 'text') {
-        // result type is text but not coded or codable (although e.g. "Cloudy urine (finding)" looks like SNOMED), just use the text
-        $thistype = "String";
-        $thiscode = "";
-        $thisunit = "";
-        $thissystem = "";
-        $thisunit = "";
-        $thisdisplay = $resultvalue;
-      } else {
-        // type "numeric"
+      $humanunit = "";
+      // Contract for the fields below, identical in every branch. The emitting
+      // template prefixes '$' to 'system' and '#' to 'unit', so neither sigil
+      // belongs in the values here.
+      //   type    Quantity | CodeableConcept | String  -- decides value[x]
+      //   value   the raw result as Synthea delivered it
+      //   code    Quantity: UCUM code   CodeableConcept: SNOMED code   String: ""
+      //   unit    Quantity: UCUM code   otherwise ""
+      //   human   Quantity: human-readable unit, otherwise ""
+      //   system  Quantity: "ucum"      CodeableConcept: "sct"         String: ""
+      //   display CodeableConcept: concept display, otherwise ""
+      if ($resulttype !== 'text') {
+        // ---- numeric result -> FHIR Quantity ----------------------------
         $thistype = "Quantity";
-        // assign the unit code (UCUM)
-        $thiscode = $item[4];
-        // replace UCUM unit with human synonym if available
-        $thisunit = $item[7];
-        $synunit = isset($ucumunits[$thisunit]) ? $ucumunits[$thisunit] : $thisunit;
+        // UCUM code, e.g. mIU/L. NOT $item[4] -- that column is the LOINC
+        // code of the observation itself, which is not a unit.
+        $thisunit = $resultunit;
+        $thiscode = $resultunit;
+        // human-readable synonym for Quantity.unit, falls back to the code
+        $humanunit = valueset_canonical_code('vs-ucum-concepts', $thisunit);
+        if (!$humanunit)
+          $humanunit = $thisunit;
         $thissystem = "ucum";
         $thisdisplay = "";
+      } else {
+        // ---- non-numeric result -> try to code it, else keep the text ----
+        // Look the answer up unconditionally. The "(finding)" / "(qualifier
+        // value)" suffix is only a hint: culture results such as "Greater than
+        // 100 000 colony forming units per mL Escherichia coli" carry no
+        // suffix but are codeable all the same.
+        $thiscode = valueset_canonical_code("vs-synthea-observation-value-snomed", $resultvalue);
+        if ($thiscode !== NULL) {
+          $thistype = "CodeableConcept";
+          $thissystem = "sct";
+          $thisunit = "";
+          $thisdisplay = valueset_display("vs-synthea-observation-value-snomed", $thiscode);
+        } else {
+          // No concept found. Emit the text rather than an empty coding, and
+          // record the miss so the value set can be extended from the log.
+          if ((strpos($resultvalue, "(qualifier value)") !== FALSE)
+              or (strpos($resultvalue, "(finding)") !== FALSE)) {
+            lognlsev(1, ERROR, "......... +++ Not able to get answer code '$resultvalue'\n");
+            registerMapMissing("+++ Unable to get LAB result answer code for '$resultvalue'");
+          } else {
+            lognlsev(3, WARNING, "......... ~~~ Uncoded text result '$resultvalue', emitted as valueString\n");
+            registerMapMissing("~~~ Uncoded LAB text result '$resultvalue'");
+          }
+          $thistype = "String";
+          $thiscode = "";
+          $thisunit = "";
+          $thissystem = "";
+          $thisdisplay = "";
+        }
       }
       // echo "***** $thistype $resultvalue $thiscode $thisdisplay\n";
       $hislabobs = [
@@ -76,10 +91,20 @@ while (($item = fgetcsv($observationhandle, 10000, ",", '"', '\\')) !== FALSE) {
         ],
         "lnclass" => $lk['class'],
         "lnsystem" => $lk['system'],
+        "valuex" => [
+          "type" => $thistype,
+          "value" => $resultvalue,
+          "code" => $thiscode,
+          "unit" => $thisunit,
+          "human" => $humanunit,
+          "system" => $thissystem,
+          "display" => $thisdisplay,
+        ],
         "valuetype" => $thistype,
         "value" => $resultvalue,
         "valuecode" => $thiscode,
         "valueunit" => $thisunit,
+        "valuehuman" => $humanunit,
         "valuesystem" => $thissystem,
         "valuedisplay" => $thisdisplay,
         "date" => $ldate
@@ -94,14 +119,14 @@ while (($item = fgetcsv($observationhandle, 10000, ",", '"', '\\')) !== FALSE) {
 
 fclose($observationhandle);
 
- // echo "Matching lab counts: " .  count($found) . "\n";exit;
+// echo "Matching lab counts: " .  count($found) . "\n";exit;
+$labobservationcount = 0;
 if (count($found) === 0) {
    lognlsev(3, WARNING, "......... +++ No lab observations found\n");
    $pdat->labobservations = NULL;
 } else {
   
   $pdat->labobservations = array();
-  $labobservationcount = 0;
   
   // get lab observations grouped by result day according to parameter:
   // MAXLABS a set of lab results of a day with the maximum of lab results (some time in the past)
@@ -167,10 +192,10 @@ if (count($found) === 0) {
 // show matching lab results
 if (DEBUGLEVEL >= 2 && $pdat->labobservations !== NULL) {
   foreach ($pdat->labobservations as $ldate => $lbspd) {
-      lognl(3, "...... @> " . substr($ldate, 0, 10));
+      lognl(3, "........... @> " . substr($ldate, 0, 10));
       foreach ($lbspd as $lbc)
         lognl(3, 
-          sprintf("........ -> %-10s %-10s %-10s %20.20s %10s %20s",
+          sprintf(".............. -> %-10s %-10s %-10s %20.20s %10s %20s",
           $lbc["code"]["code"],
           $lbc["lnclass"],
           $lbc["lnsystem"],
@@ -203,20 +228,26 @@ foreach ($tmpspecimenlist as $ldate => $tspm)
     $specmitem = array();
 
     // get SNOMED code for Loinc system part code / name
-    if (array_key_exists($lnsystem, $LOINC_SNOMED_SPECIMENS)) {
-      $specmitem = [
-        'code' => $LOINC_SNOMED_SPECIMENS[$lnsystem]["snomed"]["code"],
-        'display' => $LOINC_SNOMED_SPECIMENS[$lnsystem]["snomed"]["display"],
-        'date' => $specimencollectiondate
-      ];
-    } else {
+    $specmitem = NULL;
+    $speccode = codesystem_code_for_term('cs-specimen-label', $lnsystem);
+    if ($speccode !== NULL) {
+      $snomed = map_term($lnsystem, 'cs-specimen-label', 'cm-specimen-to-snomed-ct');
+      if ($snomed !== NULL) {
+        $specmitem = [
+          'code' => $snomed['code'],
+          'display' => $snomed['display'],
+          'date' => $specimencollectiondate
+        ];
+      }
+    } 
+    if (!$specmitem) {
       // echo "'$lnsystem'\n";
       $specmitem = [
         'code' => "123038009",
         'display' => "Specimen (specimen)",
         'date' => $specimencollectiondate
       ];
-      lognlsev(1, ERROR, "......... +++ Not able to derive specimen from LOINC system '" . $lnsystem . "'\n");
+      lognlsev(1, ERROR, "......... +++ Not able to derive specimen from LOINC system '" . $lnsystem . "', using default.");
     }
     $pdat->specimen[$ldate][$lnsystem] = $specmitem;
   }

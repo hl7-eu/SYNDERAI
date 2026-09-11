@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<valueSet id="2.16.840.1.113883.3.1937.777.100.11.18" name="vs-synthea-observation-value-snomed" displayName="Synthea Observation Values (SNOMED)" effectiveDate="2026-09-11T00:00:00" statusCode="draft" experimental="true" canonicalUri="http://synderai.net/fhir/ValueSet/vs-synthea-observation-value-snomed" lastModifiedDate="2026-09-11T00:00:00">
+            <desc language="en-US">
+                <p>Categorical observation values the SYNDERAI Synthea pipeline emits as text. Every concept is a SNOMED CT concept, confirmed active in the International Edition, version 20260901, via a CodeSystem/$lookup. Synthea writes these values as fully specified names, in part as names SNOMED has since retired, so each concept carries the literal string the pipeline
+                    emits as a synonym. The pipeline resolves the string to the code with that synonym rather than through a concept map: the strings are SNOMED terms already and need no code system of their own. Where several strings denote one concept, they sit as several synonyms on it. The stage qualifiers are not laboratory values; they are carried here because the pipeline resolves every
+                    categorical observation value through this one binding.</p>
+                <div class="__artdecor_box aswarning">
+                    <p>This artefact includes content from SNOMED Clinical Terms® (SNOMED CT®) which is copyright of the International Health Terminology Standards Development Organisation (IHTSDO). Implementers of these artefacts must have the appropriate SNOMED CT Affiliate license - for more
+                        information contact http://www.snomed.org/snomed-ct/getsnomed-ct or info@snomed.org.</p>
+                    <p>For testing and demo purposes only. Not a published terminology.</p>
+                </div>
+            </desc>
+            <sourceCodeSystem id="2.16.840.1.113883.6.96" identifierName="SNOMED Clinical Terms" canonicalUri="http://snomed.info/sct" canonicalUriDSTU2="http://snomed.info/sct" canonicalUriSTU3="http://snomed.info/sct" canonicalUriR4="http://snomed.info/sct" canonicalUriR4B="http://snomed.info/sct" canonicalUriR5="http://snomed.info/sct"/>
+            <publishingAuthority name="SYNDERAI" inherited="project"/>
+            <purpose language="en-US">Observation.value[x] for synthetic laboratory data. Source side is the text the Synthea pipeline emits.</purpose>
+            <copyright language="en-US" inherited="true">This artefact includes content from SNOMED Clinical Terms® (SNOMED CT®) which is copyright of the International Health Terminology Standards Development Organisation (IHTSDO). Implementers of these artefacts must have the appropriate SNOMED CT Affiliate license - for more information contact http://www.snomed.org/snomed-ct/getsnomed-ct or info@snomed.org.</copyright>
+            <conceptList>
+                <concept code="260415000" codeSystem="2.16.840.1.113883.6.96" displayName="Not detected" level="0" type="L">
+                    <designation language="en-US" type="synonym" displayName="Not detected (qualifier value)"/>
+                </concept>
+                <concept code="260373001" codeSystem="2.16.840.1.113883.6.96" displayName="Detected" level="0" type="L">
+                    <designation language="en-US" type="synonym" displayName="Detected (qualifier value)"/>
+                </concept>
+                <concept code="260385009" codeSystem="2.16.840.1.113883.6.96" displayName="Negative" level="0" type="L">
+                    <designation language="en-US" type="synonym" displayName="Negative (qualifier value)"/>
+                </concept>
+                <concept code="10828004" codeSystem="2.16.840.1.113883.6.96" displayName="Positive" level="0" type="L">
+                    <designation language="en-US" type="synonym" displayName="Positive (qualifier value)"/>
+                </concept>
+                <concept code="230993007" codeSystem="2.16.840.1.113883.6.96" displayName="Worsening" level="0" type="L">
+                    <designation language="en-US" type="synonym" displayName="Worsening (qualifier value)"/>
+                </concept>
+                <concept code="385633008" codeSystem="2.16.840.1.113883.6.96" displayName="Improving" level="0" type="L">
+                    <designation language="en-US" type="synonym" displayName="Improving (qualifier value)"/>
+                </concept>
+                <concept code="260413007" codeSystem="2.16.840.1.113883.6.96" displayName="None" level="0" type="L">
+                    <designation language="en-US" type="synonym" displayName="None (qualifier value)"/>
+                </concept>
+                <concept code="300828005" codeSystem="2.16.840.1.113883.6.96" displayName="Translucent" level="0" type="L">
+                    <designation language="en-US" type="synonym" displayName="Translucent (qualifier value)"/>
+                </concept>
+                <concept code="371254008" codeSystem="2.16.840.1.113883.6.96" displayName="Brown color" level="0" type="L">
+                    <designation language="en-US" type="synonym" displayName="Brown color (qualifier value)"/>
+                </concept>
+                <concept code="7766007" codeSystem="2.16.840.1.113883.6.96" displayName="Cloudy urine" level="0" type="L">
+                    <designation language="en-US" type="synonym" displayName="Cloudy urine (finding)"/>
+                </concept>
+                <concept code="278017001" codeSystem="2.16.840.1.113883.6.96" displayName="Malodorous urine" level="0" type="L">
+                    <designation language="en-US" type="synonym" displayName="Foul smelling urine (finding)"/>
+                </concept>
+                <concept code="167248002" codeSystem="2.16.840.1.113883.6.96" displayName="Urine smell ammoniacal" level="0" type="L">
+                    <designation language="en-US" type="synonym" displayName="Urine smell ammoniacal (finding)"/>
+                </concept>
+                <concept code="276409005" codeSystem="2.16.840.1.113883.6.96" displayName="Mucus in urine" level="0" type="L">
+                    <designation language="en-US" type="synonym" displayName="Mucus in urine (finding)"/>
+                </concept>
+                <concept code="34436003" codeSystem="2.16.840.1.113883.6.96" displayName="Blood in urine" level="0" type="L">
+                    <designation language="en-US" type="synonym" displayName="Blood in urine (finding)"/>
+                </concept>
+                <concept code="275778006" codeSystem="2.16.840.1.113883.6.96" displayName="Bilirubin in urine - finding" level="0" type="L">
+                    <designation language="en-US" type="synonym" displayName="Finding of bilirubin in urine (finding)"/>
+                </concept>
+                <concept code="167265006" codeSystem="2.16.840.1.113883.6.96" displayName="Urine glucose test = ++" level="0" type="L">
+                    <designation language="en-US" type="synonym" displayName="Urine glucose test = ++ (finding)"/>
+                </concept>
+                <concept code="167297006" codeSystem="2.16.840.1.113883.6.96" displayName="Blood not detected in urine" level="0" type="L">
+                    <designation language="en-US" type="synonym" displayName="Urine blood test = negative (finding)"/>
+                </concept>
+                <concept code="167300001" codeSystem="2.16.840.1.113883.6.96" displayName="Urine blood test = +" level="0" type="L">
+                    <designation language="en-US" type="synonym" displayName="Urine blood test = + (finding)"/>
+                </concept>
+                <concept code="167287002" codeSystem="2.16.840.1.113883.6.96" displayName="Urine ketones not detected" level="0" type="L">
+                    <designation language="en-US" type="synonym" displayName="Urine ketone test negative (finding)"/>
+                    <designation language="en-US" type="synonym" displayName="Urine ketones not detected (finding)"/>
+                </concept>
+                <concept code="167288007" codeSystem="2.16.840.1.113883.6.96" displayName="Urine ketone test = trace" level="0" type="L">
+                    <designation language="en-US" type="synonym" displayName="Urine ketone test = trace (finding)"/>
+                </concept>
+                <concept code="167289004" codeSystem="2.16.840.1.113883.6.96" displayName="Urine ketone test = +" level="0" type="L">
+                    <designation language="en-US" type="synonym" displayName="Urine ketone test = + (finding)"/>
+                </concept>
+                <concept code="167290008" codeSystem="2.16.840.1.113883.6.96" displayName="Urine ketone test = ++" level="0" type="L">
+                    <designation language="en-US" type="synonym" displayName="Urine ketone test = ++ (finding)"/>
+                </concept>
+                <concept code="167291007" codeSystem="2.16.840.1.113883.6.96" displayName="Urine ketone test = +++" level="0" type="L">
+                    <designation language="en-US" type="synonym" displayName="Urine ketone test = +++ (finding)"/>
+                </concept>
+                <concept code="167273002" codeSystem="2.16.840.1.113883.6.96" displayName="Urine protein not detected" level="0" type="L">
+                    <designation language="en-US" type="synonym" displayName="Urine protein test negative (finding)"/>
+                </concept>
+                <concept code="167275009" codeSystem="2.16.840.1.113883.6.96" displayName="Urine protein test = +" level="0" type="L">
+                    <designation language="en-US" type="synonym" displayName="Urine protein test = + (finding)"/>
+                </concept>
+                <concept code="167276005" codeSystem="2.16.840.1.113883.6.96" displayName="Urine protein test = ++" level="0" type="L">
+                    <designation language="en-US" type="synonym" displayName="Urine protein test = ++ (finding)"/>
+                </concept>
+                <concept code="167277001" codeSystem="2.16.840.1.113883.6.96" displayName="Urine protein test = +++" level="0" type="L">
+                    <designation language="en-US" type="synonym" displayName="Urine protein test = +++ (finding)"/>
+                </concept>
+                <concept code="394717006" codeSystem="2.16.840.1.113883.6.96" displayName="Urine leukocytes not detected" level="0" type="L">
+                    <designation language="en-US" type="synonym" displayName="Urine leukocyte test negative (finding)"/>
+                </concept>
+                <concept code="394712000" codeSystem="2.16.840.1.113883.6.96" displayName="Urine leukocyte test = +" level="0" type="L">
+                    <designation language="en-US" type="synonym" displayName="Urine leukocyte test = + (finding)"/>
+                    <designation language="en-US" type="synonym" displayName="Urine leukocyte test one plus (finding)"/>
+                </concept>
+                <concept code="314138001" codeSystem="2.16.840.1.113883.6.96" displayName="Nitrite not detected in urine" level="0" type="L">
+                    <designation language="en-US" type="synonym" displayName="Urine nitrite negative (finding)"/>
+                </concept>
+                <concept code="314137006" codeSystem="2.16.840.1.113883.6.96" displayName="Nitrite detected in urine" level="0" type="L">
+                    <designation language="en-US" type="synonym" displayName="Urine nitrite positive (finding)"/>
+                    <designation language="en-US" type="synonym" displayName="Nitrite detected in urine (finding)"/>
+                </concept>
+                <concept code="167336003" codeSystem="2.16.840.1.113883.6.96" displayName="Urine microscopy: no casts" level="0" type="L">
+                    <designation language="en-US" type="synonym" displayName="Urine microscopy: no casts (finding)"/>
+                </concept>
+                <concept code="365691004" codeSystem="2.16.840.1.113883.6.96" displayName="Presence of bacteria - finding" level="0" type="L">
+                    <designation language="en-US" type="synonym" displayName="Finding of presence of bacteria"/>
+                    <designation language="en-US" type="synonym" displayName="Finding of presence of bacteria (finding)"/>
+                </concept>
+                <concept code="264868006" codeSystem="2.16.840.1.113883.6.96" displayName="No growth" level="0" type="L">
+                    <designation language="en-US" type="synonym" displayName="No growth (qualifier value)"/>
+                </concept>
+                <concept code="56415008" codeSystem="2.16.840.1.113883.6.96" displayName="Klebsiella pneumoniae" level="0" type="L">
+                    <designation language="en-US" type="synonym" displayName="Greater than 100 000 colony forming units per mL Klebsiella pneumoniae"/>
+                </concept>
+                <concept code="258215001" codeSystem="2.16.840.1.113883.6.96" displayName="Stage 1" level="0" type="L">
+                    <designation language="en-US" type="synonym" displayName="Stage 1 (qualifier value)"/>
+                </concept>
+                <concept code="258219007" codeSystem="2.16.840.1.113883.6.96" displayName="Stage 2" level="0" type="L">
+                    <designation language="en-US" type="synonym" displayName="Stage 2 (qualifier value)"/>
+                </concept>
+                <concept code="258224005" codeSystem="2.16.840.1.113883.6.96" displayName="Stage 3" level="0" type="L">
+                    <designation language="en-US" type="synonym" displayName="Stage 3 (qualifier value)"/>
+                </concept>
+                <concept code="258228008" codeSystem="2.16.840.1.113883.6.96" displayName="Stage 4" level="0" type="L">
+                    <designation language="en-US" type="synonym" displayName="Stage 4 (qualifier value)"/>
+                </concept>
+            </conceptList>
+        </valueSet>

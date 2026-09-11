@@ -1,0 +1,394 @@
+{
+  "name": "Osteoporosis",
+  "remarks": [
+    "This very basic module uses pure prevalence stats to just set osteoporosis on patients based on age/sex",
+    "https://www.iofbonehealth.org/facts-statistics",
+    "In reality osteoporosis is progressive and gets worse over time, it doesn't suddenly onset one day",
+    "R4 (2026-08-29): birth lottery replaced by annual age/sex-stratified hazard from age 50.",
+    "R4 verification round 3 (2026-08-29): rates x1.7. Measured at 3.34% against a 5.6% IOF reference (-40%)."
+  ],
+  "states": {
+    "Initial": {
+      "type": "Initial",
+      "remarks": [
+        "R4 fix: was a one-shot lottery at birth by sex followed by a fixed Delay to",
+        "age 60/70/80/90 - the same pattern that broke heart failure and RA. Only",
+        "patients still being simulated at that exact age acquired the condition, so R3",
+        "produced 3.57% against a 5.6% IOF European reference (-36%).",
+        "Replaced by an annual age- and sex-stratified hazard from age 50",
+        "(IOF European Audit 2021, Kanis et al. 2021). Everything from",
+        "Onset_Osteoporosis onward - DXA workup, diagnosis, bisphosphonate - unchanged."
+      ],
+      "direct_transition": "OP_Age_Guard"
+    },
+    "Onset_Osteoporosis": {
+      "type": "SetAttribute",
+      "attribute": "osteoporosis",
+      "value": true,
+      "direct_transition": "Osteoporosis_Symptom1"
+    },
+    "Osteoporosis_Symptom1": {
+      "type": "Symptom",
+      "symptom": "Decrease in Height",
+      "range": {
+        "low": 0,
+        "high": 10
+      },
+      "direct_transition": "Osteoporosis_Encounter_Reason"
+    },
+    "Wellness_Encounter": {
+      "type": "Encounter",
+      "wellness": true,
+      "conditional_transition": [
+        {
+          "condition": {
+            "condition_type": "Active Condition",
+            "codes": [
+              {
+                "system": "SNOMED-CT",
+                "code": "64859006",
+                "display": "Osteoporosis (disorder)"
+              }
+            ]
+          },
+          "transition": "Consider_Medication"
+        },
+        {
+          "transition": "Osteoporosis_Workup"
+        }
+      ],
+      "reason": "osteoporosis_encounter_reason"
+    },
+    "Osteoporosis_Workup": {
+      "type": "Procedure",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "312681000",
+          "display": "Bone density scan (procedure)"
+        }
+      ],
+      "direct_transition": "Bone_Density"
+    },
+    "Bone_Density": {
+      "type": "Observation",
+      "category": "procedure",
+      "codes": [
+        {
+          "system": "LOINC",
+          "code": "38265-5",
+          "display": "DXA Radius and Ulna [T-score] Bone density"
+        }
+      ],
+      "range": {
+        "low": -3.8,
+        "high": -2.5
+      },
+      "unit": "{T-score}",
+      "remarks": [
+        "WHO definition of osteoporosis is a T-score < 2.5",
+        "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1963365/"
+      ],
+      "direct_transition": "Diagnose_Osteoporosis"
+    },
+    "Diagnose_Osteoporosis": {
+      "type": "ConditionOnset",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "64859006",
+          "display": "Osteoporosis (disorder)"
+        }
+      ],
+      "direct_transition": "Consider_Medication"
+    },
+    "Consider_Medication": {
+      "type": "Simple",
+      "conditional_transition": [
+        {
+          "condition": {
+            "condition_type": "Date",
+            "operator": ">=",
+            "year": 1995
+          },
+          "transition": "Prescribe_Bisphosphate"
+        },
+        {
+          "transition": "End_Diagnosis_Encounter",
+          "remarks": "bisphosphates are the best medicine for osteoporosis, but not available until ~1995"
+        }
+      ]
+    },
+    "Prescribe_Bisphosphate": {
+      "type": "MedicationOrder",
+      "codes": [
+        {
+          "system": "RxNorm",
+          "code": "904419",
+          "display": "Alendronic acid 10 MG Oral Tablet"
+        }
+      ],
+      "direct_transition": "End_Diagnosis_Encounter",
+      "chronic": true,
+      "reason": "Diagnose_Osteoporosis"
+    },
+    "Terminal": {
+      "type": "Terminal"
+    },
+    "End_Diagnosis_Encounter": {
+      "type": "EncounterEnd",
+      "direct_transition": "Terminal"
+    },
+    "Osteoporosis_Encounter_Reason": {
+      "type": "SetAttribute",
+      "attribute": "osteoporosis_encounter_reason",
+      "direct_transition": "Wellness_Encounter",
+      "value_code": {
+        "system": "SNOMED-CT",
+        "code": "313423004",
+        "display": "At increased risk of osteoporosis (finding)"
+      }
+    },
+    "OP_Age_Guard": {
+      "type": "Guard",
+      "allow": {
+        "condition_type": "Age",
+        "operator": ">=",
+        "quantity": 50,
+        "unit": "years"
+      },
+      "direct_transition": "OP_Naive_Guard"
+    },
+    "OP_Naive_Guard": {
+      "type": "Guard",
+      "allow": {
+        "condition_type": "Attribute",
+        "attribute": "osteoporosis",
+        "operator": "is nil"
+      },
+      "direct_transition": "Annual_OP_Delay"
+    },
+    "Annual_OP_Delay": {
+      "type": "Delay",
+      "exact": {
+        "quantity": 1,
+        "unit": "years"
+      },
+      "direct_transition": "OP_Sex_Check"
+    },
+    "OP_Sex_Check": {
+      "type": "Simple",
+      "conditional_transition": [
+        {
+          "condition": {
+            "condition_type": "Gender",
+            "gender": "F"
+          },
+          "transition": "OP_Female_Age_Check"
+        },
+        {
+          "transition": "OP_Male_Age_Check"
+        }
+      ]
+    },
+    "OP_Female_Age_Check": {
+      "type": "Simple",
+      "conditional_transition": [
+        {
+          "condition": {
+            "condition_type": "Age",
+            "operator": "<",
+            "quantity": 60,
+            "unit": "years"
+          },
+          "transition": "OP_Prob_Female_50_59"
+        },
+        {
+          "condition": {
+            "condition_type": "Age",
+            "operator": "<",
+            "quantity": 70,
+            "unit": "years"
+          },
+          "transition": "OP_Prob_Female_60_69"
+        },
+        {
+          "condition": {
+            "condition_type": "Age",
+            "operator": "<",
+            "quantity": 80,
+            "unit": "years"
+          },
+          "transition": "OP_Prob_Female_70_79"
+        },
+        {
+          "transition": "OP_Prob_Female_80_plus"
+        }
+      ]
+    },
+    "OP_Male_Age_Check": {
+      "type": "Simple",
+      "conditional_transition": [
+        {
+          "condition": {
+            "condition_type": "Age",
+            "operator": "<",
+            "quantity": 60,
+            "unit": "years"
+          },
+          "transition": "OP_Prob_Male_50_59"
+        },
+        {
+          "condition": {
+            "condition_type": "Age",
+            "operator": "<",
+            "quantity": 70,
+            "unit": "years"
+          },
+          "transition": "OP_Prob_Male_60_69"
+        },
+        {
+          "condition": {
+            "condition_type": "Age",
+            "operator": "<",
+            "quantity": 80,
+            "unit": "years"
+          },
+          "transition": "OP_Prob_Male_70_79"
+        },
+        {
+          "transition": "OP_Prob_Male_80_plus"
+        }
+      ]
+    },
+    "OP_Prob_Female_50_59": {
+      "type": "Simple",
+      "remarks": [
+        "0.50% annual incidence, female, age 50-59."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.0085,
+          "transition": "Onset_Osteoporosis"
+        },
+        {
+          "distribution": 0.9915,
+          "transition": "Annual_OP_Delay"
+        }
+      ]
+    },
+    "OP_Prob_Female_60_69": {
+      "type": "Simple",
+      "remarks": [
+        "1.20% annual incidence, female, age 60-69."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.0204,
+          "transition": "Onset_Osteoporosis"
+        },
+        {
+          "distribution": 0.9796,
+          "transition": "Annual_OP_Delay"
+        }
+      ]
+    },
+    "OP_Prob_Female_70_79": {
+      "type": "Simple",
+      "remarks": [
+        "2.00% annual incidence, female, age 70-79."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.034,
+          "transition": "Onset_Osteoporosis"
+        },
+        {
+          "distribution": 0.966,
+          "transition": "Annual_OP_Delay"
+        }
+      ]
+    },
+    "OP_Prob_Female_80_plus": {
+      "type": "Simple",
+      "remarks": [
+        "2.50% annual incidence, female, age 80-plus."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.0425,
+          "transition": "Onset_Osteoporosis"
+        },
+        {
+          "distribution": 0.9575,
+          "transition": "Annual_OP_Delay"
+        }
+      ]
+    },
+    "OP_Prob_Male_50_59": {
+      "type": "Simple",
+      "remarks": [
+        "0.12% annual incidence, male, age 50-59."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.00204,
+          "transition": "Onset_Osteoporosis"
+        },
+        {
+          "distribution": 0.99796,
+          "transition": "Annual_OP_Delay"
+        }
+      ]
+    },
+    "OP_Prob_Male_60_69": {
+      "type": "Simple",
+      "remarks": [
+        "0.30% annual incidence, male, age 60-69."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.0051,
+          "transition": "Onset_Osteoporosis"
+        },
+        {
+          "distribution": 0.9949,
+          "transition": "Annual_OP_Delay"
+        }
+      ]
+    },
+    "OP_Prob_Male_70_79": {
+      "type": "Simple",
+      "remarks": [
+        "0.50% annual incidence, male, age 70-79."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.0085,
+          "transition": "Onset_Osteoporosis"
+        },
+        {
+          "distribution": 0.9915,
+          "transition": "Annual_OP_Delay"
+        }
+      ]
+    },
+    "OP_Prob_Male_80_plus": {
+      "type": "Simple",
+      "remarks": [
+        "0.70% annual incidence, male, age 80-plus."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.0119,
+          "transition": "Onset_Osteoporosis"
+        },
+        {
+          "distribution": 0.9881,
+          "transition": "Annual_OP_Delay"
+        }
+      ]
+    }
+  },
+  "gmf_version": 1
+}

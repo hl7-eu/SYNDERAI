@@ -25,50 +25,72 @@
     effectively close the section structure for the combined output.
     `%%HEAD%%` is empty; `%%HTML%%` emits the body rows.
 
-  FOUR-COLUMN HTML TABLE
-    Column 1 — Test code display                   (always present)
-    Column 2 — Observation value or "L"/"H" flag   (conditional on value type)
-    Column 3 — Reference range or interpretation   (conditional)
-    Column 4 — Unit                                (conditional on Quantity)
+  FIVE-COLUMN HTML TABLE
+    Column 1 — Test code display        (always)
+    Column 2 — Observation value        (always; number, concept display or text)
+    Column 3 — Reference range          (always; "-" when none)
+    Column 4 — Interpretation flag      (always; "" when not applicable)
+    Column 5 — Unit                     (always; "-" when not a Quantity)
+
+    Every branch emits exactly five cells. Before 2026-09-11 the branches
+    emitted two, four or five cells against a four-column header, so rows did
+    not line up. The cell values are collected into variables first and emitted
+    once, at the end of the value section, so a new branch cannot get this
+    wrong again.
 
     The column 2 header is dynamic: `addHEAD_th(labresult.report|date('d-M-Y'))`
     — the report date is used as the column header, not a static label.
 
-  VALUE TYPE BRANCHING — Quantity vs CodeableConcept
-    The template handles two FHIR value types using separate conditional blocks:
+  VALUE TYPE BRANCHING — Quantity, CodeableConcept, String
+    The three FHIR value types are handled in ONE mutually exclusive
+    if / elseif / else chain driven by `labresult.value.type`. They used to be
+    two independent `if` blocks, which let a result fall into the wrong one.
 
-    QUANTITY BRANCH (labresult.value.type == "Quantity" OR labresult.valueQuantity present):
-      Dual data path via ?? operator: labresult.value.* OR labresult.valueQuantity.*
-      Note on variable naming — the mapping to FHIR Quantity sub-elements is:
-        * valueQuantity.value  ← labresult.value.value  (numeric measurement)
-        * valueQuantity.unit   ← labresult.value.code   (human-readable unit string)
-        * valueQuantity.code   ← labresult.value.unit   (machine UCUM code)
-        * valueQuantity.system ← labresult.value.system (UCUM system URI)
-      The `.code` and `.unit` variable names are swapped relative to FHIR's
-      Quantity element names — verify source data mapping when integrating.
+    QUANTITY
+        * valueQuantity.value  ← labresult.value.value   (numeric measurement)
+        * valueQuantity.unit   ← labresult.value.human   (human-readable unit)
+        * valueQuantity.code   ← labresult.value.unit    (UCUM code)
+        * valueQuantity.system ← labresult.value.system  ("ucum", no sigil)
+      `.human` falls back to `.code` when the upstream layer does not supply it.
 
-      Fallback: when value fields are empty but labresult.valueString is set,
-      `valueString` is emitted instead of valueQuantity sub-elements.
+    CODEABLE CONCEPT
+        * valueCodeableConcept ← value.system # value.code "value.display"
 
-      Reference range: when both .low and .high are present, a referenceRange[+]
-      slice is emitted, and the value is compared numerically with Twig's `<`
-      and `>` operators to derive an interpretation code (L / H) and HTML cell.
+    STRING
+        * valueString ← value.value, quoted and FSH-escaped.
 
-      Reference range text fallback: when only .text is set, a text-only
-      referenceRange is emitted.
+  SYSTEM SIGIL CONVENTION
+    Values in `.system` NEVER carry the leading `$`; every template use adds it.
+    Both branches follow this now. The CodeableConcept branch used to omit the
+    `$` while the Quantity branch added it, which is how `$$sct` was produced
+    once the upstream layer started supplying `$sct`.
 
-    CODEABLE CONCEPT BRANCH (labresult.value.type == "CodeableConcept" OR
-      labresult.valueCodeableConcept present):
-      valueCodeableConcept emitted from either value.* or valueCodeableConcept.*
-      via ?? operator.
+  REFERENCE RANGE — EMITTED FOR EVERY VALUE TYPE
+    The reference range block sits OUTSIDE the value branch. It used to live
+    inside the Quantity branch only, so a coded result that needed a reference
+    range was pushed into the Quantity branch and came out as a broken
+    `valueQuantity`. That was the single cause of 327 of 1755 errors in run 1.
 
-  EFFECTIVE DATE — DUAL RULE NOTE
-    Two effectiveDateTime rules may both be emitted for the same resource:
-      1. `{% if labresult.effective is not empty %}` — conditional on .effective
-      2. Always-emitted: `"{{ labresult.date|date('Y-m-d') }}"` (no condition)
-    If both `labresult.effective` and `labresult.date` are supplied, two
-    `* effectiveDateTime` rules will appear in the FSH output — SUSHI will
-    accept the last one. In practice, callers should supply only one.
+    Numeric low/high are emitted as SimpleQuantity ONLY for Quantity values,
+    against `labresult.reference.system` (default "ucum"). For coded and text
+    values the same bounds go into `referenceRange[+].text`, because their
+    Synthea units ("{#/area}", "colony forming units per mL") are not UCUM
+    codes and must not be bound to a code system.
+
+    The interpretation flag (L / H) is derived only for numeric values.
+
+  FSH STRING ESCAPING
+    Every interpolated value that lands inside an FSH string uses
+    `|replace(FSHQ)|raw`: `raw` suppresses Twig's HTML autoescape, which has no
+    business in FSH and was turning "<=" into "&lt;=" inside code displays;
+    `replace(FSHQ)` escapes backslashes and double quotes, which FSH does need.
+    Conversely every value handed to the HTML bag uses `|e('html')`, which is
+    what keeps "<=" from breaking the XHTML narrative. The two were inverted.
+
+  EFFECTIVE DATE
+    Exactly one `effectiveDateTime` is emitted: `labresult.effective` when set,
+    otherwise `labresult.date`. Both used to be emitted unconditionally, and
+    the second silently overwrote the first for all 1817 observations.
 
   BODY SITE AND SPECIMEN
     Both are conditional:
@@ -92,14 +114,15 @@
   │   [0].code                         │ string   │   Observation concept code.                │
   │   [0].display                      │ string   │   Display text for column 1.               │
   │ labresult.effective                │ string?  │ Optional ISO 8601 effective date/time.     │
-  │ labresult.date                     │ date     │ Report date; always emitted as             │
-  │                                    │          │ effectiveDateTime (YYYY-MM-DD via filter). │
-  │ labresult.value                    │ object?  │ Value as Quantity sub-object.              │
-  │   .type                            │ string   │   "Quantity" or "CodeableConcept".         │
-  │   .value                           │ number   │   Numeric measurement.                     │
-  │   .code                            │ string   │   Human-readable unit string (see note).   │
-  │   .unit                            │ string   │   UCUM unit code (see note).               │
-  │   .system                          │ string   │   System URI (usually UCUM).               │
+  │ labresult.date                     │ date     │ Report date; used as effectiveDateTime     │
+  │                                    │          │ (YYYY-MM-DD) only when .effective is unset.│
+  │ labresult.value                    │ object?  │ The observation value.                     │
+  │   .type                            │ string   │   "Quantity", "CodeableConcept", "String". │
+  │   .value                           │ number   │   Numeric measurement, or the raw text.    │
+  │   .code                            │ string   │   Quantity: UCUM code. CC: SNOMED code.    │
+  │   .unit                            │ string   │   UCUM unit code; "" for CC and String.    │
+  │   .human                           │ string?  │   Human-readable unit; falls back to .code.│
+  │   .system                          │ string   │   "ucum" / "sct" / "" — WITHOUT the $.     │
   │   .display                         │ string   │   Display when type is CodeableConcept.    │
   │ labresult.valueQuantity            │ object?  │ Alternative Quantity path (same sub-fields)│
   │ labresult.valueCodeableConcept     │ object?  │ Alternative CC path.                       │
@@ -109,6 +132,8 @@
   │ labresult.reference.high           │ number?  │ Upper bound of reference range.            │
   │ labresult.reference.text           │ string?  │ Text reference range (when no low/high).   │
   │ labresult.reference.unit           │ string   │ UCUM unit code for reference range.        │
+  │ labresult.reference.system         │ string?  │ Code system for the range unit, no $;      │
+  │                                    │          │ defaults to "ucum".                        │
   │ labresult.site                     │ object?  │ Optional body site.                        │
   │   .system / .code / .display       │ string   │   Site coding fields.                      │
   │ labresult.specimenid               │ string?  │ Optional UUID of the Specimen resource.    │
@@ -116,8 +141,20 @@
 
   AUTHOR   KH
   SINCE    2025-09-02
+  CHANGED  2026-09-11 — run-1 defect fixes: single value[x] branch incl. String,
+           reference range lifted out of the Quantity branch, one
+           effectiveDateTime, FSH/HTML escaping un-inverted, `$` sigil
+           convention unified, five HTML cells in every branch.
   ============================================================================
 #}
+
+{#
+  ── FSH string escaping map ─────────────────────────────────────────────────
+  Applied as |replace(FSHQ)|raw to anything that ends up inside an FSH string.
+  Backslash first, then the double quote — replace() applies the pairs in
+  insertion order, and swapping them would double-escape the backslash.
+#}
+{% set FSHQ = {'\\': '\\\\', '"': '\\"'} %}
 
 {#
   ── Resource id ─────────────────────────────────────────────────────────────
@@ -136,6 +173,7 @@
 {{ addHEAD_th("Test") }}
 {{ addHEAD_th(labresult.report|date('d-M-Y')) }}
 {{ addHEAD_th("Reference&#xA0;Range") }}
+{{ addHEAD_th("Flag") }}
 {{ addHEAD_th("Unit") }}
 {{ addHEAD_trend() -}}
 
@@ -154,26 +192,27 @@
 #}
 {# Use first coding only — HL7 EU HDR requires exactly 1..1 code #}
 {% set c = labresult.code|first %}
-* code[+].coding = {{ c.system }}#{{ c.code }} "{{ c.display }}"
-* code[=].text = "{{ c.display }}"
-{{ addHTML_td(c.display) }}
+* code[+].coding = {{ c.system }}#{{ c.code }} "{{ c.display|replace(FSHQ)|raw }}"
+* code[=].text = "{{ c.display|replace(FSHQ)|raw }}"
+{{ addHTML_td(c.display|e('html')) }}
 
 {#
-  ── Effective date — dual rule note ────────────────────────────────────────
-  Rule 1 (conditional): labresult.effective — emitted only when non-empty.
-  Rule 2 (always):      labresult.date formatted as YYYY-MM-DD — always emitted.
-  When both are present, two effectiveDateTime rules appear in FSH; SUSHI
-  uses the last. Callers should supply only one of the two fields.
+  ── Effective date — exactly one rule ──────────────────────────────────────
+  labresult.effective carries the full timestamp and wins when present;
+  labresult.date is the date-only fallback. Emitting both, as this template
+  did until 2026-09-11, means the fallback silently overwrites the real
+  timestamp, because SUSHI keeps the last assignment.
 #}
 {% if labresult.effective is not empty %}
 * effectiveDateTime = "{{ labresult.effective }}"
-{% endif %}
+{% else %}
 * effectiveDateTime = "{{ labresult.date|date('Y-m-d') }}"
+{% endif %}
 
 {#
   ── Patient reference ───────────────────────────────────────────────────────
 #}
-* subject = Reference(urn:uuid:{{ labresult.subject }}) "{{ labresult.subjectname }}"
+* subject = Reference(urn:uuid:{{ labresult.subject }}) "{{ labresult.subjectname|replace(FSHQ)|raw }}"
 
 {#
   ══════════════════════════════════════════════════════════════════════════════
@@ -188,80 +227,101 @@
   The source variable names (.code / .unit) are swapped relative to FHIR's
   element names — this reflects the upstream data model, not an error.
 #}
-{% if labresult.value.type == "Quantity" or labresult.valueQuantity is not empty %}
-{# value as Quantity #}
+{#
+  Resolve the value type once. The ?? chains keep the two historical data
+  paths (value.* and valueQuantity.* / valueCodeableConcept.* / valueString)
+  working, but the TYPE now decides the branch — a single source of truth.
+#}
+{% set vtype = labresult.value.type
+     ?? (labresult.valueCodeableConcept is not empty ? "CodeableConcept"
+        : (labresult.valueString is not empty ? "String" : "Quantity")) %}
 
-{% if labresult.value.value is not empty or labresult.valueQuantity.value is not empty %}
-{# Numeric quantity value #}
-* valueQuantity.value = {{ labresult.value.value ?? labresult.valueQuantity.value }}
-* valueQuantity.unit = "{{ labresult.value.code ?? labresult.valueQuantity.code }}"
-* valueQuantity.code = #{{ labresult.value.unit ?? labresult.valueQuantity.unit }}
-* valueQuantity.system = ${{ labresult.value.system ?? labresult.valueQuantity.system }}
-{% elseif labresult.valueString is not empty %}
-{# Fallback: plain string value when no numeric quantity is available #}
-* valueString = {{ labresult.valueString }}
+{% set vnum  = labresult.value.value ?? labresult.valueQuantity.value %}
+{% set vcode = labresult.value.code ?? labresult.valueCodeableConcept.code %}
+{% set vsys  = labresult.value.system ?? labresult.valueQuantity.system ?? labresult.valueCodeableConcept.system %}
+{% set vdisp = labresult.value.display ?? labresult.valueCodeableConcept.display %}
+{% set vucum = labresult.value.unit ?? labresult.valueQuantity.unit %}
+{% set vhuman = labresult.value.human ?? labresult.value.code ?? labresult.valueQuantity.code %}
+{% set vtext = labresult.value.value ?? labresult.valueString %}
+
+{# HTML cells, collected here and emitted once below — always five #}
+{% set tdValue = "" %}
+{% set tdRange = "-" %}
+{% set tdFlag  = "" %}
+{% set tdUnit  = "-" %}
+
+{% if vtype == "CodeableConcept" %}
+{# ── value as CodeableConcept ─────────────────────────────────────────────── #}
+* valueCodeableConcept = ${{ vsys }}#{{ vcode }} "{{ vdisp|replace(FSHQ)|raw }}"
+{% set tdValue = vdisp|e('html') %}
+
+{% elseif vtype == "String" %}
+{# ── value as plain string — must be quoted, or the FSH parser derails ────── #}
+* valueString = "{{ vtext|replace(FSHQ)|raw }}"
+{% set tdValue = vtext|e('html') %}
+
+{% else %}
+{# ── value as Quantity ────────────────────────────────────────────────────── #}
+* valueQuantity.value = {{ vnum }}
+* valueQuantity.unit = "{{ vhuman|replace(FSHQ)|raw }}"
+* valueQuantity.code = #{{ vucum }}
+* valueQuantity.system = ${{ vsys }}
+{% set tdValue = vnum %}
+{% set tdUnit = vucum|e('html') %}
 {% endif %}
-
-{{ addHTML_td(labresult.value.value ?? labresult.valueQuantity.value) }}
 
 {#
-  Reference range with interpretation — both low and high must be present.
-  The Twig < and > operators compare the observation value numerically with
-  the range boundaries and derive an HL7 interpretation code (L or H).
-  When the value is within range, an empty cell is shown (no interpretation).
+  ══════════════════════════════════════════════════════════════════════════════
+  REFERENCE RANGE — for every value type
+  ══════════════════════════════════════════════════════════════════════════════
+  Numeric bounds become a SimpleQuantity only for Quantity values, bound to
+  labresult.reference.system (default "ucum"). For coded and text values the
+  same bounds go into .text: their Synthea units are not UCUM codes and binding
+  them to a code system is what produced "$$sct#{#/area}" in run 1.
+
+  The interpretation flag is derived only where a numeric comparison is
+  meaningful.
 #}
+{% set rsys = labresult.reference.system|default("ucum") %}
+
 {% if labresult.reference.low is not empty and labresult.reference.high is not empty %}
+{% set tdRange = (labresult.reference.low ~ " - " ~ labresult.reference.high)|e('html') %}
 
-* referenceRange[+].low = {{ labresult.reference.low }} ${{ labresult.value.system }}#{{ labresult.reference.unit }}
-* referenceRange[=].high = {{ labresult.reference.high }} ${{ labresult.value.system }}#{{ labresult.reference.unit }}
-
-{{ addHTML_td(labresult.reference.low ~ " - " ~ labresult.reference.high) }}
-
-{% if (labresult.value.value ?? labresult.valueQuantity.value) < labresult.reference.low %}
+{% if vtype == "Quantity" %}
+* referenceRange[+].low = {{ labresult.reference.low + 0 }} ${{ rsys }}#{{ labresult.reference.unit }}
+* referenceRange[=].high = {{ labresult.reference.high + 0 }} ${{ rsys }}#{{ labresult.reference.unit }}
+{% if vnum < labresult.reference.low %}
 * interpretation = $v3-ObservationInterpretation#L "Low"
-{{ addHTML_td("L") }}
-{% elseif (labresult.value.value ?? labresult.valueQuantity.value) > labresult.reference.high %}
+{% set tdFlag = "L" %}
+{% elseif vnum > labresult.reference.high %}
 * interpretation = $v3-ObservationInterpretation#H "High"
-{{ addHTML_td("H") }}
-{% else %}
-{{ addHTML_td("") }}
+{% set tdFlag = "H" %}
 {% endif %}
-
-{{ addHTML_td(labresult.value.unit ?? labresult.valueQuantity.unit) }}
+{% else %}
+{% set rtext = labresult.reference.low ~ ' - ' ~ labresult.reference.high %}
+{% if labresult.reference.unit is not empty %}{% set rtext = rtext ~ ' ' ~ labresult.reference.unit %}{% endif %}
+* referenceRange[+].text = "{{ rtext|replace(FSHQ)|raw }}"
+{% endif %}
 
 {% elseif labresult.reference.text is not empty %}
 {# Text-only reference range — no numeric bounds available #}
-* referenceRange[+].text = "{{ labresult.reference.text }}"
-{{ addHTML_td(labresult.reference.text) }}
-{{ addHTML_td("-") }}
+* referenceRange[+].text = "{{ labresult.reference.text|replace(FSHQ)|raw }}"
+{% set tdRange = labresult.reference.text|e('html') %}
 {% endif %} {# reference range #}
 
-{% endif %} {# Quantity #}
-
 {#
-  ══════════════════════════════════════════════════════════════════════════════
-  VALUE TYPE BRANCH B — CodeableConcept
-  ══════════════════════════════════════════════════════════════════════════════
-  Triggered by type == "CodeableConcept" or non-empty valueCodeableConcept.
-  ?? coalesces the two data paths (value.* vs valueCodeableConcept.*).
+  ── The five HTML cells, in one place ───────────────────────────────────────
 #}
-{% if labresult.value.type == "CodeableConcept" or labresult.valueCodeableConcept is not empty %}
-{# value as CodeableConcept #}
-* valueCodeableConcept = {{ labresult.value.system ?? labresult.valueCodeableConcept.system }}#{{ labresult.value.code ?? labresult.valueCodeableConcept.code }} "{{ labresult.value.display ?? labresult.valueCodeableConcept.display }}"
-{{ addHTML_td(labresult.valueCodeableConcept.display) }}
-
-{% if labresult.reference.low is not empty and labresult.reference.high is not empty %}
-* referenceRange[+].low = "{{ labresult.reference.low }}"
-* referenceRange[=].high = "{{ labresult.reference.high }}"
-{% endif %}
-
-{% endif %} {# CodeableConcept #}
+{{ addHTML_td(tdValue) }}
+{{ addHTML_td(tdRange) }}
+{{ addHTML_td(tdFlag) }}
+{{ addHTML_td(tdUnit) }}
 
 {#
   ── Body site (conditional; FSH only) ──────────────────────────────────────
 #}
 {% if labresult.site is not empty %}
-* bodySite[+] = {{ labresult.site.system }}#{{ labresult.site.code }} "{{ labresult.site.display }}"
+* bodySite[+] = {{ labresult.site.system }}#{{ labresult.site.code }} "{{ labresult.site.display|replace(FSHQ)|raw }}"
 {% endif %}
 
 {#

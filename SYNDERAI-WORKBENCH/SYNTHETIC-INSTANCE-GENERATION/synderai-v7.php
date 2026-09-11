@@ -54,7 +54,12 @@
  * 
  *   HL7 Affiliates
  *   --------------
- *   AZ   - Acute Care The Netherlands - CDA 
+ *   AZ   - Acute Care, The Netherlands - CDA
+ * 
+ *   Projects
+ *   --------
+ *   PHX1 - PHOENIX Common Cancer Model, use case 1: prostate cancer
+ *   MII1 - Medical Informatics Initiative / NUM, use case 1....
  *
  * ============================================================================
  * CLI OPTIONS
@@ -168,6 +173,9 @@
  *   lib/loinc.php          — LOINC concept property lookup
  *   lib/ish-parser.php     — ISH file parser
  *   lib/clinical-story-matcher.php — clinical story pre-selection helpers
+ *   lib/bsn.php            — Dutch BSN utilities
+ *   lib/filter-and-adapt-conditions.php — filter and adapt conditions for patient summaries
+ *   lib/report-date.php    - evaluates the report date based on clinical findings
  *   twig/mstwiggy.php      — Twig template engine interface (twigit())
  *   config.php             — run-time configuration (AI keys, paths, flags)
  *   getters/*.php          — per-component data loaders (conditions, meds, etc.)
@@ -178,6 +186,9 @@
 // ============================================================================
 // INITIALISATION
 // ============================================================================
+
+$THISSCRIPTVERSION = "7.5.3";
+$THISSCRIPTYEARMONTH = "2026-08";
 
 /** Raise PHP memory limit to accommodate large CSV datasets and Twig caches. */
 ini_set('memory_limit', '10G');
@@ -200,13 +211,12 @@ include_once("lib/atc.php");
 include_once("lib/ish-parser.php");
 include_once("lib/clinical-story-matcher.php");
 include_once("lib/bsn.php");
+include_once("lib/filter-and-adapt-conditions.php");
+include_once("lib/report-date.php");
+include_once("lib/terminology-cache.php");
 
 /* TWIG parts ( new style FSH and HTML Generation ) */
 include_once("twig/mstwiggy.php");
-
-/* EPS condition consolidation functions */
-require_once("lib/eps-condition-adapter.php");
-use SynderAI\epsConditionAdapter;
 
 /** Record script start time for elapsed-time logging via logmeterinit(). */
 $STARTTIMER = time();
@@ -249,12 +259,14 @@ $STORYFOR = array();
 
 /**
  * @var bool $PERFORMPOSTPROCESSING default TRUE
- * post processing yes (sushi + validate + concert xml/json) or no (only emit FSH)
+ * post processing TRUE - FALSE
+ *   FHIR: sushi + validate + concert xml/json - or only emit FSH
+ *   CDA:  no effect yet, maybe validate in the future
  */
 $PERFORMPOSTPROCESSING = TRUE;
 
 /* Announce the script version */
-lognl(1, "SYNDERAI 7.3 as of 2026-07");
+lognl(1, "SYNDERAI $THISSCRIPTVERSION as of $THISSCRIPTYEARMONTH");
 
 
 // ============================================================================
@@ -405,8 +417,6 @@ if ($ARTIFACTS === NULL) {
 /** @var array $COMPONENTS  Artifact type => list of required component names. */
 $COMPONENTS["EPS"] = [
     'encounters',
-    'rxnormsct',
-    'cvxsct',
     'conditions',
     'medications',
     'immunizations',
@@ -417,12 +427,10 @@ $COMPONENTS["EPS"] = [
     'pregnancies',
     'devices',
     'recentlabresults',
-    'lnsctspecimen',
     'inpatientencounters'
 ];
 $COMPONENTS["LAB"] = [
     'labresults',
-    'lnsctspecimen',
     'annotations',
     'conditions'
 ];
@@ -430,15 +438,16 @@ $COMPONENTS["HDR"] = [
     'conditions',
     'procedures',
     'medications',
-    'rxnormsct',
     'vitalsigns',
     'recentlabresults',
-    'lnsctspecimen',
     'encounters',
     'inpatientencounters'
 ];
 $COMPONENTS["AZ"] = [
-    'encounters'
+    'conditions',
+    'allergiesintolerances',
+    'encounters',
+    'medications'
 ];
 
 $targetpats = count($SELPATIENT) > 0 ? count($SELPATIENT) : $SELCOUNT;
@@ -447,7 +456,6 @@ lognl(1, "*** This run is for " . implode(", ", $ARTIFACTS) . " targeting $targe
 if (USE_AI) {
     lognl(1, "*** This run uses AI for selected areas.");
 }
-
 
 // ============================================================================
 // PHASE 0 — SETUP, TESTING AND PRE-COMPILATION
@@ -582,20 +590,6 @@ include("getters/providers.php");
 
 /** Loads vital sign codes in order to place correct * category[VSCat].coding = $observation-category#vital-signs in LAB */
 include("getters/vitalsignscodes.php");
-
-/** RXNORM → SNOMED CT mapping table (needed for EPS and HDR). */
-if (includeConditionally("rxnormsct"))
-    include("getters/rxnormsct.php");
-
-/** CVX → SNOMED CT mapping table (needed for EPS immunizations). */
-if (includeConditionally("cvxsct"))
-    include("getters/cvxsct.php");
-
-/** LOINC → SNOMED CT specimen mapping table (needed for LAB, EPS, HDR). */
-if (includeConditionally("lnsctspecimen"))
-    include("getters/lnsctspecimen.php");
-
-
 
 /**
  * Encounter class filters (needed by EPS and HDR).
@@ -981,6 +975,7 @@ foreach ($PATIENTS as $pdat) {
     //   hospitalCourse — AI-generated narrative
     //
     // -------------------------------------------------------------------------
+    $pdat->hospitalstays = array();
     if (isset($pdat->inpatientencounters) && ($pdat->inpatientencounters !== NULL)) {
 
         $maxix           = count($pdat->inpatientencounters) - 1;
@@ -988,7 +983,7 @@ foreach ($PATIENTS as $pdat) {
         $staycount       = 0;
         $thisencounterset = array();
 
-        lognl(2, "......... Detecting consecutive encounters, creating stay period(s)");
+        lognl(2, "...... Detecting consecutive encounters, creating stay period(s)");
         if ($maxix >= 0) {
             // start of the very first encounter
             $hxstart           = $pdat->inpatientencounters[0]["start"];
@@ -1027,7 +1022,7 @@ foreach ($PATIENTS as $pdat) {
 
         // Attach a short hospital course narrative to each stay - if not ish
         if (!$PROCESSISH) {
-            lognl(2, "......... Getting hospital course and invented procedures per stay");
+            lognl(2, "...... Getting hospital course and invented procedures per stay");
             for ($ii = 0; $ii <= count($stays) - 1; $ii++) {
                 $md5 = md5(
                     $pdat->eci . 
@@ -1041,9 +1036,9 @@ foreach ($PATIENTS as $pdat) {
                     $stays[$ii] = array_merge($stays[$ii], $thishcipai);
                     // echo "-----$md5\n";var_dump($stays[$ii]);exit;
                 } else {
-                    $tmp = getAIHospitalCourse($pdat->age, $pdat->gender, $stays[$ii], TRUE);
+                    $tmp = (USE_AI ? getAIHospitalCourse($pdat->age, $pdat->gender, $stays[$ii], TRUE) : NULL);
                     // includeProcedures = TRUE|FALSE
-                    if (200 === $tmp["code"]) {
+                    if ($tmp !== NULL && 200 === $tmp["code"]) {
                         /*
                         * now we have the hospital course text between %%TEXT%% tags and
                         * optional procedures between %%PROCEDURES%% - split them up
@@ -1088,6 +1083,7 @@ foreach ($PATIENTS as $pdat) {
                             "hospitalCourse" => $theText,
                             "inventedProcedures" => $theProcedures
                         ]));
+                        lognl(3, "......... Hospital course: " . substr($theText, 0, 61) . " ...");
                     } else {
                         $stays[$ii] = array_merge($stays[$ii], [
                             "hospitalCourse" => NULL,
@@ -1142,10 +1138,6 @@ foreach ($PATIENTS as $pdat) {
                 lognlsev(2, WARNING, "...... +++ Patient's clinical story candidate has missing procedures for a proper HDR, continuing anyway\n");
         if (!isset($pdat->inpatientencounters) or $pdat->inpatientencounters === NULL)
                 lognlsev(2, ERROR, "...... +++ Patient's clinical story candidate has missing inpatient encounters for a proper HDR, which is undesireable\n");
-    }
-    if (in_array("AZ", $ARTIFACTS)) {
-        // invent a test BSN
-        $pdat->bsn = generateBSN9999();
     }
     
     if ($pdat->match === NULL)
@@ -1322,6 +1314,19 @@ foreach ($PATIENTS as $pdat) {
         }
     }
 
+    // get all Laboratory Categories from CS/CM
+    $tmplabels = codesystem_designations("cs-synthea-laboratory-category", "synonym");
+    static $LABORATORYCATEGORIES = array();
+    foreach (codesystem_codes("cs-synthea-laboratory-category") as $code => $category) {
+        $loinc = map_concept($code, "cm-laboratory-category-to-loinc");
+        $LABORATORYCATEGORIES[$category] = [
+            $labels[$code][0] ?? $category,
+            $loinc['code'] ?? '',
+            $loinc['display'] ?? '',
+        ];
+    }
+
+
     // -------------------------------------------------------------------------
     // FSH/CDA EMISSION
     // Call emitFSH() for each requested artifact type. Track per-artifact
@@ -1473,6 +1478,7 @@ function emitFSH($pdat, $thisartifact) {
     global $COMPONENTS;
     global $SYNTHETICPROVIDERS;
     global $PROCESSISH;
+    global $LABORATORYCATEGORIES;
 
     $sections    = array();
 
@@ -1495,102 +1501,106 @@ function emitFSH($pdat, $thisartifact) {
                 lognlsev(2, ERROR, "............ JSON encode+decode ish for patient failed: " . json_last_error_msg());
             }
         } else {
-            $allishdat = $pdat->ish;
+            $allishdat = isset($pdat->ish) ? $pdat->ish : NULL;
         }
 
-        foreach ($allishdat as $thisStayISH) {
+        if ($allishdat) {
+            foreach ($allishdat as $thisStayISH) {
 
-            // Assign fresh UUIDs to all FHIR resource instances for this stay
-            $pdat->instanceid = uuid();
+                // Assign fresh UUIDs to all FHIR resource instances for this stay
+                $pdat->instanceid = uuid();
 
-            $hdrencounter                          = $thisStayISH->encounter;
-            $hdrencounter->instanceid              = uuid();
-            $hdrencounter->instancerole            = uuid();
+                $hdrencounter = $thisStayISH->encounter;
+                $hdrencounter->instanceid = uuid();
+                $hdrencounter->instancerole = uuid();
 
-            $hdrhospital                           = $thisStayISH->hospital;
-            $hdrhospital->instanceid               = uuid();
-            $hdrhospital->instancerole             = uuid();
-            $hdrhospital->instancepractitioner     = uuid();
-            $hdrhospital->instanceorganization     = uuid();
-            // var_dump($hdrhospital);
+                $hdrhospital = $thisStayISH->hospital;
+                $hdrhospital->instanceid = uuid();
+                $hdrhospital->instancerole = uuid();
+                $hdrhospital->instancepractitioner = uuid();
+                $hdrhospital->instanceorganization = uuid();
+                // var_dump($hdrhospital);
 
-            // Build HDR sections from the ISH definition
-            lognl(2, "............ " . "Hospital Dicharge Report " . 
-                $hdrencounter->start . " to " . $hdrencounter->end . "\n");
-            $sections = array();
-            include("sections/hdr.php");
+                // Build HDR sections from the ISH definition
+                lognl(2, "............ " . "Hospital Dicharge Report " .
+                    $hdrencounter->start . " to " . $hdrencounter->end . "\n");
+                $sections = array();
+                include("sections/hdr.php");
 
-            // Render core FHIR resource FSH strings
-            list($FSHPAT) = twigit([
-                "patient" => $pdat
-            ], "patient-eu-core");
-            list($FSHENC) = twigit([
-                "patient" => $pdat,
-                "encounter" => $hdrencounter,
-                "hospital" => $hdrhospital
-            ], "encounter-eu-hdr");
-            list($FSHHOS) = twigit([
-                "patient" => $pdat,
-                "encounter" => $hdrencounter,
-                "hospital" => $hdrhospital
-            ], "provider-as-hospital");
+                // Render core FHIR resource FSH strings
+                list($FSHPAT) = twigit([
+                    "patient" => $pdat
+                ], "patient-eu-core");
+                list($FSHENC) = twigit([
+                    "patient" => $pdat,
+                    "encounter" => $hdrencounter,
+                    "hospital" => $hdrhospital
+                ], "encounter-eu-hdr");
+                list($FSHHOS) = twigit([
+                    "patient" => $pdat,
+                    "encounter" => $hdrencounter,
+                    "hospital" => $hdrhospital
+                ], "provider-as-hospital");
 
-            // Provenance: covers patient, hospital role, practitioner, organisation
-            $targets   = [];
-            $targets[] = $pdat->instanceid;
-            $targets[] = $hdrhospital->instancerole;
-            $targets[] = $hdrhospital->instancepractitioner;
-            $targets[] = $hdrhospital->instanceorganization;
-            $provenance = [
-                "deviceid"     => uuid(),
-                "provenanceid" => uuid(),
-                "date"         => date('Y-m-d\TH:i:s\Z'),
-                "targets"      => $targets
-            ];
-            list($FSHPROVDEV) = twigit(["provenance" => $provenance], "device-and-provenance");
+                // Provenance: covers patient, hospital role, practitioner, organisation
+                $targets = [];
+                $targets[] = $pdat->instanceid;
+                $targets[] = $hdrhospital->instancerole;
+                $targets[] = $hdrhospital->instancepractitioner;
+                $targets[] = $hdrhospital->instanceorganization;
+                $provenance = [
+                    "deviceid" => uuid(),
+                    "provenanceid" => uuid(),
+                    "date" => date('Y-m-d\TH:i:s\Z'),
+                    "targets" => $targets
+                ];
+                list($FSHPROVDEV) = twigit(["provenance" => $provenance], "device-and-provenance");
 
-            // var_dump($hdrencounter);
+                // var_dump($hdrencounter);
 
-            $composition = [
-                "instanceid" => uuid(),
-                "identifier" => uuid(),
-                "date"       => $hdrencounter->end
-            ];
-            // NOTE: composition-eu-hdr template is used here — should be a HDR-specific template
-            list($FSHCMP) = twigit([
-                "patient"     => $pdat,
-                "provider"    => $hdrhospital,
-                "sections"    => $sections,
-                "composition" => $composition
-            ], "composition-eu-hdr");
+                $composition = [
+                    "instanceid" => uuid(),
+                    "identifier" => uuid(),
+                    "date" => $hdrencounter->end
+                ];
+                // NOTE: composition-eu-hdr template is used here — should be a HDR-specific template
+                list($FSHCMP) = twigit([
+                    "patient" => $pdat,
+                    "provider" => $hdrhospital,
+                    "sections" => $sections,
+                    "composition" => $composition
+                ], "composition-eu-hdr");
 
-            // Prepare Bundle metadata
-            $bundle = [
-                "instanceid" => uuid(),
-                "identifier" => uuid()
-            ];
+                // Prepare Bundle metadata
+                $bundle = [
+                    "instanceid" => uuid(),
+                    "identifier" => uuid()
+                ];
 
-            // Render the HDR FHIR Bundle
-            list($FSHBNDL) = twigit([
-                "patient"     => $pdat,
-                "bundle"      => $bundle,
-                "composition" => $composition,
-                "hospital"    => $hdrhospital,
-                "encounter"   => $hdrencounter,
-                "sections"    => $sections,
-                "provenance"  => $provenance
-            ], "bundle-eu-hdr");
-            //var_dump($sections["sectionSignificantResults"]["entries"]);exit;
-            //var_dump($FSHBNDL);//exit;
+                // Render the HDR FHIR Bundle
+                list($FSHBNDL) = twigit([
+                    "patient" => $pdat,
+                    "bundle" => $bundle,
+                    "composition" => $composition,
+                    "hospital" => $hdrhospital,
+                    "encounter" => $hdrencounter,
+                    "sections" => $sections,
+                    "provenance" => $provenance
+                ], "bundle-eu-hdr");
+                //var_dump($sections["sectionSignificantResults"]["entries"]);exit;
+                //var_dump($FSHBNDL);//exit;
 
-            $OUTFSH = $FSHBNDL . $FSHCMP . $FSHPAT . $FSHENC . $FSHHOS . $FSHPROVDEV;
-            $OUTFSH = applyCorrectionsOnAIflawsInFSH($OUTFSH);
-            if (!is_dir(FSHOUTPUTDIR . "/$thisartifact")) mkdir(FSHOUTPUTDIR . "/$thisartifact");
-            $outputcount++;
-            $fn = FSHOUTPUTDIR . "/$thisartifact/__" . $pdat->eci . 
-                "-hdr-example-$outputcount-" . substr($hdrencounter->end, 0, 10) . ".fsh";
-            file_put_contents($fn, $OUTFSH);
-        }
+                $OUTFSH = $FSHBNDL . $FSHCMP . $FSHPAT . $FSHENC . $FSHHOS . $FSHPROVDEV;
+                $OUTFSH = applyCorrectionsOnAIflawsInFSH($OUTFSH);
+                if (!is_dir(FSHOUTPUTDIR . "/$thisartifact"))
+                    mkdir(FSHOUTPUTDIR . "/$thisartifact");
+                $outputcount++;
+                $fn = FSHOUTPUTDIR . "/$thisartifact/__" . $pdat->eci .
+                    "-hdr-example-$outputcount-" . substr($hdrencounter->end, 0, 10) . ".fsh";
+                file_put_contents($fn, $OUTFSH);
+            }
+        } else
+            lognlsev(2, ERROR, "............ No hospital stay detectable, skipping HDR for this patient.");
     }
 
     // =========================================================================
@@ -1605,137 +1615,10 @@ function emitFSH($pdat, $thisartifact) {
         /**
          * Condition summarisation for the patient summary.
          *
-         * Synthea writes one condition entry per clinical episode, which is correct for
-         * a longitudinal record. A patient summary needs one entry per problem carrying
-         * its current status. This call performs that reduction.
-         *
-         * Two passes run in sequence, and are kept separate on purpose:
-         *
-         *   1. Suppression. Removes what does not belong in a summary: resolved acute
-         *      illness, symptoms and signs, administrative items. Conditions that
-         *      resolved but still govern treatment are restated as history concepts
-         *      rather than dropped, so a resolved stroke becomes a recorded history of
-         *      cerebrovascular accident. Allergies and pregnancy status are routed to
-         *      their own sections.
-         *
-         *   2. Consolidation. Merges episodes of one problem into a single entry with
-         *      the earliest onset, the current status and an episode count. Overlapping
-         *      concepts collapse to the most specific one asserted. Staged conditions
-         *      keep the highest stage reached together with the earliest onset.
-         *
-         * Merging the two passes would let several episodes of an acute infection be
-         * consolidated into a recurrent problem no clinician ever asserted. Suppression
-         * removes those episodes before consolidation can see them.
-         *
-         * The return value has the same shape as the input and substitutes directly for
-         * $pdat->conditions downstream. Two caveats. The 'start', 'end' and 'active'
-         * fields are recomputed rather than copied, because consolidation moves onset
-         * and abatement across a group. Three keys are added: clinicalStatus, episodes,
-         * and for a restated concept convertedFrom. These are needed because a
-         * condition present now that previously resolved has an empty 'end', which is
-         * indistinguishable from one that never resolved. Construct the adapter with
-         * annotate: false for a strictly identical shape, at the cost of that
-         * distinction.
-         *
-         * $adapter->lastReport() returns what was removed and why. Each dropped record
-         * carries a summaryReason field, so any decision can be traced without
-         * re-running the filter.
-         *
-         * Typical reduction is from around sixteen entries per patient to around four.
-         *
-         * @see lib/eps-condition-adapter.php
+         * @see lib/filter-and-adapt-conditions.php
          * @see https://synderai.net/index.php?menu=epsca
          */
-        $adapter = new epsConditionAdapter();
-        $filteredConditions = $adapter->summarise($pdat->conditions);
-
-        // =====================================================================
-        // Output
-        // =====================================================================
-        $report = $adapter->lastReport();
-
-        lognl(2, "............ Results of the EPS condition adapter run");
-        lognl(2,
-            sprintf(
-                "............... %d source condition entries -> %d problems, %d routed, %d dropped",
-                $report['in'],
-                $report['stats']['problems'],
-                $report['stats']['routed'],
-                $report['stats']['dropped']
-            )
-        );
-
-        lognl(3, "............... Problem List");
-        lognl(3, sprintf("...............   %-12s %-12s %-4s %-12s %-12s %s\n", 'CODE', 'STATUS', 'EP', 'ONSET', 'ABATED', 'DISPLAY'));
-        foreach ($filteredConditions as $p) {
-            lognl(3, sprintf
-                (
-                    "...............   %-12s %-12s %-4d %-12s %-12s %s\n",
-                    $p['code']['code'],
-                    $p['clinicalStatus'],
-                    $p['episodes'],
-                    $p['start'],
-                    $p['end'] !== '' ? $p['end'] : '-',
-                    $p['code']['display']
-                )
-            );
-        }
-
-        lognl(3, "............... Dropped");
-        $byCode = [];
-        foreach ($report['dropped'] as $d) {
-            $byCode[$d['code']['code']]['n'] = ($byCode[$d['code']['code']]['n'] ?? 0) + 1;
-            $byCode[$d['code']['code']]['display'] = $d['code']['display'];
-            $byCode[$d['code']['code']]['reason'] = $d['summaryReason'] ?? '';
-        }
-        foreach ($byCode as $code => $info) {
-            lognl(3,
-                sprintf
-                    (
-                    "...............   %dx  %-12s %-38s %s\n",
-                    $info['n'],
-                    $code,
-                    substr($info['display'], 0, 36),
-                    $info['reason']
-                )
-            );
-        }
-
-        // ---------------------------------------------------------------------
-        // Diagnostic on the 'active' field. Not part of the pipeline.
-        // ---------------------------------------------------------------------
-
-        $check = epsConditionAdapter::inspectActiveField($pdat->conditions);
-        lognl(3, "............ 'active' Field Check");
-        lognl(3, sprintf
-            (
-                "...............   every value is flag digit + start date, flag agreeing with 'end': %s\n",
-                $check['consistent'] ? 'yes' : 'NO - see rows below'
-            ));
-        if (!$check['consistent']) {
-            foreach ($check['rows'] as $r) {
-                if (!$r['agrees']) {
-                    lognl(3, 
-                        sprintf
-                            (
-                                "...............     index %d  code %s  active=%s  start=%s  end=%s\n",
-                                $r['index'],
-                                $r['code'],
-                                $r['active'],
-                                $r['start'],
-                                $r['end'] ?: '(none)'
-                            ));
-                }
-            }
-        }
-        lognl(3, "...............   The field carries nothing 'end' does not. The adapter derives status from 'end' and ignores 'active'.");
-
-        // preserve $pdat->conditions as $pdat->originalConditions (for later reconstruction after EPS pipeline for other artifacts)
-        // make $pdat->conditions the new $filteredConditions for proper EPS condition emission
-        $pdat->originalConditions = $pdat->conditions;
-        $pdat->conditions = $filteredConditions;
-        exit;
-
+        
         // Assign a fresh resource instance ID for this EPS
         $pdat->instanceid = uuid();
         list($FSHPAT) = twigit(["patient" => $pdat], "patient-eps");
@@ -1808,33 +1691,8 @@ function emitFSH($pdat, $thisartifact) {
         if ($doresearchstudyaddition)
             include("sections/researchstudyandsubject.php");
 
-        // Use the most recent date of lab observations, conditions, procedures or immunizations (if present) as the composition date, today otherwise
-        $maxdates = array();
-        if ($pdat->labobservations !== NULL) {
-            $maxdates[] = max(array_keys($pdat->labobservations));
-        }
-        if ($pdat->conditions !== NULL) {
-            $maxdates[] = max(array_merge(
-                array_column($pdat->conditions, 'start'),
-                array_column($pdat->conditions, 'end')
-            ));
-        }
-        if ($pdat->procedures !== NULL) {
-            $maxdates[] = max(array_column($pdat->procedures, 'date'));
-        }
-        if ($pdat->medications !== NULL) {
-            $maxdates[] = max(array_merge(
-                array_column($pdat->medications, 'start'),
-                array_column($pdat->medications, 'end')
-            ));
-        }
-        if ($pdat->immunizations !== NULL) {
-            $maxdates[] = max(array_column($pdat->immunizations, 'date'));
-        }
-        if (count($maxdates) === 0)
-            $maxfoundix = date('Y-m-d\TH:i:s\Z');
-        else
-            $maxfoundix = max($maxdates);
+        // evaluate the report date
+        $maxfoundix = evaluateReportDate($pdat);
 
         $composition = [
             "instanceid" => uuid(),
@@ -1991,7 +1849,7 @@ function emitFSH($pdat, $thisartifact) {
                 "composition"      => $composition,
                 "patient"          => $pdat,
                 "results"          => $pdat->labresults[$thisroundate],
-                "categories"       => SUPPORTED_LOINC_LABORATORY_CATEGORIES,
+                "categories"       => $LABORATORYCATEGORIES,
                 "requester"        => $requester,
                 "laboratory"       => $laboratory,
                 "diagnosticreport" => $diagnosticreport,
@@ -2067,22 +1925,54 @@ function emitCDA($pdat, $thisartifact) {
     // emit all AZs
     if ($thisartifact === "AZ") {
 
+        // invent a test BSN
+        $pdat->bsn = generateBSN9999();
+        
         // Build composite patient name for convenient use in templates
-        $pdat->name = (is_array($pdat->given) ? implode(" ", $pdat->given) : $pdat->given) . " " . $pdat->family;
+        $pdat->name = (is_array($pdat->given) ? implode(" ", $pdat->given) : $pdat->given) . " XXX_" . $pdat->family;
 
-        list($OUTCDA) =
-            twigit(
-                [
-                    "patient" => $pdat
-                ],
-                "az-recordTarget"
-            );
-        // echo "\n$OUTCDA\n";
-        if (!is_dir(FSHOUTPUTDIR . "/$thisartifact"))
-            mkdir(FSHOUTPUTDIR . "/$thisartifact");
-        $fn = FSHOUTPUTDIR . "/$thisartifact/__" . $pdat->eci . "-az-example.cda.xml";
-        file_put_contents($fn, $OUTCDA);
-        $outputcount++;
+        // evaluate the report date
+        $maxfoundix = evaluateReportDate($pdat);
+
+        // Include all AZ section assemblers
+        include("sections/az.php");
+
+        // validate and pretty print the data
+        libxml_use_internal_errors(true);
+        libxml_clear_errors();
+        $dom = new DOMDocument('1.0', 'UTF-8');
+        $dom->preserveWhiteSpace = false;
+        $dom->formatOutput = true;
+        if (!$dom->loadXML($OUTCDA, LIBXML_NONET)) {
+            $msg = [];
+            foreach (libxml_get_errors() as $e) {
+                $msg[] = sprintf('Line %d: %s', $e->line, trim($e->message));
+            }
+            libxml_clear_errors();
+            lognlsev(3, ERROR, "......... +++ XML not well-formed:\n" . implode("\n", $msg));
+        }
+        /* schema validation disabled for now
+        if (!$dom->schemaValidate(__DIR__ . '/schema/CDA.xsd')) {
+            $msg = [];
+            foreach (libxml_get_errors() as $e) {
+                $msg[] = sprintf('Zeile %d: %s', $e->line, trim($e->message));
+            }
+            libxml_clear_errors();
+            throw new RuntimeException("Schemaverletzung:\n" . implode("\n", $msg));
+        }
+        */
+        $xmlpretty = $dom->saveXML();
+        if ($xmlpretty === false) {
+            lognlsev(3, ERROR, "......... +++ XML serialization failed");
+        } else {
+            if (!is_dir(FSHOUTPUTDIR . "/$thisartifact"))
+                mkdir(FSHOUTPUTDIR . "/$thisartifact");
+            $fn = FSHOUTPUTDIR . "/$thisartifact/__" . $pdat->eci . "-az-example.cda.xml";
+            file_put_contents($fn, $xmlpretty);
+            // print_r($xmlpretty);
+            $outputcount++;
+        }
+        
     }
 
     return $outputcount; 

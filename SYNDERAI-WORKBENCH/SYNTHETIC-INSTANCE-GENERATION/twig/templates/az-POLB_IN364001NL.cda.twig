@@ -1,0 +1,128 @@
+%%CDA%% {# ── Section marker required by the CDA pre-processor ─────────────── #}
+
+<POLB_IN364001NL03 xmlns:lab="urn:hl7:lab">
+      <id root="2.16.840.1.113883.2.4.6.6.1.1" extension="Nictiz_testMessageId"/>
+      <creationTime value="20260303093658"/>
+      <versionCode code="NICTIZEd2005-Okt"/>
+      <interactionId extension="POLB_IN364001NL03" root="2.16.840.1.113883.1.6"/>
+      <profileId root="2.16.840.1.113883.2.4.3.11.1" extension="810"/>
+      <processingCode code="P"/>
+      <processingModeCode code="T"/>
+      <acceptAckCode code="NE"/>
+      <acknowledgement typeCode="AA">
+         <targetMessage><id extension="ID_012345ABCFED" root="1.2.3.999" /></targetMessage>
+      </acknowledgement>
+      <receiver>
+         <device>
+            <id root="2.16.840.1.113883.2.4.6.6" extension="70000003"/>
+         </device>
+      </receiver>
+      <sender>
+         <device>
+            <id root="2.16.840.1.113883.2.4.6.6" extension="1"/>
+         </device>
+      </sender>
+      <ControlActProcess moodCode="EVN">
+         <authorOrPerformer typeCode="AUT">
+            <participant>
+               <AssignedDevice>
+                  <id root="2.16.528.1.1007.3.2" extension="000022222"/>
+                  <id root="2.16.840.1.113883.2.4.6.6" extension="00002727"/>
+                  <Organization>
+                     <id root="2.16.528.1.1007.3.3" extension="00002222"/>
+                     <name>Gezondheidscentrum B</name>
+                  </Organization>
+               </AssignedDevice>
+            </participant>
+         </authorOrPerformer>
+         <subject>
+            <organizer classCode="CLUSTER" moodCode="EVN">
+               <templateId root="2.16.840.1.113883.2.4.3.11.60.66.10.77"/>
+               <code code="26436-6"
+                     displayName="Laboratory studies"
+                     codeSystem="2.16.840.1.113883.6.1"
+                     codeSystemName="LOINC"/>
+               <statusCode code="completed"/>
+               <recordTarget typeCode="RCT" contextControlCode="OP">
+                  <patientRole>
+                     <id root="2.16.840.1.113883.2.4.6.3" extension="999910942"/>
+                     <!-- Adresgegevens (volgens CDA datatype 'AD') -->
+                     <addr use="HP"><!-- adrestype -->
+                        <streetName>Knolweg</streetName>
+                        <houseNumber>1000</houseNumber>
+                        <buildingNumberSuffix>A 2</buildingNumberSuffix>
+                        <!--                                <additionalLocator>to</additionalLocator>-->
+                        <postalCode>9999 XX</postalCode>
+                        <city>STITSWERD</city>
+                        <country code="NL" codeSystem="1.0.3166.1.2.2">Nederland</country>
+                        <unitID>Flat Oost</unitID>
+                     </addr>
+                     <patient><!-- Voornamen, geslachtsnaam -->
+                        <name>
+                           <given qualifier="BR">Gerard Jan</given>
+                           <given qualifier="IN">G. J.</given>
+                           <given qualifier="CL">Gerard</given>
+                           <family qualifier="BR">XXX_Bomele</family>
+                           <delimiter>-</delimiter>
+                           <prefix qualifier="VV">van </prefix>
+                           <family qualifier="SP">Zegels</family>
+                        </name>
+                        <!-- geslacht -->
+                        <administrativeGenderCode code="M" codeSystem="2.16.840.1.113883.5.1"/>
+                        <birthTime value="19540822"/>
+                        <sdtc:multipleBirthInd value="false"/>
+                     </patient>
+                  </patientRole>
+               </recordTarget>
+               <component typeCode="COMP" contextControlCode="OP">
+                  <observation classCode="OBS" moodCode="EVN">
+                     <templateId root="2.16.840.1.113883.2.4.3.11.60.7.10.31"/>
+                     <templateId root="1.3.6.1.4.1.19376.1.3.1.6"/>
+                     <id extension="Lab04" root="2.16.840.1.113883.2.4.6.6.100001111"/>
+                     <code code="3209"
+                           codeSystem="2.16.840.1.113883.2.4.4.30.45"
+                           displayName="glucose niet nuchter, art/cap (lab)"/>
+                     <statusCode code="completed"/>
+                     <effectiveTime value="20260223"/>
+                     <value xsi:type="PQ" value="5.8" unit="mmol/L"/>
+                     <interpretationCode code="N" codeSystem="2.16.840.1.113883.5.83" displayName="Normal"/>
+                     <participant typeCode="RESP">
+                        <time value="20260303"/>
+                        <participantRole classCode="ROL">
+                           <templateId root="2.16.840.1.113883.2.4.3.11.60.3.10.3.27"/>
+                           <id root="2.16.528.1.1007.3.1" extension="000002234"/>
+                        </participantRole>
+                     </participant>
+                     <entryRelationship typeCode="REFR">
+                        <encounter classCode="ENC" moodCode="EVN">
+                           <id extension="Contact04" root="2.16.840.1.113883.2.4.6.6.100001111"/>
+                        </encounter>
+                     </entryRelationship>
+                     <entryRelationship typeCode="REFR">
+                        <act classCode="ACT" moodCode="EVN">
+                           <id extension="EpisodeL86" root="2.16.528.1.1007.3.3.765332.1.12"/>
+                           <code code="CONC"
+                                 codeSystem="2.16.840.1.113883.5.6"
+                                 displayName="Concern"/>
+                        </act>
+                     </entryRelationship>
+                     <referenceRange typeCode="REFV">
+                        <observationRange classCode="OBS" moodCode="EVN.CRT">
+                           <value xsi:type="IVL_PQ">
+                              <low value="4" unit="mmol/L"/>
+                              <high value="6" unit="mmol/L"/>
+                           </value>
+                           <interpretationCode code="N" codeSystem="2.16.840.1.113883.5.83" displayName="Normal"/>
+                        </observationRange>
+                     </referenceRange>
+                  </observation>
+               </component>
+            </organizer>
+         </subject>
+         <queryAck> <queryId extension="queryId_012345ABCFED" root="1.2.3.999" /> <queryResponseCode code="OK"/>
+            <resultTotalQuantity value="1"/>
+            <resultCurrentQuantity value="1"/>
+            <resultRemainingQuantity value="0"/>
+         </queryAck>
+      </ControlActProcess>
+   </POLB_IN364001NL03>

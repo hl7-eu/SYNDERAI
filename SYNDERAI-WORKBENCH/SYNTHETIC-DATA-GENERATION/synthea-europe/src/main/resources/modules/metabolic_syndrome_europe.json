@@ -1,0 +1,325 @@
+{
+  "name": "Metabolic Syndrome Europe",
+  "remarks": [
+    "European calibration of metabolic syndrome (IDF/NCEP-ATP III cluster).",
+    "NEW in R4. No module emitted 237602007; metabolic_syndrome_disease.json models",
+    "diabetes progression and has no ConditionOnset at all. R3 reported 0% against a",
+    "25.0% European reference.",
+    "Calibrated against: IDF consensus definition, DECODE Study, GBD 2019 Europe.",
+    "Risk-tiered on the component conditions that define the syndrome - obesity,",
+    "dysglycaemia, hypertension - rather than applied as a flat hazard, so the",
+    "diagnosis lands in patients who plausibly meet the criteria."
+  ],
+  "states": {
+    "Initial": {
+      "type": "Initial",
+      "direct_transition": "Age_Guard"
+    },
+    "Age_Guard": {
+      "type": "Guard",
+      "allow": {
+        "condition_type": "Age",
+        "operator": ">=",
+        "quantity": 25,
+        "unit": "years"
+      },
+      "direct_transition": "Naive_Guard"
+    },
+    "Naive_Guard": {
+      "type": "Guard",
+      "allow": {
+        "condition_type": "Attribute",
+        "attribute": "metabolic_syndrome_dx",
+        "operator": "is nil"
+      },
+      "direct_transition": "Annual_Delay"
+    },
+    "Annual_Delay": {
+      "type": "Delay",
+      "exact": {
+        "quantity": 1,
+        "unit": "years"
+      },
+      "direct_transition": "Risk_Check"
+    },
+    "Risk_Check": {
+      "type": "Simple",
+      "conditional_transition": [
+        {
+          "condition": {
+            "condition_type": "Or",
+            "conditions": [
+              {
+                "condition_type": "Attribute",
+                "attribute": "obesity_dx",
+                "operator": "is not nil"
+              },
+              {
+                "condition_type": "Attribute",
+                "attribute": "diabetes",
+                "operator": "is not nil"
+              },
+              {
+                "condition_type": "Attribute",
+                "attribute": "prediabetes",
+                "operator": "is not nil"
+              },
+              {
+                "condition_type": "Attribute",
+                "attribute": "hypertension",
+                "operator": "is not nil"
+              },
+              {
+                "condition_type": "Attribute",
+                "attribute": "hyperlipidaemia",
+                "operator": "is not nil"
+              }
+            ]
+          },
+          "transition": "High_Age_Check"
+        },
+        {
+          "transition": "Low_Age_Check"
+        }
+      ]
+    },
+    "High_Age_Check": {
+      "type": "Simple",
+      "conditional_transition": [
+        {
+          "condition": {
+            "condition_type": "Age",
+            "operator": "<",
+            "quantity": 50,
+            "unit": "years"
+          },
+          "transition": "Prob_High_25_49"
+        },
+        {
+          "condition": {
+            "condition_type": "Age",
+            "operator": "<",
+            "quantity": 65,
+            "unit": "years"
+          },
+          "transition": "Prob_High_50_64"
+        },
+        {
+          "transition": "Prob_High_65_plus"
+        }
+      ]
+    },
+    "Prob_High_25_49": {
+      "type": "Simple",
+      "remarks": [
+        "2.500% annual incidence."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.025,
+          "transition": "Diagnose_Metabolic_Syndrome"
+        },
+        {
+          "distribution": 0.975,
+          "transition": "Annual_Delay"
+        }
+      ]
+    },
+    "Prob_High_50_64": {
+      "type": "Simple",
+      "remarks": [
+        "3.500% annual incidence."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.035,
+          "transition": "Diagnose_Metabolic_Syndrome"
+        },
+        {
+          "distribution": 0.965,
+          "transition": "Annual_Delay"
+        }
+      ]
+    },
+    "Prob_High_65_plus": {
+      "type": "Simple",
+      "remarks": [
+        "3.000% annual incidence."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.03,
+          "transition": "Diagnose_Metabolic_Syndrome"
+        },
+        {
+          "distribution": 0.97,
+          "transition": "Annual_Delay"
+        }
+      ]
+    },
+    "Low_Age_Check": {
+      "type": "Simple",
+      "conditional_transition": [
+        {
+          "condition": {
+            "condition_type": "Age",
+            "operator": "<",
+            "quantity": 50,
+            "unit": "years"
+          },
+          "transition": "Prob_Low_25_49"
+        },
+        {
+          "condition": {
+            "condition_type": "Age",
+            "operator": "<",
+            "quantity": 65,
+            "unit": "years"
+          },
+          "transition": "Prob_Low_50_64"
+        },
+        {
+          "transition": "Prob_Low_65_plus"
+        }
+      ]
+    },
+    "Prob_Low_25_49": {
+      "type": "Simple",
+      "remarks": [
+        "0.300% annual incidence."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.003,
+          "transition": "Diagnose_Metabolic_Syndrome"
+        },
+        {
+          "distribution": 0.997,
+          "transition": "Annual_Delay"
+        }
+      ]
+    },
+    "Prob_Low_50_64": {
+      "type": "Simple",
+      "remarks": [
+        "0.600% annual incidence."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.006,
+          "transition": "Diagnose_Metabolic_Syndrome"
+        },
+        {
+          "distribution": 0.994,
+          "transition": "Annual_Delay"
+        }
+      ]
+    },
+    "Prob_Low_65_plus": {
+      "type": "Simple",
+      "remarks": [
+        "0.800% annual incidence."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.008,
+          "transition": "Diagnose_Metabolic_Syndrome"
+        },
+        {
+          "distribution": 0.992,
+          "transition": "Annual_Delay"
+        }
+      ]
+    },
+    "Diagnose_Metabolic_Syndrome": {
+      "type": "ConditionOnset",
+      "assign_to_attribute": "metabolic_syndrome_dx",
+      "target_encounter": "MetS_Encounter",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "237602007",
+          "display": "Metabolic syndrome X (disorder)"
+        }
+      ],
+      "direct_transition": "MetS_Encounter"
+    },
+    "MetS_Encounter": {
+      "type": "Encounter",
+      "encounter_class": "ambulatory",
+      "reason": "metabolic_syndrome_dx",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "11429006",
+          "display": "Consultation (procedure)"
+        }
+      ],
+      "direct_transition": "MetS_Waist"
+    },
+    "MetS_Waist": {
+      "type": "Observation",
+      "category": "vital-signs",
+      "unit": "cm",
+      "codes": [
+        {
+          "system": "LOINC",
+          "code": "8280-0",
+          "display": "Waist Circumference at umbilicus by Tape measure"
+        }
+      ],
+      "range": {
+        "low": 94,
+        "high": 130
+      },
+      "direct_transition": "MetS_Lifestyle_Advice"
+    },
+    "MetS_Lifestyle_Advice": {
+      "type": "Procedure",
+      "reason": "metabolic_syndrome_dx",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "410289001",
+          "display": "Cardiovascular risk factor education (procedure)"
+        }
+      ],
+      "duration": {
+        "low": 15,
+        "high": 30,
+        "unit": "minutes"
+      },
+      "direct_transition": "End_MetS_Encounter"
+    },
+    "End_MetS_Encounter": {
+      "type": "EncounterEnd",
+      "direct_transition": "MetS_Followup_Delay"
+    },
+    "MetS_Followup_Delay": {
+      "type": "Delay",
+      "range": {
+        "low": 10,
+        "high": 14,
+        "unit": "months"
+      },
+      "direct_transition": "MetS_Review_Encounter"
+    },
+    "MetS_Review_Encounter": {
+      "type": "Encounter",
+      "encounter_class": "ambulatory",
+      "reason": "metabolic_syndrome_dx",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "390906007",
+          "display": "Follow-up encounter (procedure)"
+        }
+      ],
+      "direct_transition": "End_MetS_Review"
+    },
+    "End_MetS_Review": {
+      "type": "EncounterEnd",
+      "direct_transition": "MetS_Followup_Delay"
+    }
+  }
+}

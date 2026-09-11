@@ -1,0 +1,464 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<codeSystem id="2.16.840.1.113883.3.1937.777.100.5.1" name="cs-specimen-label" displayName="Specimen label" effectiveDate="2026-08-27T00:00:00" statusCode="draft" experimental="true" caseSensitive="true" canonicalUri="http://synderai.net/fhir/CodeSystem/cs-specimen-label" lastModifiedDate="2026-09-11T00:00:00" language="en-US">
+            <desc language="en-US">Local code system for specimen types whose LOINC System Part code is unknown or unverified. Every specimen type is addressable even where no LOINC Part code could be confirmed. The code is derived from the specimen label in the LOINC System column of the source table, reduced to letters and digits, with every other character replaced by an underscore and repeated
+                underscores collapsed. The unmodified label is carried on the concept as the preferred designation. Where a LOINC System Part was verified against loinc.org, it is recorded on the concept as the property loincSystemPart. Two concepts, HEM and CHEM, are laboratory sections rather than specimen types. They are artefacts of the Synthea generation, carried here so that every value
+                occurring in synthetic data is addressable, and the concept map records why their target is an interpretation.</desc>
+            <desc language="de-DE">Lokales Codesystem für Probenarten, deren LOINC-System-Part unbekannt oder ungeprüft ist. Der Code wird aus dem Probenlabel der Spalte LOINC_System der Ausgangstabelle abgeleitet und auf Buchstaben und Ziffern reduziert. Alle übrigen Zeichen werden durch einen Unterstrich ersetzt, aufeinanderfolgende Unterstriche zusammengefasst. Das unveränderte Label steht als
+                bevorzugte Designation am Konzept.</desc>
+            <publishingAuthority name="SYNDERAI">
+                <addrLine type="uri">https://synderai.net</addrLine>
+            </publishingAuthority>
+            <copyright language="en-US">Labels are derived from the LOINC System axis. LOINC is copyright Regenstrief Institute, Inc. This artefact is not published by Regenstrief.</copyright>
+            <property code="loincSystemPart" type="string" description="LOINC System Part code for this specimen, where one was confirmed on loinc.org with Part Type System. Absent where no System part could be verified."/>
+            <property code="sourceRow" type="integer" description="Row index in the source table, for traceability."/>
+            <conceptList>
+                <codedConcept code="Ser_Plas" statusCode="active" effectiveDate="2026-08-27T00:00:00">
+                    <designation language="en-US" type="preferred" displayName="Ser/Plas"/>
+                    <property code="sourceRow">
+                        <valueInteger value="0"/>
+                    </property>
+                </codedConcept>
+                <codedConcept code="PPP_Platelet_poor_plasma" statusCode="active" effectiveDate="2026-08-27T00:00:00">
+                    <designation language="en-US" type="preferred" displayName="PPP (Platelet poor plasma)"/>
+                    <designation language="en-US" type="synonym" displayName="PPP"/>
+                    <designation language="en-US" type="synonym" displayName="Platelet poor plasma"/>
+                    <property code="sourceRow">
+                        <valueInteger value="1"/>
+                    </property>
+                </codedConcept>
+                <codedConcept code="PRP_Platelet_rich_plasma" statusCode="active" effectiveDate="2026-08-27T00:00:00">
+                    <designation language="en-US" type="preferred" displayName="PRP (Platelet rich plasma)"/>
+                    <designation language="en-US" type="synonym" displayName="PRP"/>
+                    <designation language="en-US" type="synonym" displayName="Platelet rich plasma"/>
+                    <property code="sourceRow">
+                        <valueInteger value="2"/>
+                    </property>
+                </codedConcept>
+                <codedConcept code="Serum" statusCode="active" effectiveDate="2026-08-27T00:00:00">
+                    <designation language="en-US" type="preferred" displayName="Serum"/>
+                    <designation language="en-US" type="synonym" displayName="Ser"/>
+                    <property code="sourceRow">
+                        <valueInteger value="3"/>
+                    </property>
+                </codedConcept>
+                <codedConcept code="Plasma" statusCode="active" effectiveDate="2026-08-27T00:00:00">
+                    <designation language="en-US" type="preferred" displayName="Plasma"/>
+                    <property code="sourceRow">
+                        <valueInteger value="4"/>
+                    </property>
+                </codedConcept>
+                <codedConcept code="Blood" statusCode="active" effectiveDate="2026-08-27T00:00:00">
+                    <designation language="en-US" type="preferred" displayName="Blood"/>
+                    <property code="sourceRow">
+                        <valueInteger value="5"/>
+                    </property>
+                </codedConcept>
+                <codedConcept code="Bld_ven_Venous_blood" statusCode="active" effectiveDate="2026-08-27T00:00:00">
+                    <designation language="en-US" type="preferred" displayName="Bld-ven (Venous blood)"/>
+                    <designation language="en-US" type="synonym" displayName="Bld-ven"/>
+                    <designation language="en-US" type="synonym" displayName="Venous blood"/>
+                    <designation language="en-US" type="synonym" displayName="BldV"/>
+                    <property code="sourceRow">
+                        <valueInteger value="6"/>
+                    </property>
+                </codedConcept>
+                <codedConcept code="BldA_Arterial_blood" statusCode="active" effectiveDate="2026-08-27T00:00:00">
+                    <designation language="en-US" type="preferred" displayName="BldA (Arterial blood)"/>
+                    <designation language="en-US" type="synonym" displayName="BldA"/>
+                    <designation language="en-US" type="synonym" displayName="Arterial blood"/>
+                    <property code="sourceRow">
+                        <valueInteger value="7"/>
+                    </property>
+                </codedConcept>
+                <codedConcept code="BldC_Capillary_blood" statusCode="active" effectiveDate="2026-08-27T00:00:00">
+                    <designation language="en-US" type="preferred" displayName="BldC (Capillary blood)"/>
+                    <designation language="en-US" type="synonym" displayName="BldC"/>
+                    <designation language="en-US" type="synonym" displayName="Capillary blood"/>
+                    <property code="sourceRow">
+                        <valueInteger value="8"/>
+                    </property>
+                </codedConcept>
+                <codedConcept code="Bld" statusCode="active" effectiveDate="2026-09-10T00:00:00">
+                    <designation language="en-US" type="preferred" displayName="Bld"/>
+                </codedConcept>
+                <codedConcept code="Respiratory_System_Specimen" statusCode="active" effectiveDate="2026-09-10T00:00:00">
+                    <designation language="en-US" type="preferred" displayName="Respiratory System Specimen"/>
+                </codedConcept>
+                <codedConcept code="Ser_Plas_Bld" statusCode="active" effectiveDate="2026-09-10T00:00:00">
+                    <designation language="en-US" type="preferred" displayName="Ser/Plas/Bld"/>
+                </codedConcept>
+                <codedConcept code="RBC" statusCode="active" effectiveDate="2026-09-10T00:00:00">
+                    <designation language="en-US" type="preferred" displayName="RBC"/>
+                </codedConcept>
+                <codedConcept code="Bld_pos_growth" statusCode="active" effectiveDate="2026-09-11T00:00:00">
+                    <designation language="en-US" type="preferred" displayName="Bld.pos growth"/>
+                </codedConcept>
+                <codedConcept code="Dried_blood_spot" statusCode="active" effectiveDate="2026-08-27T00:00:00">
+                    <designation language="en-US" type="preferred" displayName="Dried blood spot"/>
+                    <property code="sourceRow">
+                        <valueInteger value="9"/>
+                    </property>
+                </codedConcept>
+                <codedConcept code="Urine" statusCode="active" effectiveDate="2026-08-27T00:00:00">
+                    <designation language="en-US" type="preferred" displayName="Urine"/>
+                    <designation language="en-US" type="synonym" displayName="URINE"/>
+                    <property code="sourceRow">
+                        <valueInteger value="10"/>
+                    </property>
+                </codedConcept>
+                <codedConcept code="Urine_Sed" statusCode="active" effectiveDate="2026-09-10T00:00:00">
+                    <designation language="en-US" type="preferred" displayName="Urine Sed"/>
+                    <designation language="en-US" type="synonym" displayName="Urine sed"/>
+                </codedConcept>
+                <codedConcept code="Mid_stream_urine" statusCode="active" effectiveDate="2026-08-27T00:00:00">
+                    <designation language="en-US" type="preferred" displayName="Mid-stream urine"/>
+                    <property code="sourceRow">
+                        <valueInteger value="11"/>
+                    </property>
+                </codedConcept>
+                <codedConcept code="Catheter_urine_indwelling" statusCode="active" effectiveDate="2026-08-27T00:00:00">
+                    <designation language="en-US" type="preferred" displayName="Catheter urine (indwelling)"/>
+                    <designation language="en-US" type="synonym" displayName="Catheter urine"/>
+                    <property code="sourceRow">
+                        <valueInteger value="12"/>
+                    </property>
+                </codedConcept>
+                <codedConcept code="CSF" statusCode="active" effectiveDate="2026-08-27T00:00:00">
+                    <designation language="en-US" type="preferred" displayName="CSF"/>
+                    <property code="sourceRow">
+                        <valueInteger value="13"/>
+                    </property>
+                </codedConcept>
+                <codedConcept code="Synv_fld_Synovial_fluid" statusCode="active" effectiveDate="2026-08-27T00:00:00">
+                    <designation language="en-US" type="preferred" displayName="Synv fld (Synovial fluid)"/>
+                    <designation language="en-US" type="synonym" displayName="Synv fld"/>
+                    <designation language="en-US" type="synonym" displayName="Synovial fluid"/>
+                    <property code="sourceRow">
+                        <valueInteger value="14"/>
+                    </property>
+                </codedConcept>
+                <codedConcept code="Plr_fld_Pleural_fluid" statusCode="active" effectiveDate="2026-08-27T00:00:00">
+                    <designation language="en-US" type="preferred" displayName="Plr fld (Pleural fluid)"/>
+                    <designation language="en-US" type="synonym" displayName="Plr fld"/>
+                    <designation language="en-US" type="synonym" displayName="Pleural fluid"/>
+                    <property code="loincSystemPart">
+                        <valueString value="LP7486-6"/>
+                    </property>
+                    <property code="sourceRow">
+                        <valueInteger value="15"/>
+                    </property>
+                </codedConcept>
+                <codedConcept code="Peritoneal_fluid" statusCode="active" effectiveDate="2026-08-27T00:00:00">
+                    <designation language="en-US" type="preferred" displayName="Peritoneal fluid"/>
+                    <property code="sourceRow">
+                        <valueInteger value="16"/>
+                    </property>
+                </codedConcept>
+                <codedConcept code="Peritoneal_dialysis_fluid" statusCode="active" effectiveDate="2026-08-27T00:00:00">
+                    <designation language="en-US" type="preferred" displayName="Peritoneal dialysis fluid"/>
+                    <property code="sourceRow">
+                        <valueInteger value="17"/>
+                    </property>
+                </codedConcept>
+                <codedConcept code="Amnio_fld_Amniotic_fluid" statusCode="active" effectiveDate="2026-08-27T00:00:00">
+                    <designation language="en-US" type="preferred" displayName="Amnio fld (Amniotic fluid)"/>
+                    <designation language="en-US" type="synonym" displayName="Amnio fld"/>
+                    <designation language="en-US" type="synonym" displayName="Amniotic fluid"/>
+                    <property code="sourceRow">
+                        <valueInteger value="18"/>
+                    </property>
+                </codedConcept>
+                <codedConcept code="Pericardial_fluid" statusCode="active" effectiveDate="2026-08-27T00:00:00">
+                    <designation language="en-US" type="preferred" displayName="Pericardial fluid"/>
+                    <property code="sourceRow">
+                        <valueInteger value="19"/>
+                    </property>
+                </codedConcept>
+                <codedConcept code="Body_fld_Unspecified_body_fluid" statusCode="active" effectiveDate="2026-08-27T00:00:00">
+                    <designation language="en-US" type="preferred" displayName="Body fld (Unspecified body fluid)"/>
+                    <designation language="en-US" type="synonym" displayName="Body fld"/>
+                    <designation language="en-US" type="synonym" displayName="Unspecified body fluid"/>
+                    <property code="loincSystemPart">
+                        <valueString value="LP7238-1"/>
+                    </property>
+                    <property code="sourceRow">
+                        <valueInteger value="20"/>
+                    </property>
+                </codedConcept>
+                <codedConcept code="Saliva_Oral_fluid" statusCode="active" effectiveDate="2026-08-27T00:00:00">
+                    <designation language="en-US" type="preferred" displayName="Saliva (Oral fluid)"/>
+                    <designation language="en-US" type="synonym" displayName="Saliva"/>
+                    <designation language="en-US" type="synonym" displayName="Oral fluid"/>
+                    <property code="loincSystemPart">
+                        <valueString value="LP7565-7"/>
+                    </property>
+                    <property code="sourceRow">
+                        <valueInteger value="21"/>
+                    </property>
+                </codedConcept>
+                <codedConcept code="Sputum" statusCode="active" effectiveDate="2026-08-27T00:00:00">
+                    <designation language="en-US" type="preferred" displayName="Sputum"/>
+                    <property code="sourceRow">
+                        <valueInteger value="22"/>
+                    </property>
+                </codedConcept>
+                <codedConcept code="Lower_resp_sample" statusCode="active" effectiveDate="2026-08-27T00:00:00">
+                    <designation language="en-US" type="preferred" displayName="Lower resp sample"/>
+                    <property code="sourceRow">
+                        <valueInteger value="23"/>
+                    </property>
+                </codedConcept>
+                <codedConcept code="BAL_Bronchoalveolar_lavage" statusCode="active" effectiveDate="2026-08-27T00:00:00">
+                    <designation language="en-US" type="preferred" displayName="BAL (Bronchoalveolar lavage)"/>
+                    <designation language="en-US" type="synonym" displayName="BAL"/>
+                    <designation language="en-US" type="synonym" displayName="Bronchoalveolar lavage"/>
+                    <property code="sourceRow">
+                        <valueInteger value="24"/>
+                    </property>
+                </codedConcept>
+                <codedConcept code="Nasopharyngeal_swab" statusCode="active" effectiveDate="2026-08-27T00:00:00">
+                    <designation language="en-US" type="preferred" displayName="Nasopharyngeal swab"/>
+                    <property code="sourceRow">
+                        <valueInteger value="25"/>
+                    </property>
+                </codedConcept>
+                <codedConcept code="Oropharyngeal_swab" statusCode="active" effectiveDate="2026-08-27T00:00:00">
+                    <designation language="en-US" type="preferred" displayName="Oropharyngeal swab"/>
+                    <property code="sourceRow">
+                        <valueInteger value="26"/>
+                    </property>
+                </codedConcept>
+                <codedConcept code="Nasopharyngeal_aspirate" statusCode="active" effectiveDate="2026-08-27T00:00:00">
+                    <designation language="en-US" type="preferred" displayName="Nasopharyngeal aspirate"/>
+                    <property code="sourceRow">
+                        <valueInteger value="27"/>
+                    </property>
+                </codedConcept>
+                <codedConcept code="Nasal_swab_anterior_nares" statusCode="active" effectiveDate="2026-08-27T00:00:00">
+                    <designation language="en-US" type="preferred" displayName="Nasal swab (anterior nares)"/>
+                    <designation language="en-US" type="synonym" displayName="Nasal swab"/>
+                    <property code="sourceRow">
+                        <valueInteger value="28"/>
+                    </property>
+                </codedConcept>
+                <codedConcept code="Stool_Feces" statusCode="active" effectiveDate="2026-08-27T00:00:00">
+                    <designation language="en-US" type="preferred" displayName="Stool (Feces)"/>
+                    <designation language="en-US" type="synonym" displayName="Stool"/>
+                    <designation language="en-US" type="synonym" displayName="Feces"/>
+                    <designation language="en-US" type="synonym" displayName="Stool^Patient.gastrointestinal.lower"/>
+                    <property code="sourceRow">
+                        <valueInteger value="29"/>
+                    </property>
+                </codedConcept>
+                <codedConcept code="Gastric_fluid" statusCode="active" effectiveDate="2026-08-27T00:00:00">
+                    <designation language="en-US" type="preferred" displayName="Gastric fluid"/>
+                    <property code="sourceRow">
+                        <valueInteger value="30"/>
+                    </property>
+                </codedConcept>
+                <codedConcept code="Gastric_aspirate" statusCode="active" effectiveDate="2026-08-27T00:00:00">
+                    <designation language="en-US" type="preferred" displayName="Gastric aspirate"/>
+                    <property code="sourceRow">
+                        <valueInteger value="31"/>
+                    </property>
+                </codedConcept>
+                <codedConcept code="Gastric_lavage" statusCode="active" effectiveDate="2026-08-27T00:00:00">
+                    <designation language="en-US" type="preferred" displayName="Gastric lavage"/>
+                    <property code="sourceRow">
+                        <valueInteger value="32"/>
+                    </property>
+                </codedConcept>
+                <codedConcept code="Bile" statusCode="active" effectiveDate="2026-08-27T00:00:00">
+                    <designation language="en-US" type="preferred" displayName="Bile"/>
+                    <property code="sourceRow">
+                        <valueInteger value="33"/>
+                    </property>
+                </codedConcept>
+                <codedConcept code="Pancreatic_fluid" statusCode="active" effectiveDate="2026-08-27T00:00:00">
+                    <designation language="en-US" type="preferred" displayName="Pancreatic fluid"/>
+                    <property code="sourceRow">
+                        <valueInteger value="34"/>
+                    </property>
+                </codedConcept>
+                <codedConcept code="Saliva_oral_rinse" statusCode="active" effectiveDate="2026-08-27T00:00:00">
+                    <designation language="en-US" type="preferred" displayName="Saliva - oral rinse"/>
+                    <property code="sourceRow">
+                        <valueInteger value="35"/>
+                    </property>
+                </codedConcept>
+                <codedConcept code="Sweat" statusCode="active" effectiveDate="2026-08-27T00:00:00">
+                    <designation language="en-US" type="preferred" displayName="Sweat"/>
+                    <property code="sourceRow">
+                        <valueInteger value="36"/>
+                    </property>
+                </codedConcept>
+                <codedConcept code="Semen" statusCode="active" effectiveDate="2026-08-27T00:00:00">
+                    <designation language="en-US" type="preferred" displayName="Semen"/>
+                    <property code="sourceRow">
+                        <valueInteger value="37"/>
+                    </property>
+                </codedConcept>
+                <codedConcept code="Vaginal_swab" statusCode="active" effectiveDate="2026-08-27T00:00:00">
+                    <designation language="en-US" type="preferred" displayName="Vaginal swab"/>
+                    <property code="sourceRow">
+                        <valueInteger value="38"/>
+                    </property>
+                </codedConcept>
+                <codedConcept code="Cervical_swab" statusCode="active" effectiveDate="2026-08-27T00:00:00">
+                    <designation language="en-US" type="preferred" displayName="Cervical swab"/>
+                    <property code="sourceRow">
+                        <valueInteger value="39"/>
+                    </property>
+                </codedConcept>
+                <codedConcept code="Urethral_swab" statusCode="active" effectiveDate="2026-08-27T00:00:00">
+                    <designation language="en-US" type="preferred" displayName="Urethral swab"/>
+                    <property code="sourceRow">
+                        <valueInteger value="40"/>
+                    </property>
+                </codedConcept>
+                <codedConcept code="Endocervical_swab" statusCode="active" effectiveDate="2026-08-27T00:00:00">
+                    <designation language="en-US" type="preferred" displayName="Endocervical swab"/>
+                    <property code="sourceRow">
+                        <valueInteger value="41"/>
+                    </property>
+                </codedConcept>
+                <codedConcept code="Amniotic_fluid_supernatant" statusCode="active" effectiveDate="2026-08-27T00:00:00">
+                    <designation language="en-US" type="preferred" displayName="Amniotic fluid (supernatant)"/>
+                    <property code="sourceRow">
+                        <valueInteger value="42"/>
+                    </property>
+                </codedConcept>
+                <codedConcept code="Bone_marrow" statusCode="active" effectiveDate="2026-08-27T00:00:00">
+                    <designation language="en-US" type="preferred" displayName="Bone marrow"/>
+                    <property code="loincSystemPart">
+                        <valueString value="LP213600-2"/>
+                    </property>
+                    <property code="sourceRow">
+                        <valueInteger value="43"/>
+                    </property>
+                </codedConcept>
+                <codedConcept code="Tissue_unspecified" statusCode="active" effectiveDate="2026-08-27T00:00:00">
+                    <designation language="en-US" type="preferred" displayName="Tissue (unspecified)"/>
+                    <designation language="en-US" type="synonym" displayName="Tissue"/>
+                    <property code="sourceRow">
+                        <valueInteger value="44"/>
+                    </property>
+                </codedConcept>
+                <codedConcept code="Tumor" statusCode="active" effectiveDate="2026-09-11T00:00:00">
+                    <designation language="en-US" type="preferred" displayName="Tumor"/>
+                </codedConcept>
+                <codedConcept code="Cancer_specimen" statusCode="active" effectiveDate="2026-09-11T00:00:00">
+                    <designation language="en-US" type="preferred" displayName="Cancer specimen"/>
+                </codedConcept>
+                <codedConcept code="Breast_tumor" statusCode="active" effectiveDate="2026-09-11T00:00:00">
+                    <designation language="en-US" type="preferred" displayName="Breast tumor"/>
+                </codedConcept>
+                <codedConcept code="Breast_cancer_specimen" statusCode="active" effectiveDate="2026-09-11T00:00:00">
+                    <designation language="en-US" type="preferred" displayName="Breast cancer specimen"/>
+                </codedConcept>
+                <codedConcept code="Tears" statusCode="active" effectiveDate="2026-08-27T00:00:00">
+                    <designation language="en-US" type="preferred" displayName="Tears"/>
+                    <property code="sourceRow">
+                        <valueInteger value="45"/>
+                    </property>
+                </codedConcept>
+                <codedConcept code="Lacrimal_fluid" statusCode="active" effectiveDate="2026-08-27T00:00:00">
+                    <designation language="en-US" type="preferred" displayName="Lacrimal fluid"/>
+                    <property code="sourceRow">
+                        <valueInteger value="46"/>
+                    </property>
+                </codedConcept>
+                <codedConcept code="Ear_swab" statusCode="active" effectiveDate="2026-08-27T00:00:00">
+                    <designation language="en-US" type="preferred" displayName="Ear swab"/>
+                    <property code="sourceRow">
+                        <valueInteger value="47"/>
+                    </property>
+                </codedConcept>
+                <codedConcept code="Tracheal_aspirate" statusCode="active" effectiveDate="2026-08-27T00:00:00">
+                    <designation language="en-US" type="preferred" displayName="Tracheal aspirate"/>
+                    <property code="sourceRow">
+                        <valueInteger value="48"/>
+                    </property>
+                </codedConcept>
+                <codedConcept code="Sputum_tracheal_aspirate_Spt_tracheal_asp" statusCode="active" effectiveDate="2026-08-27T00:00:00">
+                    <designation language="en-US" type="preferred" displayName="Sputum - tracheal aspirate (Spt tracheal asp)"/>
+                    <designation language="en-US" type="synonym" displayName="Sputum - tracheal aspirate"/>
+                    <designation language="en-US" type="synonym" displayName="Spt tracheal asp"/>
+                    <property code="sourceRow">
+                        <valueInteger value="49"/>
+                    </property>
+                </codedConcept>
+                <codedConcept code="Respiratory_sample_unspecified" statusCode="active" effectiveDate="2026-08-27T00:00:00">
+                    <designation language="en-US" type="preferred" displayName="Respiratory sample (unspecified)"/>
+                    <designation language="en-US" type="synonym" displayName="Respiratory sample"/>
+                    <property code="sourceRow">
+                        <valueInteger value="50"/>
+                    </property>
+                </codedConcept>
+                <codedConcept code="Colostrum" statusCode="active" effectiveDate="2026-08-27T00:00:00">
+                    <designation language="en-US" type="preferred" displayName="Colostrum"/>
+                    <property code="sourceRow">
+                        <valueInteger value="51"/>
+                    </property>
+                </codedConcept>
+                <codedConcept code="Exhaled_air" statusCode="active" effectiveDate="2026-08-27T00:00:00">
+                    <designation language="en-US" type="preferred" displayName="Exhaled air"/>
+                    <property code="sourceRow">
+                        <valueInteger value="52"/>
+                    </property>
+                </codedConcept>
+                <codedConcept code="Drainage_fluid" statusCode="active" effectiveDate="2026-08-27T00:00:00">
+                    <designation language="en-US" type="preferred" displayName="Drainage fluid"/>
+                    <property code="sourceRow">
+                        <valueInteger value="53"/>
+                    </property>
+                </codedConcept>
+                <codedConcept code="Exudate" statusCode="active" effectiveDate="2026-08-27T00:00:00">
+                    <designation language="en-US" type="preferred" displayName="Exudate"/>
+                    <property code="sourceRow">
+                        <valueInteger value="54"/>
+                    </property>
+                </codedConcept>
+                <codedConcept code="Calculus" statusCode="active" effectiveDate="2026-08-27T00:00:00">
+                    <designation language="en-US" type="preferred" displayName="Calculus"/>
+                    <property code="sourceRow">
+                        <valueInteger value="55"/>
+                    </property>
+                </codedConcept>
+                <codedConcept code="Implant_submitted_as_specimen" statusCode="active" effectiveDate="2026-08-27T00:00:00">
+                    <designation language="en-US" type="preferred" displayName="Implant (submitted as specimen)"/>
+                    <designation language="en-US" type="synonym" displayName="Implant"/>
+                    <property code="sourceRow">
+                        <valueInteger value="56"/>
+                    </property>
+                </codedConcept>
+                <codedConcept code="Contact_lens_submitted_as_specimen" statusCode="active" effectiveDate="2026-08-27T00:00:00">
+                    <designation language="en-US" type="preferred" displayName="Contact lens (submitted as specimen)"/>
+                    <designation language="en-US" type="synonym" displayName="Contact lens"/>
+                    <property code="sourceRow">
+                        <valueInteger value="57"/>
+                    </property>
+                </codedConcept>
+                <codedConcept code="Water" statusCode="active" effectiveDate="2026-08-27T00:00:00">
+                    <designation language="en-US" type="preferred" displayName="Water"/>
+                    <property code="sourceRow">
+                        <valueInteger value="58"/>
+                    </property>
+                </codedConcept>
+                <codedConcept code="Isolate" statusCode="active" effectiveDate="2026-08-27T00:00:00">
+                    <designation language="en-US" type="preferred" displayName="Isolate"/>
+                    <property code="sourceRow">
+                        <valueInteger value="59"/>
+                    </property>
+                </codedConcept>
+                <codedConcept code="Specimen" statusCode="active" effectiveDate="2026-09-11T00:00:00">
+                    <designation language="en-US" type="preferred" displayName="Specimen"/>
+                </codedConcept>
+                <codedConcept code="HEM" statusCode="active" effectiveDate="2026-09-11T00:00:00">
+                    <designation language="en-US" type="preferred" displayName="HEM"/>
+                </codedConcept>
+                <codedConcept code="CHEM" statusCode="active" effectiveDate="2026-09-11T00:00:00">
+                    <designation language="en-US" type="preferred" displayName="CHEM"/>
+                </codedConcept>
+            </conceptList>
+        </codeSystem>

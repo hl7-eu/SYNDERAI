@@ -1,0 +1,182 @@
+%%CDA%% {# ── Section marker required by the CDA pre-processor ─────────────── #}                    
+
+{#
+  ── Pre-calculations ─────────────────────────────────────────────────────────
+#}
+{% if allergyintolerance.end is not empty %}
+{% set inactive = true %}
+{% else %}
+{% set inactive = false %}
+{% endif %}
+{% set preferred = allergyintolerance.snomed.display %}
+{% if allergyintolerance.snomed.preferredTerm is not empty and allergyintolerance.snomed.display != allergyintolerance.snomed.preferredTerm %}
+{% set preferred = allergyintolerance.snomed.preferredTerm %}
+{% endif %}
+ 
+<component typeCode="COMP" contextControlCode="OP">
+   <act classCode="ACT" moodCode="EVN">
+      <templateId root="2.16.840.1.113883.2.4.3.11.60.66.10.215"/>
+      <id extension="{{ getUUID() }}" root="2.16.528.1.1007.3.3.765332.1.12"/>
+      <code code="CONC" codeSystem="2.16.840.1.113883.5.6" displayName="Concern"/>
+      <statusCode code="active"/>
+{# --- #}
+      <!-- act kezo-AllergyConcernAct status -->
+{% if inactive %}
+      <statusCode code="completed"/>
+{% else %}
+      <statusCode code="active"/>
+{% endif %}
+{# --- #}
+{# effectiveTime is 0..1 R. An IVL_TS with neither low nor high is invalid,
+   hence the outer guard. The date filter returns today's date when its
+   argument is empty, hence the inner guards. #}
+{% if allergyintolerance.start is not empty or allergyintolerance.end is not empty %}
+      <effectiveTime>
+{% if allergyintolerance.start is not empty %}
+         <low value="{{ allergyintolerance.start|date('Ymd') }}"/>
+{% endif %}
+{% if allergyintolerance.end is not empty %}
+         <high value="{{ allergyintolerance.end|date('Ymd') }}"/>
+{% endif %}
+      </effectiveTime>
+{% endif %}
+{# --- #}
+      <entryRelationship typeCode="SUBJ">
+         <observation classCode="OBS" moodCode="EVN">
+            <templateId root="2.16.840.1.113883.2.4.3.11.60.66.10.216"/>
+            <id extension="{{ allergyintoleranceid|e('html') }}" root="2.16.528.1.1007.3.3.765332.1.12"/>
+            <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4"/>
+            <statusCode code="completed"/>
+{# --- #}
+{% if allergyintolerance.start is not empty or allergyintolerance.end is not empty %}
+            <effectiveTime>
+{% if allergyintolerance.start is not empty %}
+                  <low value="{{ allergyintolerance.start|date('Ymd') }}"/>
+{% endif %}
+{% if allergyintolerance.end is not empty %}
+                  <high value="{{ allergyintolerance.end|date('Ymd') }}"/>
+{% endif %}
+            </effectiveTime>
+{% endif %}
+{# --- #}
+{# category of allergy/intolerance
+      SYNDERAI set type/category
+      allergy environment
+      allergy food
+      allergy medication
+      intolerance medication
+      
+      -- category maps to:
+
+      "environment" - 426232007 Environmental allergy, nl-NL Voorkeur: Omgeving
+      "food"        - 418471000 Propensity to adverse reactions to food, nl-NL Voorkeur: Voeding
+      "medication"  - 419511003 Propensity to adverse reactions to drug, nl-NL Voorkeur: Medicijn
+      -/"substance" - 419199007 Allergy to substance
+#}
+{% if allergyintolerance.category == 'environment' %}
+            <value xsi:type="CD" code="426232007" codeSystem="2.16.840.1.113883.6.96" displayName="Environmental allergy"/>
+{% elseif allergyintolerance.category == 'food' %}
+            <value xsi:type="CD" code="418471000" codeSystem="2.16.840.1.113883.6.96" displayName="Propensity to adverse reactions to food"/>
+{% elseif allergyintolerance.category == 'medication' %}
+            <value xsi:type="CD" code="419511003" codeSystem="2.16.840.1.113883.6.96" displayName="Propensity to adverse reactions to drug"/>
+{% else %}
+            <value xsi:type="CD" code="419199007" codeSystem="2.16.840.1.113883.6.96" displayName="Allergy to substance"/>
+{% endif %}
+{# --- #}
+            <informant>
+                <relatedEntity classCode="PAT">
+                    <code code="ONESELF" codeSystem="2.16.840.1.113883.5.111"/>
+                    <relatedPerson>
+                        <name>{{ patientname }}</name>
+                    </relatedPerson>
+                </relatedEntity>
+            </informant>
+            <participant typeCode="CSM">
+                <participantRole classCode="MANU">
+                    <playingEntity classCode="MMAT">
+                        <code code="{{ allergyintolerance.snomed.code }}" codeSystem="2.16.840.1.113883.6.96" displayName="{{ preferred }}"/>
+                    </playingEntity>
+                </participantRole>
+            </participant>
+{# --- #}
+
+{# author 0..* R (kz-concept-1456), inclusion .10.9025 with time 1..1 R and
+   assignedAuthor 1..1 R #}
+{% if allergyintoleranceauthor is defined and allergyintoleranceauthor is not empty %}
+            <author typeCode="AUT" contextControlCode="OP">
+               <time value="{{ allergyintoleranceauthor.time|date('Ymd') }}"/>
+               <assignedAuthor classCode="ASSIGNED">
+                  <id extension="{{ allergyintoleranceauthor.uzi|e('html') }}" root="2.16.528.1.1007.3.1"/>
+               </assignedAuthor>
+            </author>
+{% endif %}
+
+{# criticality, SYNDERAI reaction 1:
+            MILD
+            MODERATE
+            SEVERE
+
+            -- reaction1.severity map to
+
+            MILD, MODERATE - low
+            SEVERE - high
+#}
+            <entryRelationship typeCode="SUBJ" inversionInd="true">
+                  <observation classCode="OBS" moodCode="EVN">
+                    <!-- criticality observatie -->
+                    <templateId root="2.16.840.1.113883.2.4.3.11.60.66.10.218"/>
+                    <code code="CRIT" displayName="Severity Observation" codeSystem="2.16.840.1.113883.5.4"/>
+                    <statusCode code="completed"/>
+{% if allergyintolerance.reaction1.severity == 'SEVERE' %}
+                    <value xsi:type="CD" code="75540009" displayName="High" codeSystem="2.16.840.1.113883.6.96"/>
+{% else %}
+                    <value xsi:type="CD" code="62482003" displayName="Low" codeSystem="2.16.840.1.113883.6.96"/>
+{% endif %}
+                  </observation>
+            </entryRelationship>
+{% if allergyintolerance.reaction1.code is not empty %}
+            <entryRelationship typeCode="MFST" inversionInd="true">
+                <observation classCode="OBS" moodCode="EVN">
+                    <!-- reactie observatie -->
+                    <templateId root="2.16.840.1.113883.2.4.3.11.60.66.10.217"/>
+                    <id extension="{{ getUUID() }}" root="2.16.528.1.1007.3.3.765332.1.12"/>
+                    <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4"/>
+                    <statusCode code="completed"/>
+                    <!-- Symptoom -->
+                    <value xsi:type="CD" code="{{ allergyintolerance.reaction1.code }}" codeSystem="2.16.840.1.113883.6.96" displayName="{{ allergyintolerance.reaction1.display }}"/>
+                    <!-- specifieke stof / expositie -->
+                    <participant typeCode="CSM">
+                        <participantRole classCode="MANU">
+                            <playingEntity classCode="MMAT">
+                              <code code="{{ allergyintolerance.snomed.code }}" codeSystem="2.16.840.1.113883.6.962" displayName="{{ preferred }}"/>
+                            </playingEntity>
+                        </participantRole>
+                    </participant>
+                    <!-- severity observatie -->
+                    <entryRelationship typeCode="SUBJ" inversionInd="true">
+                        <observation classCode="OBS" moodCode="EVN">
+                            <templateId root="2.16.840.1.113883.2.4.3.11.60.66.10.219"/>
+                            <code code="SEV" displayName="Severity Observation" codeSystem="2.16.840.1.113883.5.4"/>
+                            <statusCode code="completed"/>
+{# criticality, SYNDERAI reaction 1:
+            MILD
+            MODERATE
+            SEVERE
+            -- reaction1.severity map to same entities in SNOMED CT
+#}
+{% if allergyintolerance.reaction1.severity == 'SEVERE' %}
+                               <value xsi:type="CD" code="24484000" displayName="Severe" codeSystem="2.16.840.1.113883.6.96"/>
+{% elseif allergyintolerance.reaction1.severity == 'MODERATE' %}
+                               <value xsi:type="CD" code="6736007" displayName="Moderate" codeSystem="2.16.840.1.113883.6.96"/>
+{% else %}
+                               <value xsi:type="CD" code="255604002" displayName="Mild" codeSystem="2.16.840.1.113883.6.96"/>
+{% endif %}
+                        </observation>
+                    </entryRelationship>
+                </observation>
+            </entryRelationship>
+{% endif %}
+         </observation>
+      </entryRelationship>
+   </act>
+</component>

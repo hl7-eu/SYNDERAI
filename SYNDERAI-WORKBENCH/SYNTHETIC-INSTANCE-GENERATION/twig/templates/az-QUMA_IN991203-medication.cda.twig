@@ -1,0 +1,68 @@
+%%CDA%% {# ── Section marker required by the CDA pre-processor ─────────────── #}
+
+<QUMA_IN991203NL02>
+      <!-- medicatieafspraken -->
+      <id root="2.16.840.1.113883.2.4.6.6.1.1" extension="{{ getUUID()}}"/>
+      <creationTime value="{{ 'now' | date('YmdHis') }}"/>
+      <versionCode code="NICTIZEd2005-Okt"/>
+      <interactionId extension="QUMA_IN991203NL02" root="2.16.840.1.113883.1.6"/>
+      <profileId root="2.16.840.1.113883.2.4.3.11.1" extension="810"/>
+      <processingCode code="P"/>
+      <processingModeCode code="T"/>
+      <acceptAckCode code="NE"/>
+      <acknowledgement typeCode="AA">
+         <targetMessage>
+               <id extension="{{ getUUID()}}" root="1.2.3.999" />
+         </targetMessage>
+      </acknowledgement>
+      <receiver>
+         <device>
+               <id root="2.16.840.1.113883.2.4.6.6" extension="70000003"/>
+         </device>
+      </receiver>
+      <sender>
+         <device>
+               <id root="2.16.840.1.113883.2.4.6.6" extension="1"/>
+         </device>
+      </sender>
+      <ControlActProcess moodCode="EVN">
+         <authorOrPerformer typeCode="AUT">
+            <participant>
+                <AssignedDevice>
+                    <id root="2.16.528.1.1007.3.2" extension="000011111"/>
+                    <id root="2.16.840.1.113883.2.4.6.6" extension="00002727"/>
+                    <Organization>
+                        <id root="2.16.528.1.1007.3.3" extension="00001111"/>
+                        <name>{{ provider.name }}</name>
+                    </Organization>
+                </AssignedDevice>
+            </participant>
+        </authorOrPerformer>
+        <subject>
+            <organizer classCode="CLUSTER" moodCode="EVN">
+                <templateId root="2.16.840.1.113883.2.4.3.11.60.20.77.10.9265"/>
+                <code code="419891008" displayName="Medicatiegegevens" codeSystem="2.16.840.1.113883.6.96"/>
+                <statusCode code="completed"/>
+                {# patiënt - toevoegen als CDA XML #}
+                {% if recordTarget is not empty %}
+                {{ recordTarget | raw -}}
+                {% endif -%}
+
+                {# inhoudsverantwoordelijke - toevoegen als CDA XML #}
+                {{ participantresp | raw -}}
+                {# dossierhouder #}
+                {# medicatieafspraken #}
+                {% if medicatieafspraken is not empty %}
+                {{ medicatieafspraken | raw -}}
+                {% endif -%}
+            </organizer>
+        </subject>
+        <queryAck>
+            <queryId extension="{{ getUUID() }}" root="1.2.3.999" /> 
+            <queryResponseCode code="OK"/>
+            <resultTotalQuantity value="{{ transmissionQuantity }}"/>
+            <resultCurrentQuantity value="{{ transmissionQuantity }}"/>
+            <resultRemainingQuantity value="0"/>
+        </queryAck>
+    </ControlActProcess>
+</QUMA_IN991203NL02>
