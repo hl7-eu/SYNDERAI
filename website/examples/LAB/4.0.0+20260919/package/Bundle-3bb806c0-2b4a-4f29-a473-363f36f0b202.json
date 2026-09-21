@@ -1,0 +1,745 @@
+{
+  "resourceType": "Bundle",
+  "id": "3bb806c0-2b4a-4f29-a473-363f36f0b202",
+  "meta": {
+    "profile": [
+      "http://hl7.eu/fhir/laboratory/StructureDefinition/Bundle-eu-lab"
+    ]
+  },
+  "identifier": {
+    "assigner": {
+      "display": "HL7 Europe"
+    },
+    "system": "urn:oid:2.16.840.1.113883.2.51.999",
+    "value": "80dc85b0-ca8a-493d-9015-c58ed96b7cdb"
+  },
+  "entry": [
+    {
+      "fullUrl": "urn:uuid:4f7f954b-c5bc-472e-b17a-e22f1c0f5ca2",
+      "resource": {
+        "resourceType": "Composition",
+        "id": "4f7f954b-c5bc-472e-b17a-e22f1c0f5ca2",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Composition-eu-lab"
+          ]
+        },
+        "extension": [
+          {
+            "url": "http://hl7.eu/fhir/extensions/StructureDefinition/composition-diagnosticReportReference",
+            "valueReference": {
+              "reference": "urn:uuid:3d9a050e-24f0-4b11-84e1-e2e65f0bdf04"
+            }
+          }
+        ],
+        "identifier": {
+          "assigner": {
+            "display": "HL7 Europe"
+          },
+          "system": "urn:oid:2.16.840.1.113883.2.51.999",
+          "value": "ab377bc6-39c5-4132-961d-01148dc73adb"
+        },
+        "author": [
+          {
+            "reference": "urn:uuid:4198be03-5ef3-4864-888a-41108d7cdd16"
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "type": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ],
+          "text": "Laboratory Report"
+        },
+        "section": [
+          {
+            "code": {
+              "coding": [
+                {
+                  "code": "18719-5",
+                  "system": "http://loinc.org",
+                  "display": "Chemistry studies (set)"
+                }
+              ],
+              "text": "CHEM"
+            },
+            "entry": [
+              {
+                "reference": "urn:uuid:f600579f-bc5f-4d86-95d6-35a6f2dd9f5a"
+              }
+            ],
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>CHEM</h3><table class=\"hl7__eu__lab__report\"><thead><tr><th>Test</th><th>15-SEP-2006</th><th>Reference&#xA0;Range</th><th>Unit</th></tr></thead><tbody><tr><td></td><td><strong>47.0 H</strong></td><td>20 - 42</td><td>mmol/mol</td></tr></tbody></table></div>"
+            },
+            "title": "CHEM"
+          },
+          {
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>Annotation</h3><table class=\"hl7__eu__lab__report\"><tr><th>Conclusion and Recommendations based on this report and previous findings known to us:</th></tr><tr><td>The patient’s HbA1c is elevated, indicating suboptimal long-term glycemic control and suggesting poorly controlled or undiagnosed diabetes mellitus. Further clinical assessment and management of blood glucose are recommended to reduce the risk of diabetes-related complications.</td></tr></table></div>"
+            },
+            "code": {
+              "coding": [
+                {
+                  "code": "48767-8",
+                  "system": "http://loinc.org",
+                  "display": "Annotation comment [Interpretation] Narrative"
+                }
+              ]
+            },
+            "title": "Annotation comment"
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "final",
+        "subject": {
+          "reference": "urn:uuid:8c8ca466-441a-4623-8c1a-191029fac6c8",
+          "display": "Guiseppe Hübel"
+        },
+        "date": "2006-09-15T04:12:42Z",
+        "title": "Laboratory Report",
+        "confidentiality": "N"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:3d9a050e-24f0-4b11-84e1-e2e65f0bdf04",
+      "resource": {
+        "resourceType": "DiagnosticReport",
+        "id": "3d9a050e-24f0-4b11-84e1-e2e65f0bdf04",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/DiagnosticReport-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "ab377bc6-39c5-4132-961d-01148dc73adb"
+          },
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "f931dc07-3f13-4ce2-bc48-19a49e98fcfe"
+          }
+        ],
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-DiagnosticReport.composition",
+            "valueReference": {
+              "reference": "urn:uuid:4f7f954b-c5bc-472e-b17a-e22f1c0f5ca2"
+            }
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:92e93fda-012e-4f0c-a035-b931ad56fe1a"
+          }
+        ],
+        "result": [
+          {
+            "reference": "urn:uuid:f600579f-bc5f-4d86-95d6-35a6f2dd9f5a"
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "registered",
+        "code": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:8c8ca466-441a-4623-8c1a-191029fac6c8",
+          "display": "Guiseppe Hübel"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:8c8ca466-441a-4623-8c1a-191029fac6c8",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "8c8ca466-441a-4623-8c1a-191029fac6c8",
+        "meta": {
+          "security": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "HTEST"
+            },
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "TRAIN"
+            }
+          ],
+          "tag": [
+            {
+              "system": "https://synderai.net/fhir/CodeSystem/tags",
+              "code": "synthetic",
+              "display": "SYNDERAI Synthetic data"
+            }
+          ],
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/patient-eu-core"
+          ]
+        },
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "JHN",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://ec.europa.eu/identifier/eci",
+            "value": "6820-589026-9"
+          },
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "MR",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://local.setting.eu/identifier",
+            "value": "37fc0d73-52d7-2915-6bd6-cd83a2089c27"
+          }
+        ],
+        "name": [
+          {
+            "given": [
+              "Guiseppe"
+            ],
+            "family": "Hübel",
+            "text": "Guiseppe Hübel"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Anita-Renner-Allee 138/39"
+            ],
+            "use": "home",
+            "type": "physical",
+            "postalCode": "04668",
+            "city": "Grimma",
+            "country": "Germany"
+          }
+        ],
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "0673804575"
+          }
+        ],
+        "extension": [
+          {
+            "extension": [
+              {
+                "url": "code",
+                "valueCodeableConcept": {
+                  "coding": [
+                    {
+                      "code": "DE",
+                      "system": "urn:iso:std:iso:3166"
+                    }
+                  ]
+                }
+              }
+            ],
+            "url": "http://hl7.org/fhir/StructureDefinition/patient-nationality"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__ips\"><tr><td>Guiseppe Hübel</td><td>male</td><td>14-Nov-1935</td></tr></table></div>"
+        },
+        "gender": "male",
+        "birthDate": "1935-11-14"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:6ec6304b-5e1d-4682-ba91-4ffd76276108",
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "6ec6304b-5e1d-4682-ba91-4ffd76276108",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/ServiceRequest-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "system": "http://example.org",
+            "value": "e0dcb19a-694e-49d5-86d7-60d7d876828b"
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:92e93fda-012e-4f0c-a035-b931ad56fe1a"
+          }
+        ],
+        "reasonCode": [
+          {
+            "coding": [
+              {
+                "code": "59621000",
+                "system": "http://snomed.info/sct",
+                "display": "Essential hypertension"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "44054006",
+                "system": "http://snomed.info/sct",
+                "display": "Type 2 diabetes mellitus"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "363349007",
+                "system": "http://snomed.info/sct",
+                "display": "Malignant neoplasm of stomach"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "60234000",
+                "system": "http://snomed.info/sct",
+                "display": "Aortic valve regurgitation"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "68496003",
+                "system": "http://snomed.info/sct",
+                "display": "Polyp of colon"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "414545008",
+                "system": "http://snomed.info/sct",
+                "display": "Ischemic heart disease"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "239872002",
+                "system": "http://snomed.info/sct",
+                "display": "Osteoarthritis of hip"
+              }
+            ]
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "active",
+        "intent": "order",
+        "code": {
+          "coding": [
+            {
+              "code": "108252007",
+              "system": "http://snomed.info/sct",
+              "display": "Laboratory procedure"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:8c8ca466-441a-4623-8c1a-191029fac6c8",
+          "display": "Guiseppe Hübel"
+        },
+        "requester": {
+          "reference": "urn:uuid:103d56ef-b44a-4767-b862-8800ae12a8a3"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:103d56ef-b44a-4767-b862-8800ae12a8a3",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "103d56ef-b44a-4767-b862-8800ae12a8a3",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Role Id: 103d56ef-b44a-4767-b862-8800ae12a8a3</div>"
+        },
+        "organization": {
+          "reference": "urn:uuid:c07b8472-6762-420c-ae9b-e9b20e9a5a1d"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:c07b8472-6762-420c-ae9b-e9b20e9a5a1d",
+      "resource": {
+        "resourceType": "Organization",
+        "id": "c07b8472-6762-420c-ae9b-e9b20e9a5a1d",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/organization-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "a9ff5435-a923-4716-90d2-937273ff2b84"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Kleiststraße 5"
+            ],
+            "city": "Grimma",
+            "postalCode": "04668",
+            "country": "Germany"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Organization: Krankenhaus Grimma</div>"
+        },
+        "name": "Krankenhaus Grimma"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:92e93fda-012e-4f0c-a035-b931ad56fe1a",
+      "resource": {
+        "resourceType": "Specimen",
+        "id": "92e93fda-012e-4f0c-a035-b931ad56fe1a",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Specimen-eu-lab"
+          ]
+        },
+        "collection": {
+          "collectedDateTime": "2006-09-15"
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Specimen</th><th>Collection Date</th></tr><tr><td>Blood specimen</td><td><span class=\"nb\">15-Sep-2006</span></td></tr></table></div>"
+        },
+        "type": {
+          "coding": [
+            {
+              "code": "119297000",
+              "system": "http://snomed.info/sct",
+              "display": "Blood specimen"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:f600579f-bc5f-4d86-95d6-35a6f2dd9f5a",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "f600579f-bc5f-4d86-95d6-35a6f2dd9f5a",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Observation-resultslab-eu-lab"
+          ]
+        },
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "laboratory",
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category"
+              }
+            ]
+          }
+        ],
+        "performer": [
+          {
+            "display": "The Central European Laboratory"
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "code": "59261-8",
+              "system": "http://loinc.org",
+              "display": "Hemoglobin A1c/Hemoglobin.total standardized per IFCC-RMP for CDT in Blood"
+            }
+          ],
+          "text": "Hemoglobin A1c/Hemoglobin.total standardized per IFCC-RMP for CDT in Blood"
+        },
+        "valueQuantity": {
+          "value": 47,
+          "unit": "mmol/mol",
+          "code": "mmol/mol",
+          "system": "http://unitsofmeasure.org"
+        },
+        "referenceRange": [
+          {
+            "low": {
+              "value": 20,
+              "code": "mmol/mol",
+              "system": "http://unitsofmeasure.org"
+            },
+            "high": {
+              "value": 42,
+              "code": "mmol/mol",
+              "system": "http://unitsofmeasure.org"
+            }
+          }
+        ],
+        "interpretation": [
+          {
+            "coding": [
+              {
+                "code": "H",
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                "display": "High"
+              }
+            ]
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Test</th><th>15-Sep-2006</th><th>Reference&#xA0;Range</th><th>Flag</th><th>Unit</th></tr><tr><td>Hemoglobin A1c/Hemoglobin.total standardized per IFCC-RMP for CDT in Blood</td><td>47.0</td><td>20 - 42</td><td>H</td><td>mmol/mol</td></tr></table></div>"
+        },
+        "status": "final",
+        "effectiveDateTime": "2006-09-15T02:12:42Z",
+        "subject": {
+          "reference": "urn:uuid:8c8ca466-441a-4623-8c1a-191029fac6c8",
+          "display": "Guiseppe Hübel"
+        },
+        "specimen": {
+          "reference": "urn:uuid:92e93fda-012e-4f0c-a035-b931ad56fe1a"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:2764cc0d-a71a-4a98-aa2f-2efb05705717",
+      "resource": {
+        "resourceType": "Device",
+        "id": "2764cc0d-a71a-4a98-aa2f-2efb05705717",
+        "deviceName": [
+          {
+            "name": "SYNDERAI Synthetic Generator",
+            "type": "manufacturer-name"
+          }
+        ],
+        "version": [
+          {
+            "value": "5.0"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">SYNDERAI Synthetic Generator v5.0</div>"
+        },
+        "status": "active",
+        "distinctIdentifier": "synderai-generator-50",
+        "manufacturer": "SYNDERAI Project"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:701258be-fa33-4304-afba-7ab86887d095",
+      "resource": {
+        "resourceType": "Provenance",
+        "id": "701258be-fa33-4304-afba-7ab86887d095",
+        "target": [
+          {
+            "reference": "urn:uuid:8c8ca466-441a-4623-8c1a-191029fac6c8"
+          },
+          {
+            "reference": "urn:uuid:4f7f954b-c5bc-472e-b17a-e22f1c0f5ca2"
+          },
+          {
+            "reference": "urn:uuid:4198be03-5ef3-4864-888a-41108d7cdd16"
+          },
+          {
+            "reference": "urn:uuid:30319d4e-3730-4a98-8ff5-340d942f0f4c"
+          },
+          {
+            "reference": "urn:uuid:103d56ef-b44a-4767-b862-8800ae12a8a3"
+          },
+          {
+            "reference": "urn:uuid:c07b8472-6762-420c-ae9b-e9b20e9a5a1d"
+          }
+        ],
+        "activity": {
+          "coding": [
+            {
+              "code": "CREATE",
+              "system": "http://terminology.hl7.org/CodeSystem/v3-DataOperation",
+              "display": "create"
+            }
+          ],
+          "text": "Synthetic Example Data Generation"
+        },
+        "policy": [
+          "https://synderai.net/synderai-synthetic-data-policy"
+        ],
+        "agent": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "author",
+                  "system": "http://terminology.hl7.org/CodeSystem/provenance-participant-type",
+                  "display": "Author"
+                }
+              ],
+              "text": "author"
+            },
+            "who": {
+              "reference": "urn:uuid:2764cc0d-a71a-4a98-aa2f-2efb05705717"
+            }
+          }
+        ],
+        "reason": [
+          {
+            "coding": [
+              {
+                "code": "TRAIN",
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+                "display": "training"
+              }
+            ],
+            "text": "Interoperability Testing and Training (non-clinical use)"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provenance for SYNDERAI Synthetic Example Data Resource</div>"
+        },
+        "recorded": "2006-09-15T06:12:42Z"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:4198be03-5ef3-4864-888a-41108d7cdd16",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "4198be03-5ef3-4864-888a-41108d7cdd16",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory Role Id: 4198be03-5ef3-4864-888a-41108d7cdd16</div>"
+        },
+        "practitioner": {
+          "reference": "urn:uuid:30319d4e-3730-4a98-8ff5-340d942f0f4c"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:30319d4e-3730-4a98-8ff5-340d942f0f4c",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "30319d4e-3730-4a98-8ff5-340d942f0f4c",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitioner-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "59a5725d-72ca-4941-89fa-5cb2f3ccdd6a"
+          }
+        ],
+        "name": [
+          {
+            "prefix": [
+              "dr"
+            ],
+            "given": [
+              "Ex"
+            ],
+            "family": "Ample"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Laboratoire Central Européenne",
+              "Boulevard du Jardin Botanique 32"
+            ],
+            "postalCode": "1000",
+            "city": "Brussels",
+            "country": "Belgium"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory: Laboratoire Central Européenne, 1000 Brussels, Belgium</div>"
+        }
+      }
+    }
+  ],
+  "type": "document",
+  "timestamp": "2006-09-15T06:12:42Z"
+}

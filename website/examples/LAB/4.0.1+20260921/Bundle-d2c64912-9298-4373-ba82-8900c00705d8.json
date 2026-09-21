@@ -1,0 +1,715 @@
+{
+  "resourceType": "Bundle",
+  "id": "d2c64912-9298-4373-ba82-8900c00705d8",
+  "meta": {
+    "profile": [
+      "http://hl7.eu/fhir/laboratory/StructureDefinition/Bundle-eu-lab"
+    ]
+  },
+  "identifier": {
+    "assigner": {
+      "display": "HL7 Europe"
+    },
+    "system": "urn:oid:2.16.840.1.113883.2.51.999",
+    "value": "626c5bda-f562-4083-966b-46b3b7c90bf1"
+  },
+  "entry": [
+    {
+      "fullUrl": "urn:uuid:00e4afb5-6861-4ba6-b436-467ab9d5ab91",
+      "resource": {
+        "resourceType": "Composition",
+        "id": "00e4afb5-6861-4ba6-b436-467ab9d5ab91",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Composition-eu-lab"
+          ]
+        },
+        "extension": [
+          {
+            "url": "http://hl7.eu/fhir/extensions/StructureDefinition/composition-diagnosticReportReference",
+            "valueReference": {
+              "reference": "urn:uuid:5108b5f8-154c-4e80-b906-42e0a7decbe7"
+            }
+          }
+        ],
+        "identifier": {
+          "assigner": {
+            "display": "HL7 Europe"
+          },
+          "system": "urn:oid:2.16.840.1.113883.2.51.999",
+          "value": "0cdc1f74-c8dd-4561-91d2-e6c9d47ba069"
+        },
+        "author": [
+          {
+            "reference": "urn:uuid:3806af6c-8dae-484d-90cb-dc8f35fbe7a5"
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "type": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ],
+          "text": "Laboratory Report"
+        },
+        "section": [
+          {
+            "code": {
+              "coding": [
+                {
+                  "code": "18719-5",
+                  "system": "http://loinc.org",
+                  "display": "Chemistry studies (set)"
+                }
+              ],
+              "text": "CHEM"
+            },
+            "entry": [
+              {
+                "reference": "urn:uuid:36a4502d-2e70-44e7-a228-1ed2b581ba24"
+              }
+            ],
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>CHEM</h3><table class=\"hl7__eu__lab__report\"><thead><tr><th>Test</th><th>30-DEC-2023</th><th>Reference&#xA0;Range</th><th>Unit</th></tr></thead><tbody><tr><td></td><td><strong>60.3 H</strong></td><td>20 - 42</td><td>mmol/mol</td></tr></tbody></table></div>"
+            },
+            "title": "CHEM"
+          },
+          {
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>Annotation</h3><table class=\"hl7__eu__lab__report\"><tr><th>Conclusion and Recommendations based on this report and previous findings known to us:</th></tr><tr><td>The patient’s HbA1c is significantly elevated, indicating poor long-term glycemic control and likely undiagnosed or poorly managed diabetes mellitus. Clinical correlation and prompt follow-up for diabetes assessment and management are strongly recommended.</td></tr></table></div>"
+            },
+            "code": {
+              "coding": [
+                {
+                  "code": "48767-8",
+                  "system": "http://loinc.org",
+                  "display": "Annotation comment [Interpretation] Narrative"
+                }
+              ]
+            },
+            "title": "Annotation comment"
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "final",
+        "subject": {
+          "reference": "urn:uuid:b40b522f-6be9-4e36-bfc2-239ba3523a7d",
+          "display": "Veselin Ivanov"
+        },
+        "date": "2023-12-30T11:25:18Z",
+        "title": "Laboratory Report",
+        "confidentiality": "N"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:5108b5f8-154c-4e80-b906-42e0a7decbe7",
+      "resource": {
+        "resourceType": "DiagnosticReport",
+        "id": "5108b5f8-154c-4e80-b906-42e0a7decbe7",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/DiagnosticReport-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "0cdc1f74-c8dd-4561-91d2-e6c9d47ba069"
+          },
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "acc7a255-956b-450e-9e19-087f5c807c0d"
+          }
+        ],
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-DiagnosticReport.composition",
+            "valueReference": {
+              "reference": "urn:uuid:00e4afb5-6861-4ba6-b436-467ab9d5ab91"
+            }
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:e6664adc-10eb-4515-a9f9-eddbf9a82fc8"
+          }
+        ],
+        "result": [
+          {
+            "reference": "urn:uuid:36a4502d-2e70-44e7-a228-1ed2b581ba24"
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "registered",
+        "code": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:b40b522f-6be9-4e36-bfc2-239ba3523a7d",
+          "display": "Veselin Ivanov"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:b40b522f-6be9-4e36-bfc2-239ba3523a7d",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "b40b522f-6be9-4e36-bfc2-239ba3523a7d",
+        "meta": {
+          "security": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "HTEST"
+            },
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "TRAIN"
+            }
+          ],
+          "tag": [
+            {
+              "system": "https://synderai.net/fhir/CodeSystem/tags",
+              "code": "synthetic",
+              "display": "SYNDERAI Synthetic data"
+            }
+          ],
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/patient-eu-core"
+          ]
+        },
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "JHN",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://ec.europa.eu/identifier/eci",
+            "value": "5680-837257-5"
+          },
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "MR",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://local.setting.eu/identifier",
+            "value": "bc9869b5-e8bb-da50-6715-6f57de1f56de"
+          }
+        ],
+        "name": [
+          {
+            "given": [
+              "Veselin"
+            ],
+            "family": "Ivanov",
+            "text": "Veselin Ivanov"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "ul. Han Krum 75A"
+            ],
+            "use": "home",
+            "type": "physical",
+            "postalCode": "2500",
+            "city": "Kyustendil",
+            "country": "Bulgaria"
+          }
+        ],
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "+359 6555011"
+          }
+        ],
+        "extension": [
+          {
+            "extension": [
+              {
+                "url": "code",
+                "valueCodeableConcept": {
+                  "coding": [
+                    {
+                      "code": "BG",
+                      "system": "urn:iso:std:iso:3166"
+                    }
+                  ]
+                }
+              }
+            ],
+            "url": "http://hl7.org/fhir/StructureDefinition/patient-nationality"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__ips\"><tr><td>Veselin Ivanov</td><td>male</td><td>02-Jan-1994</td></tr></table></div>"
+        },
+        "gender": "male",
+        "birthDate": "1994-01-02"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:2fdac342-6d91-489f-bf32-1ab2bcba9ec1",
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "2fdac342-6d91-489f-bf32-1ab2bcba9ec1",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/ServiceRequest-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "system": "http://example.org",
+            "value": "33689a84-745b-4f1b-b09f-f3a8ee1a7688"
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:e6664adc-10eb-4515-a9f9-eddbf9a82fc8"
+          }
+        ],
+        "reasonCode": [
+          {
+            "coding": [
+              {
+                "code": "44054006",
+                "system": "http://snomed.info/sct",
+                "display": "Type 2 diabetes mellitus"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "4855003",
+                "system": "http://snomed.info/sct",
+                "display": "Retinopathy due to diabetes mellitus"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "127013003",
+                "system": "http://snomed.info/sct",
+                "display": "Disorder of kidney due to diabetes mellitus"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "7200002",
+                "system": "http://snomed.info/sct",
+                "display": "Alcoholism"
+              }
+            ]
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "active",
+        "intent": "order",
+        "code": {
+          "coding": [
+            {
+              "code": "108252007",
+              "system": "http://snomed.info/sct",
+              "display": "Laboratory procedure"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:b40b522f-6be9-4e36-bfc2-239ba3523a7d",
+          "display": "Veselin Ivanov"
+        },
+        "requester": {
+          "reference": "urn:uuid:6947429e-5990-4a5c-821e-97610782d707"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:6947429e-5990-4a5c-821e-97610782d707",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "6947429e-5990-4a5c-821e-97610782d707",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Role Id: 6947429e-5990-4a5c-821e-97610782d707</div>"
+        },
+        "organization": {
+          "reference": "urn:uuid:dc046b4d-06f3-442d-a85c-073e626650c7"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:dc046b4d-06f3-442d-a85c-073e626650c7",
+      "resource": {
+        "resourceType": "Organization",
+        "id": "dc046b4d-06f3-442d-a85c-073e626650c7",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/organization-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "c5fb83cd-394f-4105-8c0b-e8f4bb742cd2"
+          }
+        ],
+        "address": [
+          {
+            "city": "Кюстендил",
+            "postalCode": "2500",
+            "country": "Bulgaria"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Organization: Общинска Поликлиника Кюстендил</div>"
+        },
+        "name": "Общинска Поликлиника Кюстендил"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:e6664adc-10eb-4515-a9f9-eddbf9a82fc8",
+      "resource": {
+        "resourceType": "Specimen",
+        "id": "e6664adc-10eb-4515-a9f9-eddbf9a82fc8",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Specimen-eu-lab"
+          ]
+        },
+        "collection": {
+          "collectedDateTime": "2023-12-30"
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Specimen</th><th>Collection Date</th></tr><tr><td>Blood specimen</td><td><span class=\"nb\">30-Dec-2023</span></td></tr></table></div>"
+        },
+        "type": {
+          "coding": [
+            {
+              "code": "119297000",
+              "system": "http://snomed.info/sct",
+              "display": "Blood specimen"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:36a4502d-2e70-44e7-a228-1ed2b581ba24",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "36a4502d-2e70-44e7-a228-1ed2b581ba24",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Observation-resultslab-eu-lab"
+          ]
+        },
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "laboratory",
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category"
+              }
+            ]
+          }
+        ],
+        "performer": [
+          {
+            "display": "The Central European Laboratory"
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "code": "59261-8",
+              "system": "http://loinc.org",
+              "display": "Hemoglobin A1c/Hemoglobin.total standardized per IFCC-RMP for CDT in Blood"
+            }
+          ],
+          "text": "Hemoglobin A1c/Hemoglobin.total standardized per IFCC-RMP for CDT in Blood"
+        },
+        "valueQuantity": {
+          "value": 60.3,
+          "unit": "mmol/mol",
+          "code": "mmol/mol",
+          "system": "http://unitsofmeasure.org"
+        },
+        "referenceRange": [
+          {
+            "low": {
+              "value": 20,
+              "code": "mmol/mol",
+              "system": "http://unitsofmeasure.org"
+            },
+            "high": {
+              "value": 42,
+              "code": "mmol/mol",
+              "system": "http://unitsofmeasure.org"
+            }
+          }
+        ],
+        "interpretation": [
+          {
+            "coding": [
+              {
+                "code": "H",
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                "display": "High"
+              }
+            ]
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Test</th><th>30-Dec-2023</th><th>Reference&#xA0;Range</th><th>Flag</th><th>Unit</th></tr><tr><td>Hemoglobin A1c/Hemoglobin.total standardized per IFCC-RMP for CDT in Blood</td><td>60.3</td><td>20 - 42</td><td>H</td><td>mmol/mol</td></tr></table></div>"
+        },
+        "status": "final",
+        "effectiveDateTime": "2023-12-30T10:25:18Z",
+        "subject": {
+          "reference": "urn:uuid:b40b522f-6be9-4e36-bfc2-239ba3523a7d",
+          "display": "Veselin Ivanov"
+        },
+        "specimen": {
+          "reference": "urn:uuid:e6664adc-10eb-4515-a9f9-eddbf9a82fc8"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:83d7aed3-a17c-465d-ba85-4ce7d99ae670",
+      "resource": {
+        "resourceType": "Device",
+        "id": "83d7aed3-a17c-465d-ba85-4ce7d99ae670",
+        "deviceName": [
+          {
+            "name": "SYNDERAI Synthetic Generator",
+            "type": "manufacturer-name"
+          }
+        ],
+        "version": [
+          {
+            "value": "5.0"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">SYNDERAI Synthetic Generator v5.0</div>"
+        },
+        "status": "active",
+        "distinctIdentifier": "synderai-generator-50",
+        "manufacturer": "SYNDERAI Project"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:19ab3464-ce88-4eb2-9beb-345d467470c6",
+      "resource": {
+        "resourceType": "Provenance",
+        "id": "19ab3464-ce88-4eb2-9beb-345d467470c6",
+        "target": [
+          {
+            "reference": "urn:uuid:b40b522f-6be9-4e36-bfc2-239ba3523a7d"
+          },
+          {
+            "reference": "urn:uuid:00e4afb5-6861-4ba6-b436-467ab9d5ab91"
+          },
+          {
+            "reference": "urn:uuid:3806af6c-8dae-484d-90cb-dc8f35fbe7a5"
+          },
+          {
+            "reference": "urn:uuid:2049b05e-304d-4234-97f3-ee227d21f47b"
+          },
+          {
+            "reference": "urn:uuid:6947429e-5990-4a5c-821e-97610782d707"
+          },
+          {
+            "reference": "urn:uuid:dc046b4d-06f3-442d-a85c-073e626650c7"
+          }
+        ],
+        "activity": {
+          "coding": [
+            {
+              "code": "CREATE",
+              "system": "http://terminology.hl7.org/CodeSystem/v3-DataOperation",
+              "display": "create"
+            }
+          ],
+          "text": "Synthetic Example Data Generation"
+        },
+        "policy": [
+          "https://synderai.net/synderai-synthetic-data-policy"
+        ],
+        "agent": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "author",
+                  "system": "http://terminology.hl7.org/CodeSystem/provenance-participant-type",
+                  "display": "Author"
+                }
+              ],
+              "text": "author"
+            },
+            "who": {
+              "reference": "urn:uuid:83d7aed3-a17c-465d-ba85-4ce7d99ae670"
+            }
+          }
+        ],
+        "reason": [
+          {
+            "coding": [
+              {
+                "code": "TRAIN",
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+                "display": "training"
+              }
+            ],
+            "text": "Interoperability Testing and Training (non-clinical use)"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provenance for SYNDERAI Synthetic Example Data Resource</div>"
+        },
+        "recorded": "2023-12-30T12:25:18Z"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:3806af6c-8dae-484d-90cb-dc8f35fbe7a5",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "3806af6c-8dae-484d-90cb-dc8f35fbe7a5",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory Role Id: 3806af6c-8dae-484d-90cb-dc8f35fbe7a5</div>"
+        },
+        "practitioner": {
+          "reference": "urn:uuid:2049b05e-304d-4234-97f3-ee227d21f47b"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:2049b05e-304d-4234-97f3-ee227d21f47b",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "2049b05e-304d-4234-97f3-ee227d21f47b",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitioner-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "eb17f046-79a0-4a74-b955-843ee1c5b666"
+          }
+        ],
+        "name": [
+          {
+            "prefix": [
+              "dr"
+            ],
+            "given": [
+              "Ex"
+            ],
+            "family": "Ample"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Laboratoire Central Européenne",
+              "Boulevard du Jardin Botanique 32"
+            ],
+            "postalCode": "1000",
+            "city": "Brussels",
+            "country": "Belgium"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory: Laboratoire Central Européenne, 1000 Brussels, Belgium</div>"
+        }
+      }
+    }
+  ],
+  "type": "document",
+  "timestamp": "2023-12-30T12:25:18Z"
+}

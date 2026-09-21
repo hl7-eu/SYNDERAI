@@ -1,0 +1,763 @@
+{
+  "resourceType": "Bundle",
+  "id": "841fd1b7-bc87-478e-aa73-51e2bf45796a",
+  "meta": {
+    "profile": [
+      "http://hl7.eu/fhir/laboratory/StructureDefinition/Bundle-eu-lab"
+    ]
+  },
+  "identifier": {
+    "assigner": {
+      "display": "HL7 Europe"
+    },
+    "system": "urn:oid:2.16.840.1.113883.2.51.999",
+    "value": "164851b3-3283-4280-b935-91bb64dbe611"
+  },
+  "entry": [
+    {
+      "fullUrl": "urn:uuid:6f92f3af-9160-471f-b655-8fa373403ad2",
+      "resource": {
+        "resourceType": "Composition",
+        "id": "6f92f3af-9160-471f-b655-8fa373403ad2",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Composition-eu-lab"
+          ]
+        },
+        "extension": [
+          {
+            "url": "http://hl7.eu/fhir/extensions/StructureDefinition/composition-diagnosticReportReference",
+            "valueReference": {
+              "reference": "urn:uuid:d7cc0a53-414c-49ff-a04a-c0951fa34ec7"
+            }
+          }
+        ],
+        "identifier": {
+          "assigner": {
+            "display": "HL7 Europe"
+          },
+          "system": "urn:oid:2.16.840.1.113883.2.51.999",
+          "value": "29198327-b9ae-405a-a7c0-1d535de376ae"
+        },
+        "author": [
+          {
+            "reference": "urn:uuid:d962867b-8339-460d-bf10-d4e2b16b8d70"
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "type": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ],
+          "text": "Laboratory Report"
+        },
+        "section": [
+          {
+            "code": {
+              "coding": [
+                {
+                  "code": "18719-5",
+                  "system": "http://loinc.org",
+                  "display": "Chemistry studies (set)"
+                }
+              ],
+              "text": "CHEM"
+            },
+            "entry": [
+              {
+                "reference": "urn:uuid:a6ff3cf7-c606-4f28-8236-dede18c20feb"
+              }
+            ],
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>CHEM</h3><table class=\"hl7__eu__lab__report\"><thead><tr><th>Test</th><th>16-JAN-2003</th><th>Reference&#xA0;Range</th><th>Unit</th></tr></thead><tbody><tr><td></td><td><strong>60.7 H</strong></td><td>20 - 42</td><td>mmol/mol</td></tr></tbody></table></div>"
+            },
+            "title": "CHEM"
+          },
+          {
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>Annotation</h3><table class=\"hl7__eu__lab__report\"><tr><th>Conclusion and Recommendations based on this report and previous findings known to us:</th></tr><tr><td>The patient’s HbA1c is markedly elevated, indicating poor long-term glycemic control and likely uncontrolled diabetes. This increases the risk for microvascular and macrovascular complications. Clinical correlation and prompt management are recommended.</td></tr></table></div>"
+            },
+            "code": {
+              "coding": [
+                {
+                  "code": "48767-8",
+                  "system": "http://loinc.org",
+                  "display": "Annotation comment [Interpretation] Narrative"
+                }
+              ]
+            },
+            "title": "Annotation comment"
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "final",
+        "subject": {
+          "reference": "urn:uuid:272e41c6-ac85-479c-b040-fc559e4324b5",
+          "display": "Loretta Gelli"
+        },
+        "date": "2003-01-16T01:44:36Z",
+        "title": "Laboratory Report",
+        "confidentiality": "N"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:d7cc0a53-414c-49ff-a04a-c0951fa34ec7",
+      "resource": {
+        "resourceType": "DiagnosticReport",
+        "id": "d7cc0a53-414c-49ff-a04a-c0951fa34ec7",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/DiagnosticReport-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "29198327-b9ae-405a-a7c0-1d535de376ae"
+          },
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "f927e557-e76d-47e0-afb4-581a33b8ac83"
+          }
+        ],
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-DiagnosticReport.composition",
+            "valueReference": {
+              "reference": "urn:uuid:6f92f3af-9160-471f-b655-8fa373403ad2"
+            }
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:63b35b43-f341-4c40-a896-526c310abd7f"
+          }
+        ],
+        "result": [
+          {
+            "reference": "urn:uuid:a6ff3cf7-c606-4f28-8236-dede18c20feb"
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "registered",
+        "code": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:272e41c6-ac85-479c-b040-fc559e4324b5",
+          "display": "Loretta Gelli"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:272e41c6-ac85-479c-b040-fc559e4324b5",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "272e41c6-ac85-479c-b040-fc559e4324b5",
+        "meta": {
+          "security": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "HTEST"
+            },
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "TRAIN"
+            }
+          ],
+          "tag": [
+            {
+              "system": "https://synderai.net/fhir/CodeSystem/tags",
+              "code": "synthetic",
+              "display": "SYNDERAI Synthetic data"
+            }
+          ],
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/patient-eu-core"
+          ]
+        },
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "JHN",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://ec.europa.eu/identifier/eci",
+            "value": "8981-019236-2"
+          },
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "MR",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://local.setting.eu/identifier",
+            "value": "5b2d2b08-2a6b-d10b-d789-36003303a317"
+          }
+        ],
+        "name": [
+          {
+            "given": [
+              "Loretta"
+            ],
+            "family": "Gelli",
+            "text": "Loretta Gelli"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Incrocio Baggio, 138"
+            ],
+            "use": "home",
+            "type": "physical",
+            "postalCode": "01030",
+            "city": "Civitella Cesi",
+            "country": "Italy"
+          }
+        ],
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "+39 0773781592"
+          }
+        ],
+        "extension": [
+          {
+            "extension": [
+              {
+                "url": "code",
+                "valueCodeableConcept": {
+                  "coding": [
+                    {
+                      "code": "IT",
+                      "system": "urn:iso:std:iso:3166"
+                    }
+                  ]
+                }
+              }
+            ],
+            "url": "http://hl7.org/fhir/StructureDefinition/patient-nationality"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__ips\"><tr><td>Loretta Gelli</td><td>female</td><td>02-Oct-1938</td></tr></table></div>"
+        },
+        "gender": "female",
+        "birthDate": "1938-10-02"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:d1ebc45c-f7db-42f9-b4c4-42c058e75009",
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "d1ebc45c-f7db-42f9-b4c4-42c058e75009",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/ServiceRequest-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "system": "http://example.org",
+            "value": "c83bfe94-aef1-463b-b02b-c6506f605251"
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:63b35b43-f341-4c40-a896-526c310abd7f"
+          }
+        ],
+        "reasonCode": [
+          {
+            "coding": [
+              {
+                "code": "237602007",
+                "system": "http://snomed.info/sct",
+                "display": "Metabolic syndrome X"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "201834006",
+                "system": "http://snomed.info/sct",
+                "display": "Localized, primary osteoarthritis of the hand"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "13645005",
+                "system": "http://snomed.info/sct",
+                "display": "Chronic obstructive pulmonary disease"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "44054006",
+                "system": "http://snomed.info/sct",
+                "display": "Type 2 diabetes mellitus"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "59621000",
+                "system": "http://snomed.info/sct",
+                "display": "Essential hypertension"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "414545008",
+                "system": "http://snomed.info/sct",
+                "display": "Ischemic heart disease"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "363443007",
+                "system": "http://snomed.info/sct",
+                "display": "Malignant neoplasm of ovary"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "64859006",
+                "system": "http://snomed.info/sct",
+                "display": "Osteoporosis"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "26929004",
+                "system": "http://snomed.info/sct",
+                "display": "Alzheimer's disease"
+              }
+            ]
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "active",
+        "intent": "order",
+        "code": {
+          "coding": [
+            {
+              "code": "108252007",
+              "system": "http://snomed.info/sct",
+              "display": "Laboratory procedure"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:272e41c6-ac85-479c-b040-fc559e4324b5",
+          "display": "Loretta Gelli"
+        },
+        "requester": {
+          "reference": "urn:uuid:1789b71b-d142-437f-abeb-10325577c559"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:1789b71b-d142-437f-abeb-10325577c559",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "1789b71b-d142-437f-abeb-10325577c559",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Role Id: 1789b71b-d142-437f-abeb-10325577c559</div>"
+        },
+        "organization": {
+          "reference": "urn:uuid:74bedaa7-c773-45a9-8cdc-db0aeed2801a"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:74bedaa7-c773-45a9-8cdc-db0aeed2801a",
+      "resource": {
+        "resourceType": "Organization",
+        "id": "74bedaa7-c773-45a9-8cdc-db0aeed2801a",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/organization-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "e2e1fb34-4c2e-4993-96d4-6bbe2b78fe63"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Piazzale Madonna del Piano 1"
+            ],
+            "city": "Capranica",
+            "postalCode": "01012",
+            "country": "Italy"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Organization: Villa Paola</div>"
+        },
+        "name": "Villa Paola"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:63b35b43-f341-4c40-a896-526c310abd7f",
+      "resource": {
+        "resourceType": "Specimen",
+        "id": "63b35b43-f341-4c40-a896-526c310abd7f",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Specimen-eu-lab"
+          ]
+        },
+        "collection": {
+          "collectedDateTime": "2003-01-16"
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Specimen</th><th>Collection Date</th></tr><tr><td>Blood specimen</td><td><span class=\"nb\">16-Jan-2003</span></td></tr></table></div>"
+        },
+        "type": {
+          "coding": [
+            {
+              "code": "119297000",
+              "system": "http://snomed.info/sct",
+              "display": "Blood specimen"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:a6ff3cf7-c606-4f28-8236-dede18c20feb",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "a6ff3cf7-c606-4f28-8236-dede18c20feb",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Observation-resultslab-eu-lab"
+          ]
+        },
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "laboratory",
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category"
+              }
+            ]
+          }
+        ],
+        "performer": [
+          {
+            "display": "The Central European Laboratory"
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "code": "59261-8",
+              "system": "http://loinc.org",
+              "display": "Hemoglobin A1c/Hemoglobin.total standardized per IFCC-RMP for CDT in Blood"
+            }
+          ],
+          "text": "Hemoglobin A1c/Hemoglobin.total standardized per IFCC-RMP for CDT in Blood"
+        },
+        "valueQuantity": {
+          "value": 60.7,
+          "unit": "mmol/mol",
+          "code": "mmol/mol",
+          "system": "http://unitsofmeasure.org"
+        },
+        "referenceRange": [
+          {
+            "low": {
+              "value": 20,
+              "code": "mmol/mol",
+              "system": "http://unitsofmeasure.org"
+            },
+            "high": {
+              "value": 42,
+              "code": "mmol/mol",
+              "system": "http://unitsofmeasure.org"
+            }
+          }
+        ],
+        "interpretation": [
+          {
+            "coding": [
+              {
+                "code": "H",
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                "display": "High"
+              }
+            ]
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Test</th><th>16-Jan-2003</th><th>Reference&#xA0;Range</th><th>Flag</th><th>Unit</th></tr><tr><td>Hemoglobin A1c/Hemoglobin.total standardized per IFCC-RMP for CDT in Blood</td><td>60.7</td><td>20 - 42</td><td>H</td><td>mmol/mol</td></tr></table></div>"
+        },
+        "status": "final",
+        "effectiveDateTime": "2003-01-16T00:44:36Z",
+        "subject": {
+          "reference": "urn:uuid:272e41c6-ac85-479c-b040-fc559e4324b5",
+          "display": "Loretta Gelli"
+        },
+        "specimen": {
+          "reference": "urn:uuid:63b35b43-f341-4c40-a896-526c310abd7f"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:03cac79f-a58d-405d-b4bd-4b84c0c529c7",
+      "resource": {
+        "resourceType": "Device",
+        "id": "03cac79f-a58d-405d-b4bd-4b84c0c529c7",
+        "deviceName": [
+          {
+            "name": "SYNDERAI Synthetic Generator",
+            "type": "manufacturer-name"
+          }
+        ],
+        "version": [
+          {
+            "value": "5.0"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">SYNDERAI Synthetic Generator v5.0</div>"
+        },
+        "status": "active",
+        "distinctIdentifier": "synderai-generator-50",
+        "manufacturer": "SYNDERAI Project"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:4331015c-7654-431f-9e8f-8ae543c0eb44",
+      "resource": {
+        "resourceType": "Provenance",
+        "id": "4331015c-7654-431f-9e8f-8ae543c0eb44",
+        "target": [
+          {
+            "reference": "urn:uuid:272e41c6-ac85-479c-b040-fc559e4324b5"
+          },
+          {
+            "reference": "urn:uuid:6f92f3af-9160-471f-b655-8fa373403ad2"
+          },
+          {
+            "reference": "urn:uuid:d962867b-8339-460d-bf10-d4e2b16b8d70"
+          },
+          {
+            "reference": "urn:uuid:d4056c3d-54f0-48ed-9932-00de2f0ca349"
+          },
+          {
+            "reference": "urn:uuid:1789b71b-d142-437f-abeb-10325577c559"
+          },
+          {
+            "reference": "urn:uuid:74bedaa7-c773-45a9-8cdc-db0aeed2801a"
+          }
+        ],
+        "activity": {
+          "coding": [
+            {
+              "code": "CREATE",
+              "system": "http://terminology.hl7.org/CodeSystem/v3-DataOperation",
+              "display": "create"
+            }
+          ],
+          "text": "Synthetic Example Data Generation"
+        },
+        "policy": [
+          "https://synderai.net/synderai-synthetic-data-policy"
+        ],
+        "agent": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "author",
+                  "system": "http://terminology.hl7.org/CodeSystem/provenance-participant-type",
+                  "display": "Author"
+                }
+              ],
+              "text": "author"
+            },
+            "who": {
+              "reference": "urn:uuid:03cac79f-a58d-405d-b4bd-4b84c0c529c7"
+            }
+          }
+        ],
+        "reason": [
+          {
+            "coding": [
+              {
+                "code": "TRAIN",
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+                "display": "training"
+              }
+            ],
+            "text": "Interoperability Testing and Training (non-clinical use)"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provenance for SYNDERAI Synthetic Example Data Resource</div>"
+        },
+        "recorded": "2003-01-16T02:44:36Z"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:d962867b-8339-460d-bf10-d4e2b16b8d70",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "d962867b-8339-460d-bf10-d4e2b16b8d70",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory Role Id: d962867b-8339-460d-bf10-d4e2b16b8d70</div>"
+        },
+        "practitioner": {
+          "reference": "urn:uuid:d4056c3d-54f0-48ed-9932-00de2f0ca349"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:d4056c3d-54f0-48ed-9932-00de2f0ca349",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "d4056c3d-54f0-48ed-9932-00de2f0ca349",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitioner-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "4a6851a0-8a1c-4940-a616-872e61e8cc43"
+          }
+        ],
+        "name": [
+          {
+            "prefix": [
+              "dr"
+            ],
+            "given": [
+              "Ex"
+            ],
+            "family": "Ample"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Laboratoire Central Européenne",
+              "Boulevard du Jardin Botanique 32"
+            ],
+            "postalCode": "1000",
+            "city": "Brussels",
+            "country": "Belgium"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory: Laboratoire Central Européenne, 1000 Brussels, Belgium</div>"
+        }
+      }
+    }
+  ],
+  "type": "document",
+  "timestamp": "2003-01-16T02:44:36Z"
+}

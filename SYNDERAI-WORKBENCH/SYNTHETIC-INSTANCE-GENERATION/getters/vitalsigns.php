@@ -1,5 +1,7 @@
 <?php
 
+require_once __DIR__ . "/../lib/vitalsign-precision.php";
+
 // ***
 // *** get all random vital signs observations for this candidate and report the most recent ones only
 // ***
@@ -18,7 +20,17 @@ while (($item = fgetcsv($observationhandle, 10000, ",", '"', '\\')) !== FALSE) {
       $loinc = $item[4];
       $loincdisplay = trim($item[5]);
       $value = $item[6];
-      $value = preg_replace('/\.0$/', '', $value);  // remove the ".0" from eg 134.0
+      // Synthea's CSV exporter prints EVERY numeric observation with exactly one
+      // decimal place - ExportHelper.getObservationValue() formats any Double as
+      // "%.1f" unconditionally - so the corpus carries "146.5 mm[Hg]" for a blood
+      // pressure and "18.7 /min" for a respiratory rate. No sphygmomanometer
+      // reports half a mmHg and nobody counts a fraction of a breath, while for
+      // body temperature the one decimal is right. vitalSignRound() applies the
+      // precision the measurement actually has, per LOINC code; see
+      // lib/vitalsign-precision.php for the table and for why the fix sits here
+      // rather than in the Synthea module or in its exporter. It still removes a
+      // trailing ".0" as this line used to, and leaves an unlisted code alone.
+      $value = vitalSignRound($loinc, $value);
       $unit = $item[7];  // shall be a ucum unit
       $scale = $item[8];
       /*
@@ -92,12 +104,33 @@ if (count($found) === 0) {
     if (isset($thisdatevitals["8480-6"]) and isset($thisdatevitals["8462-4"])) {
       $systolic = $thisdatevitals["8480-6"];
       $distolic = $thisdatevitals["8462-4"];
+      // Both components must belong to the same encounter, otherwise the panel
+      // claims one measurement where there were two. Counted over the corpus:
+      // 232,581 patient/date pairs carry both components and not one has them
+      // in different encounters - but 1,922 patient/date/code combinations
+      // occur more than once, and $found[$date][$loinc] keeps only the last of
+      // them, which is exactly how a mismatch would arise. Leave the two
+      // readings uncollapsed rather than inventing a panel: both codes are
+      // admitted individually, and the scalar branch of the FSH template
+      // renders them, so nothing is lost.
+      if (($systolic["encounter"] ?? "") !== ($distolic["encounter"] ?? "")) {
+        lognlsev(2, WARNING, "......... +++ Blood pressure components of $thisdate "
+          . "belong to different encounters, not collapsed into a panel\n");
+        continue;
+      }
       // eliminate single measurements from found array
       unset($found[$thisdate]["8480-6"]);
       unset($found[$thisdate]["8462-4"]);
       // create a new extra here, to be added to found array
       $found[$thisdate]["85354-9"] = [
           "date" => $thisdate,
+          // The panel inherits the encounter of its components. Without it the
+          // HDR collection loop in synderai-v7.php skips the entry - it keeps
+          // only readings whose encounter belongs to the stay - so no blood
+          // pressure ever reached an HDR, however the selection was written.
+          // Issue #125. EPS was unaffected: its section runner reads
+          // $pdat->vitalsigns directly and never asks about the encounter.
+          "encounter" => $systolic["encounter"],
           "code" => [
             [
               "code" => "85354-9",

@@ -1,0 +1,749 @@
+{
+  "resourceType": "Bundle",
+  "id": "9c2c4998-28d3-45dc-bac2-4e0954743451",
+  "meta": {
+    "profile": [
+      "http://hl7.eu/fhir/laboratory/StructureDefinition/Bundle-eu-lab"
+    ]
+  },
+  "identifier": {
+    "assigner": {
+      "display": "HL7 Europe"
+    },
+    "system": "urn:oid:2.16.840.1.113883.2.51.999",
+    "value": "2216abb7-8eed-4d32-b314-ec720d08dbe4"
+  },
+  "entry": [
+    {
+      "fullUrl": "urn:uuid:e0c22fe2-d5ab-4d3a-a6fb-8d472fad418f",
+      "resource": {
+        "resourceType": "Composition",
+        "id": "e0c22fe2-d5ab-4d3a-a6fb-8d472fad418f",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Composition-eu-lab"
+          ]
+        },
+        "extension": [
+          {
+            "url": "http://hl7.eu/fhir/extensions/StructureDefinition/composition-diagnosticReportReference",
+            "valueReference": {
+              "reference": "urn:uuid:9887d8a8-e2f6-4e4b-849c-f0a6042d9eca"
+            }
+          }
+        ],
+        "identifier": {
+          "assigner": {
+            "display": "HL7 Europe"
+          },
+          "system": "urn:oid:2.16.840.1.113883.2.51.999",
+          "value": "d771a62a-2818-4979-b9e6-5a333b8c1c90"
+        },
+        "author": [
+          {
+            "reference": "urn:uuid:7bb19e30-3005-4fc8-8e72-e986c51c8391"
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "type": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ],
+          "text": "Laboratory Report"
+        },
+        "section": [
+          {
+            "code": {
+              "coding": [
+                {
+                  "code": "18719-5",
+                  "system": "http://loinc.org",
+                  "display": "Chemistry studies (set)"
+                }
+              ],
+              "text": "CHEM"
+            },
+            "entry": [
+              {
+                "reference": "urn:uuid:440de7b0-e951-4d24-855e-8ac831370274"
+              }
+            ],
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>CHEM</h3><table class=\"hl7__eu__lab__report\"><thead><tr><th>Test</th><th>24-SEP-2015</th><th>Reference&#xA0;Range</th><th>Unit</th></tr></thead><tbody><tr><td></td><td>60.0</td><td>60 - 89</td><td>mL/min/{1.73_m2}</td></tr></tbody></table></div>"
+            },
+            "title": "CHEM"
+          },
+          {
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>Annotation</h3><table class=\"hl7__eu__lab__report\"><tr><th>Conclusion and Recommendations based on this report and previous findings known to us:</th></tr><tr><td>The patient’s estimated glomerular filtration rate (eGFR) is at the lower limit of normal for his age group, suggesting mildly reduced kidney function. No acute abnormality is indicated, but continued monitoring of renal function is recommended, especially considering advanced age and potential comorbidities.</td></tr></table></div>"
+            },
+            "code": {
+              "coding": [
+                {
+                  "code": "48767-8",
+                  "system": "http://loinc.org",
+                  "display": "Annotation comment [Interpretation] Narrative"
+                }
+              ]
+            },
+            "title": "Annotation comment"
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "final",
+        "subject": {
+          "reference": "urn:uuid:7105071c-c212-46cb-97ef-8f5823d48cc7",
+          "display": "Oscar Andersson"
+        },
+        "date": "2015-09-24T02:07:31Z",
+        "title": "Laboratory Report",
+        "confidentiality": "N"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:9887d8a8-e2f6-4e4b-849c-f0a6042d9eca",
+      "resource": {
+        "resourceType": "DiagnosticReport",
+        "id": "9887d8a8-e2f6-4e4b-849c-f0a6042d9eca",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/DiagnosticReport-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "d771a62a-2818-4979-b9e6-5a333b8c1c90"
+          },
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "5439b170-304b-4ac3-b17c-f2c9721b247f"
+          }
+        ],
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-DiagnosticReport.composition",
+            "valueReference": {
+              "reference": "urn:uuid:e0c22fe2-d5ab-4d3a-a6fb-8d472fad418f"
+            }
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:5369fc1f-1310-4c93-a7f7-0b6d29bfd013"
+          }
+        ],
+        "result": [
+          {
+            "reference": "urn:uuid:440de7b0-e951-4d24-855e-8ac831370274"
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "registered",
+        "code": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:7105071c-c212-46cb-97ef-8f5823d48cc7",
+          "display": "Oscar Andersson"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:7105071c-c212-46cb-97ef-8f5823d48cc7",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "7105071c-c212-46cb-97ef-8f5823d48cc7",
+        "meta": {
+          "security": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "HTEST"
+            },
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "TRAIN"
+            }
+          ],
+          "tag": [
+            {
+              "system": "https://synderai.net/fhir/CodeSystem/tags",
+              "code": "synthetic",
+              "display": "SYNDERAI Synthetic data"
+            }
+          ],
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/patient-eu-core"
+          ]
+        },
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "JHN",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://ec.europa.eu/identifier/eci",
+            "value": "7085-559178-3"
+          },
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "MR",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://local.setting.eu/identifier",
+            "value": "62202f36-33b0-758b-646b-d662d15ddb15"
+          }
+        ],
+        "name": [
+          {
+            "given": [
+              "Oscar"
+            ],
+            "family": "Andersson",
+            "text": "Oscar Andersson"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Björktorget 10"
+            ],
+            "use": "home",
+            "type": "physical",
+            "postalCode": "582 xx",
+            "city": "Linköping",
+            "country": "Sweden"
+          }
+        ],
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "0323-377 27"
+          }
+        ],
+        "extension": [
+          {
+            "extension": [
+              {
+                "url": "code",
+                "valueCodeableConcept": {
+                  "coding": [
+                    {
+                      "code": "SE",
+                      "system": "urn:iso:std:iso:3166"
+                    }
+                  ]
+                }
+              }
+            ],
+            "url": "http://hl7.org/fhir/StructureDefinition/patient-nationality"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__ips\"><tr><td>Oscar Andersson</td><td>male</td><td>16-Nov-1935</td></tr></table></div>"
+        },
+        "gender": "male",
+        "birthDate": "1935-11-16"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:f33b7465-d0b7-4723-ac50-ddca3e63f798",
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "f33b7465-d0b7-4723-ac50-ddca3e63f798",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/ServiceRequest-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "system": "http://example.org",
+            "value": "f717b693-ef68-45da-8075-3778c5af58f8"
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:5369fc1f-1310-4c93-a7f7-0b6d29bfd013"
+          }
+        ],
+        "reasonCode": [
+          {
+            "coding": [
+              {
+                "code": "431855005",
+                "system": "http://snomed.info/sct",
+                "display": "Chronic kidney disease stage 1"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "414545008",
+                "system": "http://snomed.info/sct",
+                "display": "Ischemic heart disease"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "60234000",
+                "system": "http://snomed.info/sct",
+                "display": "Aortic valve regurgitation"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "363406005",
+                "system": "http://snomed.info/sct",
+                "display": "Malignant neoplasm of colon"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "59621000",
+                "system": "http://snomed.info/sct",
+                "display": "Essential hypertension"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "414916001",
+                "system": "http://snomed.info/sct",
+                "display": "Obesity"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "239872002",
+                "system": "http://snomed.info/sct",
+                "display": "Osteoarthritis of hip"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "64859006",
+                "system": "http://snomed.info/sct",
+                "display": "Osteoporosis"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "26929004",
+                "system": "http://snomed.info/sct",
+                "display": "Alzheimer's disease"
+              }
+            ]
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "active",
+        "intent": "order",
+        "code": {
+          "coding": [
+            {
+              "code": "108252007",
+              "system": "http://snomed.info/sct",
+              "display": "Laboratory procedure"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:7105071c-c212-46cb-97ef-8f5823d48cc7",
+          "display": "Oscar Andersson"
+        },
+        "requester": {
+          "reference": "urn:uuid:4093c3cd-9a8b-4d76-8b45-1ad1ecf6d0c1"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:4093c3cd-9a8b-4d76-8b45-1ad1ecf6d0c1",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "4093c3cd-9a8b-4d76-8b45-1ad1ecf6d0c1",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Role Id: 4093c3cd-9a8b-4d76-8b45-1ad1ecf6d0c1</div>"
+        },
+        "organization": {
+          "reference": "urn:uuid:bb533d6f-7918-4d5a-b422-f56d3f2dc3ba"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:bb533d6f-7918-4d5a-b422-f56d3f2dc3ba",
+      "resource": {
+        "resourceType": "Organization",
+        "id": "bb533d6f-7918-4d5a-b422-f56d3f2dc3ba",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/organization-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "deccec07-26bf-4782-aeab-0639e2b3b2b5"
+          }
+        ],
+        "address": [
+          {
+            "city": "Linköping",
+            "postalCode": "582 23",
+            "country": "Sweden"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Organization: Universitetssjukhuset i Linköping</div>"
+        },
+        "name": "Universitetssjukhuset i Linköping"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:5369fc1f-1310-4c93-a7f7-0b6d29bfd013",
+      "resource": {
+        "resourceType": "Specimen",
+        "id": "5369fc1f-1310-4c93-a7f7-0b6d29bfd013",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Specimen-eu-lab"
+          ]
+        },
+        "collection": {
+          "collectedDateTime": "2015-09-24"
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Specimen</th><th>Collection Date</th></tr><tr><td>Blood specimen</td><td><span class=\"nb\">24-Sep-2015</span></td></tr></table></div>"
+        },
+        "type": {
+          "coding": [
+            {
+              "code": "119297000",
+              "system": "http://snomed.info/sct",
+              "display": "Blood specimen"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:440de7b0-e951-4d24-855e-8ac831370274",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "440de7b0-e951-4d24-855e-8ac831370274",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Observation-resultslab-eu-lab"
+          ]
+        },
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "laboratory",
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category"
+              }
+            ]
+          }
+        ],
+        "performer": [
+          {
+            "display": "The Central European Laboratory"
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "code": "98979-8",
+              "system": "http://loinc.org",
+              "display": "Glomerular filtration rate [Volume Rate/Area] in Serum, Plasma or Blood by Creatinine-based formula (CKD-EPI 2021)/1.73 sq M"
+            }
+          ],
+          "text": "Glomerular filtration rate [Volume Rate/Area] in Serum, Plasma or Blood by Creatinine-based formula (CKD-EPI 2021)/1.73 sq M"
+        },
+        "valueQuantity": {
+          "value": 60,
+          "unit": "mL/min/{1.73_m2}",
+          "code": "mL/min/{1.73_m2}",
+          "system": "http://unitsofmeasure.org"
+        },
+        "referenceRange": [
+          {
+            "low": {
+              "value": 60,
+              "code": "mL/min/{1.73_m2}",
+              "system": "http://unitsofmeasure.org"
+            },
+            "high": {
+              "value": 89,
+              "code": "mL/min/{1.73_m2}",
+              "system": "http://unitsofmeasure.org"
+            }
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Test</th><th>24-Sep-2015</th><th>Reference&#xA0;Range</th><th>Flag</th><th>Unit</th></tr><tr><td>Glomerular filtration rate [Volume Rate/Area] in Serum, Plasma or Blood by Creatinine-based formula (CKD-EPI 2021)/1.73 sq M</td><td>60.0</td><td>60 - 89</td><td></td><td>mL/min/{1.73_m2}</td></tr></table></div>"
+        },
+        "status": "final",
+        "effectiveDateTime": "2015-09-24T00:07:31Z",
+        "subject": {
+          "reference": "urn:uuid:7105071c-c212-46cb-97ef-8f5823d48cc7",
+          "display": "Oscar Andersson"
+        },
+        "specimen": {
+          "reference": "urn:uuid:5369fc1f-1310-4c93-a7f7-0b6d29bfd013"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:cd4a5aff-dbff-4e48-825b-7e93b5fd289a",
+      "resource": {
+        "resourceType": "Device",
+        "id": "cd4a5aff-dbff-4e48-825b-7e93b5fd289a",
+        "deviceName": [
+          {
+            "name": "SYNDERAI Synthetic Generator",
+            "type": "manufacturer-name"
+          }
+        ],
+        "version": [
+          {
+            "value": "5.0"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">SYNDERAI Synthetic Generator v5.0</div>"
+        },
+        "status": "active",
+        "distinctIdentifier": "synderai-generator-50",
+        "manufacturer": "SYNDERAI Project"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:33fe3343-dca4-455e-8e9b-4ce3d907fd36",
+      "resource": {
+        "resourceType": "Provenance",
+        "id": "33fe3343-dca4-455e-8e9b-4ce3d907fd36",
+        "target": [
+          {
+            "reference": "urn:uuid:7105071c-c212-46cb-97ef-8f5823d48cc7"
+          },
+          {
+            "reference": "urn:uuid:e0c22fe2-d5ab-4d3a-a6fb-8d472fad418f"
+          },
+          {
+            "reference": "urn:uuid:7bb19e30-3005-4fc8-8e72-e986c51c8391"
+          },
+          {
+            "reference": "urn:uuid:c96f77c3-7971-48a6-a9d8-b721a8accf41"
+          },
+          {
+            "reference": "urn:uuid:4093c3cd-9a8b-4d76-8b45-1ad1ecf6d0c1"
+          },
+          {
+            "reference": "urn:uuid:bb533d6f-7918-4d5a-b422-f56d3f2dc3ba"
+          }
+        ],
+        "activity": {
+          "coding": [
+            {
+              "code": "CREATE",
+              "system": "http://terminology.hl7.org/CodeSystem/v3-DataOperation",
+              "display": "create"
+            }
+          ],
+          "text": "Synthetic Example Data Generation"
+        },
+        "policy": [
+          "https://synderai.net/synderai-synthetic-data-policy"
+        ],
+        "agent": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "author",
+                  "system": "http://terminology.hl7.org/CodeSystem/provenance-participant-type",
+                  "display": "Author"
+                }
+              ],
+              "text": "author"
+            },
+            "who": {
+              "reference": "urn:uuid:cd4a5aff-dbff-4e48-825b-7e93b5fd289a"
+            }
+          }
+        ],
+        "reason": [
+          {
+            "coding": [
+              {
+                "code": "TRAIN",
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+                "display": "training"
+              }
+            ],
+            "text": "Interoperability Testing and Training (non-clinical use)"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provenance for SYNDERAI Synthetic Example Data Resource</div>"
+        },
+        "recorded": "2015-09-24T04:07:31Z"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:7bb19e30-3005-4fc8-8e72-e986c51c8391",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "7bb19e30-3005-4fc8-8e72-e986c51c8391",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory Role Id: 7bb19e30-3005-4fc8-8e72-e986c51c8391</div>"
+        },
+        "practitioner": {
+          "reference": "urn:uuid:c96f77c3-7971-48a6-a9d8-b721a8accf41"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:c96f77c3-7971-48a6-a9d8-b721a8accf41",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "c96f77c3-7971-48a6-a9d8-b721a8accf41",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitioner-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "a0865f38-a7cf-4653-913f-81c5398cdd19"
+          }
+        ],
+        "name": [
+          {
+            "prefix": [
+              "dr"
+            ],
+            "given": [
+              "Ex"
+            ],
+            "family": "Ample"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Laboratoire Central Européenne",
+              "Boulevard du Jardin Botanique 32"
+            ],
+            "postalCode": "1000",
+            "city": "Brussels",
+            "country": "Belgium"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory: Laboratoire Central Européenne, 1000 Brussels, Belgium</div>"
+        }
+      }
+    }
+  ],
+  "type": "document",
+  "timestamp": "2015-09-24T04:07:31Z"
+}

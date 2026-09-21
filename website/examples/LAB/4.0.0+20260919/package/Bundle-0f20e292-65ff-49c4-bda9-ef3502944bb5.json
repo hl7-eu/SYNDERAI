@@ -1,0 +1,770 @@
+{
+  "resourceType": "Bundle",
+  "id": "0f20e292-65ff-49c4-bda9-ef3502944bb5",
+  "meta": {
+    "profile": [
+      "http://hl7.eu/fhir/laboratory/StructureDefinition/Bundle-eu-lab"
+    ]
+  },
+  "identifier": {
+    "assigner": {
+      "display": "HL7 Europe"
+    },
+    "system": "urn:oid:2.16.840.1.113883.2.51.999",
+    "value": "06dbbd9e-e918-473d-ac4c-7b8238693fa5"
+  },
+  "entry": [
+    {
+      "fullUrl": "urn:uuid:58dbfa8f-5e7f-4ec6-9d92-fc848ca38907",
+      "resource": {
+        "resourceType": "Composition",
+        "id": "58dbfa8f-5e7f-4ec6-9d92-fc848ca38907",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Composition-eu-lab"
+          ]
+        },
+        "extension": [
+          {
+            "url": "http://hl7.eu/fhir/extensions/StructureDefinition/composition-diagnosticReportReference",
+            "valueReference": {
+              "reference": "urn:uuid:99373902-ba3d-4e51-9dcb-8b2567d4502e"
+            }
+          }
+        ],
+        "identifier": {
+          "assigner": {
+            "display": "HL7 Europe"
+          },
+          "system": "urn:oid:2.16.840.1.113883.2.51.999",
+          "value": "43f4d923-fd10-447a-8cc4-57e219f9750c"
+        },
+        "author": [
+          {
+            "reference": "urn:uuid:8c338a84-7401-43db-983a-e3a4b4d747bf"
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "type": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ],
+          "text": "Laboratory Report"
+        },
+        "section": [
+          {
+            "code": {
+              "coding": [
+                {
+                  "code": "18719-5",
+                  "system": "http://loinc.org",
+                  "display": "Chemistry studies (set)"
+                }
+              ],
+              "text": "CHEM"
+            },
+            "entry": [
+              {
+                "reference": "urn:uuid:009e7123-4082-4eac-a81f-4124dcc11eba"
+              }
+            ],
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>CHEM</h3><table class=\"hl7__eu__lab__report\"><thead><tr><th>Test</th><th>23-MAR-2019</th><th>Reference&#xA0;Range</th><th>Unit</th></tr></thead><tbody><tr><td></td><td><strong>54.0 L</strong></td><td>60 - 120</td><td>mL/min/{1.73_m2}</td></tr></tbody></table></div>"
+            },
+            "title": "CHEM"
+          },
+          {
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>Annotation</h3><table class=\"hl7__eu__lab__report\"><tr><th>Conclusion and Recommendations based on this report and previous findings known to us:</th></tr><tr><td>The patient shows mildly decreased kidney function (GFR 54 mL/min/1.73 m²), consistent with stage 3a chronic kidney disease. This is common in elderly patients and warrants monitoring of renal function and risk factors. No acute abnormality is indicated, but regular follow-up is recommended.</td></tr></table></div>"
+            },
+            "code": {
+              "coding": [
+                {
+                  "code": "48767-8",
+                  "system": "http://loinc.org",
+                  "display": "Annotation comment [Interpretation] Narrative"
+                }
+              ]
+            },
+            "title": "Annotation comment"
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "final",
+        "subject": {
+          "reference": "urn:uuid:9dc87465-652f-45df-9127-521dfa02976e",
+          "display": "Adelasia Parpinel"
+        },
+        "date": "2019-03-23T11:11:07Z",
+        "title": "Laboratory Report",
+        "confidentiality": "N"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:99373902-ba3d-4e51-9dcb-8b2567d4502e",
+      "resource": {
+        "resourceType": "DiagnosticReport",
+        "id": "99373902-ba3d-4e51-9dcb-8b2567d4502e",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/DiagnosticReport-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "43f4d923-fd10-447a-8cc4-57e219f9750c"
+          },
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "8f22ce60-ecda-4e9e-86e3-c2083d4424f7"
+          }
+        ],
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-DiagnosticReport.composition",
+            "valueReference": {
+              "reference": "urn:uuid:58dbfa8f-5e7f-4ec6-9d92-fc848ca38907"
+            }
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:2bd476ff-5e27-421f-8660-414690a39fd9"
+          }
+        ],
+        "result": [
+          {
+            "reference": "urn:uuid:009e7123-4082-4eac-a81f-4124dcc11eba"
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "registered",
+        "code": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:9dc87465-652f-45df-9127-521dfa02976e",
+          "display": "Adelasia Parpinel"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:9dc87465-652f-45df-9127-521dfa02976e",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "9dc87465-652f-45df-9127-521dfa02976e",
+        "meta": {
+          "security": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "HTEST"
+            },
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "TRAIN"
+            }
+          ],
+          "tag": [
+            {
+              "system": "https://synderai.net/fhir/CodeSystem/tags",
+              "code": "synthetic",
+              "display": "SYNDERAI Synthetic data"
+            }
+          ],
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/patient-eu-core"
+          ]
+        },
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "JHN",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://ec.europa.eu/identifier/eci",
+            "value": "6177-127766-4"
+          },
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "MR",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://local.setting.eu/identifier",
+            "value": "ecf40485-bf96-0a38-1ebd-95a387f85d07"
+          }
+        ],
+        "name": [
+          {
+            "given": [
+              "Adelasia"
+            ],
+            "family": "Parpinel",
+            "text": "Adelasia Parpinel"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Canale Marina, 45 Piano 0",
+              "Piano 0"
+            ],
+            "use": "home",
+            "type": "physical",
+            "postalCode": "38050",
+            "city": "Mezzano Inferiore",
+            "country": "Italy"
+          }
+        ],
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "0737115464"
+          }
+        ],
+        "extension": [
+          {
+            "extension": [
+              {
+                "url": "code",
+                "valueCodeableConcept": {
+                  "coding": [
+                    {
+                      "code": "IT",
+                      "system": "urn:iso:std:iso:3166"
+                    }
+                  ]
+                }
+              }
+            ],
+            "url": "http://hl7.org/fhir/StructureDefinition/patient-nationality"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__ips\"><tr><td>Adelasia Parpinel</td><td>female</td><td>21-Oct-1936</td></tr></table></div>"
+        },
+        "gender": "female",
+        "birthDate": "1936-10-21"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:ec90d0d5-a909-42bc-83bf-b350f01913bf",
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "ec90d0d5-a909-42bc-83bf-b350f01913bf",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/ServiceRequest-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "system": "http://example.org",
+            "value": "93068fc6-32b7-439c-8c08-ac45d5dda401"
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:2bd476ff-5e27-421f-8660-414690a39fd9"
+          }
+        ],
+        "reasonCode": [
+          {
+            "coding": [
+              {
+                "code": "237602007",
+                "system": "http://snomed.info/sct",
+                "display": "Metabolic syndrome X"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "85005007",
+                "system": "http://snomed.info/sct",
+                "display": "Cannabis dependence"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "59621000",
+                "system": "http://snomed.info/sct",
+                "display": "Essential hypertension"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "55822004",
+                "system": "http://snomed.info/sct",
+                "display": "Hyperlipidemia"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "64859006",
+                "system": "http://snomed.info/sct",
+                "display": "Osteoporosis"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "433146000",
+                "system": "http://snomed.info/sct",
+                "display": "Chronic kidney disease stage 5"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "13645005",
+                "system": "http://snomed.info/sct",
+                "display": "Chronic obstructive pulmonary disease"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "414545008",
+                "system": "http://snomed.info/sct",
+                "display": "Ischemic heart disease"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "239873007",
+                "system": "http://snomed.info/sct",
+                "display": "Osteoarthritis of knee"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "111287006",
+                "system": "http://snomed.info/sct",
+                "display": "Tricuspid valve regurgitation"
+              }
+            ]
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "active",
+        "intent": "order",
+        "code": {
+          "coding": [
+            {
+              "code": "108252007",
+              "system": "http://snomed.info/sct",
+              "display": "Laboratory procedure"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:9dc87465-652f-45df-9127-521dfa02976e",
+          "display": "Adelasia Parpinel"
+        },
+        "requester": {
+          "reference": "urn:uuid:b634858f-e129-4337-a57b-8b145fcee28a"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:b634858f-e129-4337-a57b-8b145fcee28a",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "b634858f-e129-4337-a57b-8b145fcee28a",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Role Id: b634858f-e129-4337-a57b-8b145fcee28a</div>"
+        },
+        "organization": {
+          "reference": "urn:uuid:e51ac56a-1db1-4abd-add7-7270ab58f3ca"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:e51ac56a-1db1-4abd-add7-7270ab58f3ca",
+      "resource": {
+        "resourceType": "Organization",
+        "id": "e51ac56a-1db1-4abd-add7-7270ab58f3ca",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/organization-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "13a6a5e3-d3ea-4520-b393-c0401f7c7831"
+          }
+        ],
+        "address": [
+          {
+            "city": "Lamon",
+            "postalCode": "32033",
+            "country": "Italy"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Organization: Ambulatorio medico</div>"
+        },
+        "name": "Ambulatorio medico"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:2bd476ff-5e27-421f-8660-414690a39fd9",
+      "resource": {
+        "resourceType": "Specimen",
+        "id": "2bd476ff-5e27-421f-8660-414690a39fd9",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Specimen-eu-lab"
+          ]
+        },
+        "collection": {
+          "collectedDateTime": "2019-03-23"
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Specimen</th><th>Collection Date</th></tr><tr><td>Blood specimen</td><td><span class=\"nb\">23-Mar-2019</span></td></tr></table></div>"
+        },
+        "type": {
+          "coding": [
+            {
+              "code": "119297000",
+              "system": "http://snomed.info/sct",
+              "display": "Blood specimen"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:009e7123-4082-4eac-a81f-4124dcc11eba",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "009e7123-4082-4eac-a81f-4124dcc11eba",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Observation-resultslab-eu-lab"
+          ]
+        },
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "laboratory",
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category"
+              }
+            ]
+          }
+        ],
+        "performer": [
+          {
+            "display": "The Central European Laboratory"
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "code": "98979-8",
+              "system": "http://loinc.org",
+              "display": "Glomerular filtration rate [Volume Rate/Area] in Serum, Plasma or Blood by Creatinine-based formula (CKD-EPI 2021)/1.73 sq M"
+            }
+          ],
+          "text": "Glomerular filtration rate [Volume Rate/Area] in Serum, Plasma or Blood by Creatinine-based formula (CKD-EPI 2021)/1.73 sq M"
+        },
+        "valueQuantity": {
+          "value": 54,
+          "unit": "mL/min/{1.73_m2}",
+          "code": "mL/min/{1.73_m2}",
+          "system": "http://unitsofmeasure.org"
+        },
+        "referenceRange": [
+          {
+            "low": {
+              "value": 60,
+              "code": "mL/min/{1.73_m2}",
+              "system": "http://unitsofmeasure.org"
+            },
+            "high": {
+              "value": 120,
+              "code": "mL/min/{1.73_m2}",
+              "system": "http://unitsofmeasure.org"
+            }
+          }
+        ],
+        "interpretation": [
+          {
+            "coding": [
+              {
+                "code": "L",
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                "display": "Low"
+              }
+            ]
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Test</th><th>23-Mar-2019</th><th>Reference&#xA0;Range</th><th>Flag</th><th>Unit</th></tr><tr><td>Glomerular filtration rate [Volume Rate/Area] in Serum, Plasma or Blood by Creatinine-based formula (CKD-EPI 2021)/1.73 sq M</td><td>54.0</td><td>60 - 120</td><td>L</td><td>mL/min/{1.73_m2}</td></tr></table></div>"
+        },
+        "status": "final",
+        "effectiveDateTime": "2019-03-23T10:11:07Z",
+        "subject": {
+          "reference": "urn:uuid:9dc87465-652f-45df-9127-521dfa02976e",
+          "display": "Adelasia Parpinel"
+        },
+        "specimen": {
+          "reference": "urn:uuid:2bd476ff-5e27-421f-8660-414690a39fd9"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:ff4b41a7-753d-4e2a-ac1f-e595cacbbbf1",
+      "resource": {
+        "resourceType": "Device",
+        "id": "ff4b41a7-753d-4e2a-ac1f-e595cacbbbf1",
+        "deviceName": [
+          {
+            "name": "SYNDERAI Synthetic Generator",
+            "type": "manufacturer-name"
+          }
+        ],
+        "version": [
+          {
+            "value": "5.0"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">SYNDERAI Synthetic Generator v5.0</div>"
+        },
+        "status": "active",
+        "distinctIdentifier": "synderai-generator-50",
+        "manufacturer": "SYNDERAI Project"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:f18e6af5-e64a-4e38-b7c6-927d255ec29b",
+      "resource": {
+        "resourceType": "Provenance",
+        "id": "f18e6af5-e64a-4e38-b7c6-927d255ec29b",
+        "target": [
+          {
+            "reference": "urn:uuid:9dc87465-652f-45df-9127-521dfa02976e"
+          },
+          {
+            "reference": "urn:uuid:58dbfa8f-5e7f-4ec6-9d92-fc848ca38907"
+          },
+          {
+            "reference": "urn:uuid:8c338a84-7401-43db-983a-e3a4b4d747bf"
+          },
+          {
+            "reference": "urn:uuid:e0760f4f-fde5-4681-ac1e-6a8d8f56dcca"
+          },
+          {
+            "reference": "urn:uuid:b634858f-e129-4337-a57b-8b145fcee28a"
+          },
+          {
+            "reference": "urn:uuid:e51ac56a-1db1-4abd-add7-7270ab58f3ca"
+          }
+        ],
+        "activity": {
+          "coding": [
+            {
+              "code": "CREATE",
+              "system": "http://terminology.hl7.org/CodeSystem/v3-DataOperation",
+              "display": "create"
+            }
+          ],
+          "text": "Synthetic Example Data Generation"
+        },
+        "policy": [
+          "https://synderai.net/synderai-synthetic-data-policy"
+        ],
+        "agent": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "author",
+                  "system": "http://terminology.hl7.org/CodeSystem/provenance-participant-type",
+                  "display": "Author"
+                }
+              ],
+              "text": "author"
+            },
+            "who": {
+              "reference": "urn:uuid:ff4b41a7-753d-4e2a-ac1f-e595cacbbbf1"
+            }
+          }
+        ],
+        "reason": [
+          {
+            "coding": [
+              {
+                "code": "TRAIN",
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+                "display": "training"
+              }
+            ],
+            "text": "Interoperability Testing and Training (non-clinical use)"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provenance for SYNDERAI Synthetic Example Data Resource</div>"
+        },
+        "recorded": "2019-03-23T12:11:07Z"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:8c338a84-7401-43db-983a-e3a4b4d747bf",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "8c338a84-7401-43db-983a-e3a4b4d747bf",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory Role Id: 8c338a84-7401-43db-983a-e3a4b4d747bf</div>"
+        },
+        "practitioner": {
+          "reference": "urn:uuid:e0760f4f-fde5-4681-ac1e-6a8d8f56dcca"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:e0760f4f-fde5-4681-ac1e-6a8d8f56dcca",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "e0760f4f-fde5-4681-ac1e-6a8d8f56dcca",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitioner-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "d7067a4b-da2e-412d-9b5e-d1bc2ccb6a10"
+          }
+        ],
+        "name": [
+          {
+            "prefix": [
+              "dr"
+            ],
+            "given": [
+              "Ex"
+            ],
+            "family": "Ample"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Laboratoire Central Européenne",
+              "Boulevard du Jardin Botanique 32"
+            ],
+            "postalCode": "1000",
+            "city": "Brussels",
+            "country": "Belgium"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory: Laboratoire Central Européenne, 1000 Brussels, Belgium</div>"
+        }
+      }
+    }
+  ],
+  "type": "document",
+  "timestamp": "2019-03-23T12:11:07Z"
+}

@@ -1,0 +1,718 @@
+{
+  "resourceType": "Bundle",
+  "id": "d8bc86ca-b4ac-40d4-8e66-945482983b81",
+  "meta": {
+    "profile": [
+      "http://hl7.eu/fhir/laboratory/StructureDefinition/Bundle-eu-lab"
+    ]
+  },
+  "identifier": {
+    "assigner": {
+      "display": "HL7 Europe"
+    },
+    "system": "urn:oid:2.16.840.1.113883.2.51.999",
+    "value": "c30dd75b-583e-40ed-830b-49a5b5a6b6da"
+  },
+  "entry": [
+    {
+      "fullUrl": "urn:uuid:72c76c32-3213-40e6-b79c-b8267fbccddf",
+      "resource": {
+        "resourceType": "Composition",
+        "id": "72c76c32-3213-40e6-b79c-b8267fbccddf",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Composition-eu-lab"
+          ]
+        },
+        "extension": [
+          {
+            "url": "http://hl7.eu/fhir/extensions/StructureDefinition/composition-diagnosticReportReference",
+            "valueReference": {
+              "reference": "urn:uuid:030039e1-bcbe-4ba8-b78b-de905fdb9e1c"
+            }
+          }
+        ],
+        "identifier": {
+          "assigner": {
+            "display": "HL7 Europe"
+          },
+          "system": "urn:oid:2.16.840.1.113883.2.51.999",
+          "value": "dda898ba-6680-45b6-8822-7b731e3aa0e1"
+        },
+        "author": [
+          {
+            "reference": "urn:uuid:1e81a09a-c5e5-4376-9651-f296163815c9"
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "type": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ],
+          "text": "Laboratory Report"
+        },
+        "section": [
+          {
+            "code": {
+              "coding": [
+                {
+                  "code": "18719-5",
+                  "system": "http://loinc.org",
+                  "display": "Chemistry studies (set)"
+                }
+              ],
+              "text": "CHEM"
+            },
+            "entry": [
+              {
+                "reference": "urn:uuid:abf34e2e-5033-4807-b7e8-9a06f81c2046"
+              }
+            ],
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>CHEM</h3><table class=\"hl7__eu__lab__report\"><thead><tr><th>Test</th><th>18-AUG-2020</th><th>Reference&#xA0;Range</th><th>Unit</th></tr></thead><tbody><tr><td></td><td><strong>83.8 L</strong></td><td>95 - 100</td><td>%</td></tr></tbody></table></div>"
+            },
+            "title": "CHEM"
+          },
+          {
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>Annotation</h3><table class=\"hl7__eu__lab__report\"><tr><th>Conclusion and Recommendations based on this report and previous findings known to us:</th></tr><tr><td>The patient shows significantly reduced arterial oxygen saturation (83.8%, reference 95–100%), indicating hypoxemia. This finding warrants urgent clinical evaluation to identify and address underlying causes such as respiratory or cardiac dysfunction. Immediate intervention may be necessary depending on the patient’s symptoms and clinical context.</td></tr></table></div>"
+            },
+            "code": {
+              "coding": [
+                {
+                  "code": "48767-8",
+                  "system": "http://loinc.org",
+                  "display": "Annotation comment [Interpretation] Narrative"
+                }
+              ]
+            },
+            "title": "Annotation comment"
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "final",
+        "subject": {
+          "reference": "urn:uuid:46135f59-49cc-483b-843a-3e0227218332",
+          "display": "Pasquale Ladeck"
+        },
+        "date": "2020-08-18T16:05:46Z",
+        "title": "Laboratory Report",
+        "confidentiality": "N"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:030039e1-bcbe-4ba8-b78b-de905fdb9e1c",
+      "resource": {
+        "resourceType": "DiagnosticReport",
+        "id": "030039e1-bcbe-4ba8-b78b-de905fdb9e1c",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/DiagnosticReport-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "dda898ba-6680-45b6-8822-7b731e3aa0e1"
+          },
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "f1c53357-cb91-43a7-bcaa-af0252b30585"
+          }
+        ],
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-DiagnosticReport.composition",
+            "valueReference": {
+              "reference": "urn:uuid:72c76c32-3213-40e6-b79c-b8267fbccddf"
+            }
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:ae55148a-4fc9-4c73-b112-be7eaa46266c"
+          }
+        ],
+        "result": [
+          {
+            "reference": "urn:uuid:abf34e2e-5033-4807-b7e8-9a06f81c2046"
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "registered",
+        "code": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:46135f59-49cc-483b-843a-3e0227218332",
+          "display": "Pasquale Ladeck"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:46135f59-49cc-483b-843a-3e0227218332",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "46135f59-49cc-483b-843a-3e0227218332",
+        "meta": {
+          "security": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "HTEST"
+            },
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "TRAIN"
+            }
+          ],
+          "tag": [
+            {
+              "system": "https://synderai.net/fhir/CodeSystem/tags",
+              "code": "synthetic",
+              "display": "SYNDERAI Synthetic data"
+            }
+          ],
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/patient-eu-core"
+          ]
+        },
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "JHN",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://ec.europa.eu/identifier/eci",
+            "value": "4216-814753-8"
+          },
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "MR",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://local.setting.eu/identifier",
+            "value": "80d75dad-07cc-669d-d0a6-0cf5901c365e"
+          }
+        ],
+        "name": [
+          {
+            "given": [
+              "Pasquale"
+            ],
+            "family": "Ladeck",
+            "text": "Pasquale Ladeck"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Thanelplatz 128/16"
+            ],
+            "use": "home",
+            "type": "physical",
+            "postalCode": "83471",
+            "city": "Berchtesgaden",
+            "country": "Germany"
+          }
+        ],
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "0866216483"
+          }
+        ],
+        "extension": [
+          {
+            "extension": [
+              {
+                "url": "code",
+                "valueCodeableConcept": {
+                  "coding": [
+                    {
+                      "code": "DE",
+                      "system": "urn:iso:std:iso:3166"
+                    }
+                  ]
+                }
+              }
+            ],
+            "url": "http://hl7.org/fhir/StructureDefinition/patient-nationality"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__ips\"><tr><td>Pasquale Ladeck</td><td>male</td><td>21-Sep-1979</td></tr></table></div>"
+        },
+        "gender": "male",
+        "birthDate": "1979-09-21"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:7c223cd8-389f-4c0a-b8b4-647a276e6b0c",
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "7c223cd8-389f-4c0a-b8b4-647a276e6b0c",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/ServiceRequest-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "system": "http://example.org",
+            "value": "7f326ac6-0f66-4cde-9acb-bdf808102660"
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:ae55148a-4fc9-4c73-b112-be7eaa46266c"
+          }
+        ],
+        "reasonCode": [
+          {
+            "coding": [
+              {
+                "code": "195967001",
+                "system": "http://snomed.info/sct",
+                "display": "Asthma"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "59621000",
+                "system": "http://snomed.info/sct",
+                "display": "Essential hypertension"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "90560007",
+                "system": "http://snomed.info/sct",
+                "display": "Gout"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "197927001",
+                "system": "http://snomed.info/sct",
+                "display": "Recurrent urinary tract infection"
+              }
+            ]
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "active",
+        "intent": "order",
+        "code": {
+          "coding": [
+            {
+              "code": "108252007",
+              "system": "http://snomed.info/sct",
+              "display": "Laboratory procedure"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:46135f59-49cc-483b-843a-3e0227218332",
+          "display": "Pasquale Ladeck"
+        },
+        "requester": {
+          "reference": "urn:uuid:68ddd5bb-881c-45d4-b97e-a7451808fbb6"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:68ddd5bb-881c-45d4-b97e-a7451808fbb6",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "68ddd5bb-881c-45d4-b97e-a7451808fbb6",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Role Id: 68ddd5bb-881c-45d4-b97e-a7451808fbb6</div>"
+        },
+        "organization": {
+          "reference": "urn:uuid:f5705fe8-c2c9-4d84-8d51-303f7134d39a"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:f5705fe8-c2c9-4d84-8d51-303f7134d39a",
+      "resource": {
+        "resourceType": "Organization",
+        "id": "f5705fe8-c2c9-4d84-8d51-303f7134d39a",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/organization-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "2ee366ad-69bd-466b-9458-cced403c6753"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Achenweg 1"
+            ],
+            "city": "Berchtesgaden",
+            "postalCode": "83471",
+            "country": "Germany"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Organization: Praxiszentrum Triftplatz</div>"
+        },
+        "name": "Praxiszentrum Triftplatz"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:ae55148a-4fc9-4c73-b112-be7eaa46266c",
+      "resource": {
+        "resourceType": "Specimen",
+        "id": "ae55148a-4fc9-4c73-b112-be7eaa46266c",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Specimen-eu-lab"
+          ]
+        },
+        "collection": {
+          "collectedDateTime": "2020-08-18"
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Specimen</th><th>Collection Date</th></tr><tr><td>Arterial blood specimen</td><td><span class=\"nb\">18-Aug-2020</span></td></tr></table></div>"
+        },
+        "type": {
+          "coding": [
+            {
+              "code": "122552005",
+              "system": "http://snomed.info/sct",
+              "display": "Arterial blood specimen"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:abf34e2e-5033-4807-b7e8-9a06f81c2046",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "abf34e2e-5033-4807-b7e8-9a06f81c2046",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Observation-resultslab-eu-lab"
+          ]
+        },
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "laboratory",
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category"
+              }
+            ]
+          }
+        ],
+        "performer": [
+          {
+            "display": "The Central European Laboratory"
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "code": "2708-6",
+              "system": "http://loinc.org",
+              "display": "Oxygen saturation in Arterial blood"
+            }
+          ],
+          "text": "Oxygen saturation in Arterial blood"
+        },
+        "valueQuantity": {
+          "value": 83.8,
+          "unit": "%",
+          "code": "%",
+          "system": "http://unitsofmeasure.org"
+        },
+        "referenceRange": [
+          {
+            "low": {
+              "value": 95,
+              "code": "%",
+              "system": "http://unitsofmeasure.org"
+            },
+            "high": {
+              "value": 100,
+              "code": "%",
+              "system": "http://unitsofmeasure.org"
+            }
+          }
+        ],
+        "interpretation": [
+          {
+            "coding": [
+              {
+                "code": "L",
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                "display": "Low"
+              }
+            ]
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Test</th><th>18-Aug-2020</th><th>Reference&#xA0;Range</th><th>Flag</th><th>Unit</th></tr><tr><td>Oxygen saturation in Arterial blood</td><td>83.8</td><td>95 - 100</td><td>L</td><td>%</td></tr></table></div>"
+        },
+        "status": "final",
+        "effectiveDateTime": "2020-08-18T14:05:46Z",
+        "subject": {
+          "reference": "urn:uuid:46135f59-49cc-483b-843a-3e0227218332",
+          "display": "Pasquale Ladeck"
+        },
+        "specimen": {
+          "reference": "urn:uuid:ae55148a-4fc9-4c73-b112-be7eaa46266c"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:b361355b-f74f-4542-9a8d-a1c1e4c06e11",
+      "resource": {
+        "resourceType": "Device",
+        "id": "b361355b-f74f-4542-9a8d-a1c1e4c06e11",
+        "deviceName": [
+          {
+            "name": "SYNDERAI Synthetic Generator",
+            "type": "manufacturer-name"
+          }
+        ],
+        "version": [
+          {
+            "value": "5.0"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">SYNDERAI Synthetic Generator v5.0</div>"
+        },
+        "status": "active",
+        "distinctIdentifier": "synderai-generator-50",
+        "manufacturer": "SYNDERAI Project"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:08a4e998-c65d-40e0-a298-9d4ff28829de",
+      "resource": {
+        "resourceType": "Provenance",
+        "id": "08a4e998-c65d-40e0-a298-9d4ff28829de",
+        "target": [
+          {
+            "reference": "urn:uuid:46135f59-49cc-483b-843a-3e0227218332"
+          },
+          {
+            "reference": "urn:uuid:72c76c32-3213-40e6-b79c-b8267fbccddf"
+          },
+          {
+            "reference": "urn:uuid:1e81a09a-c5e5-4376-9651-f296163815c9"
+          },
+          {
+            "reference": "urn:uuid:da12204c-c004-408a-a51a-c2ac03b361f3"
+          },
+          {
+            "reference": "urn:uuid:68ddd5bb-881c-45d4-b97e-a7451808fbb6"
+          },
+          {
+            "reference": "urn:uuid:f5705fe8-c2c9-4d84-8d51-303f7134d39a"
+          }
+        ],
+        "activity": {
+          "coding": [
+            {
+              "code": "CREATE",
+              "system": "http://terminology.hl7.org/CodeSystem/v3-DataOperation",
+              "display": "create"
+            }
+          ],
+          "text": "Synthetic Example Data Generation"
+        },
+        "policy": [
+          "https://synderai.net/synderai-synthetic-data-policy"
+        ],
+        "agent": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "author",
+                  "system": "http://terminology.hl7.org/CodeSystem/provenance-participant-type",
+                  "display": "Author"
+                }
+              ],
+              "text": "author"
+            },
+            "who": {
+              "reference": "urn:uuid:b361355b-f74f-4542-9a8d-a1c1e4c06e11"
+            }
+          }
+        ],
+        "reason": [
+          {
+            "coding": [
+              {
+                "code": "TRAIN",
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+                "display": "training"
+              }
+            ],
+            "text": "Interoperability Testing and Training (non-clinical use)"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provenance for SYNDERAI Synthetic Example Data Resource</div>"
+        },
+        "recorded": "2020-08-18T18:05:46Z"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:1e81a09a-c5e5-4376-9651-f296163815c9",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "1e81a09a-c5e5-4376-9651-f296163815c9",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory Role Id: 1e81a09a-c5e5-4376-9651-f296163815c9</div>"
+        },
+        "practitioner": {
+          "reference": "urn:uuid:da12204c-c004-408a-a51a-c2ac03b361f3"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:da12204c-c004-408a-a51a-c2ac03b361f3",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "da12204c-c004-408a-a51a-c2ac03b361f3",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitioner-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "de39d230-d03c-44c9-9b0e-ec5b4f1c81ce"
+          }
+        ],
+        "name": [
+          {
+            "prefix": [
+              "dr"
+            ],
+            "given": [
+              "Ex"
+            ],
+            "family": "Ample"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Laboratoire Central Européenne",
+              "Boulevard du Jardin Botanique 32"
+            ],
+            "postalCode": "1000",
+            "city": "Brussels",
+            "country": "Belgium"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory: Laboratoire Central Européenne, 1000 Brussels, Belgium</div>"
+        }
+      }
+    }
+  ],
+  "type": "document",
+  "timestamp": "2020-08-18T18:05:46Z"
+}

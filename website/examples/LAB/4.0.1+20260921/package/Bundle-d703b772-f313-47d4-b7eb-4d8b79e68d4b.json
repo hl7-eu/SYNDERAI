@@ -1,0 +1,736 @@
+{
+  "resourceType": "Bundle",
+  "id": "d703b772-f313-47d4-b7eb-4d8b79e68d4b",
+  "meta": {
+    "profile": [
+      "http://hl7.eu/fhir/laboratory/StructureDefinition/Bundle-eu-lab"
+    ]
+  },
+  "identifier": {
+    "assigner": {
+      "display": "HL7 Europe"
+    },
+    "system": "urn:oid:2.16.840.1.113883.2.51.999",
+    "value": "4a9f19b9-44d3-4c93-a04a-3bda4397c430"
+  },
+  "entry": [
+    {
+      "fullUrl": "urn:uuid:50242414-4fd0-4cd3-bc9d-f705347f1635",
+      "resource": {
+        "resourceType": "Composition",
+        "id": "50242414-4fd0-4cd3-bc9d-f705347f1635",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Composition-eu-lab"
+          ]
+        },
+        "extension": [
+          {
+            "url": "http://hl7.eu/fhir/extensions/StructureDefinition/composition-diagnosticReportReference",
+            "valueReference": {
+              "reference": "urn:uuid:76393806-d6da-419a-afd6-a57464956d8b"
+            }
+          }
+        ],
+        "identifier": {
+          "assigner": {
+            "display": "HL7 Europe"
+          },
+          "system": "urn:oid:2.16.840.1.113883.2.51.999",
+          "value": "4d7817ab-5ba1-490c-8386-a7dfdafc90f0"
+        },
+        "author": [
+          {
+            "reference": "urn:uuid:952a6695-a8bb-4c2e-97c3-9fda674a0d64"
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "type": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ],
+          "text": "Laboratory Report"
+        },
+        "section": [
+          {
+            "code": {
+              "coding": [
+                {
+                  "code": "18719-5",
+                  "system": "http://loinc.org",
+                  "display": "Chemistry studies (set)"
+                }
+              ],
+              "text": "CHEM"
+            },
+            "entry": [
+              {
+                "reference": "urn:uuid:bddb21b2-345d-411a-9b69-443746efd58a"
+              }
+            ],
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>CHEM</h3><table class=\"hl7__eu__lab__report\"><thead><tr><th>Test</th><th>04-JAN-2016</th><th>Reference&#xA0;Range</th><th>Unit</th></tr></thead><tbody><tr><td></td><td><strong>63.9 H</strong></td><td>20 - 42</td><td>mmol/mol</td></tr></tbody></table></div>"
+            },
+            "title": "CHEM"
+          },
+          {
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>Annotation</h3><table class=\"hl7__eu__lab__report\"><tr><th>Conclusion and Recommendations based on this report and previous findings known to us:</th></tr><tr><td>The patient’s HbA1c is markedly elevated, indicating poor long-term glycemic control and a high risk for diabetes-related complications. Clinical correlation and prompt optimization of diabetes management are recommended.</td></tr></table></div>"
+            },
+            "code": {
+              "coding": [
+                {
+                  "code": "48767-8",
+                  "system": "http://loinc.org",
+                  "display": "Annotation comment [Interpretation] Narrative"
+                }
+              ]
+            },
+            "title": "Annotation comment"
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "final",
+        "subject": {
+          "reference": "urn:uuid:6e21cfa7-3d6d-426c-9363-10d90e513fda",
+          "display": "Clara Mühlberger"
+        },
+        "date": "2016-01-04T17:06:54Z",
+        "title": "Laboratory Report",
+        "confidentiality": "N"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:76393806-d6da-419a-afd6-a57464956d8b",
+      "resource": {
+        "resourceType": "DiagnosticReport",
+        "id": "76393806-d6da-419a-afd6-a57464956d8b",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/DiagnosticReport-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "4d7817ab-5ba1-490c-8386-a7dfdafc90f0"
+          },
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "b348c7e1-5701-499f-acbe-6698c31e9ec4"
+          }
+        ],
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-DiagnosticReport.composition",
+            "valueReference": {
+              "reference": "urn:uuid:50242414-4fd0-4cd3-bc9d-f705347f1635"
+            }
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:cda110f9-e625-4f1a-9f1f-780a81833537"
+          }
+        ],
+        "result": [
+          {
+            "reference": "urn:uuid:bddb21b2-345d-411a-9b69-443746efd58a"
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "registered",
+        "code": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:6e21cfa7-3d6d-426c-9363-10d90e513fda",
+          "display": "Clara Mühlberger"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:6e21cfa7-3d6d-426c-9363-10d90e513fda",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "6e21cfa7-3d6d-426c-9363-10d90e513fda",
+        "meta": {
+          "security": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "HTEST"
+            },
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "TRAIN"
+            }
+          ],
+          "tag": [
+            {
+              "system": "https://synderai.net/fhir/CodeSystem/tags",
+              "code": "synthetic",
+              "display": "SYNDERAI Synthetic data"
+            }
+          ],
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/patient-eu-core"
+          ]
+        },
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "JHN",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://ec.europa.eu/identifier/eci",
+            "value": "6120-862815-8"
+          },
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "MR",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://local.setting.eu/identifier",
+            "value": "444c2e8e-cf63-7f25-5ad9-9ded6c83daa9"
+          }
+        ],
+        "name": [
+          {
+            "given": [
+              "Clara"
+            ],
+            "family": "Mühlberger",
+            "text": "Clara Mühlberger"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Kapellerring 8/6"
+            ],
+            "use": "home",
+            "type": "physical",
+            "postalCode": "8605",
+            "city": "Kapfenberg",
+            "country": "Austria"
+          }
+        ],
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "+43 (0) 3849 53844507"
+          }
+        ],
+        "extension": [
+          {
+            "extension": [
+              {
+                "url": "code",
+                "valueCodeableConcept": {
+                  "coding": [
+                    {
+                      "code": "AT",
+                      "system": "urn:iso:std:iso:3166"
+                    }
+                  ]
+                }
+              }
+            ],
+            "url": "http://hl7.org/fhir/StructureDefinition/patient-nationality"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__ips\"><tr><td>Clara Mühlberger</td><td>female</td><td>26-Jun-1953</td></tr></table></div>"
+        },
+        "gender": "female",
+        "birthDate": "1953-06-26"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:02dc548a-21c8-4b37-a017-938d4b10b573",
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "02dc548a-21c8-4b37-a017-938d4b10b573",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/ServiceRequest-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "system": "http://example.org",
+            "value": "5b85abb0-80c4-4b0b-a102-99c6e4d124ef"
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:cda110f9-e625-4f1a-9f1f-780a81833537"
+          }
+        ],
+        "reasonCode": [
+          {
+            "coding": [
+              {
+                "code": "55822004",
+                "system": "http://snomed.info/sct",
+                "display": "Hyperlipidemia"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "59621000",
+                "system": "http://snomed.info/sct",
+                "display": "Essential hypertension"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "237602007",
+                "system": "http://snomed.info/sct",
+                "display": "Metabolic syndrome X"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "44054006",
+                "system": "http://snomed.info/sct",
+                "display": "Type 2 diabetes mellitus"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "13645005",
+                "system": "http://snomed.info/sct",
+                "display": "Chronic obstructive pulmonary disease"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "386805003",
+                "system": "http://snomed.info/sct",
+                "display": "Mild neurocognitive disorder"
+              }
+            ]
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "active",
+        "intent": "order",
+        "code": {
+          "coding": [
+            {
+              "code": "108252007",
+              "system": "http://snomed.info/sct",
+              "display": "Laboratory procedure"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:6e21cfa7-3d6d-426c-9363-10d90e513fda",
+          "display": "Clara Mühlberger"
+        },
+        "requester": {
+          "reference": "urn:uuid:5ee27648-7cc2-4a6e-ae31-6ec054fc0952"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:5ee27648-7cc2-4a6e-ae31-6ec054fc0952",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "5ee27648-7cc2-4a6e-ae31-6ec054fc0952",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Role Id: 5ee27648-7cc2-4a6e-ae31-6ec054fc0952</div>"
+        },
+        "organization": {
+          "reference": "urn:uuid:cc87a951-055e-4dc9-9029-4bcefccf71fa"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:cc87a951-055e-4dc9-9029-4bcefccf71fa",
+      "resource": {
+        "resourceType": "Organization",
+        "id": "cc87a951-055e-4dc9-9029-4bcefccf71fa",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/organization-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "d3fa531d-0327-44c2-b17b-dde14fe96c5b"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Wiener Straße 54"
+            ],
+            "city": "Kapfenberg",
+            "postalCode": "8605",
+            "country": "Austria"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Organization: Dr. Albert Sacherer</div>"
+        },
+        "name": "Dr. Albert Sacherer"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:cda110f9-e625-4f1a-9f1f-780a81833537",
+      "resource": {
+        "resourceType": "Specimen",
+        "id": "cda110f9-e625-4f1a-9f1f-780a81833537",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Specimen-eu-lab"
+          ]
+        },
+        "collection": {
+          "collectedDateTime": "2016-01-04"
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Specimen</th><th>Collection Date</th></tr><tr><td>Blood specimen</td><td><span class=\"nb\">04-Jan-2016</span></td></tr></table></div>"
+        },
+        "type": {
+          "coding": [
+            {
+              "code": "119297000",
+              "system": "http://snomed.info/sct",
+              "display": "Blood specimen"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:bddb21b2-345d-411a-9b69-443746efd58a",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "bddb21b2-345d-411a-9b69-443746efd58a",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Observation-resultslab-eu-lab"
+          ]
+        },
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "laboratory",
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category"
+              }
+            ]
+          }
+        ],
+        "performer": [
+          {
+            "display": "The Central European Laboratory"
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "code": "59261-8",
+              "system": "http://loinc.org",
+              "display": "Hemoglobin A1c/Hemoglobin.total standardized per IFCC-RMP for CDT in Blood"
+            }
+          ],
+          "text": "Hemoglobin A1c/Hemoglobin.total standardized per IFCC-RMP for CDT in Blood"
+        },
+        "valueQuantity": {
+          "value": 63.9,
+          "unit": "mmol/mol",
+          "code": "mmol/mol",
+          "system": "http://unitsofmeasure.org"
+        },
+        "referenceRange": [
+          {
+            "low": {
+              "value": 20,
+              "code": "mmol/mol",
+              "system": "http://unitsofmeasure.org"
+            },
+            "high": {
+              "value": 42,
+              "code": "mmol/mol",
+              "system": "http://unitsofmeasure.org"
+            }
+          }
+        ],
+        "interpretation": [
+          {
+            "coding": [
+              {
+                "code": "H",
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                "display": "High"
+              }
+            ]
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Test</th><th>04-Jan-2016</th><th>Reference&#xA0;Range</th><th>Flag</th><th>Unit</th></tr><tr><td>Hemoglobin A1c/Hemoglobin.total standardized per IFCC-RMP for CDT in Blood</td><td>63.9</td><td>20 - 42</td><td>H</td><td>mmol/mol</td></tr></table></div>"
+        },
+        "status": "final",
+        "effectiveDateTime": "2016-01-04T16:06:54Z",
+        "subject": {
+          "reference": "urn:uuid:6e21cfa7-3d6d-426c-9363-10d90e513fda",
+          "display": "Clara Mühlberger"
+        },
+        "specimen": {
+          "reference": "urn:uuid:cda110f9-e625-4f1a-9f1f-780a81833537"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:774d5204-2320-45fd-b972-8bfb94671ba2",
+      "resource": {
+        "resourceType": "Device",
+        "id": "774d5204-2320-45fd-b972-8bfb94671ba2",
+        "deviceName": [
+          {
+            "name": "SYNDERAI Synthetic Generator",
+            "type": "manufacturer-name"
+          }
+        ],
+        "version": [
+          {
+            "value": "5.0"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">SYNDERAI Synthetic Generator v5.0</div>"
+        },
+        "status": "active",
+        "distinctIdentifier": "synderai-generator-50",
+        "manufacturer": "SYNDERAI Project"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:10910e80-07b5-41a0-a458-eecae5403b7b",
+      "resource": {
+        "resourceType": "Provenance",
+        "id": "10910e80-07b5-41a0-a458-eecae5403b7b",
+        "target": [
+          {
+            "reference": "urn:uuid:6e21cfa7-3d6d-426c-9363-10d90e513fda"
+          },
+          {
+            "reference": "urn:uuid:50242414-4fd0-4cd3-bc9d-f705347f1635"
+          },
+          {
+            "reference": "urn:uuid:952a6695-a8bb-4c2e-97c3-9fda674a0d64"
+          },
+          {
+            "reference": "urn:uuid:7268b7b5-e045-45ce-8ea3-c8654dd1900e"
+          },
+          {
+            "reference": "urn:uuid:5ee27648-7cc2-4a6e-ae31-6ec054fc0952"
+          },
+          {
+            "reference": "urn:uuid:cc87a951-055e-4dc9-9029-4bcefccf71fa"
+          }
+        ],
+        "activity": {
+          "coding": [
+            {
+              "code": "CREATE",
+              "system": "http://terminology.hl7.org/CodeSystem/v3-DataOperation",
+              "display": "create"
+            }
+          ],
+          "text": "Synthetic Example Data Generation"
+        },
+        "policy": [
+          "https://synderai.net/synderai-synthetic-data-policy"
+        ],
+        "agent": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "author",
+                  "system": "http://terminology.hl7.org/CodeSystem/provenance-participant-type",
+                  "display": "Author"
+                }
+              ],
+              "text": "author"
+            },
+            "who": {
+              "reference": "urn:uuid:774d5204-2320-45fd-b972-8bfb94671ba2"
+            }
+          }
+        ],
+        "reason": [
+          {
+            "coding": [
+              {
+                "code": "TRAIN",
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+                "display": "training"
+              }
+            ],
+            "text": "Interoperability Testing and Training (non-clinical use)"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provenance for SYNDERAI Synthetic Example Data Resource</div>"
+        },
+        "recorded": "2016-01-04T18:06:54Z"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:952a6695-a8bb-4c2e-97c3-9fda674a0d64",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "952a6695-a8bb-4c2e-97c3-9fda674a0d64",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory Role Id: 952a6695-a8bb-4c2e-97c3-9fda674a0d64</div>"
+        },
+        "practitioner": {
+          "reference": "urn:uuid:7268b7b5-e045-45ce-8ea3-c8654dd1900e"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:7268b7b5-e045-45ce-8ea3-c8654dd1900e",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "7268b7b5-e045-45ce-8ea3-c8654dd1900e",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitioner-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "c421ad60-5011-45be-963c-1a5f55c5d233"
+          }
+        ],
+        "name": [
+          {
+            "prefix": [
+              "dr"
+            ],
+            "given": [
+              "Ex"
+            ],
+            "family": "Ample"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Laboratoire Central Européenne",
+              "Boulevard du Jardin Botanique 32"
+            ],
+            "postalCode": "1000",
+            "city": "Brussels",
+            "country": "Belgium"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory: Laboratoire Central Européenne, 1000 Brussels, Belgium</div>"
+        }
+      }
+    }
+  ],
+  "type": "document",
+  "timestamp": "2016-01-04T18:06:54Z"
+}

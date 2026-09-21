@@ -1,0 +1,715 @@
+{
+  "resourceType": "Bundle",
+  "id": "462be0fd-9c27-430f-aac3-80be2d45b990",
+  "meta": {
+    "profile": [
+      "http://hl7.eu/fhir/laboratory/StructureDefinition/Bundle-eu-lab"
+    ]
+  },
+  "identifier": {
+    "assigner": {
+      "display": "HL7 Europe"
+    },
+    "system": "urn:oid:2.16.840.1.113883.2.51.999",
+    "value": "0a74df23-ade5-4bce-87e7-6242b04132fd"
+  },
+  "entry": [
+    {
+      "fullUrl": "urn:uuid:9cdbf076-6265-4d96-b0b4-0d9c326cf5e9",
+      "resource": {
+        "resourceType": "Composition",
+        "id": "9cdbf076-6265-4d96-b0b4-0d9c326cf5e9",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Composition-eu-lab"
+          ]
+        },
+        "extension": [
+          {
+            "url": "http://hl7.eu/fhir/extensions/StructureDefinition/composition-diagnosticReportReference",
+            "valueReference": {
+              "reference": "urn:uuid:3b9ac078-153a-43b5-9af0-806ea57caaa2"
+            }
+          }
+        ],
+        "identifier": {
+          "assigner": {
+            "display": "HL7 Europe"
+          },
+          "system": "urn:oid:2.16.840.1.113883.2.51.999",
+          "value": "958dee3f-00a6-45a1-9d30-5398c04e2b4c"
+        },
+        "author": [
+          {
+            "reference": "urn:uuid:6f9d9b24-7a29-4466-b43e-3cc509209e23"
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "type": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ],
+          "text": "Laboratory Report"
+        },
+        "section": [
+          {
+            "code": {
+              "coding": [
+                {
+                  "code": "18719-5",
+                  "system": "http://loinc.org",
+                  "display": "Chemistry studies (set)"
+                }
+              ],
+              "text": "CHEM"
+            },
+            "entry": [
+              {
+                "reference": "urn:uuid:b89f57b9-1b8f-4755-a888-3d6965f1f34a"
+              }
+            ],
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>CHEM</h3><table class=\"hl7__eu__lab__report\"><thead><tr><th>Test</th><th>05-JAN-2020</th><th>Reference&#xA0;Range</th><th>Unit</th></tr></thead><tbody><tr><td></td><td><strong>52.9 H</strong></td><td>20 - 42</td><td>mmol/mol</td></tr></tbody></table></div>"
+            },
+            "title": "CHEM"
+          },
+          {
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>Annotation</h3><table class=\"hl7__eu__lab__report\"><tr><th>Conclusion and Recommendations based on this report and previous findings known to us:</th></tr><tr><td>The patient’s HbA1c is significantly elevated, indicating poor long-term glycemic control and likely undiagnosed or poorly managed diabetes mellitus. Clinical correlation and further evaluation for diabetes and its complications are recommended.</td></tr></table></div>"
+            },
+            "code": {
+              "coding": [
+                {
+                  "code": "48767-8",
+                  "system": "http://loinc.org",
+                  "display": "Annotation comment [Interpretation] Narrative"
+                }
+              ]
+            },
+            "title": "Annotation comment"
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "final",
+        "subject": {
+          "reference": "urn:uuid:05dd1122-888f-4a7e-83d3-7db584f539b3",
+          "display": "Melania Bździuch"
+        },
+        "date": "2020-01-05T22:37:16Z",
+        "title": "Laboratory Report",
+        "confidentiality": "N"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:3b9ac078-153a-43b5-9af0-806ea57caaa2",
+      "resource": {
+        "resourceType": "DiagnosticReport",
+        "id": "3b9ac078-153a-43b5-9af0-806ea57caaa2",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/DiagnosticReport-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "958dee3f-00a6-45a1-9d30-5398c04e2b4c"
+          },
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "fd2143e4-0f78-4be7-8619-588e680a7665"
+          }
+        ],
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-DiagnosticReport.composition",
+            "valueReference": {
+              "reference": "urn:uuid:9cdbf076-6265-4d96-b0b4-0d9c326cf5e9"
+            }
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:41772072-50fd-4c89-b7a3-d288bf5c8f74"
+          }
+        ],
+        "result": [
+          {
+            "reference": "urn:uuid:b89f57b9-1b8f-4755-a888-3d6965f1f34a"
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "registered",
+        "code": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:05dd1122-888f-4a7e-83d3-7db584f539b3",
+          "display": "Melania Bździuch"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:05dd1122-888f-4a7e-83d3-7db584f539b3",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "05dd1122-888f-4a7e-83d3-7db584f539b3",
+        "meta": {
+          "security": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "HTEST"
+            },
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "TRAIN"
+            }
+          ],
+          "tag": [
+            {
+              "system": "https://synderai.net/fhir/CodeSystem/tags",
+              "code": "synthetic",
+              "display": "SYNDERAI Synthetic data"
+            }
+          ],
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/patient-eu-core"
+          ]
+        },
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "JHN",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://ec.europa.eu/identifier/eci",
+            "value": "4154-388875-8"
+          },
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "MR",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://local.setting.eu/identifier",
+            "value": "04e6197b-5c9a-d194-d2f0-3f7552dd4675"
+          }
+        ],
+        "name": [
+          {
+            "given": [
+              "Melania"
+            ],
+            "family": "Bździuch",
+            "text": "Melania Bździuch"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "al. Jeziorna 33"
+            ],
+            "use": "home",
+            "type": "physical",
+            "postalCode": "16-400",
+            "city": "Suwałki",
+            "country": "Poland"
+          }
+        ],
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "+48 724 017 476"
+          }
+        ],
+        "extension": [
+          {
+            "extension": [
+              {
+                "url": "code",
+                "valueCodeableConcept": {
+                  "coding": [
+                    {
+                      "code": "PL",
+                      "system": "urn:iso:std:iso:3166"
+                    }
+                  ]
+                }
+              }
+            ],
+            "url": "http://hl7.org/fhir/StructureDefinition/patient-nationality"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__ips\"><tr><td>Melania Bździuch</td><td>female</td><td>21-May-1981</td></tr></table></div>"
+        },
+        "gender": "female",
+        "birthDate": "1981-05-21"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:9dc1927f-dc48-4956-880c-0ec2d0267c72",
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "9dc1927f-dc48-4956-880c-0ec2d0267c72",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/ServiceRequest-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "system": "http://example.org",
+            "value": "6cdce1b4-63ab-4e6c-993b-688af48993f5"
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:41772072-50fd-4c89-b7a3-d288bf5c8f74"
+          }
+        ],
+        "reasonCode": [
+          {
+            "coding": [
+              {
+                "code": "85005007",
+                "system": "http://snomed.info/sct",
+                "display": "Cannabis dependence"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "371631005",
+                "system": "http://snomed.info/sct",
+                "display": "Panic disorder"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "44054006",
+                "system": "http://snomed.info/sct",
+                "display": "Type 2 diabetes mellitus"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "237602007",
+                "system": "http://snomed.info/sct",
+                "display": "Metabolic syndrome X"
+              }
+            ]
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "active",
+        "intent": "order",
+        "code": {
+          "coding": [
+            {
+              "code": "108252007",
+              "system": "http://snomed.info/sct",
+              "display": "Laboratory procedure"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:05dd1122-888f-4a7e-83d3-7db584f539b3",
+          "display": "Melania Bździuch"
+        },
+        "requester": {
+          "reference": "urn:uuid:d378895a-80c5-4ed8-8123-d87bfcac105e"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:d378895a-80c5-4ed8-8123-d87bfcac105e",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "d378895a-80c5-4ed8-8123-d87bfcac105e",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Role Id: d378895a-80c5-4ed8-8123-d87bfcac105e</div>"
+        },
+        "organization": {
+          "reference": "urn:uuid:63b829cd-9a14-4f25-8b60-c87018d47f49"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:63b829cd-9a14-4f25-8b60-c87018d47f49",
+      "resource": {
+        "resourceType": "Organization",
+        "id": "63b829cd-9a14-4f25-8b60-c87018d47f49",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/organization-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "91c0aaf1-10d6-47e8-ae19-47bc23390974"
+          }
+        ],
+        "address": [
+          {
+            "city": "Suwałki",
+            "postalCode": "16-400",
+            "country": "Poland"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Organization: Szpital Wojewódzki im. dr. Ludwika Rydygiera w Suwałkach</div>"
+        },
+        "name": "Szpital Wojewódzki im. dr. Ludwika Rydygiera w Suwałkach"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:41772072-50fd-4c89-b7a3-d288bf5c8f74",
+      "resource": {
+        "resourceType": "Specimen",
+        "id": "41772072-50fd-4c89-b7a3-d288bf5c8f74",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Specimen-eu-lab"
+          ]
+        },
+        "collection": {
+          "collectedDateTime": "2020-01-05"
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Specimen</th><th>Collection Date</th></tr><tr><td>Blood specimen</td><td><span class=\"nb\">05-Jan-2020</span></td></tr></table></div>"
+        },
+        "type": {
+          "coding": [
+            {
+              "code": "119297000",
+              "system": "http://snomed.info/sct",
+              "display": "Blood specimen"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:b89f57b9-1b8f-4755-a888-3d6965f1f34a",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "b89f57b9-1b8f-4755-a888-3d6965f1f34a",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Observation-resultslab-eu-lab"
+          ]
+        },
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "laboratory",
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category"
+              }
+            ]
+          }
+        ],
+        "performer": [
+          {
+            "display": "The Central European Laboratory"
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "code": "59261-8",
+              "system": "http://loinc.org",
+              "display": "Hemoglobin A1c/Hemoglobin.total standardized per IFCC-RMP for CDT in Blood"
+            }
+          ],
+          "text": "Hemoglobin A1c/Hemoglobin.total standardized per IFCC-RMP for CDT in Blood"
+        },
+        "valueQuantity": {
+          "value": 52.9,
+          "unit": "mmol/mol",
+          "code": "mmol/mol",
+          "system": "http://unitsofmeasure.org"
+        },
+        "referenceRange": [
+          {
+            "low": {
+              "value": 20,
+              "code": "mmol/mol",
+              "system": "http://unitsofmeasure.org"
+            },
+            "high": {
+              "value": 42,
+              "code": "mmol/mol",
+              "system": "http://unitsofmeasure.org"
+            }
+          }
+        ],
+        "interpretation": [
+          {
+            "coding": [
+              {
+                "code": "H",
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                "display": "High"
+              }
+            ]
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Test</th><th>05-Jan-2020</th><th>Reference&#xA0;Range</th><th>Flag</th><th>Unit</th></tr><tr><td>Hemoglobin A1c/Hemoglobin.total standardized per IFCC-RMP for CDT in Blood</td><td>52.9</td><td>20 - 42</td><td>H</td><td>mmol/mol</td></tr></table></div>"
+        },
+        "status": "final",
+        "effectiveDateTime": "2020-01-05T21:37:16Z",
+        "subject": {
+          "reference": "urn:uuid:05dd1122-888f-4a7e-83d3-7db584f539b3",
+          "display": "Melania Bździuch"
+        },
+        "specimen": {
+          "reference": "urn:uuid:41772072-50fd-4c89-b7a3-d288bf5c8f74"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:2bd6b96d-d79f-4d8d-bc96-4b368a3cc07b",
+      "resource": {
+        "resourceType": "Device",
+        "id": "2bd6b96d-d79f-4d8d-bc96-4b368a3cc07b",
+        "deviceName": [
+          {
+            "name": "SYNDERAI Synthetic Generator",
+            "type": "manufacturer-name"
+          }
+        ],
+        "version": [
+          {
+            "value": "5.0"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">SYNDERAI Synthetic Generator v5.0</div>"
+        },
+        "status": "active",
+        "distinctIdentifier": "synderai-generator-50",
+        "manufacturer": "SYNDERAI Project"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:f81ee5a3-3514-4c94-812f-119e526f38e7",
+      "resource": {
+        "resourceType": "Provenance",
+        "id": "f81ee5a3-3514-4c94-812f-119e526f38e7",
+        "target": [
+          {
+            "reference": "urn:uuid:05dd1122-888f-4a7e-83d3-7db584f539b3"
+          },
+          {
+            "reference": "urn:uuid:9cdbf076-6265-4d96-b0b4-0d9c326cf5e9"
+          },
+          {
+            "reference": "urn:uuid:6f9d9b24-7a29-4466-b43e-3cc509209e23"
+          },
+          {
+            "reference": "urn:uuid:069f77e3-2cc0-4f51-a4ea-9433c2acbc03"
+          },
+          {
+            "reference": "urn:uuid:d378895a-80c5-4ed8-8123-d87bfcac105e"
+          },
+          {
+            "reference": "urn:uuid:63b829cd-9a14-4f25-8b60-c87018d47f49"
+          }
+        ],
+        "activity": {
+          "coding": [
+            {
+              "code": "CREATE",
+              "system": "http://terminology.hl7.org/CodeSystem/v3-DataOperation",
+              "display": "create"
+            }
+          ],
+          "text": "Synthetic Example Data Generation"
+        },
+        "policy": [
+          "https://synderai.net/synderai-synthetic-data-policy"
+        ],
+        "agent": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "author",
+                  "system": "http://terminology.hl7.org/CodeSystem/provenance-participant-type",
+                  "display": "Author"
+                }
+              ],
+              "text": "author"
+            },
+            "who": {
+              "reference": "urn:uuid:2bd6b96d-d79f-4d8d-bc96-4b368a3cc07b"
+            }
+          }
+        ],
+        "reason": [
+          {
+            "coding": [
+              {
+                "code": "TRAIN",
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+                "display": "training"
+              }
+            ],
+            "text": "Interoperability Testing and Training (non-clinical use)"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provenance for SYNDERAI Synthetic Example Data Resource</div>"
+        },
+        "recorded": "2020-01-05T23:37:16Z"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:6f9d9b24-7a29-4466-b43e-3cc509209e23",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "6f9d9b24-7a29-4466-b43e-3cc509209e23",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory Role Id: 6f9d9b24-7a29-4466-b43e-3cc509209e23</div>"
+        },
+        "practitioner": {
+          "reference": "urn:uuid:069f77e3-2cc0-4f51-a4ea-9433c2acbc03"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:069f77e3-2cc0-4f51-a4ea-9433c2acbc03",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "069f77e3-2cc0-4f51-a4ea-9433c2acbc03",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitioner-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "f01a48bc-03ba-4399-a15d-307f81dabb8d"
+          }
+        ],
+        "name": [
+          {
+            "prefix": [
+              "dr"
+            ],
+            "given": [
+              "Ex"
+            ],
+            "family": "Ample"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Laboratoire Central Européenne",
+              "Boulevard du Jardin Botanique 32"
+            ],
+            "postalCode": "1000",
+            "city": "Brussels",
+            "country": "Belgium"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory: Laboratoire Central Européenne, 1000 Brussels, Belgium</div>"
+        }
+      }
+    }
+  ],
+  "type": "document",
+  "timestamp": "2020-01-05T23:37:16Z"
+}

@@ -1,0 +1,724 @@
+{
+  "resourceType": "Bundle",
+  "id": "369f2dd5-dd66-4151-900c-fdeffd453497",
+  "meta": {
+    "profile": [
+      "http://hl7.eu/fhir/laboratory/StructureDefinition/Bundle-eu-lab"
+    ]
+  },
+  "identifier": {
+    "assigner": {
+      "display": "HL7 Europe"
+    },
+    "system": "urn:oid:2.16.840.1.113883.2.51.999",
+    "value": "5f12d115-e282-489a-8e6e-7455ff36cb4f"
+  },
+  "entry": [
+    {
+      "fullUrl": "urn:uuid:cc4ff2f6-e7d9-4f50-a0df-51d9f33b1b91",
+      "resource": {
+        "resourceType": "Composition",
+        "id": "cc4ff2f6-e7d9-4f50-a0df-51d9f33b1b91",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Composition-eu-lab"
+          ]
+        },
+        "extension": [
+          {
+            "url": "http://hl7.eu/fhir/extensions/StructureDefinition/composition-diagnosticReportReference",
+            "valueReference": {
+              "reference": "urn:uuid:74a71abe-a57f-4741-a7a5-62b26cb352d5"
+            }
+          }
+        ],
+        "identifier": {
+          "assigner": {
+            "display": "HL7 Europe"
+          },
+          "system": "urn:oid:2.16.840.1.113883.2.51.999",
+          "value": "14842a1a-3235-49d2-b948-2afb030bbb46"
+        },
+        "author": [
+          {
+            "reference": "urn:uuid:058d1f31-7e22-40ae-8a10-7eca26b374fd"
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "type": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ],
+          "text": "Laboratory Report"
+        },
+        "section": [
+          {
+            "code": {
+              "coding": [
+                {
+                  "code": "18719-5",
+                  "system": "http://loinc.org",
+                  "display": "Chemistry studies (set)"
+                }
+              ],
+              "text": "CHEM"
+            },
+            "entry": [
+              {
+                "reference": "urn:uuid:477b518e-e595-4924-9cd8-5704a43aa210"
+              }
+            ],
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>CHEM</h3><table class=\"hl7__eu__lab__report\"><thead><tr><th>Test</th><th>02-JUL-2023</th><th>Reference&#xA0;Range</th><th>Unit</th></tr></thead><tbody><tr><td></td><td><strong>10.6 H</strong></td><td>0 - 4</td><td>ng/mL</td></tr></tbody></table></div>"
+            },
+            "title": "CHEM"
+          },
+          {
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>Annotation</h3><table class=\"hl7__eu__lab__report\"><tr><th>Conclusion and Recommendations based on this report and previous findings known to us:</th></tr><tr><td>The patient’s PSA level is significantly elevated (10.6 ng/mL; normal &lt;4 ng/mL), which may indicate prostate pathology such as benign prostatic hyperplasia, prostatitis, or prostate cancer. Clinical correlation and further urological evaluation, including possible imaging and biopsy, are recommended.</td></tr></table></div>"
+            },
+            "code": {
+              "coding": [
+                {
+                  "code": "48767-8",
+                  "system": "http://loinc.org",
+                  "display": "Annotation comment [Interpretation] Narrative"
+                }
+              ]
+            },
+            "title": "Annotation comment"
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "final",
+        "subject": {
+          "reference": "urn:uuid:5dd70941-320f-42d6-8573-1815a321adfa",
+          "display": "João Torres"
+        },
+        "date": "2023-07-02T19:54:59Z",
+        "title": "Laboratory Report",
+        "confidentiality": "N"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:74a71abe-a57f-4741-a7a5-62b26cb352d5",
+      "resource": {
+        "resourceType": "DiagnosticReport",
+        "id": "74a71abe-a57f-4741-a7a5-62b26cb352d5",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/DiagnosticReport-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "14842a1a-3235-49d2-b948-2afb030bbb46"
+          },
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "bc3ee6ac-aa98-4741-9c29-e5d22ed9f1a5"
+          }
+        ],
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-DiagnosticReport.composition",
+            "valueReference": {
+              "reference": "urn:uuid:cc4ff2f6-e7d9-4f50-a0df-51d9f33b1b91"
+            }
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:48d79b87-01bc-4148-97ae-b9173193d30c"
+          }
+        ],
+        "result": [
+          {
+            "reference": "urn:uuid:477b518e-e595-4924-9cd8-5704a43aa210"
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "registered",
+        "code": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:5dd70941-320f-42d6-8573-1815a321adfa",
+          "display": "João Torres"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:5dd70941-320f-42d6-8573-1815a321adfa",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "5dd70941-320f-42d6-8573-1815a321adfa",
+        "meta": {
+          "security": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "HTEST"
+            },
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "TRAIN"
+            }
+          ],
+          "tag": [
+            {
+              "system": "https://synderai.net/fhir/CodeSystem/tags",
+              "code": "synthetic",
+              "display": "SYNDERAI Synthetic data"
+            }
+          ],
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/patient-eu-core"
+          ]
+        },
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "JHN",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://ec.europa.eu/identifier/eci",
+            "value": "3668-074152-1"
+          },
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "MR",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://local.setting.eu/identifier",
+            "value": "2a3caa61-96f8-1ae1-f885-97ddd9b841b8"
+          }
+        ],
+        "name": [
+          {
+            "given": [
+              "João"
+            ],
+            "family": "Torres",
+            "text": "João Torres"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Alameda Miranda, 21"
+            ],
+            "use": "home",
+            "type": "physical",
+            "postalCode": "3610-130",
+            "city": "Tarouca",
+            "country": "Portugal"
+          }
+        ],
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "(351) 963 814 897"
+          }
+        ],
+        "extension": [
+          {
+            "extension": [
+              {
+                "url": "code",
+                "valueCodeableConcept": {
+                  "coding": [
+                    {
+                      "code": "PT",
+                      "system": "urn:iso:std:iso:3166"
+                    }
+                  ]
+                }
+              }
+            ],
+            "url": "http://hl7.org/fhir/StructureDefinition/patient-nationality"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__ips\"><tr><td>João Torres</td><td>male</td><td>01-Jun-1959</td></tr></table></div>"
+        },
+        "gender": "male",
+        "birthDate": "1959-06-01"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:a69723d5-1a2e-46ff-b1e6-7f868aac5220",
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "a69723d5-1a2e-46ff-b1e6-7f868aac5220",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/ServiceRequest-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "system": "http://example.org",
+            "value": "1cd50fd0-e65a-4d88-a3c4-82974eb7a78f"
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:48d79b87-01bc-4148-97ae-b9173193d30c"
+          }
+        ],
+        "reasonCode": [
+          {
+            "coding": [
+              {
+                "code": "59621000",
+                "system": "http://snomed.info/sct",
+                "display": "Essential hypertension"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "55822004",
+                "system": "http://snomed.info/sct",
+                "display": "Hyperlipidemia"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "13645005",
+                "system": "http://snomed.info/sct",
+                "display": "Chronic obstructive pulmonary disease"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "363406005",
+                "system": "http://snomed.info/sct",
+                "display": "Malignant neoplasm of colon"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "441527004",
+                "system": "http://snomed.info/sct",
+                "display": "Harmful pattern of use of stimulant"
+              }
+            ]
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "active",
+        "intent": "order",
+        "code": {
+          "coding": [
+            {
+              "code": "108252007",
+              "system": "http://snomed.info/sct",
+              "display": "Laboratory procedure"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:5dd70941-320f-42d6-8573-1815a321adfa",
+          "display": "João Torres"
+        },
+        "requester": {
+          "reference": "urn:uuid:d982efab-8a3e-4d15-96fe-fe5dbe8ea63a"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:d982efab-8a3e-4d15-96fe-fe5dbe8ea63a",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "d982efab-8a3e-4d15-96fe-fe5dbe8ea63a",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Role Id: d982efab-8a3e-4d15-96fe-fe5dbe8ea63a</div>"
+        },
+        "organization": {
+          "reference": "urn:uuid:410048b5-aeeb-4287-a678-44f46e889bd3"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:410048b5-aeeb-4287-a678-44f46e889bd3",
+      "resource": {
+        "resourceType": "Organization",
+        "id": "410048b5-aeeb-4287-a678-44f46e889bd3",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/organization-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "bb6210bc-0e82-4cbf-90d5-6c04f70c7761"
+          }
+        ],
+        "address": [
+          {
+            "city": "Tarouca",
+            "postalCode": "3610-130",
+            "country": "Portugal"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Organization: Centro de Saúde de Tarouca</div>"
+        },
+        "name": "Centro de Saúde de Tarouca"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:48d79b87-01bc-4148-97ae-b9173193d30c",
+      "resource": {
+        "resourceType": "Specimen",
+        "id": "48d79b87-01bc-4148-97ae-b9173193d30c",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Specimen-eu-lab"
+          ]
+        },
+        "collection": {
+          "collectedDateTime": "2023-07-02"
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Specimen</th><th>Collection Date</th></tr><tr><td>Acellular blood (serum or plasma) specimen</td><td><span class=\"nb\">02-Jul-2023</span></td></tr></table></div>"
+        },
+        "type": {
+          "coding": [
+            {
+              "code": "122592007",
+              "system": "http://snomed.info/sct",
+              "display": "Acellular blood (serum or plasma) specimen"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:477b518e-e595-4924-9cd8-5704a43aa210",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "477b518e-e595-4924-9cd8-5704a43aa210",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Observation-resultslab-eu-lab"
+          ]
+        },
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "laboratory",
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category"
+              }
+            ]
+          }
+        ],
+        "performer": [
+          {
+            "display": "The Central European Laboratory"
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "code": "2857-1",
+              "system": "http://loinc.org",
+              "display": "Prostate specific Ag [Mass/volume] in Serum or Plasma"
+            }
+          ],
+          "text": "Prostate specific Ag [Mass/volume] in Serum or Plasma"
+        },
+        "valueQuantity": {
+          "value": 10.6,
+          "unit": "ng/mL",
+          "code": "ng/mL",
+          "system": "http://unitsofmeasure.org"
+        },
+        "referenceRange": [
+          {
+            "low": {
+              "value": 0,
+              "code": "ng/mL",
+              "system": "http://unitsofmeasure.org"
+            },
+            "high": {
+              "value": 4,
+              "code": "ng/mL",
+              "system": "http://unitsofmeasure.org"
+            }
+          }
+        ],
+        "interpretation": [
+          {
+            "coding": [
+              {
+                "code": "H",
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                "display": "High"
+              }
+            ]
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Test</th><th>02-Jul-2023</th><th>Reference&#xA0;Range</th><th>Flag</th><th>Unit</th></tr><tr><td>Prostate specific Ag [Mass/volume] in Serum or Plasma</td><td>10.6</td><td>0 - 4</td><td>H</td><td>ng/mL</td></tr></table></div>"
+        },
+        "status": "final",
+        "effectiveDateTime": "2023-07-02T17:54:59Z",
+        "subject": {
+          "reference": "urn:uuid:5dd70941-320f-42d6-8573-1815a321adfa",
+          "display": "João Torres"
+        },
+        "specimen": {
+          "reference": "urn:uuid:48d79b87-01bc-4148-97ae-b9173193d30c"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:e6ad02de-eeb4-4144-bc41-de0b2b03d82e",
+      "resource": {
+        "resourceType": "Device",
+        "id": "e6ad02de-eeb4-4144-bc41-de0b2b03d82e",
+        "deviceName": [
+          {
+            "name": "SYNDERAI Synthetic Generator",
+            "type": "manufacturer-name"
+          }
+        ],
+        "version": [
+          {
+            "value": "5.0"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">SYNDERAI Synthetic Generator v5.0</div>"
+        },
+        "status": "active",
+        "distinctIdentifier": "synderai-generator-50",
+        "manufacturer": "SYNDERAI Project"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:36f690a4-2ded-44dd-beeb-5e95a028871c",
+      "resource": {
+        "resourceType": "Provenance",
+        "id": "36f690a4-2ded-44dd-beeb-5e95a028871c",
+        "target": [
+          {
+            "reference": "urn:uuid:5dd70941-320f-42d6-8573-1815a321adfa"
+          },
+          {
+            "reference": "urn:uuid:cc4ff2f6-e7d9-4f50-a0df-51d9f33b1b91"
+          },
+          {
+            "reference": "urn:uuid:058d1f31-7e22-40ae-8a10-7eca26b374fd"
+          },
+          {
+            "reference": "urn:uuid:197ad7ba-7fd8-44c3-9f7b-ab7ca911248d"
+          },
+          {
+            "reference": "urn:uuid:d982efab-8a3e-4d15-96fe-fe5dbe8ea63a"
+          },
+          {
+            "reference": "urn:uuid:410048b5-aeeb-4287-a678-44f46e889bd3"
+          }
+        ],
+        "activity": {
+          "coding": [
+            {
+              "code": "CREATE",
+              "system": "http://terminology.hl7.org/CodeSystem/v3-DataOperation",
+              "display": "create"
+            }
+          ],
+          "text": "Synthetic Example Data Generation"
+        },
+        "policy": [
+          "https://synderai.net/synderai-synthetic-data-policy"
+        ],
+        "agent": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "author",
+                  "system": "http://terminology.hl7.org/CodeSystem/provenance-participant-type",
+                  "display": "Author"
+                }
+              ],
+              "text": "author"
+            },
+            "who": {
+              "reference": "urn:uuid:e6ad02de-eeb4-4144-bc41-de0b2b03d82e"
+            }
+          }
+        ],
+        "reason": [
+          {
+            "coding": [
+              {
+                "code": "TRAIN",
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+                "display": "training"
+              }
+            ],
+            "text": "Interoperability Testing and Training (non-clinical use)"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provenance for SYNDERAI Synthetic Example Data Resource</div>"
+        },
+        "recorded": "2023-07-02T21:54:59Z"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:058d1f31-7e22-40ae-8a10-7eca26b374fd",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "058d1f31-7e22-40ae-8a10-7eca26b374fd",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory Role Id: 058d1f31-7e22-40ae-8a10-7eca26b374fd</div>"
+        },
+        "practitioner": {
+          "reference": "urn:uuid:197ad7ba-7fd8-44c3-9f7b-ab7ca911248d"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:197ad7ba-7fd8-44c3-9f7b-ab7ca911248d",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "197ad7ba-7fd8-44c3-9f7b-ab7ca911248d",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitioner-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "bbed60ce-5528-44b9-8f01-3af896203494"
+          }
+        ],
+        "name": [
+          {
+            "prefix": [
+              "dr"
+            ],
+            "given": [
+              "Ex"
+            ],
+            "family": "Ample"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Laboratoire Central Européenne",
+              "Boulevard du Jardin Botanique 32"
+            ],
+            "postalCode": "1000",
+            "city": "Brussels",
+            "country": "Belgium"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory: Laboratoire Central Européenne, 1000 Brussels, Belgium</div>"
+        }
+      }
+    }
+  ],
+  "type": "document",
+  "timestamp": "2023-07-02T21:54:59Z"
+}

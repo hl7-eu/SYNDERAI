@@ -1,0 +1,725 @@
+{
+  "resourceType": "Bundle",
+  "id": "f613b247-1ebb-494d-b3d9-30aeaa44e95e",
+  "meta": {
+    "profile": [
+      "http://hl7.eu/fhir/laboratory/StructureDefinition/Bundle-eu-lab"
+    ]
+  },
+  "identifier": {
+    "assigner": {
+      "display": "HL7 Europe"
+    },
+    "system": "urn:oid:2.16.840.1.113883.2.51.999",
+    "value": "5931271a-14f4-4afa-a048-a18457971ed2"
+  },
+  "entry": [
+    {
+      "fullUrl": "urn:uuid:b533af37-2028-4ff6-a8e4-f0ca2198bbdb",
+      "resource": {
+        "resourceType": "Composition",
+        "id": "b533af37-2028-4ff6-a8e4-f0ca2198bbdb",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Composition-eu-lab"
+          ]
+        },
+        "extension": [
+          {
+            "url": "http://hl7.eu/fhir/extensions/StructureDefinition/composition-diagnosticReportReference",
+            "valueReference": {
+              "reference": "urn:uuid:b4e240e6-ed18-40c1-becb-439a7b15a464"
+            }
+          }
+        ],
+        "identifier": {
+          "assigner": {
+            "display": "HL7 Europe"
+          },
+          "system": "urn:oid:2.16.840.1.113883.2.51.999",
+          "value": "b98811d3-c9e9-409d-bb86-40f1e2064fe1"
+        },
+        "author": [
+          {
+            "reference": "urn:uuid:c9aa75be-7a70-4d9f-82bc-1ad1725fe260"
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "type": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ],
+          "text": "Laboratory Report"
+        },
+        "section": [
+          {
+            "code": {
+              "coding": [
+                {
+                  "code": "18719-5",
+                  "system": "http://loinc.org",
+                  "display": "Chemistry studies (set)"
+                }
+              ],
+              "text": "CHEM"
+            },
+            "entry": [
+              {
+                "reference": "urn:uuid:66780008-320d-40fa-bb46-d3a05ee91c23"
+              }
+            ],
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>CHEM</h3><table class=\"hl7__eu__lab__report\"><thead><tr><th>Test</th><th>10-NOV-1988</th><th>Reference&#xA0;Range</th><th>Unit</th></tr></thead><tbody><tr><td></td><td>99.5</td><td>95 - 100</td><td>%</td></tr></tbody></table></div>"
+            },
+            "title": "CHEM"
+          },
+          {
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>Annotation</h3><table class=\"hl7__eu__lab__report\"><tr><th>Conclusion and Recommendations based on this report and previous findings known to us:</th></tr><tr><td>Oxygen saturation is within the normal range, indicating adequate arterial oxygenation. No abnormalities detected from the laboratory perspective.</td></tr></table></div>"
+            },
+            "code": {
+              "coding": [
+                {
+                  "code": "48767-8",
+                  "system": "http://loinc.org",
+                  "display": "Annotation comment [Interpretation] Narrative"
+                }
+              ]
+            },
+            "title": "Annotation comment"
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "final",
+        "subject": {
+          "reference": "urn:uuid:c80a4a7d-321f-46e9-906a-9253085711a9",
+          "display": "Elaine Ward"
+        },
+        "date": "1988-11-10T19:11:02Z",
+        "title": "Laboratory Report",
+        "confidentiality": "N"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:b4e240e6-ed18-40c1-becb-439a7b15a464",
+      "resource": {
+        "resourceType": "DiagnosticReport",
+        "id": "b4e240e6-ed18-40c1-becb-439a7b15a464",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/DiagnosticReport-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "b98811d3-c9e9-409d-bb86-40f1e2064fe1"
+          },
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "61473d2c-e628-40de-b137-a12e29b6b7e8"
+          }
+        ],
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-DiagnosticReport.composition",
+            "valueReference": {
+              "reference": "urn:uuid:b533af37-2028-4ff6-a8e4-f0ca2198bbdb"
+            }
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:3f5c114a-5c33-4cfd-bc6c-bc1422cecbbd"
+          }
+        ],
+        "result": [
+          {
+            "reference": "urn:uuid:66780008-320d-40fa-bb46-d3a05ee91c23"
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "registered",
+        "code": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:c80a4a7d-321f-46e9-906a-9253085711a9",
+          "display": "Elaine Ward"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:c80a4a7d-321f-46e9-906a-9253085711a9",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "c80a4a7d-321f-46e9-906a-9253085711a9",
+        "meta": {
+          "security": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "HTEST"
+            },
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "TRAIN"
+            }
+          ],
+          "tag": [
+            {
+              "system": "https://synderai.net/fhir/CodeSystem/tags",
+              "code": "synthetic",
+              "display": "SYNDERAI Synthetic data"
+            }
+          ],
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/patient-eu-core"
+          ]
+        },
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "JHN",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://ec.europa.eu/identifier/eci",
+            "value": "9952-396897-4"
+          },
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "MR",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://local.setting.eu/identifier",
+            "value": "a109abc6-7958-7cfd-4a64-faf41e96b089"
+          }
+        ],
+        "name": [
+          {
+            "given": [
+              "Elaine"
+            ],
+            "family": "Ward",
+            "text": "Elaine Ward"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "40 Holt extensions"
+            ],
+            "use": "home",
+            "type": "physical",
+            "postalCode": "NE61",
+            "city": "Simonmouth",
+            "country": "United Kingdom"
+          }
+        ],
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "(0131) 496 0639"
+          }
+        ],
+        "extension": [
+          {
+            "extension": [
+              {
+                "url": "code",
+                "valueCodeableConcept": {
+                  "coding": [
+                    {
+                      "code": "GB",
+                      "system": "urn:iso:std:iso:3166"
+                    }
+                  ]
+                }
+              }
+            ],
+            "url": "http://hl7.org/fhir/StructureDefinition/patient-nationality"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__ips\"><tr><td>Elaine Ward</td><td>female</td><td>28-Oct-1972</td></tr></table></div>"
+        },
+        "gender": "female",
+        "birthDate": "1972-10-28"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:dc0a2eeb-14f4-4fe2-923c-6e5c0f5eb636",
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "dc0a2eeb-14f4-4fe2-923c-6e5c0f5eb636",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/ServiceRequest-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "system": "http://example.org",
+            "value": "a4f6ed62-2e97-4129-9424-8033c93cf527"
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:3f5c114a-5c33-4cfd-bc6c-bc1422cecbbd"
+          }
+        ],
+        "reasonCode": [
+          {
+            "coding": [
+              {
+                "code": "197927001",
+                "system": "http://snomed.info/sct",
+                "display": "Recurrent urinary tract infection"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "414916001",
+                "system": "http://snomed.info/sct",
+                "display": "Obesity"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "85005007",
+                "system": "http://snomed.info/sct",
+                "display": "Cannabis dependence"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "237602007",
+                "system": "http://snomed.info/sct",
+                "display": "Metabolic syndrome X"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "55822004",
+                "system": "http://snomed.info/sct",
+                "display": "Hyperlipidemia"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "239873007",
+                "system": "http://snomed.info/sct",
+                "display": "Osteoarthritis of knee"
+              }
+            ]
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "active",
+        "intent": "order",
+        "code": {
+          "coding": [
+            {
+              "code": "108252007",
+              "system": "http://snomed.info/sct",
+              "display": "Laboratory procedure"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:c80a4a7d-321f-46e9-906a-9253085711a9",
+          "display": "Elaine Ward"
+        },
+        "requester": {
+          "reference": "urn:uuid:c62fa64f-9e03-4582-971e-e497a26eb999"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:c62fa64f-9e03-4582-971e-e497a26eb999",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "c62fa64f-9e03-4582-971e-e497a26eb999",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Role Id: c62fa64f-9e03-4582-971e-e497a26eb999</div>"
+        },
+        "organization": {
+          "reference": "urn:uuid:032b34cf-edf2-4f3a-adea-88f46363e257"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:032b34cf-edf2-4f3a-adea-88f46363e257",
+      "resource": {
+        "resourceType": "Organization",
+        "id": "032b34cf-edf2-4f3a-adea-88f46363e257",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/organization-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "cf1705ef-e93e-4c39-a284-09cb34414fc6"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Flagg Court nan"
+            ],
+            "city": "South Shields",
+            "postalCode": "NE33 1",
+            "country": "United Kingdom"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Organization: Flagg Court Primary Care Centre</div>"
+        },
+        "name": "Flagg Court Primary Care Centre"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:3f5c114a-5c33-4cfd-bc6c-bc1422cecbbd",
+      "resource": {
+        "resourceType": "Specimen",
+        "id": "3f5c114a-5c33-4cfd-bc6c-bc1422cecbbd",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Specimen-eu-lab"
+          ]
+        },
+        "collection": {
+          "collectedDateTime": "1988-11-10"
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Specimen</th><th>Collection Date</th></tr><tr><td>Arterial blood specimen</td><td><span class=\"nb\">10-Nov-1988</span></td></tr></table></div>"
+        },
+        "type": {
+          "coding": [
+            {
+              "code": "122552005",
+              "system": "http://snomed.info/sct",
+              "display": "Arterial blood specimen"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:66780008-320d-40fa-bb46-d3a05ee91c23",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "66780008-320d-40fa-bb46-d3a05ee91c23",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Observation-resultslab-eu-lab"
+          ]
+        },
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "laboratory",
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category"
+              }
+            ]
+          }
+        ],
+        "performer": [
+          {
+            "display": "The Central European Laboratory"
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "code": "2708-6",
+              "system": "http://loinc.org",
+              "display": "Oxygen saturation in Arterial blood"
+            }
+          ],
+          "text": "Oxygen saturation in Arterial blood"
+        },
+        "valueQuantity": {
+          "value": 99.5,
+          "unit": "%",
+          "code": "%",
+          "system": "http://unitsofmeasure.org"
+        },
+        "referenceRange": [
+          {
+            "low": {
+              "value": 95,
+              "code": "%",
+              "system": "http://unitsofmeasure.org"
+            },
+            "high": {
+              "value": 100,
+              "code": "%",
+              "system": "http://unitsofmeasure.org"
+            }
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Test</th><th>10-Nov-1988</th><th>Reference&#xA0;Range</th><th>Flag</th><th>Unit</th></tr><tr><td>Oxygen saturation in Arterial blood</td><td>99.5</td><td>95 - 100</td><td></td><td>%</td></tr></table></div>"
+        },
+        "status": "final",
+        "effectiveDateTime": "1988-11-10T18:11:02Z",
+        "subject": {
+          "reference": "urn:uuid:c80a4a7d-321f-46e9-906a-9253085711a9",
+          "display": "Elaine Ward"
+        },
+        "specimen": {
+          "reference": "urn:uuid:3f5c114a-5c33-4cfd-bc6c-bc1422cecbbd"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:aa4e3aa3-dfd0-4503-910c-17621d69f040",
+      "resource": {
+        "resourceType": "Device",
+        "id": "aa4e3aa3-dfd0-4503-910c-17621d69f040",
+        "deviceName": [
+          {
+            "name": "SYNDERAI Synthetic Generator",
+            "type": "manufacturer-name"
+          }
+        ],
+        "version": [
+          {
+            "value": "5.0"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">SYNDERAI Synthetic Generator v5.0</div>"
+        },
+        "status": "active",
+        "distinctIdentifier": "synderai-generator-50",
+        "manufacturer": "SYNDERAI Project"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:84c4038d-d211-46cb-bd89-25ba2af7c8c8",
+      "resource": {
+        "resourceType": "Provenance",
+        "id": "84c4038d-d211-46cb-bd89-25ba2af7c8c8",
+        "target": [
+          {
+            "reference": "urn:uuid:c80a4a7d-321f-46e9-906a-9253085711a9"
+          },
+          {
+            "reference": "urn:uuid:b533af37-2028-4ff6-a8e4-f0ca2198bbdb"
+          },
+          {
+            "reference": "urn:uuid:c9aa75be-7a70-4d9f-82bc-1ad1725fe260"
+          },
+          {
+            "reference": "urn:uuid:0f3e4727-4e27-4743-be99-1794fcaa3999"
+          },
+          {
+            "reference": "urn:uuid:c62fa64f-9e03-4582-971e-e497a26eb999"
+          },
+          {
+            "reference": "urn:uuid:032b34cf-edf2-4f3a-adea-88f46363e257"
+          }
+        ],
+        "activity": {
+          "coding": [
+            {
+              "code": "CREATE",
+              "system": "http://terminology.hl7.org/CodeSystem/v3-DataOperation",
+              "display": "create"
+            }
+          ],
+          "text": "Synthetic Example Data Generation"
+        },
+        "policy": [
+          "https://synderai.net/synderai-synthetic-data-policy"
+        ],
+        "agent": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "author",
+                  "system": "http://terminology.hl7.org/CodeSystem/provenance-participant-type",
+                  "display": "Author"
+                }
+              ],
+              "text": "author"
+            },
+            "who": {
+              "reference": "urn:uuid:aa4e3aa3-dfd0-4503-910c-17621d69f040"
+            }
+          }
+        ],
+        "reason": [
+          {
+            "coding": [
+              {
+                "code": "TRAIN",
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+                "display": "training"
+              }
+            ],
+            "text": "Interoperability Testing and Training (non-clinical use)"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provenance for SYNDERAI Synthetic Example Data Resource</div>"
+        },
+        "recorded": "1988-11-10T20:11:02Z"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:c9aa75be-7a70-4d9f-82bc-1ad1725fe260",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "c9aa75be-7a70-4d9f-82bc-1ad1725fe260",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory Role Id: c9aa75be-7a70-4d9f-82bc-1ad1725fe260</div>"
+        },
+        "practitioner": {
+          "reference": "urn:uuid:0f3e4727-4e27-4743-be99-1794fcaa3999"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:0f3e4727-4e27-4743-be99-1794fcaa3999",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "0f3e4727-4e27-4743-be99-1794fcaa3999",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitioner-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "9e76cc2c-0984-4744-9698-0ed779ce21b9"
+          }
+        ],
+        "name": [
+          {
+            "prefix": [
+              "dr"
+            ],
+            "given": [
+              "Ex"
+            ],
+            "family": "Ample"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Laboratoire Central Européenne",
+              "Boulevard du Jardin Botanique 32"
+            ],
+            "postalCode": "1000",
+            "city": "Brussels",
+            "country": "Belgium"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory: Laboratoire Central Européenne, 1000 Brussels, Belgium</div>"
+        }
+      }
+    }
+  ],
+  "type": "document",
+  "timestamp": "1988-11-10T20:11:02Z"
+}

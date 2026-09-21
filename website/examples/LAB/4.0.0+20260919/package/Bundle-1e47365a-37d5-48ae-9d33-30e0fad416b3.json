@@ -1,0 +1,727 @@
+{
+  "resourceType": "Bundle",
+  "id": "1e47365a-37d5-48ae-9d33-30e0fad416b3",
+  "meta": {
+    "profile": [
+      "http://hl7.eu/fhir/laboratory/StructureDefinition/Bundle-eu-lab"
+    ]
+  },
+  "identifier": {
+    "assigner": {
+      "display": "HL7 Europe"
+    },
+    "system": "urn:oid:2.16.840.1.113883.2.51.999",
+    "value": "21ccb6cd-69ef-4e76-92a0-12784537b212"
+  },
+  "entry": [
+    {
+      "fullUrl": "urn:uuid:9576a589-cc15-4b94-99cc-b9ad06e01a04",
+      "resource": {
+        "resourceType": "Composition",
+        "id": "9576a589-cc15-4b94-99cc-b9ad06e01a04",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Composition-eu-lab"
+          ]
+        },
+        "extension": [
+          {
+            "url": "http://hl7.eu/fhir/extensions/StructureDefinition/composition-diagnosticReportReference",
+            "valueReference": {
+              "reference": "urn:uuid:70b95c6a-89f7-4374-83e2-71d91e0b1e07"
+            }
+          }
+        ],
+        "identifier": {
+          "assigner": {
+            "display": "HL7 Europe"
+          },
+          "system": "urn:oid:2.16.840.1.113883.2.51.999",
+          "value": "1467e040-3656-466b-8b85-77e3126852e8"
+        },
+        "author": [
+          {
+            "reference": "urn:uuid:55953cde-90cc-43a4-a190-a6f3a827b5db"
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "type": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ],
+          "text": "Laboratory Report"
+        },
+        "section": [
+          {
+            "code": {
+              "coding": [
+                {
+                  "code": "18719-5",
+                  "system": "http://loinc.org",
+                  "display": "Chemistry studies (set)"
+                }
+              ],
+              "text": "CHEM"
+            },
+            "entry": [
+              {
+                "reference": "urn:uuid:2d824502-338f-4b31-931d-3689aa4f339b"
+              }
+            ],
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>CHEM</h3><table class=\"hl7__eu__lab__report\"><thead><tr><th>Test</th><th>27-APR-2016</th><th>Reference&#xA0;Range</th><th>Unit</th></tr></thead><tbody><tr><td></td><td><strong>2.1 H</strong></td><td>0.05 - 1.3</td><td>mIU/L</td></tr></tbody></table></div>"
+            },
+            "title": "CHEM"
+          },
+          {
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>Annotation</h3><table class=\"hl7__eu__lab__report\"><tr><th>Conclusion and Recommendations based on this report and previous findings known to us:</th></tr><tr><td>Thyrotropin (TSH) is elevated above the reference range, which may indicate subclinical or overt hypothyroidism, or possible recovery from non-thyroidal illness. Correlation with clinical findings and thyroid hormone levels (free T4, free T3) is recommended for further assessment.</td></tr></table></div>"
+            },
+            "code": {
+              "coding": [
+                {
+                  "code": "48767-8",
+                  "system": "http://loinc.org",
+                  "display": "Annotation comment [Interpretation] Narrative"
+                }
+              ]
+            },
+            "title": "Annotation comment"
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "final",
+        "subject": {
+          "reference": "urn:uuid:051ac874-36b3-4b29-95c8-6aa28ea65dd1",
+          "display": "Per Eriksson"
+        },
+        "date": "2016-04-27T13:24:55Z",
+        "title": "Laboratory Report",
+        "confidentiality": "N"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:70b95c6a-89f7-4374-83e2-71d91e0b1e07",
+      "resource": {
+        "resourceType": "DiagnosticReport",
+        "id": "70b95c6a-89f7-4374-83e2-71d91e0b1e07",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/DiagnosticReport-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "1467e040-3656-466b-8b85-77e3126852e8"
+          },
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "2ec66685-643c-4373-bc15-1285cbf99cc2"
+          }
+        ],
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-DiagnosticReport.composition",
+            "valueReference": {
+              "reference": "urn:uuid:9576a589-cc15-4b94-99cc-b9ad06e01a04"
+            }
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:0a46dd6a-3329-4dbf-bb85-80109bc1a2bb"
+          }
+        ],
+        "result": [
+          {
+            "reference": "urn:uuid:2d824502-338f-4b31-931d-3689aa4f339b"
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "registered",
+        "code": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:051ac874-36b3-4b29-95c8-6aa28ea65dd1",
+          "display": "Per Eriksson"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:051ac874-36b3-4b29-95c8-6aa28ea65dd1",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "051ac874-36b3-4b29-95c8-6aa28ea65dd1",
+        "meta": {
+          "security": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "HTEST"
+            },
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "TRAIN"
+            }
+          ],
+          "tag": [
+            {
+              "system": "https://synderai.net/fhir/CodeSystem/tags",
+              "code": "synthetic",
+              "display": "SYNDERAI Synthetic data"
+            }
+          ],
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/patient-eu-core"
+          ]
+        },
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "JHN",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://ec.europa.eu/identifier/eci",
+            "value": "4994-486407-0"
+          },
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "MR",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://local.setting.eu/identifier",
+            "value": "edd53a1a-65f9-04e7-656a-f99cf953df53"
+          }
+        ],
+        "name": [
+          {
+            "given": [
+              "Per"
+            ],
+            "family": "Eriksson",
+            "text": "Per Eriksson"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Järnvägsgatan 62"
+            ],
+            "use": "home",
+            "type": "physical",
+            "postalCode": "70210",
+            "city": "Örebro",
+            "country": "Sweden"
+          }
+        ],
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "08-227 64 64"
+          }
+        ],
+        "extension": [
+          {
+            "extension": [
+              {
+                "url": "code",
+                "valueCodeableConcept": {
+                  "coding": [
+                    {
+                      "code": "SE",
+                      "system": "urn:iso:std:iso:3166"
+                    }
+                  ]
+                }
+              }
+            ],
+            "url": "http://hl7.org/fhir/StructureDefinition/patient-nationality"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__ips\"><tr><td>Per Eriksson</td><td>male</td><td>09-Sep-1951</td></tr></table></div>"
+        },
+        "gender": "male",
+        "birthDate": "1951-09-09"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:8e13db87-e3b4-4dbc-92f6-9d06fc57d2a9",
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "8e13db87-e3b4-4dbc-92f6-9d06fc57d2a9",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/ServiceRequest-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "system": "http://example.org",
+            "value": "d819943b-f2f2-4495-9835-971c7b352a48"
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:0a46dd6a-3329-4dbf-bb85-80109bc1a2bb"
+          }
+        ],
+        "reasonCode": [
+          {
+            "coding": [
+              {
+                "code": "78275009",
+                "system": "http://snomed.info/sct",
+                "display": "Obstructive sleep apnea syndrome"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "40930008",
+                "system": "http://snomed.info/sct",
+                "display": "Hypothyroidism"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "64859006",
+                "system": "http://snomed.info/sct",
+                "display": "Osteoporosis"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "363406005",
+                "system": "http://snomed.info/sct",
+                "display": "Malignant neoplasm of colon"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "59621000",
+                "system": "http://snomed.info/sct",
+                "display": "Essential hypertension"
+              }
+            ]
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "active",
+        "intent": "order",
+        "code": {
+          "coding": [
+            {
+              "code": "108252007",
+              "system": "http://snomed.info/sct",
+              "display": "Laboratory procedure"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:051ac874-36b3-4b29-95c8-6aa28ea65dd1",
+          "display": "Per Eriksson"
+        },
+        "requester": {
+          "reference": "urn:uuid:d4fd811b-320b-47e0-a725-8d9ca7da8ab6"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:d4fd811b-320b-47e0-a725-8d9ca7da8ab6",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "d4fd811b-320b-47e0-a725-8d9ca7da8ab6",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Role Id: d4fd811b-320b-47e0-a725-8d9ca7da8ab6</div>"
+        },
+        "organization": {
+          "reference": "urn:uuid:735f744c-9daa-4395-8623-2a4fe266e9a4"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:735f744c-9daa-4395-8623-2a4fe266e9a4",
+      "resource": {
+        "resourceType": "Organization",
+        "id": "735f744c-9daa-4395-8623-2a4fe266e9a4",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/organization-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "95af83d9-5040-46ff-96a6-dc8ae5cbddb9"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Södra Grev Rosengatan nan"
+            ],
+            "city": "Örebro",
+            "postalCode": "703 62",
+            "country": "Sweden"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Organization: Universitetssjukhuset Örebro</div>"
+        },
+        "name": "Universitetssjukhuset Örebro"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:0a46dd6a-3329-4dbf-bb85-80109bc1a2bb",
+      "resource": {
+        "resourceType": "Specimen",
+        "id": "0a46dd6a-3329-4dbf-bb85-80109bc1a2bb",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Specimen-eu-lab"
+          ]
+        },
+        "collection": {
+          "collectedDateTime": "2016-04-27"
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Specimen</th><th>Collection Date</th></tr><tr><td>Acellular blood (serum or plasma) specimen</td><td><span class=\"nb\">27-Apr-2016</span></td></tr></table></div>"
+        },
+        "type": {
+          "coding": [
+            {
+              "code": "122592007",
+              "system": "http://snomed.info/sct",
+              "display": "Acellular blood (serum or plasma) specimen"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:2d824502-338f-4b31-931d-3689aa4f339b",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "2d824502-338f-4b31-931d-3689aa4f339b",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Observation-resultslab-eu-lab"
+          ]
+        },
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "laboratory",
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category"
+              }
+            ]
+          }
+        ],
+        "performer": [
+          {
+            "display": "The Central European Laboratory"
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "code": "11579-0",
+              "system": "http://loinc.org",
+              "display": "Thyrotropin [Units/volume] in Serum or Plasma by Detection limit <= 0.05 mIU/L"
+            }
+          ],
+          "text": "Thyrotropin [Units/volume] in Serum or Plasma by Detection limit <= 0.05 mIU/L"
+        },
+        "valueQuantity": {
+          "value": 2.1,
+          "unit": "m[iU]/L",
+          "code": "mIU/L",
+          "system": "http://unitsofmeasure.org"
+        },
+        "referenceRange": [
+          {
+            "low": {
+              "value": 0.05,
+              "code": "mIU/L",
+              "system": "http://unitsofmeasure.org"
+            },
+            "high": {
+              "value": 1.3,
+              "code": "mIU/L",
+              "system": "http://unitsofmeasure.org"
+            }
+          }
+        ],
+        "interpretation": [
+          {
+            "coding": [
+              {
+                "code": "H",
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                "display": "High"
+              }
+            ]
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Test</th><th>27-Apr-2016</th><th>Reference&#xA0;Range</th><th>Flag</th><th>Unit</th></tr><tr><td>Thyrotropin [Units/volume] in Serum or Plasma by Detection limit &lt;= 0.05 mIU/L</td><td>2.1</td><td>0.05 - 1.3</td><td>H</td><td>mIU/L</td></tr></table></div>"
+        },
+        "status": "final",
+        "effectiveDateTime": "2016-04-27T11:24:55Z",
+        "subject": {
+          "reference": "urn:uuid:051ac874-36b3-4b29-95c8-6aa28ea65dd1",
+          "display": "Per Eriksson"
+        },
+        "specimen": {
+          "reference": "urn:uuid:0a46dd6a-3329-4dbf-bb85-80109bc1a2bb"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:57b910ef-82e9-4d51-b04d-f5c9007695d5",
+      "resource": {
+        "resourceType": "Device",
+        "id": "57b910ef-82e9-4d51-b04d-f5c9007695d5",
+        "deviceName": [
+          {
+            "name": "SYNDERAI Synthetic Generator",
+            "type": "manufacturer-name"
+          }
+        ],
+        "version": [
+          {
+            "value": "5.0"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">SYNDERAI Synthetic Generator v5.0</div>"
+        },
+        "status": "active",
+        "distinctIdentifier": "synderai-generator-50",
+        "manufacturer": "SYNDERAI Project"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:8f304def-773e-4590-be2b-de36b776b433",
+      "resource": {
+        "resourceType": "Provenance",
+        "id": "8f304def-773e-4590-be2b-de36b776b433",
+        "target": [
+          {
+            "reference": "urn:uuid:051ac874-36b3-4b29-95c8-6aa28ea65dd1"
+          },
+          {
+            "reference": "urn:uuid:9576a589-cc15-4b94-99cc-b9ad06e01a04"
+          },
+          {
+            "reference": "urn:uuid:55953cde-90cc-43a4-a190-a6f3a827b5db"
+          },
+          {
+            "reference": "urn:uuid:718b6756-a38f-43d1-8f8d-bc81deaeb91d"
+          },
+          {
+            "reference": "urn:uuid:d4fd811b-320b-47e0-a725-8d9ca7da8ab6"
+          },
+          {
+            "reference": "urn:uuid:735f744c-9daa-4395-8623-2a4fe266e9a4"
+          }
+        ],
+        "activity": {
+          "coding": [
+            {
+              "code": "CREATE",
+              "system": "http://terminology.hl7.org/CodeSystem/v3-DataOperation",
+              "display": "create"
+            }
+          ],
+          "text": "Synthetic Example Data Generation"
+        },
+        "policy": [
+          "https://synderai.net/synderai-synthetic-data-policy"
+        ],
+        "agent": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "author",
+                  "system": "http://terminology.hl7.org/CodeSystem/provenance-participant-type",
+                  "display": "Author"
+                }
+              ],
+              "text": "author"
+            },
+            "who": {
+              "reference": "urn:uuid:57b910ef-82e9-4d51-b04d-f5c9007695d5"
+            }
+          }
+        ],
+        "reason": [
+          {
+            "coding": [
+              {
+                "code": "TRAIN",
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+                "display": "training"
+              }
+            ],
+            "text": "Interoperability Testing and Training (non-clinical use)"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provenance for SYNDERAI Synthetic Example Data Resource</div>"
+        },
+        "recorded": "2016-04-27T15:24:55Z"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:55953cde-90cc-43a4-a190-a6f3a827b5db",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "55953cde-90cc-43a4-a190-a6f3a827b5db",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory Role Id: 55953cde-90cc-43a4-a190-a6f3a827b5db</div>"
+        },
+        "practitioner": {
+          "reference": "urn:uuid:718b6756-a38f-43d1-8f8d-bc81deaeb91d"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:718b6756-a38f-43d1-8f8d-bc81deaeb91d",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "718b6756-a38f-43d1-8f8d-bc81deaeb91d",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitioner-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "8f62c225-3dbc-42fe-80c4-9ee4726be3b5"
+          }
+        ],
+        "name": [
+          {
+            "prefix": [
+              "dr"
+            ],
+            "given": [
+              "Ex"
+            ],
+            "family": "Ample"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Laboratoire Central Européenne",
+              "Boulevard du Jardin Botanique 32"
+            ],
+            "postalCode": "1000",
+            "city": "Brussels",
+            "country": "Belgium"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory: Laboratoire Central Européenne, 1000 Brussels, Belgium</div>"
+        }
+      }
+    }
+  ],
+  "type": "document",
+  "timestamp": "2016-04-27T15:24:55Z"
+}

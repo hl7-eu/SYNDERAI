@@ -1,0 +1,744 @@
+{
+  "resourceType": "Bundle",
+  "id": "2b57f9dc-08b0-401b-bce2-8fc5d7df93e1",
+  "meta": {
+    "profile": [
+      "http://hl7.eu/fhir/laboratory/StructureDefinition/Bundle-eu-lab"
+    ]
+  },
+  "identifier": {
+    "assigner": {
+      "display": "HL7 Europe"
+    },
+    "system": "urn:oid:2.16.840.1.113883.2.51.999",
+    "value": "44656aab-b5a2-40b1-83d3-6a6e580f502d"
+  },
+  "entry": [
+    {
+      "fullUrl": "urn:uuid:364d33f5-7b52-49e5-a66a-6bb7c8c0ff26",
+      "resource": {
+        "resourceType": "Composition",
+        "id": "364d33f5-7b52-49e5-a66a-6bb7c8c0ff26",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Composition-eu-lab"
+          ]
+        },
+        "extension": [
+          {
+            "url": "http://hl7.eu/fhir/extensions/StructureDefinition/composition-diagnosticReportReference",
+            "valueReference": {
+              "reference": "urn:uuid:b5c48f4c-383a-4a7d-b2a9-1d6e775e1988"
+            }
+          }
+        ],
+        "identifier": {
+          "assigner": {
+            "display": "HL7 Europe"
+          },
+          "system": "urn:oid:2.16.840.1.113883.2.51.999",
+          "value": "d30fb67c-9b08-4815-b89d-3db37c6e95c0"
+        },
+        "author": [
+          {
+            "reference": "urn:uuid:e1e18a48-edef-4549-80c8-c1c5856574d7"
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "type": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ],
+          "text": "Laboratory Report"
+        },
+        "section": [
+          {
+            "code": {
+              "coding": [
+                {
+                  "code": "18719-5",
+                  "system": "http://loinc.org",
+                  "display": "Chemistry studies (set)"
+                }
+              ],
+              "text": "CHEM"
+            },
+            "entry": [
+              {
+                "reference": "urn:uuid:0e9bfd0a-6281-4966-b58f-40fa9a5f926f"
+              }
+            ],
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>CHEM</h3><table class=\"hl7__eu__lab__report\"><thead><tr><th>Test</th><th>31-AUG-2016</th><th>Reference&#xA0;Range</th><th>Unit</th></tr></thead><tbody><tr><td></td><td>62.0</td><td>60 - 89</td><td>mL/min/{1.73_m2}</td></tr></tbody></table></div>"
+            },
+            "title": "CHEM"
+          },
+          {
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>Annotation</h3><table class=\"hl7__eu__lab__report\"><tr><th>Conclusion and Recommendations based on this report and previous findings known to us</th></tr><tr><td>The patient’s estimated glomerular filtration rate (eGFR) is mildly decreased, indicating stage 2 chronic kidney disease or age-related decline in renal function. No acute abnormality is present, but continued monitoring of renal function and assessment for risk factors or comorbidities is recommended.</td></tr></table></div>"
+            },
+            "code": {
+              "coding": [
+                {
+                  "code": "48767-8",
+                  "system": "http://loinc.org",
+                  "display": "Annotation comment [Interpretation] Narrative"
+                }
+              ]
+            },
+            "title": "Annotation comment"
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "final",
+        "subject": {
+          "reference": "urn:uuid:d2b4c39e-9122-4699-9ecb-9a833d00fd15",
+          "display": "Tautvydas Naujokas"
+        },
+        "date": "2016-08-31T19:23:31Z",
+        "title": "Laboratory Report",
+        "confidentiality": "N"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:b5c48f4c-383a-4a7d-b2a9-1d6e775e1988",
+      "resource": {
+        "resourceType": "DiagnosticReport",
+        "id": "b5c48f4c-383a-4a7d-b2a9-1d6e775e1988",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/DiagnosticReport-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "d30fb67c-9b08-4815-b89d-3db37c6e95c0"
+          },
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "90d28059-63c2-4880-a232-f7f4b5e37824"
+          }
+        ],
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-DiagnosticReport.composition",
+            "valueReference": {
+              "reference": "urn:uuid:364d33f5-7b52-49e5-a66a-6bb7c8c0ff26"
+            }
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:2cfd985b-467c-41ca-b5ea-c0562b1654fb"
+          }
+        ],
+        "result": [
+          {
+            "reference": "urn:uuid:0e9bfd0a-6281-4966-b58f-40fa9a5f926f"
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "registered",
+        "code": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:d2b4c39e-9122-4699-9ecb-9a833d00fd15",
+          "display": "Tautvydas Naujokas"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:d2b4c39e-9122-4699-9ecb-9a833d00fd15",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "d2b4c39e-9122-4699-9ecb-9a833d00fd15",
+        "meta": {
+          "security": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "HTEST"
+            },
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "TRAIN"
+            }
+          ],
+          "tag": [
+            {
+              "system": "https://synderai.net/fhir/CodeSystem/tags",
+              "code": "synthetic",
+              "display": "SYNDERAI Synthetic data"
+            }
+          ],
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/patient-eu-core"
+          ]
+        },
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "JHN",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://ec.europa.eu/identifier/eci",
+            "value": "8248-714538-3"
+          },
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "MR",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://local.setting.eu/identifier",
+            "value": "7b0b43fd-f996-389b-79c7-f3ffdef1835f"
+          }
+        ],
+        "name": [
+          {
+            "given": [
+              "Tautvydas"
+            ],
+            "family": "Naujokas",
+            "text": "Tautvydas Naujokas"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "130 Stankevičius Plain Suite 646",
+              "Suite 646"
+            ],
+            "use": "home",
+            "type": "physical",
+            "postalCode": "54469",
+            "city": "South Simas",
+            "country": "Lithuania"
+          }
+        ],
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "+(370) 16456707"
+          }
+        ],
+        "extension": [
+          {
+            "extension": [
+              {
+                "url": "code",
+                "valueCodeableConcept": {
+                  "coding": [
+                    {
+                      "code": "LT",
+                      "system": "urn:iso:std:iso:3166"
+                    }
+                  ]
+                }
+              }
+            ],
+            "url": "http://hl7.org/fhir/StructureDefinition/patient-nationality"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__ips\"><tr><td>Tautvydas Naujokas</td><td>male</td><td>05-Mar-1951</td></tr></table></div>"
+        },
+        "gender": "male",
+        "birthDate": "1951-03-05"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:4d63437d-390a-42b3-a45b-07cf5bac44b4",
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "4d63437d-390a-42b3-a45b-07cf5bac44b4",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/ServiceRequest-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "system": "http://example.org",
+            "value": "c0dc60bc-ad08-4899-912a-71d013705503"
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:2cfd985b-467c-41ca-b5ea-c0562b1654fb"
+          }
+        ],
+        "reasonCode": [
+          {
+            "coding": [
+              {
+                "code": "35489007",
+                "system": "http://snomed.info/sct",
+                "display": "Depressive disorder"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "237602007",
+                "system": "http://snomed.info/sct",
+                "display": "Metabolic syndrome X"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "239873007",
+                "system": "http://snomed.info/sct",
+                "display": "Osteoarthritis of knee"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "59621000",
+                "system": "http://snomed.info/sct",
+                "display": "Essential hypertension"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "433144002",
+                "system": "http://snomed.info/sct",
+                "display": "Chronic kidney disease stage 3"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "49436004",
+                "system": "http://snomed.info/sct",
+                "display": "Atrial fibrillation"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "95417003",
+                "system": "http://snomed.info/sct",
+                "display": "Primary fibromyalgia syndrome"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "60573004",
+                "system": "http://snomed.info/sct",
+                "display": "Aortic valve stenosis"
+              }
+            ]
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "active",
+        "intent": "order",
+        "code": {
+          "coding": [
+            {
+              "code": "108252007",
+              "system": "http://snomed.info/sct",
+              "display": "Laboratory procedure"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:d2b4c39e-9122-4699-9ecb-9a833d00fd15",
+          "display": "Tautvydas Naujokas"
+        },
+        "requester": {
+          "reference": "urn:uuid:403675a2-a980-4bcb-883c-5157504ec3f0"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:403675a2-a980-4bcb-883c-5157504ec3f0",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "403675a2-a980-4bcb-883c-5157504ec3f0",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Role Id: 403675a2-a980-4bcb-883c-5157504ec3f0</div>"
+        },
+        "organization": {
+          "reference": "urn:uuid:b113ec89-34c5-474f-aa07-06fddd601c7d"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:b113ec89-34c5-474f-aa07-06fddd601c7d",
+      "resource": {
+        "resourceType": "Organization",
+        "id": "b113ec89-34c5-474f-aa07-06fddd601c7d",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/organization-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "9cad3fde-d464-4129-9141-2fdd0bce4e87"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "21 Gedimino pr."
+            ],
+            "city": "Kaunas",
+            "postalCode": "LT-44312",
+            "country": "Lithuania"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Organization: Dr. Giedrius Žalys</div>"
+        },
+        "name": "Dr. Giedrius Žalys"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:2cfd985b-467c-41ca-b5ea-c0562b1654fb",
+      "resource": {
+        "resourceType": "Specimen",
+        "id": "2cfd985b-467c-41ca-b5ea-c0562b1654fb",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Specimen-eu-lab"
+          ]
+        },
+        "collection": {
+          "collectedDateTime": "2016-08-31"
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Specimen</th><th>Collection Date</th></tr><tr><td>Blood specimen</td><td><span class=\"nb\">31-Aug-2016</span></td></tr></table></div>"
+        },
+        "type": {
+          "coding": [
+            {
+              "code": "119297000",
+              "system": "http://snomed.info/sct",
+              "display": "Blood specimen"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:0e9bfd0a-6281-4966-b58f-40fa9a5f926f",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "0e9bfd0a-6281-4966-b58f-40fa9a5f926f",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Observation-resultslab-eu-lab"
+          ]
+        },
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "laboratory",
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category"
+              }
+            ]
+          }
+        ],
+        "performer": [
+          {
+            "display": "The Central European Laboratory"
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "code": "98979-8",
+              "system": "http://loinc.org",
+              "display": "Glomerular filtration rate [Volume Rate/Area] in Serum, Plasma or Blood by Creatinine-based formula (CKD-EPI 2021)/1.73 sq M"
+            }
+          ],
+          "text": "Glomerular filtration rate [Volume Rate/Area] in Serum, Plasma or Blood by Creatinine-based formula (CKD-EPI 2021)/1.73 sq M"
+        },
+        "valueQuantity": {
+          "value": 62,
+          "unit": "mL/min/{1.73_m2}",
+          "code": "mL/min/{1.73_m2}",
+          "system": "http://unitsofmeasure.org"
+        },
+        "referenceRange": [
+          {
+            "low": {
+              "value": 60,
+              "code": "mL/min/{1.73_m2}",
+              "system": "http://unitsofmeasure.org"
+            },
+            "high": {
+              "value": 89,
+              "code": "mL/min/{1.73_m2}",
+              "system": "http://unitsofmeasure.org"
+            }
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Test</th><th>31-Aug-2016</th><th>Reference&#xA0;Range</th><th>Flag</th><th>Unit</th></tr><tr><td>Glomerular filtration rate [Volume Rate/Area] in Serum, Plasma or Blood by Creatinine-based formula (CKD-EPI 2021)/1.73 sq M</td><td>62.0</td><td>60 - 89</td><td></td><td>mL/min/{1.73_m2}</td></tr></table></div>"
+        },
+        "status": "final",
+        "effectiveDateTime": "2016-08-31T17:23:31Z",
+        "subject": {
+          "reference": "urn:uuid:d2b4c39e-9122-4699-9ecb-9a833d00fd15",
+          "display": "Tautvydas Naujokas"
+        },
+        "specimen": {
+          "reference": "urn:uuid:2cfd985b-467c-41ca-b5ea-c0562b1654fb"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:fe56c05c-7347-4abb-bf3d-5db4c2ba8643",
+      "resource": {
+        "resourceType": "Device",
+        "id": "fe56c05c-7347-4abb-bf3d-5db4c2ba8643",
+        "deviceName": [
+          {
+            "name": "SYNDERAI Synthetic Generator",
+            "type": "manufacturer-name"
+          }
+        ],
+        "version": [
+          {
+            "value": "5.0"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">SYNDERAI Synthetic Generator v5.0</div>"
+        },
+        "status": "active",
+        "distinctIdentifier": "synderai-generator-50",
+        "manufacturer": "SYNDERAI Project"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:fb6052b2-8b12-4780-9f40-69f75a994635",
+      "resource": {
+        "resourceType": "Provenance",
+        "id": "fb6052b2-8b12-4780-9f40-69f75a994635",
+        "target": [
+          {
+            "reference": "urn:uuid:d2b4c39e-9122-4699-9ecb-9a833d00fd15"
+          },
+          {
+            "reference": "urn:uuid:364d33f5-7b52-49e5-a66a-6bb7c8c0ff26"
+          },
+          {
+            "reference": "urn:uuid:e1e18a48-edef-4549-80c8-c1c5856574d7"
+          },
+          {
+            "reference": "urn:uuid:32c8f6c6-b39f-4f6b-a06a-aede39488434"
+          },
+          {
+            "reference": "urn:uuid:403675a2-a980-4bcb-883c-5157504ec3f0"
+          },
+          {
+            "reference": "urn:uuid:b113ec89-34c5-474f-aa07-06fddd601c7d"
+          }
+        ],
+        "activity": {
+          "coding": [
+            {
+              "code": "CREATE",
+              "system": "http://terminology.hl7.org/CodeSystem/v3-DataOperation",
+              "display": "create"
+            }
+          ],
+          "text": "Synthetic Example Data Generation"
+        },
+        "policy": [
+          "https://synderai.net/synderai-synthetic-data-policy"
+        ],
+        "agent": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "author",
+                  "system": "http://terminology.hl7.org/CodeSystem/provenance-participant-type",
+                  "display": "Author"
+                }
+              ],
+              "text": "author"
+            },
+            "who": {
+              "reference": "urn:uuid:fe56c05c-7347-4abb-bf3d-5db4c2ba8643"
+            }
+          }
+        ],
+        "reason": [
+          {
+            "coding": [
+              {
+                "code": "TRAIN",
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+                "display": "training"
+              }
+            ],
+            "text": "Interoperability Testing and Training (non-clinical use)"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provenance for SYNDERAI Synthetic Example Data Resource</div>"
+        },
+        "recorded": "2016-08-31T21:23:31Z"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:e1e18a48-edef-4549-80c8-c1c5856574d7",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "e1e18a48-edef-4549-80c8-c1c5856574d7",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory Role Id: e1e18a48-edef-4549-80c8-c1c5856574d7</div>"
+        },
+        "practitioner": {
+          "reference": "urn:uuid:32c8f6c6-b39f-4f6b-a06a-aede39488434"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:32c8f6c6-b39f-4f6b-a06a-aede39488434",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "32c8f6c6-b39f-4f6b-a06a-aede39488434",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitioner-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "390f533f-b5e8-4f25-838c-384125d01a8d"
+          }
+        ],
+        "name": [
+          {
+            "prefix": [
+              "dr"
+            ],
+            "given": [
+              "Ex"
+            ],
+            "family": "Ample"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Laboratoire Central Européenne",
+              "Boulevard du Jardin Botanique 32"
+            ],
+            "postalCode": "1000",
+            "city": "Brussels",
+            "country": "Belgium"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory: Laboratoire Central Européenne, 1000 Brussels, Belgium</div>"
+        }
+      }
+    }
+  ],
+  "type": "document",
+  "timestamp": "2016-08-31T21:23:31Z"
+}

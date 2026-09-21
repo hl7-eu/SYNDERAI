@@ -59,11 +59,14 @@
     STRING
         * valueString ← value.value, quoted and FSH-escaped.
 
-  SYSTEM SIGIL CONVENTION
-    Values in `.system` NEVER carry the leading `$`; every template use adds it.
-    Both branches follow this now. The CodeableConcept branch used to omit the
-    `$` while the Quantity branch added it, which is how `$$sct` was produced
-    once the upstream layer started supplying `$sct`.
+  SYSTEM SIGIL — TOLERANT, NOT CONVENTIONAL
+    Every system value is normalised at the point of use: a bare alias gets
+    exactly one `$`, an alias that already carries one is left alone, and a
+    full URI or URN (anything containing ":") is passed through untouched.
+    The template is therefore correct whichever convention the PHP layer uses.
+    This replaces the old split where the Quantity branch prefixed `$` and the
+    CodeableConcept branch did not — the mismatch that produced `$$sct` as
+    soon as the upstream layer started supplying `$sct`.
 
   REFERENCE RANGE — EMITTED FOR EVERY VALUE TYPE
     The reference range block sits OUTSIDE the value branch. It used to live
@@ -157,6 +160,18 @@
 {% set FSHQ = {'\\': '\\\\', '"': '\\"'} %}
 
 {#
+  ── Code system sigil ───────────────────────────────────────────────────────
+  A system arrives either as a bare alias ("loinc"), an alias that already
+  carries the sigil ("$loinc"), or a full URI/URN ("urn:iso:std:iso:3166").
+  Each use below normalises it to exactly one '$' for an alias and leaves a
+  URI untouched, so the template is correct whichever convention the PHP
+  layer uses. That removes the coupling that produced "$$sct" in run 1.
+  The pattern, applied per system variable:
+
+    {% set x = (s is empty or ':' in s or s starts with '$') ? s : '$' ~ s %}
+#}
+
+{#
   ── Resource id ─────────────────────────────────────────────────────────────
   The Instance: header is provided by the including template. This partial
   begins with the id rule.
@@ -192,7 +207,8 @@
 #}
 {# Use first coding only — HL7 EU HDR requires exactly 1..1 code #}
 {% set c = labresult.code|first %}
-* code[+].coding = {{ c.system }}#{{ c.code }} "{{ c.display|replace(FSHQ)|raw }}"
+{% set csys = (c.system is empty or ':' in c.system or c.system starts with '$') ? c.system : '$' ~ c.system %}
+* code[+].coding = {{ csys }}#{{ c.code }} "{{ c.display|replace(FSHQ)|raw }}"
 * code[=].text = "{{ c.display|replace(FSHQ)|raw }}"
 {{ addHTML_td(c.display|e('html')) }}
 
@@ -238,7 +254,8 @@
 
 {% set vnum  = labresult.value.value ?? labresult.valueQuantity.value %}
 {% set vcode = labresult.value.code ?? labresult.valueCodeableConcept.code %}
-{% set vsys  = labresult.value.system ?? labresult.valueQuantity.system ?? labresult.valueCodeableConcept.system %}
+{% set vsysraw = labresult.value.system ?? labresult.valueQuantity.system ?? labresult.valueCodeableConcept.system %}
+{% set vsys = (vsysraw is empty or ':' in vsysraw or vsysraw starts with '$') ? vsysraw : '$' ~ vsysraw %}
 {% set vdisp = labresult.value.display ?? labresult.valueCodeableConcept.display %}
 {% set vucum = labresult.value.unit ?? labresult.valueQuantity.unit %}
 {% set vhuman = labresult.value.human ?? labresult.value.code ?? labresult.valueQuantity.code %}
@@ -252,7 +269,7 @@
 
 {% if vtype == "CodeableConcept" %}
 {# ── value as CodeableConcept ─────────────────────────────────────────────── #}
-* valueCodeableConcept = ${{ vsys }}#{{ vcode }} "{{ vdisp|replace(FSHQ)|raw }}"
+* valueCodeableConcept = {{ vsys }}#{{ vcode }} "{{ vdisp|replace(FSHQ)|raw }}"
 {% set tdValue = vdisp|e('html') %}
 
 {% elseif vtype == "String" %}
@@ -265,7 +282,7 @@
 * valueQuantity.value = {{ vnum }}
 * valueQuantity.unit = "{{ vhuman|replace(FSHQ)|raw }}"
 * valueQuantity.code = #{{ vucum }}
-* valueQuantity.system = ${{ vsys }}
+* valueQuantity.system = {{ vsys }}
 {% set tdValue = vnum %}
 {% set tdUnit = vucum|e('html') %}
 {% endif %}
@@ -282,14 +299,15 @@
   The interpretation flag is derived only where a numeric comparison is
   meaningful.
 #}
-{% set rsys = labresult.reference.system|default("ucum") %}
+{% set rsysraw = labresult.reference.system|default('ucum') %}
+{% set rsys = (':' in rsysraw or rsysraw starts with '$') ? rsysraw : '$' ~ rsysraw %}
 
 {% if labresult.reference.low is not empty and labresult.reference.high is not empty %}
 {% set tdRange = (labresult.reference.low ~ " - " ~ labresult.reference.high)|e('html') %}
 
 {% if vtype == "Quantity" %}
-* referenceRange[+].low = {{ labresult.reference.low + 0 }} ${{ rsys }}#{{ labresult.reference.unit }}
-* referenceRange[=].high = {{ labresult.reference.high + 0 }} ${{ rsys }}#{{ labresult.reference.unit }}
+* referenceRange[+].low = {{ labresult.reference.low + 0 }} {{ rsys }}#{{ labresult.reference.unit }}
+* referenceRange[=].high = {{ labresult.reference.high + 0 }} {{ rsys }}#{{ labresult.reference.unit }}
 {% if vnum < labresult.reference.low %}
 * interpretation = $v3-ObservationInterpretation#L "Low"
 {% set tdFlag = "L" %}

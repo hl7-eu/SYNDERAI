@@ -1,0 +1,772 @@
+{
+  "resourceType": "Bundle",
+  "id": "f16ef1d3-c894-4b2c-b420-e6c551b1d709",
+  "meta": {
+    "profile": [
+      "http://hl7.eu/fhir/laboratory/StructureDefinition/Bundle-eu-lab"
+    ]
+  },
+  "identifier": {
+    "assigner": {
+      "display": "HL7 Europe"
+    },
+    "system": "urn:oid:2.16.840.1.113883.2.51.999",
+    "value": "b80e6075-b244-482b-a056-0d0fc4dca910"
+  },
+  "entry": [
+    {
+      "fullUrl": "urn:uuid:8f30db57-c8e2-44c9-b31e-0b9ecd449d31",
+      "resource": {
+        "resourceType": "Composition",
+        "id": "8f30db57-c8e2-44c9-b31e-0b9ecd449d31",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Composition-eu-lab"
+          ]
+        },
+        "extension": [
+          {
+            "url": "http://hl7.eu/fhir/extensions/StructureDefinition/composition-diagnosticReportReference",
+            "valueReference": {
+              "reference": "urn:uuid:3d55aa8d-7878-4efc-99f0-65b4d146feaa"
+            }
+          }
+        ],
+        "identifier": {
+          "assigner": {
+            "display": "HL7 Europe"
+          },
+          "system": "urn:oid:2.16.840.1.113883.2.51.999",
+          "value": "f6268618-1208-4f4a-be0b-7a2e7eee5671"
+        },
+        "author": [
+          {
+            "reference": "urn:uuid:6df3d1f9-05b2-4bb6-97f1-b0dcb2ec6a8c"
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "type": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ],
+          "text": "Laboratory Report"
+        },
+        "section": [
+          {
+            "code": {
+              "coding": [
+                {
+                  "code": "18719-5",
+                  "system": "http://loinc.org",
+                  "display": "Chemistry studies (set)"
+                }
+              ],
+              "text": "CHEM"
+            },
+            "entry": [
+              {
+                "reference": "urn:uuid:e16873d0-8fe0-4d47-94d2-28aa91c8d62c"
+              }
+            ],
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>CHEM</h3><table class=\"hl7__eu__lab__report\"><thead><tr><th>Test</th><th>06-DEC-2006</th><th>Reference&#xA0;Range</th><th>Unit</th></tr></thead><tbody><tr><td></td><td><strong>56.0 L</strong></td><td>60 - 120</td><td>mL/min/{1.73_m2}</td></tr></tbody></table></div>"
+            },
+            "title": "CHEM"
+          },
+          {
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>Annotation</h3><table class=\"hl7__eu__lab__report\"><tr><th>Conclusion and Recommendations based on this report and previous findings known to us:</th></tr><tr><td>The patient shows mildly decreased kidney function (GFR 56 mL/min/1.73 m²), consistent with stage 3a chronic kidney disease. This is common in elderly patients and warrants monitoring of renal function and adjustment of medications as needed. No other abnormalities reported.</td></tr></table></div>"
+            },
+            "code": {
+              "coding": [
+                {
+                  "code": "48767-8",
+                  "system": "http://loinc.org",
+                  "display": "Annotation comment [Interpretation] Narrative"
+                }
+              ]
+            },
+            "title": "Annotation comment"
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "final",
+        "subject": {
+          "reference": "urn:uuid:09c70287-c5a9-4d6c-9ac7-13cc67dfedb0",
+          "display": "Gülsen Hartmann"
+        },
+        "date": "2006-12-06T08:28:15Z",
+        "title": "Laboratory Report",
+        "confidentiality": "N"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:3d55aa8d-7878-4efc-99f0-65b4d146feaa",
+      "resource": {
+        "resourceType": "DiagnosticReport",
+        "id": "3d55aa8d-7878-4efc-99f0-65b4d146feaa",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/DiagnosticReport-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "f6268618-1208-4f4a-be0b-7a2e7eee5671"
+          },
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "af257dee-4600-4b69-add0-8941e2761a62"
+          }
+        ],
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-DiagnosticReport.composition",
+            "valueReference": {
+              "reference": "urn:uuid:8f30db57-c8e2-44c9-b31e-0b9ecd449d31"
+            }
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:2896de57-3bba-410a-a452-c7383ec3cba3"
+          }
+        ],
+        "result": [
+          {
+            "reference": "urn:uuid:e16873d0-8fe0-4d47-94d2-28aa91c8d62c"
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "registered",
+        "code": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:09c70287-c5a9-4d6c-9ac7-13cc67dfedb0",
+          "display": "Gülsen Hartmann"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:09c70287-c5a9-4d6c-9ac7-13cc67dfedb0",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "09c70287-c5a9-4d6c-9ac7-13cc67dfedb0",
+        "meta": {
+          "security": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "HTEST"
+            },
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "TRAIN"
+            }
+          ],
+          "tag": [
+            {
+              "system": "https://synderai.net/fhir/CodeSystem/tags",
+              "code": "synthetic",
+              "display": "SYNDERAI Synthetic data"
+            }
+          ],
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/patient-eu-core"
+          ]
+        },
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "JHN",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://ec.europa.eu/identifier/eci",
+            "value": "6898-406458-1"
+          },
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "MR",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://local.setting.eu/identifier",
+            "value": "621ca1f4-bdf3-5044-a0c7-f1d4955217ed"
+          }
+        ],
+        "name": [
+          {
+            "given": [
+              "Gülsen"
+            ],
+            "family": "Hartmann",
+            "text": "Gülsen Hartmann"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Regina-Schönland-Weg 91-92"
+            ],
+            "use": "home",
+            "type": "physical",
+            "postalCode": "66333",
+            "city": "Völklingen",
+            "country": "Germany"
+          }
+        ],
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "03459 690553"
+          }
+        ],
+        "extension": [
+          {
+            "extension": [
+              {
+                "url": "code",
+                "valueCodeableConcept": {
+                  "coding": [
+                    {
+                      "code": "DE",
+                      "system": "urn:iso:std:iso:3166"
+                    }
+                  ]
+                }
+              }
+            ],
+            "url": "http://hl7.org/fhir/StructureDefinition/patient-nationality"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__ips\"><tr><td>Gülsen Hartmann</td><td>female</td><td>04-Jul-1936</td></tr></table></div>"
+        },
+        "gender": "female",
+        "birthDate": "1936-07-04"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:483c8da9-6791-4932-b69b-c6fbf1624675",
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "483c8da9-6791-4932-b69b-c6fbf1624675",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/ServiceRequest-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "system": "http://example.org",
+            "value": "a51726f7-2a86-4ce6-a3ad-40fd90055774"
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:2896de57-3bba-410a-a452-c7383ec3cba3"
+          }
+        ],
+        "reasonCode": [
+          {
+            "coding": [
+              {
+                "code": "40055000",
+                "system": "http://snomed.info/sct",
+                "display": "Chronic sinusitis"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "59621000",
+                "system": "http://snomed.info/sct",
+                "display": "Essential hypertension"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "431856006",
+                "system": "http://snomed.info/sct",
+                "display": "Chronic kidney disease stage 2"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "201834006",
+                "system": "http://snomed.info/sct",
+                "display": "Localized, primary osteoarthritis of the hand"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "237602007",
+                "system": "http://snomed.info/sct",
+                "display": "Metabolic syndrome X"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "64859006",
+                "system": "http://snomed.info/sct",
+                "display": "Osteoporosis"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "26929004",
+                "system": "http://snomed.info/sct",
+                "display": "Alzheimer's disease"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "13645005",
+                "system": "http://snomed.info/sct",
+                "display": "Chronic obstructive pulmonary disease"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "55822004",
+                "system": "http://snomed.info/sct",
+                "display": "Hyperlipidemia"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "414545008",
+                "system": "http://snomed.info/sct",
+                "display": "Ischemic heart disease"
+              }
+            ]
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "active",
+        "intent": "order",
+        "code": {
+          "coding": [
+            {
+              "code": "108252007",
+              "system": "http://snomed.info/sct",
+              "display": "Laboratory procedure"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:09c70287-c5a9-4d6c-9ac7-13cc67dfedb0",
+          "display": "Gülsen Hartmann"
+        },
+        "requester": {
+          "reference": "urn:uuid:b0dee8bc-4c45-4254-8949-a64783a58d20"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:b0dee8bc-4c45-4254-8949-a64783a58d20",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "b0dee8bc-4c45-4254-8949-a64783a58d20",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Role Id: b0dee8bc-4c45-4254-8949-a64783a58d20</div>"
+        },
+        "organization": {
+          "reference": "urn:uuid:a4836a3e-d8b1-4cdd-9435-64c0b2a7a14c"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:a4836a3e-d8b1-4cdd-9435-64c0b2a7a14c",
+      "resource": {
+        "resourceType": "Organization",
+        "id": "a4836a3e-d8b1-4cdd-9435-64c0b2a7a14c",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/organization-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "2191ec0b-3b9b-4e75-9741-dbc7b673a873"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Kreppstraße 3"
+            ],
+            "city": "Völklingen",
+            "postalCode": "66333",
+            "country": "Germany"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Organization: Dr Thomas Stolz u Iris Fresen</div>"
+        },
+        "name": "Dr Thomas Stolz u Iris Fresen"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:2896de57-3bba-410a-a452-c7383ec3cba3",
+      "resource": {
+        "resourceType": "Specimen",
+        "id": "2896de57-3bba-410a-a452-c7383ec3cba3",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Specimen-eu-lab"
+          ]
+        },
+        "collection": {
+          "collectedDateTime": "2006-12-06"
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Specimen</th><th>Collection Date</th></tr><tr><td>Blood specimen</td><td><span class=\"nb\">06-Dec-2006</span></td></tr></table></div>"
+        },
+        "type": {
+          "coding": [
+            {
+              "code": "119297000",
+              "system": "http://snomed.info/sct",
+              "display": "Blood specimen"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:e16873d0-8fe0-4d47-94d2-28aa91c8d62c",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "e16873d0-8fe0-4d47-94d2-28aa91c8d62c",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Observation-resultslab-eu-lab"
+          ]
+        },
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "laboratory",
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category"
+              }
+            ]
+          }
+        ],
+        "performer": [
+          {
+            "display": "The Central European Laboratory"
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "code": "98979-8",
+              "system": "http://loinc.org",
+              "display": "Glomerular filtration rate [Volume Rate/Area] in Serum, Plasma or Blood by Creatinine-based formula (CKD-EPI 2021)/1.73 sq M"
+            }
+          ],
+          "text": "Glomerular filtration rate [Volume Rate/Area] in Serum, Plasma or Blood by Creatinine-based formula (CKD-EPI 2021)/1.73 sq M"
+        },
+        "valueQuantity": {
+          "value": 56,
+          "unit": "mL/min/{1.73_m2}",
+          "code": "mL/min/{1.73_m2}",
+          "system": "http://unitsofmeasure.org"
+        },
+        "referenceRange": [
+          {
+            "low": {
+              "value": 60,
+              "code": "mL/min/{1.73_m2}",
+              "system": "http://unitsofmeasure.org"
+            },
+            "high": {
+              "value": 120,
+              "code": "mL/min/{1.73_m2}",
+              "system": "http://unitsofmeasure.org"
+            }
+          }
+        ],
+        "interpretation": [
+          {
+            "coding": [
+              {
+                "code": "L",
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                "display": "Low"
+              }
+            ]
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Test</th><th>06-Dec-2006</th><th>Reference&#xA0;Range</th><th>Flag</th><th>Unit</th></tr><tr><td>Glomerular filtration rate [Volume Rate/Area] in Serum, Plasma or Blood by Creatinine-based formula (CKD-EPI 2021)/1.73 sq M</td><td>56.0</td><td>60 - 120</td><td>L</td><td>mL/min/{1.73_m2}</td></tr></table></div>"
+        },
+        "status": "final",
+        "effectiveDateTime": "2006-12-06T07:28:15Z",
+        "subject": {
+          "reference": "urn:uuid:09c70287-c5a9-4d6c-9ac7-13cc67dfedb0",
+          "display": "Gülsen Hartmann"
+        },
+        "specimen": {
+          "reference": "urn:uuid:2896de57-3bba-410a-a452-c7383ec3cba3"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:a03bff60-7f98-472b-8f96-e555924e3d45",
+      "resource": {
+        "resourceType": "Device",
+        "id": "a03bff60-7f98-472b-8f96-e555924e3d45",
+        "deviceName": [
+          {
+            "name": "SYNDERAI Synthetic Generator",
+            "type": "manufacturer-name"
+          }
+        ],
+        "version": [
+          {
+            "value": "5.0"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">SYNDERAI Synthetic Generator v5.0</div>"
+        },
+        "status": "active",
+        "distinctIdentifier": "synderai-generator-50",
+        "manufacturer": "SYNDERAI Project"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:1e10d79a-8c8b-4b9d-8ada-8bb168e887a3",
+      "resource": {
+        "resourceType": "Provenance",
+        "id": "1e10d79a-8c8b-4b9d-8ada-8bb168e887a3",
+        "target": [
+          {
+            "reference": "urn:uuid:09c70287-c5a9-4d6c-9ac7-13cc67dfedb0"
+          },
+          {
+            "reference": "urn:uuid:8f30db57-c8e2-44c9-b31e-0b9ecd449d31"
+          },
+          {
+            "reference": "urn:uuid:6df3d1f9-05b2-4bb6-97f1-b0dcb2ec6a8c"
+          },
+          {
+            "reference": "urn:uuid:d00f2a3a-647c-45af-aced-fff727a03a82"
+          },
+          {
+            "reference": "urn:uuid:b0dee8bc-4c45-4254-8949-a64783a58d20"
+          },
+          {
+            "reference": "urn:uuid:a4836a3e-d8b1-4cdd-9435-64c0b2a7a14c"
+          }
+        ],
+        "activity": {
+          "coding": [
+            {
+              "code": "CREATE",
+              "system": "http://terminology.hl7.org/CodeSystem/v3-DataOperation",
+              "display": "create"
+            }
+          ],
+          "text": "Synthetic Example Data Generation"
+        },
+        "policy": [
+          "https://synderai.net/synderai-synthetic-data-policy"
+        ],
+        "agent": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "author",
+                  "system": "http://terminology.hl7.org/CodeSystem/provenance-participant-type",
+                  "display": "Author"
+                }
+              ],
+              "text": "author"
+            },
+            "who": {
+              "reference": "urn:uuid:a03bff60-7f98-472b-8f96-e555924e3d45"
+            }
+          }
+        ],
+        "reason": [
+          {
+            "coding": [
+              {
+                "code": "TRAIN",
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+                "display": "training"
+              }
+            ],
+            "text": "Interoperability Testing and Training (non-clinical use)"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provenance for SYNDERAI Synthetic Example Data Resource</div>"
+        },
+        "recorded": "2006-12-06T09:28:15Z"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:6df3d1f9-05b2-4bb6-97f1-b0dcb2ec6a8c",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "6df3d1f9-05b2-4bb6-97f1-b0dcb2ec6a8c",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory Role Id: 6df3d1f9-05b2-4bb6-97f1-b0dcb2ec6a8c</div>"
+        },
+        "practitioner": {
+          "reference": "urn:uuid:d00f2a3a-647c-45af-aced-fff727a03a82"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:d00f2a3a-647c-45af-aced-fff727a03a82",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "d00f2a3a-647c-45af-aced-fff727a03a82",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitioner-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "7f6fd7ba-fca3-4024-96b2-edc597beff0f"
+          }
+        ],
+        "name": [
+          {
+            "prefix": [
+              "dr"
+            ],
+            "given": [
+              "Ex"
+            ],
+            "family": "Ample"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Laboratoire Central Européenne",
+              "Boulevard du Jardin Botanique 32"
+            ],
+            "postalCode": "1000",
+            "city": "Brussels",
+            "country": "Belgium"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory: Laboratoire Central Européenne, 1000 Brussels, Belgium</div>"
+        }
+      }
+    }
+  ],
+  "type": "document",
+  "timestamp": "2006-12-06T09:28:15Z"
+}

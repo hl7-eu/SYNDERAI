@@ -1,0 +1,746 @@
+{
+  "resourceType": "Bundle",
+  "id": "42675c63-9fb8-4eba-89f1-99b96045db90",
+  "meta": {
+    "profile": [
+      "http://hl7.eu/fhir/laboratory/StructureDefinition/Bundle-eu-lab"
+    ]
+  },
+  "identifier": {
+    "assigner": {
+      "display": "HL7 Europe"
+    },
+    "system": "urn:oid:2.16.840.1.113883.2.51.999",
+    "value": "b383412b-a609-4bb5-ae00-4ac9e0aab284"
+  },
+  "entry": [
+    {
+      "fullUrl": "urn:uuid:946b5455-0d63-413c-9368-2d95177591d2",
+      "resource": {
+        "resourceType": "Composition",
+        "id": "946b5455-0d63-413c-9368-2d95177591d2",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Composition-eu-lab"
+          ]
+        },
+        "extension": [
+          {
+            "url": "http://hl7.eu/fhir/extensions/StructureDefinition/composition-diagnosticReportReference",
+            "valueReference": {
+              "reference": "urn:uuid:ff4bec73-df2b-4e74-9555-11cedbfd010d"
+            }
+          }
+        ],
+        "identifier": {
+          "assigner": {
+            "display": "HL7 Europe"
+          },
+          "system": "urn:oid:2.16.840.1.113883.2.51.999",
+          "value": "c82fc130-5e85-49ee-9743-da1aa9f9607d"
+        },
+        "author": [
+          {
+            "reference": "urn:uuid:88634a4e-ad32-41b7-ac17-3ac7241984df"
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "type": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ],
+          "text": "Laboratory Report"
+        },
+        "section": [
+          {
+            "code": {
+              "coding": [
+                {
+                  "code": "18719-5",
+                  "system": "http://loinc.org",
+                  "display": "Chemistry studies (set)"
+                }
+              ],
+              "text": "CHEM"
+            },
+            "entry": [
+              {
+                "reference": "urn:uuid:27e0aed5-7aa5-45f2-a17a-a6ea5272dcd3"
+              }
+            ],
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>CHEM</h3><table class=\"hl7__eu__lab__report\"><thead><tr><th>Test</th><th>28-SEP-2001</th><th>Reference&#xA0;Range</th><th>Unit</th></tr></thead><tbody><tr><td></td><td><strong>46.6 H</strong></td><td>20 - 42</td><td>mmol/mol</td></tr></tbody></table></div>"
+            },
+            "title": "CHEM"
+          },
+          {
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>Annotation</h3><table class=\"hl7__eu__lab__report\"><tr><th>Conclusion and Recommendations based on this report and previous findings known to us:</th></tr><tr><td>The patient’s HbA1c is elevated, indicating suboptimal long-term glycemic control and suggesting possible undiagnosed or poorly controlled diabetes mellitus. Clinical correlation and further evaluation of glucose metabolism are recommended.</td></tr></table></div>"
+            },
+            "code": {
+              "coding": [
+                {
+                  "code": "48767-8",
+                  "system": "http://loinc.org",
+                  "display": "Annotation comment [Interpretation] Narrative"
+                }
+              ]
+            },
+            "title": "Annotation comment"
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "final",
+        "subject": {
+          "reference": "urn:uuid:73fd90cb-d18e-40c5-b5e6-02634f29d1ed",
+          "display": "Bibiana Fortuny"
+        },
+        "date": "2001-09-28T19:04:44Z",
+        "title": "Laboratory Report",
+        "confidentiality": "N"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:ff4bec73-df2b-4e74-9555-11cedbfd010d",
+      "resource": {
+        "resourceType": "DiagnosticReport",
+        "id": "ff4bec73-df2b-4e74-9555-11cedbfd010d",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/DiagnosticReport-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "c82fc130-5e85-49ee-9743-da1aa9f9607d"
+          },
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "952141ca-d600-4c98-bfdb-89bf3ab16896"
+          }
+        ],
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-DiagnosticReport.composition",
+            "valueReference": {
+              "reference": "urn:uuid:946b5455-0d63-413c-9368-2d95177591d2"
+            }
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:ddc144d8-6eea-4194-b646-53d56591a05e"
+          }
+        ],
+        "result": [
+          {
+            "reference": "urn:uuid:27e0aed5-7aa5-45f2-a17a-a6ea5272dcd3"
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "registered",
+        "code": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:73fd90cb-d18e-40c5-b5e6-02634f29d1ed",
+          "display": "Bibiana Fortuny"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:73fd90cb-d18e-40c5-b5e6-02634f29d1ed",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "73fd90cb-d18e-40c5-b5e6-02634f29d1ed",
+        "meta": {
+          "security": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "HTEST"
+            },
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "TRAIN"
+            }
+          ],
+          "tag": [
+            {
+              "system": "https://synderai.net/fhir/CodeSystem/tags",
+              "code": "synthetic",
+              "display": "SYNDERAI Synthetic data"
+            }
+          ],
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/patient-eu-core"
+          ]
+        },
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "JHN",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://ec.europa.eu/identifier/eci",
+            "value": "4280-888193-4"
+          },
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "MR",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://local.setting.eu/identifier",
+            "value": "054c94d4-cf12-15bc-26c4-9463e0ea2f81"
+          }
+        ],
+        "name": [
+          {
+            "given": [
+              "Bibiana"
+            ],
+            "family": "Fortuny",
+            "text": "Bibiana Fortuny"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Via Calisto Nebot 15 Apt. 08",
+              "Apt. 08"
+            ],
+            "use": "home",
+            "type": "physical",
+            "postalCode": "26001",
+            "city": "La Rioja",
+            "country": "Spain"
+          }
+        ],
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "+34 902 53 74 30"
+          }
+        ],
+        "extension": [
+          {
+            "extension": [
+              {
+                "url": "code",
+                "valueCodeableConcept": {
+                  "coding": [
+                    {
+                      "code": "ES",
+                      "system": "urn:iso:std:iso:3166"
+                    }
+                  ]
+                }
+              }
+            ],
+            "url": "http://hl7.org/fhir/StructureDefinition/patient-nationality"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__ips\"><tr><td>Bibiana Fortuny</td><td>female</td><td>26-Dec-1949</td></tr></table></div>"
+        },
+        "gender": "female",
+        "birthDate": "1949-12-26"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:888414db-79f7-49bf-b5a5-6f81481576e7",
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "888414db-79f7-49bf-b5a5-6f81481576e7",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/ServiceRequest-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "system": "http://example.org",
+            "value": "ce046462-c903-4571-bea8-0455db1d3a4a"
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:ddc144d8-6eea-4194-b646-53d56591a05e"
+          }
+        ],
+        "reasonCode": [
+          {
+            "coding": [
+              {
+                "code": "59621000",
+                "system": "http://snomed.info/sct",
+                "display": "Essential hypertension"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "237602007",
+                "system": "http://snomed.info/sct",
+                "display": "Metabolic syndrome X"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "44054006",
+                "system": "http://snomed.info/sct",
+                "display": "Type 2 diabetes mellitus"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "230572002",
+                "system": "http://snomed.info/sct",
+                "display": "Neuropathy due to diabetes mellitus"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "1755008",
+                "system": "http://snomed.info/sct",
+                "display": "Old myocardial infarction"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "363351006",
+                "system": "http://snomed.info/sct",
+                "display": "Malignant neoplasm of rectum"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "49436004",
+                "system": "http://snomed.info/sct",
+                "display": "Atrial fibrillation"
+              }
+            ]
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "active",
+        "intent": "order",
+        "code": {
+          "coding": [
+            {
+              "code": "108252007",
+              "system": "http://snomed.info/sct",
+              "display": "Laboratory procedure"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:73fd90cb-d18e-40c5-b5e6-02634f29d1ed",
+          "display": "Bibiana Fortuny"
+        },
+        "requester": {
+          "reference": "urn:uuid:f923ca69-fa69-45a4-be96-9d7d54f7435b"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:f923ca69-fa69-45a4-be96-9d7d54f7435b",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "f923ca69-fa69-45a4-be96-9d7d54f7435b",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Role Id: f923ca69-fa69-45a4-be96-9d7d54f7435b</div>"
+        },
+        "organization": {
+          "reference": "urn:uuid:1885b96c-1e5b-4b19-8f3f-4ce78791b1ca"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:1885b96c-1e5b-4b19-8f3f-4ce78791b1ca",
+      "resource": {
+        "resourceType": "Organization",
+        "id": "1885b96c-1e5b-4b19-8f3f-4ce78791b1ca",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/organization-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "12d4bde8-cd3a-4a13-b19f-8a714df8389d"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Calle de los Donantes de Sangre 3"
+            ],
+            "city": "Lardero",
+            "postalCode": "26140",
+            "country": "Spain"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Organization: Consultorio Médico</div>"
+        },
+        "name": "Consultorio Médico"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:ddc144d8-6eea-4194-b646-53d56591a05e",
+      "resource": {
+        "resourceType": "Specimen",
+        "id": "ddc144d8-6eea-4194-b646-53d56591a05e",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Specimen-eu-lab"
+          ]
+        },
+        "collection": {
+          "collectedDateTime": "2001-09-28"
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Specimen</th><th>Collection Date</th></tr><tr><td>Blood specimen</td><td><span class=\"nb\">28-Sep-2001</span></td></tr></table></div>"
+        },
+        "type": {
+          "coding": [
+            {
+              "code": "119297000",
+              "system": "http://snomed.info/sct",
+              "display": "Blood specimen"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:27e0aed5-7aa5-45f2-a17a-a6ea5272dcd3",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "27e0aed5-7aa5-45f2-a17a-a6ea5272dcd3",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Observation-resultslab-eu-lab"
+          ]
+        },
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "laboratory",
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category"
+              }
+            ]
+          }
+        ],
+        "performer": [
+          {
+            "display": "The Central European Laboratory"
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "code": "59261-8",
+              "system": "http://loinc.org",
+              "display": "Hemoglobin A1c/Hemoglobin.total standardized per IFCC-RMP for CDT in Blood"
+            }
+          ],
+          "text": "Hemoglobin A1c/Hemoglobin.total standardized per IFCC-RMP for CDT in Blood"
+        },
+        "valueQuantity": {
+          "value": 46.6,
+          "unit": "mmol/mol",
+          "code": "mmol/mol",
+          "system": "http://unitsofmeasure.org"
+        },
+        "referenceRange": [
+          {
+            "low": {
+              "value": 20,
+              "code": "mmol/mol",
+              "system": "http://unitsofmeasure.org"
+            },
+            "high": {
+              "value": 42,
+              "code": "mmol/mol",
+              "system": "http://unitsofmeasure.org"
+            }
+          }
+        ],
+        "interpretation": [
+          {
+            "coding": [
+              {
+                "code": "H",
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                "display": "High"
+              }
+            ]
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Test</th><th>28-Sep-2001</th><th>Reference&#xA0;Range</th><th>Flag</th><th>Unit</th></tr><tr><td>Hemoglobin A1c/Hemoglobin.total standardized per IFCC-RMP for CDT in Blood</td><td>46.6</td><td>20 - 42</td><td>H</td><td>mmol/mol</td></tr></table></div>"
+        },
+        "status": "final",
+        "effectiveDateTime": "2001-09-28T17:04:44Z",
+        "subject": {
+          "reference": "urn:uuid:73fd90cb-d18e-40c5-b5e6-02634f29d1ed",
+          "display": "Bibiana Fortuny"
+        },
+        "specimen": {
+          "reference": "urn:uuid:ddc144d8-6eea-4194-b646-53d56591a05e"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:a7f96670-727a-4333-81a8-458f637f86cc",
+      "resource": {
+        "resourceType": "Device",
+        "id": "a7f96670-727a-4333-81a8-458f637f86cc",
+        "deviceName": [
+          {
+            "name": "SYNDERAI Synthetic Generator",
+            "type": "manufacturer-name"
+          }
+        ],
+        "version": [
+          {
+            "value": "5.0"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">SYNDERAI Synthetic Generator v5.0</div>"
+        },
+        "status": "active",
+        "distinctIdentifier": "synderai-generator-50",
+        "manufacturer": "SYNDERAI Project"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:0d1ec374-dde8-4765-bf06-417d0075b290",
+      "resource": {
+        "resourceType": "Provenance",
+        "id": "0d1ec374-dde8-4765-bf06-417d0075b290",
+        "target": [
+          {
+            "reference": "urn:uuid:73fd90cb-d18e-40c5-b5e6-02634f29d1ed"
+          },
+          {
+            "reference": "urn:uuid:946b5455-0d63-413c-9368-2d95177591d2"
+          },
+          {
+            "reference": "urn:uuid:88634a4e-ad32-41b7-ac17-3ac7241984df"
+          },
+          {
+            "reference": "urn:uuid:370a66d1-a9a2-404c-b92e-797803d70570"
+          },
+          {
+            "reference": "urn:uuid:f923ca69-fa69-45a4-be96-9d7d54f7435b"
+          },
+          {
+            "reference": "urn:uuid:1885b96c-1e5b-4b19-8f3f-4ce78791b1ca"
+          }
+        ],
+        "activity": {
+          "coding": [
+            {
+              "code": "CREATE",
+              "system": "http://terminology.hl7.org/CodeSystem/v3-DataOperation",
+              "display": "create"
+            }
+          ],
+          "text": "Synthetic Example Data Generation"
+        },
+        "policy": [
+          "https://synderai.net/synderai-synthetic-data-policy"
+        ],
+        "agent": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "author",
+                  "system": "http://terminology.hl7.org/CodeSystem/provenance-participant-type",
+                  "display": "Author"
+                }
+              ],
+              "text": "author"
+            },
+            "who": {
+              "reference": "urn:uuid:a7f96670-727a-4333-81a8-458f637f86cc"
+            }
+          }
+        ],
+        "reason": [
+          {
+            "coding": [
+              {
+                "code": "TRAIN",
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+                "display": "training"
+              }
+            ],
+            "text": "Interoperability Testing and Training (non-clinical use)"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provenance for SYNDERAI Synthetic Example Data Resource</div>"
+        },
+        "recorded": "2001-09-28T21:04:44Z"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:88634a4e-ad32-41b7-ac17-3ac7241984df",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "88634a4e-ad32-41b7-ac17-3ac7241984df",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory Role Id: 88634a4e-ad32-41b7-ac17-3ac7241984df</div>"
+        },
+        "practitioner": {
+          "reference": "urn:uuid:370a66d1-a9a2-404c-b92e-797803d70570"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:370a66d1-a9a2-404c-b92e-797803d70570",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "370a66d1-a9a2-404c-b92e-797803d70570",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitioner-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "17d2a769-c3ce-47fb-9255-41642dae52ea"
+          }
+        ],
+        "name": [
+          {
+            "prefix": [
+              "dr"
+            ],
+            "given": [
+              "Ex"
+            ],
+            "family": "Ample"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Laboratoire Central Européenne",
+              "Boulevard du Jardin Botanique 32"
+            ],
+            "postalCode": "1000",
+            "city": "Brussels",
+            "country": "Belgium"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory: Laboratoire Central Européenne, 1000 Brussels, Belgium</div>"
+        }
+      }
+    }
+  ],
+  "type": "document",
+  "timestamp": "2001-09-28T21:04:44Z"
+}

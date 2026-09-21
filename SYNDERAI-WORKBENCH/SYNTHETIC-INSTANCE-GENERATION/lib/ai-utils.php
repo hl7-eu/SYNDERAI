@@ -3,165 +3,287 @@
 /**
  * AI Utility Functions — SynderAI
  *
- * Provides a collection of functions that call Large Language Model (LLM) APIs
- * to generate or enrich clinical content for synthetic patient records.
- *
- * Two AI backends are used:
+ * Calls to the two LLM backends the pipeline uses, plus the post-processing
+ * that turns their answers into something the generator can trust.
  *
  *   OpenAI (GPT)
  *     Endpoint : https://api.openai.com/v1/chat/completions
- *     Auth     : Bearer token via OPEN_AI_API_KEY constant
+ *     Auth     : Bearer token via OPEN_AI_API_KEY
  *     Models   : gpt-3.5-turbo (availability check, reference ranges, XHTML table)
  *                gpt-4.1       (dosage, lab conclusion, care-plan goals)
  *
  *   Anthropic (Claude)
  *     Endpoint : https://api.anthropic.com/v1/messages
- *     Auth     : x-api-key header via ANTHROPIC_API_KEY constant
+ *     Auth     : x-api-key header via ANTHROPIC_API_KEY
  *     Model    : claude-sonnet-4-6
- *     Beta     : Files API (anthropic-beta: files-api-2025-04-14)
  *
- * All AI calls use temperature = 0 for deterministic, reproducible output.
+ * Every call uses temperature 0. Every call goes through aiRequest(), which
+ * holds the transport settings and the retry policy in one place.
  *
- * Function overview:
+ * Function overview
+ *   aiRequest()                        — the one HTTP call, with retries
+ *   openAiChat()                       — Chat Completions, response validated
+ *   anthropicMessage()                 — Messages API, response validated
  *   testAIavailability()               — smoke-test OpenAI connectivity
- *   getAIReferenceRange()              — lab reference range as JSON (GPT-3.5)
- *   getAIlabtable()                    — XHTML lab results table (GPT-3.5)
- *   getAIsuggestedMedicationDosage()   — FHIR FSH dosage suggestion (GPT-4.1)
- *   getAILabConclusion()               — clinical lab conclusion text (GPT-4.1)
- *   getAIGoals()                       — FHIR FSH Goal instances (GPT-4.1)
- *   getAIHospitalCourse()              — discharge report + procedure list (Claude)
- *   unused_getAIHospitalCourse()       — DEPRECATED OpenAI version, do not use
+ *   getAIReferenceRange()              — lab reference range as JSON
+ *   getAIlabtable()                    — XHTML lab results table
+ *   getAIsuggestedMedicationDosage()   — FHIR FSH dosage suggestion
+ *   getAILabConclusion()               — clinical lab conclusion text
+ *   getAIGoals()                       — FHIR FSH Goal instances
+ *   fixMissingTargetMeasurewithAI()    — second pass for a missing LOINC
+ *   getAIHospitalCourse()              — discharge report and procedure list
+ *   applyCorrectionsOnAIflawsInFSH()   — known UCUM spelling repairs
  *
- * Standard result array shape (returned by most functions on success):
- * [
- *   'text'  / 'xhtml' / 'rr' => string   The AI-generated content
- *   'code'                   => int       HTTP status code from the API call
- *   'error'                  => string    cURL error string (empty on success)
- * ]
+ * WHAT CHANGED, AND WHY
  *
- * Response validation pattern:
- *   Most functions check three nested keys in the OpenAI response before
- *   accessing the content: $phpres['choices'], ['choices'][0]['message'],
- *   and ['choices'][0]['message']['content']. If any key is missing a warning
- *   is echoed and the content field is set to an empty string.
+ * The procedure list no longer comes out of the model's memory.
+ *   getAIHospitalCourse() used to tell the model that the SNOMED code "MUST be
+ *   taken from the file" at a URL, and separately referred to a local file
+ *   through a MAPPINGS constant. Neither reached the model: the Messages API
+ *   call declares no tools and attached no file, so the URL was prose about a
+ *   document the model could not open, and the local path was only ever used in
+ *   an upload branch that was switched off. The model complied by inventing
+ *   codes. Of the 60 code strings that reached the log, 46 fail the SCTID check
+ *   digit; the terminology server reports codes such as 91170007 and 287051000
+ *   as never having existed; and where a code did exist its meaning often did
+ *   not match the term beside it.
+ *
+ *   Now the model is given a menu of real concepts from the ART-DECOR value set
+ *   and may only choose from it, and whatever comes back is checked against the
+ *   same value set before it is returned. See lib/procedure-terminology.php.
+ *   There is no file of codes anywhere in this path.
+ *
+ * The transport is in one function.
+ *   The same forty lines of curl_setopt() stood in seven places, and the same
+ *   three isset() checks on the OpenAI response shape stood in five. They are
+ *   now aiRequest() and openAiChat(). Retries on 429 and 5xx are new: a rate
+ *   limit used to end as an empty string with no explanation.
+ *
+ * max_tokens was too small.
+ *   The Anthropic call asked for a 150-word letter and a procedure list inside
+ *   1024 tokens. A truncated answer loses the closing %%PROCEDURES%% marker and
+ *   ends mid-line, which is a plausible source of the malformed entries in the
+ *   cache. The limit is now AI_MAX_TOKENS_HOSPITAL_COURSE, and a response that
+ *   still hits it is logged rather than parsed as if it were complete.
+ *
+ * unused_getAIHospitalCourse() is gone.
+ *   A deprecated OpenAI Responses API version that could not run: var_dump()
+ *   and exit() in the body, and validation against the Chat Completions shape
+ *   which the Responses API never returns. Its only remaining reader was the
+ *   grep that found it.
+ *
+ * Diagnostics go to the log, not to stdout.
+ *   var_dump() and echo were writing into the same stream the FSH and ISH
+ *   pipeline reads. Everything now goes through lognlsev().
+ *
+ * Standard result array on success:
+ *   ['text' | 'xhtml' | 'rr' => string, 'code' => int|string, 'error' => string]
  *
  * External dependencies:
- *   config.php  — defines OPEN_AI_API_KEY, ANTHROPIC_API_KEY, MAPPINGS constant
+ *   config.php                    OPEN_AI_API_KEY, ANTHROPIC_API_KEY
+ *   lib/common-utils.php          lognl(), lognlsev(), registerMapMissing()
+ *   lib/procedure-terminology.php procedureMenu(), procedureIsKnown(), …
  */
 
 /* INCLUDES */
 include_once("config.php");
+include_once(__DIR__ . "/procedure-terminology.php");
 
+/** Transport settings, shared by every call in this file. */
+const AI_CONNECT_TIMEOUT = 10;
+const AI_TIMEOUT         = 120;
+const AI_LOW_SPEED_LIMIT = 1;    // bytes per second …
+const AI_LOW_SPEED_TIME  = 60;   // … below which a dead socket is abandoned
+
+/** Retries for 429 and 5xx. Delay doubles: 2 s, 4 s, 8 s. */
+const AI_MAX_ATTEMPTS  = 4;
+const AI_RETRY_DELAY   = 2;
 
 /**
- * Verify that the OpenAI API is reachable and responding correctly.
- *
- * Sends the minimal prompt "Say this is a test" to gpt-3.5-turbo and checks
- * whether the API returns HTTP 200. The actual response content is read but
- * not validated beyond confirming its presence.
- *
- * The function also builds a date-anchored age-calculation prompt (commented
- * out) that was used during development to verify the model's arithmetic; it
- * is retained for reference but is not sent.
- *
- * @return bool  TRUE if the API returned HTTP 200, FALSE otherwise (in which
- *               case the raw decoded response is var_dump()ed for debugging).
+ * Output budget for the discharge report call. The letter is capped at 150
+ * words, the procedure list adds one line per procedure, and the model needs
+ * room for both plus its markers. 1024 was not enough and truncated answers
+ * silently.
  */
-function testAIavailability() {
+const AI_MAX_TOKENS_HOSPITAL_COURSE = 4096;
 
-    $today = date("M Y");
+/** Anthropic model and API version used by this file. */
+const AI_ANTHROPIC_MODEL   = "claude-sonnet-4-6";
+const AI_ANTHROPIC_VERSION = "2023-06-01";
 
-    // Development prompt (not currently sent — kept for reference)
-    $prompt = <<<AIP
-Get the age as of $today of a patient born September 24, 1992. Return the age in years and months".
-AIP;
 
-    $payload = [
-        "model"       => "gpt-3.5-turbo",
-        "messages"    => [
-            [
-                "role"    => "user",
-                "content" => "Say this is a test"   // $prompt
-            ]
-        ],
-        "temperature" => 0
-    ];
+// ===========================================================================
+// transport
+// ===========================================================================
 
+/**
+ * POST a JSON payload and return the decoded answer.
+ *
+ * Retries on 429 and on 5xx, because both are transient and both used to end
+ * as an empty result with no explanation. A 4xx other than 429 is returned as
+ * it is: retrying a malformed request only spends money.
+ *
+ * @param  string   $url
+ * @param  string[] $headers  Complete header lines.
+ * @param  array    $payload  Encoded as JSON by this function.
+ * @param  string   $what     Name used in log lines.
+ *
+ * @return array{body:?array,code:int,error:string}
+ */
+function aiRequest(string $url, array $headers, array $payload, string $what): array
+{
     $jsondata = json_encode($payload);
+    $delay    = AI_RETRY_DELAY;
+    $response = FALSE;
+    $code     = 0;
+    $error    = "";
 
-    $headers = [
-        "Content-Type: application/json",
-        "Authorization: Bearer " . OPEN_AI_API_KEY
-    ];
+    for ($attempt = 1; $attempt <= AI_MAX_ATTEMPTS; $attempt++) {
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_HTTPHEADER,      $headers);
+        curl_setopt($ch, CURLOPT_POST,            TRUE);
+        curl_setopt($ch, CURLOPT_POSTFIELDS,      $jsondata);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER,  TRUE);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT,  AI_CONNECT_TIMEOUT);
+        curl_setopt($ch, CURLOPT_TIMEOUT,         AI_TIMEOUT);
+        // Abandon a socket that has stalled rather than sitting out the full
+        // timeout on a connection that is never going to deliver.
+        curl_setopt($ch, CURLOPT_LOW_SPEED_LIMIT, AI_LOW_SPEED_LIMIT);
+        curl_setopt($ch, CURLOPT_LOW_SPEED_TIME,  AI_LOW_SPEED_TIME);
 
-    $openaiurl = "https://api.openai.com/v1/chat/completions";
+        $response = curl_exec($ch);
+        $code     = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        $error    = (string) curl_error($ch);
 
-    $ch = curl_init($openaiurl);
-    curl_setopt($ch, CURLOPT_HTTPHEADER,     $headers);
-    curl_setopt($ch, CURLOPT_POST,           TRUE);
-    curl_setopt($ch, CURLOPT_POSTFIELDS,     $jsondata);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-    // For curl (OpenAI / Claude API / terminology API)
-    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
-    curl_setopt($ch, CURLOPT_TIMEOUT, 120);
-    // And critically, enable low-speed abort so dead sockets break:
-    curl_setopt($ch, CURLOPT_LOW_SPEED_LIMIT, 1);
-    curl_setopt($ch, CURLOPT_LOW_SPEED_TIME, 60);
+        $retryable = ($code === 429 || $code >= 500 || ($response === FALSE && $error !== ""));
+        if (!$retryable || $attempt === AI_MAX_ATTEMPTS) {
+            break;
+        }
 
-
-    $response = curl_exec($ch);
-    $code     = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-    $error    = curl_error($ch);
-
-    $phpres = json_decode($response, TRUE);
-
-    if ($code !== 200) {
-        var_dump($phpres);  // debug output on failure
-        return FALSE;
-    } else {
-        $res = $phpres['choices'][0]['message']['content'];
-        return TRUE;
+        lognlsev(2, WARNING, "............ +++ $what: HTTP $code"
+            . ($error !== "" ? " ($error)" : "")
+            . ", retry $attempt of " . (AI_MAX_ATTEMPTS - 1) . " in {$delay}s");
+        sleep($delay);
+        $delay *= 2;
     }
+
+    return [
+        'body'  => $response === FALSE ? NULL : json_decode($response, TRUE),
+        'code'  => $code,
+        'error' => $error,
+    ];
+}
+
+/**
+ * One OpenAI Chat Completions call, with the response shape validated once.
+ *
+ * @return array{text:string,code:int,error:string}
+ */
+function openAiChat(string $model, string $prompt, string $what, array $extra = []): array
+{
+    $payload = array_merge([
+        "model"       => $model,
+        "messages"    => [["role" => "user", "content" => $prompt]],
+        "temperature" => 0,
+    ], $extra);
+
+    $res = aiRequest(
+        "https://api.openai.com/v1/chat/completions",
+        ["Content-Type: application/json", "Authorization: Bearer " . OPEN_AI_API_KEY],
+        $payload,
+        $what
+    );
+
+    $text = $res['body']['choices'][0]['message']['content'] ?? NULL;
+    if ($text === NULL) {
+        // One line naming what is missing, instead of three checks and a
+        // var_dump into the stream the FSH pipeline reads.
+        $why = $res['body']['error']['message'] ?? "no choices[0].message.content";
+        lognlsev(2, WARNING, "............ +++ $what returned no content (HTTP "
+            . $res['code'] . "): " . $why);
+    }
+
+    return ['text' => $text ?? "", 'code' => $res['code'], 'error' => $res['error']];
+}
+
+/**
+ * One Anthropic Messages call, with the response shape validated once.
+ *
+ * @param  array $content  Content blocks for the single user message.
+ * @return array{text:string,code:int,error:string,truncated:bool}
+ */
+function anthropicMessage(array $content, string $what, int $maxTokens): array
+{
+    $res = aiRequest(
+        "https://api.anthropic.com/v1/messages",
+        [
+            "Content-Type: application/json",
+            "x-api-key: " . ANTHROPIC_API_KEY,
+            "anthropic-version: " . AI_ANTHROPIC_VERSION,
+        ],
+        [
+            "model"      => AI_ANTHROPIC_MODEL,
+            "max_tokens" => $maxTokens,
+            "messages"   => [["role" => "user", "content" => $content]],
+        ],
+        $what
+    );
+
+    $text = $res['body']['content'][0]['text'] ?? NULL;
+    if ($text === NULL) {
+        $why = $res['body']['error']['message'] ?? "no content[0].text";
+        lognlsev(2, WARNING, "............ +++ $what returned no content (HTTP "
+            . $res['code'] . "): " . $why);
+    }
+
+    // A truncated answer loses its closing marker and ends mid-line. Saying so
+    // is better than parsing the fragment as if it were complete.
+    $truncated = (($res['body']['stop_reason'] ?? "") === "max_tokens");
+    if ($truncated) {
+        lognlsev(2, WARNING, "............ +++ $what hit max_tokens ($maxTokens); "
+            . "the answer is incomplete");
+    }
+
+    return [
+        'text'      => $text ?? "",
+        'code'      => $res['code'],
+        'error'     => $res['error'],
+        'truncated' => $truncated,
+    ];
 }
 
 
-/**
- * Ask the AI for the normal reference range of a lab test for a specific patient.
- *
- * Instructs GPT-3.5-turbo (acting as a laboratory doctor) to return the
- * reference range as a plain JSON object. The prompt explicitly forbids
- * surrounding prose so that the response can be parsed directly.
- *
- * Expected AI response format (raw JSON string in 'rr'):
- * {
- *   "high":    <numeric>,
- *   "low":     <numeric>,
- *   "unit":    "<unit string>",
- *   "display": "<human-readable range string>"
- * }
- *
- * Note: the returned 'rr' field is the raw string from the AI — callers are
- * responsible for json_decode()ing it before use.
- *
- * @param  int|string $patage     Patient age in years (interpolated into prompt).
- * @param  string     $patgender  Patient gender (e.g. "male", "female").
- * @param  string     $labtest    Lab test name (e.g. "Haemoglobin", "eGFR").
- *
- * @return array|null  Associative array on HTTP 200:
- *                       'rr'    => string  Raw JSON reference range from the AI.
- *                       'code'  => int     HTTP status code.
- *                       'error' => string  cURL error (empty on success).
- *                     NULL on non-200 response.
- */
-function getAIReferenceRange($patage, $patgender, $labtest) {
+// ===========================================================================
+// OpenAI callers
+// ===========================================================================
 
+/**
+ * Verify that the OpenAI API is reachable and answering.
+ *
+ * @return bool TRUE on HTTP 200 with content.
+ */
+function testAIavailability(): bool
+{
+    $res = openAiChat("gpt-3.5-turbo", "Say this is a test", "testAIavailability");
+    return $res['code'] === 200 && $res['text'] !== "";
+}
+
+/**
+ * Ask for the normal reference range of a lab test for a specific patient.
+ *
+ * The 'rr' field is the raw string from the model; callers json_decode() it.
+ *
+ * @return array{rr:string,code:int,error:string}|null  NULL on a non-200 answer.
+ */
+function getAIReferenceRange($patage, $patgender, $labtest)
+{
     $prompt = <<<AIP
 You are a laboratory doctor. Get reference ranges the following lab test results for an $patage-year-old $patgender patient.
 Lab Test Results: $labtest
 
-Return reference ranges that are Quantities as plain JSON with 
+Return reference ranges that are Quantities as plain JSON with
 "high": {high value quantity without the units},
-"low": {low value quantity without the units}, 
+"low": {low value quantity without the units},
 "unit": {value quantity unit}
 Also add the the reference range as a string in JSON "display".
 Example:
@@ -171,7 +293,7 @@ Example:
     "unit" : "mg/dL,
     "display: "200-250 mg/dL"
 }
-Please add no extra text here, just this JSON. 
+Please add no extra text here, just this JSON.
 
 Return reference ranges that a Qualitative like "Negative", "trace" "++", "Pale yellow" or "Yellow to amber" as plain JSON
 "text": {range low text - range high text}.
@@ -183,78 +305,23 @@ Do not use here the JSON elements mention above (high, low, unit).
 
 AIP;
 
-    $payload = [
-        "model"       => "gpt-3.5-turbo",
-        "messages"    => [["role" => "user", "content" => $prompt]],
-        "temperature" => 0,
-        "max_tokens"  => 4096
-    ];
-
-    $jsondata  = json_encode($payload);
-    $headers   = [
-        "Content-Type: application/json",
-        "Authorization: Bearer " . OPEN_AI_API_KEY
-    ];
-
-    $ch = curl_init("https://api.openai.com/v1/chat/completions");
-    curl_setopt($ch, CURLOPT_HTTPHEADER,     $headers);
-    curl_setopt($ch, CURLOPT_POST,           TRUE);
-    curl_setopt($ch, CURLOPT_POSTFIELDS,     $jsondata);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-    // For curl (OpenAI / Claude API / terminology API)
-    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
-    curl_setopt($ch, CURLOPT_TIMEOUT, 120);
-    // And critically, enable low-speed abort so dead sockets break:
-    curl_setopt($ch, CURLOPT_LOW_SPEED_LIMIT, 1);
-    curl_setopt($ch, CURLOPT_LOW_SPEED_TIME, 60);
-
-    $response = curl_exec($ch);
-    $code     = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-    $error    = curl_error($ch);
-
-    $phpres = json_decode($response, TRUE);
-
-    if ($code !== 200) {
+    $res = openAiChat("gpt-3.5-turbo", $prompt, "getAIReferenceRange", ["max_tokens" => 4096]);
+    if ($res['code'] !== 200) {
         return NULL;
-    } else {
-        return [
-            'rr'    => $phpres['choices'][0]['message']['content'],
-            'code'  => $code,
-            'error' => $error
-        ];
     }
+
+    return ['rr' => $res['text'], 'code' => $res['code'], 'error' => $res['error']];
 }
 
-
 /**
- * Generate an XHTML lab results table for a patient using the AI.
+ * Generate an XHTML lab results table.
  *
- * Instructs GPT-3.5-turbo (acting as both a lab IT vendor and physician) to
- * produce a well-formed XHTML table from a plain-text list of lab results.
- *
- * The prompt requests:
- *   - Columns: Test | Result | Reference Range | Unit
- *   - Bold formatting + "H"/"L" suffix on out-of-range values
- *   - CSS class "hl7__eu__lab__eport" on the <table> element
- *
- * The AI is instructed to return XHTML only — no surrounding prose or markdown.
- * Response validation checks all three nested keys in the choices array and
- * sets 'xhtml' to an empty string if any key is absent.
- *
- * @param  int|string $patage     Patient age in years.
- * @param  string     $patgender  Patient gender (e.g. "male", "female").
- * @param  string     $sectxt2    Plain-text lab results, one per line, in the
- *                                format expected by the AI prompt.
- *
- * @return array  Always returns an array (never NULL), even on failure:
- *                  'xhtml' => string  XHTML table, or "" if validation failed.
- *                  'code'  => int     HTTP status code.
- *                  'error' => string  cURL error (empty on success).
+ * @return array{xhtml:string,code:int,error:string}
  */
-function getAIlabtable($patage, $patgender, $sectxt2) {
-
+function getAIlabtable($patage, $patgender, $sectxt2): array
+{
     $prompt = <<<AIP
-You are a laboratory IT system vendor and doctor of medicine as well. 
+You are a laboratory IT system vendor and doctor of medicine as well.
 Generate an XHTML table with the following lab test results for an $patage-year-old $patgender patient.
 Include each test, result, reference range, and unit.
 Add reference ranges between the "Result" and "Unit" columns.
@@ -267,300 +334,89 @@ $sectxt2
 Return the XHTML code only.
 AIP;
 
-    $payload = [
-        "model"       => "gpt-3.5-turbo",
-        "messages"    => [["role" => "user", "content" => $prompt]],
-        "temperature" => 0
-    ];
-
-    $jsondata = json_encode($payload);
-    $headers  = [
-        "Content-Type: application/json",
-        "Authorization: Bearer " . OPEN_AI_API_KEY
-    ];
-
-    $ch = curl_init("https://api.openai.com/v1/chat/completions");
-    curl_setopt($ch, CURLOPT_HTTPHEADER,     $headers);
-    curl_setopt($ch, CURLOPT_POST,           TRUE);
-    curl_setopt($ch, CURLOPT_POSTFIELDS,     $jsondata);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-    // For curl (OpenAI / Claude API / terminology API)
-    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
-    curl_setopt($ch, CURLOPT_TIMEOUT, 120);
-    // And critically, enable low-speed abort so dead sockets break:
-    curl_setopt($ch, CURLOPT_LOW_SPEED_LIMIT, 1);
-    curl_setopt($ch, CURLOPT_LOW_SPEED_TIME, 60);
-
-    $response = curl_exec($ch);
-    $code     = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-    $error    = curl_error($ch);
-
-    $phpres = json_decode($response, TRUE);
-
-    // Validate all nested keys before accessing the content
-    $valid = TRUE;
-    if (!isset($phpres['choices'])) {
-        lognlsev (2, WARNING, "............ +++ AI returned no value for \$phpres['choices'] getAIlabtable");
-        $valid = FALSE;
-    }
-    if (!isset($phpres['choices'][0]['message'])) {
-        lognlsev (2, WARNING, "............ +++ AI returned no value for \$phpres['choices'][0]['message'] getAIlabtable");
-        $valid = FALSE;
-    }
-    if (!isset($phpres['choices'][0]['message']['content'])) {
-        lognlsev (2, WARNING, "............ +++ AI returned no value for \$phpres['choices'][0]['message']['content'] getAIlabtabl");
-        $valid = FALSE;
-    }
-    if (!$valid) var_dump($phpres);
-
-    return [
-        'xhtml' => $valid ? $phpres['choices'][0]['message']['content'] : "",
-        'code'  => $code,
-        'error' => $error
-    ];
+    $res = openAiChat("gpt-3.5-turbo", $prompt, "getAIlabtable");
+    return ['xhtml' => $res['text'], 'code' => $res['code'], 'error' => $res['error']];
 }
 
-
 /**
- * Ask the AI for a suggested medication dosage in FHIR FSH format.
+ * Ask for a suggested medication dosage in FHIR FSH format.
  *
- * Instructs GPT-4.1 (acting as a physician) to suggest an appropriate dosage
- * for the given medication, taking the patient's age, gender, and active
- * diagnoses into account.
- *
- * The prompt is carefully structured to request FHIR FSH output covering:
- *   - dosage.text
- *   - dosage.doseAndRate.doseQuantity (value, unit, system, code in UCUM)
- *   - dosage.timing.repeat (frequency, period, periodUnit in UCUM)
- *   - dosage.asNeededBoolean (if applicable)
- *   - Tablet/capsule shorthand when the strength matches the dose form
- *
- * The AI is instructed to return FSH text only — no markdown markers or prose.
- *
- * @param  int|string $patage         Patient age in years.
- * @param  string     $patgender      Patient gender (e.g. "male", "female").
- * @param  string     $conditions4ai  Comma-separated or newline-separated list
- *                                    of active diagnoses (plain text or SNOMED
- *                                    display names).
- * @param  string     $medication     Medication name including strength
- *                                    (e.g. "Metformin 500 mg").
- *
- * @return array  Associative array:
- *                  'text'  => string  Raw FHIR FSH dosage snippet, or "" on failure.
- *                  'code'  => int     HTTP status code.
- *                  'error' => string  cURL error (empty on success).
+ * @return array{text:string,code:int,error:string}
  */
-function getAIsuggestedMedicationDosage($patage, $patgender, $conditions4ai, $medication) {
-
+function getAIsuggestedMedicationDosage($patage, $patgender, $conditions4ai, $medication): array
+{
     $prompt = <<<AIP
     You are a physician that has a $patage-year-old $patgender patient with the following diagnoses: $conditions4ai.
     What is an appropriate dosage for $medication?
-    
-    Please return a suggested dosage using the FHIR 'Dosage' data type in FHIR FSH format as 
-    '* dosage.text' but without the medication name only with strength and frequency. 
-    
+
+    Please return a suggested dosage using the FHIR 'Dosage' data type in FHIR FSH format as
+    '* dosage.text' but without the medication name only with strength and frequency.
+
     Add '* dosage.doseAndRate.doseQuantity.value =', , note that this is not in quotes.
     Add '* dosage.doseAndRate.doseQuantity.unit =', note that this is in quotes.
     Add '* dosage.doseAndRate.doseQuantity.system = "http://unitsofmeasure.org"', note that this is in quotes as shown.
     Add '* dosage.doseAndRate.doseQuantity.code =' in the format '#code', note that this is not in quotes.
-    
+
     Additionally add the 'dosage.timing' element with '* dosage.timing.repeat.frequency =', '* dosage.timing.repeat.period ='.
-    
+
     Add also '* dosage.timing.repeat.periodUnit =' in the format '#code', note that this is not in quotes.
-    
+
     Use '* dosage.asNeededBoolean =' if applicable, note that 'true' or 'false' is not in quotes.
-    
+
     If dosage.doseAndRate.doseQuantity.value and dosage.doseAndRate.doseQuantity.unit are
-    exactly as the strength of the medication and the dose form is a tablet or capsule then use 'tablet' or 
-    'capsule' respectively as dosage.doseAndRate.doseQuantity.value = 1 and 
+    exactly as the strength of the medication and the dose form is a tablet or capsule then use 'tablet' or
+    'capsule' respectively as dosage.doseAndRate.doseQuantity.value = 1 and
     dosage.doseAndRate.doseQuantity.unit = "{tbl}" or dosage.doseAndRate.doseQuantity.unit = "{cap}"
     dosage.doseAndRate.doseQuantity.system = \$ucum and the strength in parenthesis ().
     In that case the '* dosage.text' shall use '1 tablet' or '1 capsule' and the frequency.
 
     Return ONLY the FSH as pure text.
-    If you want to emit an error message such as "I'm sorry, but you did not specify a medication." do that 
+    If you want to emit an error message such as "I'm sorry, but you did not specify a medication." do that
     always with preceding "// " to indicate a proper FSH comment.
 AIP;
-    $prompt = trim($prompt);
 
-    $payload = [
-        "model"       => "gpt-4.1",
-        "messages"    => [["role" => "user", "content" => $prompt]],
-        "temperature" => 0
-    ];
-
-    $jsondata = json_encode($payload);
-    $headers  = [
-        "Content-Type: application/json",
-        "Authorization: Bearer " . OPEN_AI_API_KEY
-    ];
-
-    $ch = curl_init("https://api.openai.com/v1/chat/completions");
-    curl_setopt($ch, CURLOPT_HTTPHEADER,     $headers);
-    curl_setopt($ch, CURLOPT_POST,           TRUE);
-    curl_setopt($ch, CURLOPT_POSTFIELDS,     $jsondata);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-    // For curl (OpenAI / Claude API / terminology API)
-    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
-    curl_setopt($ch, CURLOPT_TIMEOUT, 120);
-    // And critically, enable low-speed abort so dead sockets break:
-    curl_setopt($ch, CURLOPT_LOW_SPEED_LIMIT, 1);
-    curl_setopt($ch, CURLOPT_LOW_SPEED_TIME, 60);
-
-    $response = curl_exec($ch);
-    $code     = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-    $error    = curl_error($ch);
-
-    $phpres = json_decode($response, TRUE);
-
-    $valid = TRUE;
-    if (!isset($phpres['choices'])) {
-        echo "+++ AI returned no value for \$phpres['choices'] getAIsuggestedMedicationDosage\n";
-        $valid = FALSE;
-    }
-    if (!isset($phpres['choices'][0]['message'])) {
-        echo "+++ AI returned no value for \$phpres['choices'][0]['message'] getAIsuggestedMedicationDosage\n";
-        $valid = FALSE;
-    }
-    if (!isset($phpres['choices'][0]['message']['content'])) {
-        echo "+++ AI returned no value for \$phpres['choices'][0]['message']['content'] getAIsuggestedMedicationDosage\n";
-        $valid = FALSE;
-    }
-
-    return [
-        'text'  => $valid ? $phpres['choices'][0]['message']['content'] : "",
-        'code'  => $code,
-        'error' => $error
-    ];
+    return openAiChat("gpt-4.1", trim($prompt), "getAIsuggestedMedicationDosage");
 }
 
-
 /**
- * Ask the AI for a brief clinical conclusion over a patient's lab results.
+ * Ask for a brief clinical conclusion over a patient's lab results.
  *
- * Instructs GPT-4.1 (acting as a reviewing laboratory doctor) to produce a
- * short plain-text clinical commentary (≤ 100 words, no headline) based on a
- * structured lab results table.
- *
- * Expected $labtable line format (pipe-delimited):
- *   | date | analyte | measurement/unit | normal range | "L" or "H" flag |
- *
- * @param  int|string $patage     Patient age in years.
- * @param  string     $patgender  Patient gender (e.g. "male", "female").
- * @param  string     $labtable   Pipe-delimited lab results table (plain text).
- *
- * @return array  Associative array:
- *                  'text'  => string  Clinical conclusion (≤ 100 words), or "" on failure.
- *                  'code'  => int     HTTP status code.
- *                  'error' => string  cURL error (empty on success).
+ * @return array{text:string,code:int,error:string}
  */
-function getAILabConclusion($patage, $patgender, $labtable) {
-
+function getAILabConclusion($patage, $patgender, $labtable): array
+{
     $prompt = <<<AIP
     You are a laboratory doctor and typically you are doing the last review of
     lab results of patients and add a short conclusion from the clinical
     laboratory perspective. Given the following list of lab results of a
-    $patage year old $patgender patient what would be your short conclusion 
+    $patage year old $patgender patient what would be your short conclusion
     here. The table has per line the following format:
       | date | analyte | measurement/unit | normal range for patient | "L" or an "H" as indicators for too low or too high values.
-      
+
     Return your conclusion only with no headline, pure text and not more than 100 words.
     Here are the lab results:
 
     $labtable
 AIP;
-    $prompt = trim($prompt);
 
-    $payload = [
-        "model"       => "gpt-4.1",
-        "messages"    => [["role" => "user", "content" => $prompt]],
-        "temperature" => 0
-    ];
-
-    $jsondata = json_encode($payload);
-    $headers  = [
-        "Content-Type: application/json",
-        "Authorization: Bearer " . OPEN_AI_API_KEY
-    ];
-
-    $ch = curl_init("https://api.openai.com/v1/chat/completions");
-    curl_setopt($ch, CURLOPT_HTTPHEADER,     $headers);
-    curl_setopt($ch, CURLOPT_POST,           TRUE);
-    curl_setopt($ch, CURLOPT_POSTFIELDS,     $jsondata);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-    // For curl (OpenAI / Claude API / terminology API)
-    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
-    curl_setopt($ch, CURLOPT_TIMEOUT, 120);
-    // And critically, enable low-speed abort so dead sockets break:
-    curl_setopt($ch, CURLOPT_LOW_SPEED_LIMIT, 1);
-    curl_setopt($ch, CURLOPT_LOW_SPEED_TIME, 60);
-
-    $response = curl_exec($ch);
-    $code     = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-    $error    = curl_error($ch);
-
-    $phpres = json_decode($response, TRUE);
-
-    $valid = TRUE;
-    if (!isset($phpres['choices'])) {
-        echo "+++ AI returned no value for \$phpres['choices'] getAILabConclusion\n";
-        $valid = FALSE;
-    }
-    if (!isset($phpres['choices'][0]['message'])) {
-        echo "+++ AI returned no value for \$phpres['choices'][0]['message'] getAILabConclusion\n";
-        $valid = FALSE;
-    }
-    if (!isset($phpres['choices'][0]['message']['content'])) {
-        echo "+++ AI returned no value for \$phpres['choices'][0]['message']['content'] getAILabConclusion\n";
-        $valid = FALSE;
-    }
-
-    return [
-        'text'  => $valid ? $phpres['choices'][0]['message']['content'] : "",
-        'code'  => $code,
-        'error' => $error
-    ];
+    return openAiChat("gpt-4.1", trim($prompt), "getAILabConclusion");
 }
 
-
 /**
- * Ask the AI to generate FHIR Goal instances for a care-plan item.
+ * Ask for FHIR Goal instances for one care-plan item, in FSH.
  *
- * Instructs GPT-4.1 (acting as the treating physician) to produce one or more
- * FHIR Goal instances in FHIR Shorthand (FSH) format, scoped to a single
- * care-plan item and informed by the patient's overall active problem list.
+ * The LOINC verification in the prompt relies on the model following the given
+ * URL pattern at inference time; no HTTP verification happens here. Treat the
+ * emitted target.measure as a suggestion, not as a validated binding.
  *
- * The prompt requests:
- *   - FSH Instance / InstanceOf / Title headers
- *   - description.text
- *   - target.measure with a verified LOINC code (the model is asked to
- *     validate codes against the FHIR LOINC CodeSystem lookup endpoint)
- *   - target.detailQuantity / target.detailRange with UCUM units where applicable
- *
- * The AI is instructed to return FSH only — no markdown fences or extra text.
- *
- * Note: the LOINC verification step relies on the model's ability to follow
- * the provided URL pattern at inference time; actual HTTP verification is not
- * guaranteed by all model versions.
- *
- * @param  int|string $patage          Patient age in years.
- * @param  string     $patgender       Patient gender (e.g. "male", "female").
- * @param  string     $careplanitem    Name/description of the care-plan item.
- * @param  string     $careplanreason  Reason or rationale for the care-plan item.
- * @param  string     $conditions4ai   Active problem list (plain text, one per line
- *                                     or comma-separated).
- *
- * @return array  Associative array:
- *                  'text'  => string  FHIR FSH Goal instance(s), or "" on failure.
- *                  'code'  => int     HTTP status code.
- *                  'error' => string  cURL error (empty on success).
+ * @return array{text:string,code:int,error:string}
  */
-function getAIGoals($patage, $patgender, $careplanitem, $careplanreason, $conditions4ai) {
-
+function getAIGoals($patage, $patgender, $careplanitem, $careplanreason, $conditions4ai): array
+{
     $prompt = <<<AIP
     You are a physician that treats a $patage y/o $patgender patient.
-    You created a care plan item: $careplanitem with reason $careplanreason. 
-    
+    You created a care plan item: $careplanitem with reason $careplanreason.
+
     Given his overall active problems:
     $conditions4ai
 
@@ -570,7 +426,7 @@ function getAIGoals($patage, $patgender, $careplanitem, $careplanreason, $condit
     for the FHIR FSH instance of the goals. Do not present a "Description: ". The first part
     look thus as the following pattern:
 
-    Instance: {Instance Name}  
+    Instance: {Instance Name}
     InstanceOf: Goal
     Title: "{human reabable title}"
     * description.text = "{description}"
@@ -584,366 +440,28 @@ function getAIGoals($patage, $patgender, $careplanitem, $careplanreason, $condit
     https://fhir.loinc.org/CodeSystem/\$lookup?system=http://loinc.org&code={code}
     otherwise do not emit "* target.measure" at all.
 
-    If target.detailQuantity, target.detailRange.high or target.detailRange.low 
-    is emited and UCUM is used it separately mentions 
+    If target.detailQuantity, target.detailRange.high or target.detailRange.low
+    is emited and UCUM is used it separately mentions
     * target[0].detailQuantity.value = {value}  -> for example * target[0].detailQuantity.value = 15.6
     * target[0].detailQuantity.unit = "{unit}"  -> for example * target[0].detailQuantity.unit = "mmol/L"
     * target[0].detailQuantity.system = "http://unitsofmeasure.org"
     * target[0].detailQuantity.code = #{code} -> for example * target[0].detailQuantity.code = #% or #mmol/L or #mm[Hg]
 
-    Return only the FSH code, no extra text or "```fsh" markers or other markup. 
+    Return only the FSH code, no extra text or "```fsh" markers or other markup.
 AIP;
-    $prompt = trim($prompt);
 
-    $payload = [
-        "model"       => "gpt-4.1",
-        "messages"    => [["role" => "user", "content" => $prompt]],
-        "temperature" => 0
-    ];
-
-    $jsondata = json_encode($payload);
-    $headers  = [
-        "Content-Type: application/json",
-        "Authorization: Bearer " . OPEN_AI_API_KEY
-    ];
-
-    $ch = curl_init("https://api.openai.com/v1/chat/completions");
-    curl_setopt($ch, CURLOPT_HTTPHEADER,     $headers);
-    curl_setopt($ch, CURLOPT_POST,           TRUE);
-    curl_setopt($ch, CURLOPT_POSTFIELDS,     $jsondata);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-    // For curl (OpenAI / Claude API / terminology API)
-    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
-    curl_setopt($ch, CURLOPT_TIMEOUT, 120);
-    // And critically, enable low-speed abort so dead sockets break:
-    curl_setopt($ch, CURLOPT_LOW_SPEED_LIMIT, 1);
-    curl_setopt($ch, CURLOPT_LOW_SPEED_TIME, 60);
-
-    $response = curl_exec($ch);
-    $code     = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-    $error    = curl_error($ch);
-
-    $phpres = json_decode($response, TRUE);
-
-    $valid = TRUE;
-    if (!isset($phpres['choices'])) {
-        echo "+++ AI returned no value for \$phpres['choices'] getAIGoals\n";
-        $valid = FALSE;
-    }
-    if (!isset($phpres['choices'][0]['message'])) {
-        echo "+++ AI returned no value for \$phpres['choices'][0]['message'] getAIGoals\n";
-        $valid = FALSE;
-    }
-    if (!isset($phpres['choices'][0]['message']['content'])) {
-        echo "+++ AI returned no value for \$phpres['choices'][0]['message']['content'] getAIGoals\n";
-        $valid = FALSE;
-    }
-
-    return [
-        'text'  => $valid ? $phpres['choices'][0]['message']['content'] : "",
-        'code'  => $code,
-        'error' => $error
-    ];
+    return openAiChat("gpt-4.1", trim($prompt), "getAIGoals");
 }
 
-
 /**
- * Generate a hospital discharge report (and optionally a procedure list) using Claude.
+ * Second pass: add a missing target.measure LOINC to an FSH Goal.
  *
- * This is the only function in this file that uses the Anthropic Claude API
- * (claude-sonnet-4-6) instead of OpenAI GPT. It takes the last encounter in a
- * hospital stay cluster and asks Claude to write a realistic inter-colleague
- * discharge letter from the treating hospital physician to the patient's
- * primary care doctor (≤ 150 words, plain text, delimited by %%TEXT%%).
- *
- * Optionally ($includeProcedures = TRUE), a second section is added to the
- * prompt requesting a pipe-delimited list of SNOMED-coded procedures
- * (diagnostic and therapeutic), delimited by %%PROCEDURES%%. The SNOMED
- * procedure reference list can be supplied to Claude in two ways, controlled
- * by the internal $USEFILEUPLOAD flag:
- *
- *   $USEFILEUPLOAD = TRUE  — Upload snomed-procedures.txt to Claude's Files
- *                            API (Beta) first, then attach it as a "document"
- *                            block in the message. Requires the beta header:
- *                            anthropic-beta: files-api-2025-04-14
- *
- *   $USEFILEUPLOAD = FALSE — Pass a public URL to the file at synderai.net
- *                            directly in the prompt text (no file upload step).
- *                            This is the current active mode.
- *
- *
- * @param  int|string $patage             Patient age in years.
- * @param  string     $patgender          Patient gender (e.g. "male", "female").
- * @param  array      $stayinfo           Hospital stay data. Must contain:
- *                                          'encounters' => array  List of encounter
- *                                          records; the LAST element is used.
- *                                        Each encounter record must contain:
- *                                          'reason'    => ['code'=>..., 'display'=>...]
- *                                          'discharge' => ['text'=>..., 'code'=>..., 'display'=>...]
- * @param  bool       $includeProcedures  If TRUE, appends a procedure extraction
- *                                        task to the prompt. Default: FALSE.
- *
- * @return array  Associative array (though see bugs — output is currently broken):
- *                  'text'  => string  Discharge narrative + optional procedure list.
- *                  'code'  => int|string  HTTP status code, or a sentinel string
- *                                         ('no-encounter-info', 'no-encounters-for-stay')
- *                                         for early-exit cases.
- *                  'error' => string  Error description or cURL error.
+ * @param  string $olddesc  The goal's objective, as context for the model.
+ * @param  string $oldfsh   The incomplete FSH from getAIGoals().
+ * @return array{text:string,code:int,error:string}
  */
-function getAIHospitalCourse($patage, $patgender, $stayinfo, $includeProcedures = FALSE) {
-
-    // Internal flag: TRUE = upload snomed-procedures.txt via Claude Files API (Beta)
-    //                FALSE = reference the file by its public URL (current mode)
-    $USEFILEUPLOAD = FALSE;
-
-    // -------------------------------------------------------------------------
-    // Early exits — return sentinel error arrays when encounter data is missing
-    // -------------------------------------------------------------------------
-    if ($stayinfo["encounters"] === NULL) {
-        return ['text' => "", 'code' => 'no-encounter-info', 'error' => "No encounter info."];
-    }
-    if (count($stayinfo["encounters"]) === 0) {
-        return ['text' => "", 'code' => 'no-encounters-for-stay', 'error' => "No encounters for this stay."];
-    }
-
-    // Use the last encounter in the cluster as the representative discharge encounter
-    $encounterinfo    = $stayinfo["encounters"][count($stayinfo["encounters"]) - 1];
-    $start            = $encounterinfo["start"];
-    $end              = $encounterinfo["end"];
-    $reasoncode       = $encounterinfo["reason"]["code"];
-    $reasondisplay    = $encounterinfo["reason"]["display"];
-    $dischargetext    = $encounterinfo["discharge"]["text"];
-    $dischargecode    = $encounterinfo["discharge"]["code"];
-    $dischargedisplay = $encounterinfo["discharge"]["display"];
-
-    // Path to the local SNOMED procedure reference file (used for file upload mode)
-    $snomedprocs = MAPPINGS . "/snomed-procedures.txt";
-
-    // -------------------------------------------------------------------------
-    // Build the optional procedure-extraction sub-prompt
-    // -------------------------------------------------------------------------
-    if ($includeProcedures) {
-        if ($USEFILEUPLOAD) {
-            // STEP 0a: File-upload mode — instruct Claude to read the attached file
-            $proceduresPrompt = <<<AIP
-    2. If you the look at the text of the hospital course, can you find a list of
-    procdures performed using the enclosed SNOMED procedure code list with code/display with 
-    all possible procedures.
-    Add an appropriate date to the procedure YYYY-MM-DD, e.g. 2000-03-16
-    within the stay period $start to $end.
-    Please note that the SNOMED code and display for the procedure MUST be taken from the file.
-    Split the list into "diagnostic" procedures and final 
-    "therpeutic" procedures.
-
-    Return the list and only this list in the format
-    diagnostic|date|text|snomed-code|snomed-display
-    therapeutic|date|text|snomed-code|snomed-display
-    
-    Embrace the list with this pattern: %%PROCEDURES%%
-
-    Attached is the snomed-procedure.txt file.
-AIP;
-        } else {
-            // STEP 0b: URL-reference mode — point Claude to the public file at synderai.net
-            $proceduresPrompt = <<<AIP
-    2. If you the look at the text of the hospital course, can you find a list of
-    procdures performed using the SNOMED procedure code list that can be found at
-    https://synderai.net/supporting-materials/snomed-procedures.txt
-    with code/display with all possible procedures.
-    Add an appropriate date to the procedure YYYY-MM-DD, e.g. 2000-03-16
-    within the stay period $start to $end.
-    Please note that the SNOMED code and display for the procedure MUST be taken from the file.
-    Split the list into "diagnostic" procedures and final 
-    "therpeutic" procedures.
-
-    Return the list and only this list in the format
-    diagnostic|date|text|snomed-code|snomed-display
-    therapeutic|date|text|snomed-code|snomed-display
-    
-    Embrace the list with this pattern: %%PROCEDURES%%
-AIP;
-        }
-    }
-
-    // -------------------------------------------------------------------------
-    // Build the main discharge-narrative prompt (Part 1)
-    // -------------------------------------------------------------------------
-    $prompt = <<<AIP
-    You are a doctor in a hospital and are doing the patient discharge management.
-
-    A $patage year old $patgender patient was admitted for the reason $reasondisplay (SNOMED: $reasoncode).
-    The patient was finally discharged with $dischargetext (ICD-10: $dischargecode $dischargedisplay).
-    
-    1. Invent a text authored by you as treating hospital physician back
-    to the primary care doctor of the patient (inter-colleague discharge report). 
-    The text should briefly summarize diagnostic assement folling the admission reason.
-    and the treatment in hospital.
-      
-    Return the text only with no headline, pure text and not more than 150 words.
-    Embrace the text with this pattern: %%TEXT%%
-
-AIP;
-
-    if ($includeProcedures) $prompt = $prompt . "\n" . $proceduresPrompt;
-    $prompt = trim($prompt);
-
-    // -------------------------------------------------------------------------
-    // STEP 1 (file-upload mode only): Upload snomed-procedures.txt to
-    //         Claude's Files API (Beta) to obtain a file_id for attachment.
-    // -------------------------------------------------------------------------
-    if ($includeProcedures && $USEFILEUPLOAD) {
-        $claudeUrl = "https://api.anthropic.com/v1/files";
-        $headers   = [
-            "x-api-key: " . ANTHROPIC_API_KEY,
-            "anthropic-version: 2023-06-01",
-            "anthropic-beta: files-api-2025-04-14"
-            // NOTE: Do NOT set Content-Type manually for multipart — cURL handles it
-        ];
-
-        $ch = curl_init($claudeUrl);
-        curl_setopt_array($ch, [
-            CURLOPT_HTTPHEADER     => $headers,
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_POST           => true,
-            CURLOPT_POSTFIELDS     => [
-                "file" => new CURLFile($snomedprocs)
-                // NOTE: No "purpose" field — Claude's Files API doesn't use it
-            ],
-            CURLOPT_TIMEOUT => 120,   // seconds
-            // For curl (OpenAI / Claude API / terminology API)
-            CURLOPT_CONNECTTIMEOUT => 10,
-            // And critically, enable low-speed abort so dead sockets break:
-            CURLOPT_LOW_SPEED_LIMIT => 1,
-            CURLOPT_LOW_SPEED_TIME => 60
-        ]);
-
-        $response = curl_exec($ch);
-
-        $fileData = json_decode($response, true);
-        $fileId   = isset($fileData["id"]) ? $fileData["id"] : NULL;  // e.g. "file_011CNha8..."
-
-        // STEP 2a: Build message payload with both text prompt and uploaded file reference
-        $payload = [
-            "model"      => "claude-sonnet-4-6",
-            "max_tokens" => 1024,
-            "messages"   => [
-                [
-                    "role"    => "user",
-                    "content" => [
-                        [
-                            "type" => "text",
-                            "text" => $prompt         // Text prompt comes first
-                        ],
-                        [
-                            // File reference — XML/TXT is treated as a "document" block
-                            "type"   => "document",
-                            "source" => [
-                                "type"    => "file",
-                                "file_id" => $fileId
-                            ]
-                        ]
-                    ]
-                ]
-            ]
-        ];
-    } else {
-        // STEP 2b: URL-reference mode — send the text prompt only (no file attachment)
-        $payload = [
-            "model"      => "claude-sonnet-4-6",
-            "max_tokens" => 1024,
-            "messages"   => [
-                [
-                    "role"    => "user",
-                    "content" => [
-                        [
-                            "type" => "text",
-                            "text" => $prompt
-                        ]
-                    ]
-                ]
-            ]
-        ];
-    }
-
-    $jsondata = json_encode($payload);
-
-    // -------------------------------------------------------------------------
-    // STEP 3: Send the main prompt to Claude and retrieve the response
-    // -------------------------------------------------------------------------
-    $headers = [
-        "Content-Type: application/json",
-        "x-api-key: " . ANTHROPIC_API_KEY,
-        "anthropic-version: 2023-06-01",
-        "anthropic-beta: files-api-2025-04-14"   // required even in URL-reference mode
-    ];
-
-    $ch = curl_init("https://api.anthropic.com/v1/messages");
-    curl_setopt($ch, CURLOPT_HTTPHEADER,     $headers);
-    curl_setopt($ch, CURLOPT_POST,           TRUE);
-    curl_setopt($ch, CURLOPT_POSTFIELDS,     $jsondata);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-    // For curl (OpenAI / Claude API / terminology API)
-    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
-    curl_setopt($ch, CURLOPT_TIMEOUT, 120);
-    // And critically, enable low-speed abort so dead sockets break:
-    curl_setopt($ch, CURLOPT_LOW_SPEED_LIMIT, 1);
-    curl_setopt($ch, CURLOPT_LOW_SPEED_TIME, 60);
-
-    $response = curl_exec($ch);
-    $code     = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-    $error    = curl_error($ch);
-
-    // Correct extraction using the Anthropic response schema:
-    //   $result["content"][0]["text"]
-
-    $result = json_decode($response, true);
-    $valid = isset($result["content"][0]["text"]);
-    
-    if (!$valid) echo "+++ AI returned no content: " . $result["error"]["message"] . "\n";
-
-    return [
-         'text'  => $valid ? $result["content"][0]["text"] : "",
-         'code'  => $code,
-         'error' => $error
-    ];
-}
-
-
-/**
- * Ask GPT-4.1 to add a missing target.measure LOINC code to a FHIR FSH Goal.
- *
- * When getAIGoals() generates FHIR Goal instances, the target.measure element
- * (which must reference a verified LOINC code) is occasionally omitted — either
- * because the model could not confirm a valid LOINC code at generation time, or
- * because it judged the goal type to be non-quantifiable. This function provides
- * a second-pass correction by submitting the incomplete FSH back to GPT-4.1 and
- * asking it to supply the missing target.measure binding.
- *
- * The prompt instructs the model to:
- *   - Identify any Goal instance that lacks a target.measure element.
- *   - Add a target.measure with an appropriate LOINC code and display name,
- *     using the pattern: * target.measure = http://loinc.org#{code} "{display}"
- *   - Verify the suggested LOINC code against the FHIR LOINC CodeSystem lookup
- *     endpoint before emitting it. If the code cannot be confirmed, the model is
- *     instructed to omit the target.measure element entirely rather than emit an
- *     unverified code. This matches the verification behaviour of getAIGoals().
- *   - Return the corrected FSH text only — no surrounding prose or markdown.
- *
- * @param  string $oldfsh  The incomplete FSH string containing one or more FHIR
- *                         Goal instances that are missing a target.measure element.
- *                         Typically the 'text' value returned by getAIGoals().
- *
- * @return array  Associative array:
- *                  'text'  => string  Corrected FSH with target.measure added,
- *                                     or "" if the AI response was malformed.
- *                  'code'  => int     HTTP status code from the OpenAI API call.
- *                  'error' => string  cURL error string (empty on success).
- */
-function fixMissingTargetMeasurewithAI($olddesc, $oldfsh) {
-
-    // The prompt embeds the incomplete FSH directly so the model has full context.
-    // LOINC verification is explicitly required before any target.measure is emitted,
-    // matching the verification behaviour of getAIGoals().
+function fixMissingTargetMeasurewithAI($olddesc, $oldfsh): array
+{
     $prompt = <<<AIP
     You are a professional FHIR FSH creator and found the enclosed FSH
     FHIR Goal construct.
@@ -968,254 +486,247 @@ function fixMissingTargetMeasurewithAI($olddesc, $oldfsh) {
     Return ONLY the corrected FSH, no other text.
 
 AIP;
-    $prompt = trim($prompt);
 
-    $payload = [
-        "model"       => "gpt-4.1",
-        "messages"    => [["role" => "user", "content" => $prompt]],
-        "temperature" => 0   // deterministic output for reproducible FSH corrections
-    ];
-
-    $jsondata = json_encode($payload);
-    $headers  = [
-        "Content-Type: application/json",
-        "Authorization: Bearer " . OPEN_AI_API_KEY
-    ];
-
-    $ch = curl_init("https://api.openai.com/v1/chat/completions");
-    curl_setopt($ch, CURLOPT_HTTPHEADER,     $headers);
-    curl_setopt($ch, CURLOPT_POST,           TRUE);
-    curl_setopt($ch, CURLOPT_POSTFIELDS,     $jsondata);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-    // For curl (OpenAI / Claude API / terminology API)
-    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
-    curl_setopt($ch, CURLOPT_TIMEOUT, 120);
-    // And critically, enable low-speed abort so dead sockets break:
-    curl_setopt($ch, CURLOPT_LOW_SPEED_LIMIT, 1);
-    curl_setopt($ch, CURLOPT_LOW_SPEED_TIME, 60);
-
-    $response = curl_exec($ch);
-    $code     = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-    $error    = curl_error($ch);
-
-    $phpres = json_decode($response, TRUE);
-
-    // Validate all three nested keys before accessing the content
-    $valid = TRUE;
-    if (!isset($phpres['choices'])) {
-        echo "+++ AI returned no value for \$phpres['choices'] fixMissingTargetMeasurewithAI\n";
-        $valid = FALSE;
-    }
-    if (!isset($phpres['choices'][0]['message'])) {
-        echo "+++ AI returned no value for \$phpres['choices'][0]['message'] fixMissingTargetMeasurewithAI\n";
-        $valid = FALSE;
-    }
-    if (!isset($phpres['choices'][0]['message']['content'])) {
-        echo "+++ AI returned no value for \$phpres['choices'][0]['message']['content'] fixMissingTargetMeasurewithAI\n";
-        $valid = FALSE;
-    }
-
-    return [
-        'text'  => $valid ? $phpres['choices'][0]['message']['content'] : "",
-        'code'  => $code,
-        'error' => $error
-    ];
+    return openAiChat("gpt-4.1", trim($prompt), "fixMissingTargetMeasurewithAI");
 }
 
-/**
- * DEPRECATED — Hospital discharge report generator using OpenAI (non-functional).
- *
- * This function is the original OpenAI GPT-4.1 implementation of the hospital
- * course generator and has been superseded by {@see getAIHospitalCourse()},
- * which uses the Anthropic Claude API instead.
- *
- * It is retained in the codebase for reference only and MUST NOT be called in
- * production. It contains active debug statements (var_dump / exit) that would
- * halt execution immediately.
- *
- * What it attempted to do:
- *   1. Upload snomed-procedures.txt to the OpenAI Files API
- *      (endpoint: https://api.openai.com/v1/files, purpose: "assistants").
- *   2. Submit the discharge prompt + file reference to the OpenAI Responses
- *      API (endpoint: https://api.openai.com/v1/responses) using the
- *      "input_file" content block.
- *   3. Parse and return the AI-generated discharge narrative.
- *
- * Known issues that prevented it from working:
- *   - var_dump($response) and var_dump($phpres);exit; halt execution after
- *     each API call.
- *   - The Responses API endpoint and payload shape differ from the Chat
- *     Completions API; the validation block still checks $phpres['choices']
- *     which is not present in Responses API replies.
- *
- * @deprecated  Use {@see getAIHospitalCourse()} instead.
- *
- * @param  int|string $patage         Patient age in years.
- * @param  string     $patgender      Patient gender.
- * @param  array      $encounterinfo  Single encounter record with keys:
- *                                      'reason'    => ['code', 'display']
- *                                      'discharge' => ['text', 'code', 'display']
- *
- * @return array  Would return ['text', 'code', 'error'] on success, but
- *                execution is halted by debug statements before any return.
- */
-function unused_getAIHospitalCourse($patage, $patgender, $encounterinfo) {
-    // This function uses ChatGPT and has been replaced by getAIHospitalCourse() (Claude).
 
+// ===========================================================================
+// Anthropic caller: discharge report and procedures
+// ===========================================================================
+
+/**
+ * Generate a hospital discharge report and, optionally, the procedures performed.
+ *
+ * THE PROCEDURE LIST
+ *   The model is given a menu of concepts taken from the ART-DECOR procedure
+ *   value set and is told to answer with a code from that menu and nothing
+ *   else. Every returned line is then checked again here: the shape of the
+ *   line, the date, and the code's membership in the value set. A line that
+ *   fails any of those is dropped and reported through registerMapMissing(),
+ *   so what the model got wrong is in the log rather than in the output.
+ *
+ *   The menu is a shortlist, not the value set: 57,709 concepts would be on the
+ *   order of a million tokens per stay. It is built per stay from the admission
+ *   reason and discharge diagnosis, plus the ward procedures that are plausible
+ *   in any discharge report. Roughly 250 entries, a few thousand tokens, which
+ *   is small enough to send every time.
+ *
+ *   Two things this deliberately does NOT do. It does not let the model write
+ *   free-text procedure names to be matched afterwards: a name that resolves to
+ *   nothing has already been written into the narrative by then. And it does
+ *   not fuzzy-match: an approximate match is how an observable entity and a
+ *   physical object ended up in a procedure list.
+ *
+ * @param  int|string $patage
+ * @param  string     $patgender
+ * @param  array      $stayinfo           Must contain 'encounters'; the last one
+ *                                        is used as the discharge encounter.
+ * @param  bool       $includeProcedures  Append the procedure task.
+ *
+ * @return array{text:string,code:int|string,error:string}
+ *         'text' carries the letter between %%TEXT%% markers and, when asked
+ *         for, the validated procedure lines between %%PROCEDURES%% markers,
+ *         in the format type|date|text|code|display.
+ */
+function getAIHospitalCourse($patage, $patgender, $stayinfo, $includeProcedures = FALSE): array
+{
+    if ($stayinfo["encounters"] === NULL) {
+        return ['text' => "", 'code' => 'no-encounter-info', 'error' => "No encounter info."];
+    }
+    if (count($stayinfo["encounters"]) === 0) {
+        return ['text' => "", 'code' => 'no-encounters-for-stay', 'error' => "No encounters for this stay."];
+    }
+
+    $encounterinfo    = $stayinfo["encounters"][count($stayinfo["encounters"]) - 1];
+    $start            = $encounterinfo["start"];
+    $end              = $encounterinfo["end"];
     $reasoncode       = $encounterinfo["reason"]["code"];
     $reasondisplay    = $encounterinfo["reason"]["display"];
     $dischargetext    = $encounterinfo["discharge"]["text"];
     $dischargecode    = $encounterinfo["discharge"]["code"];
     $dischargedisplay = $encounterinfo["discharge"]["display"];
-    $snomedprocs      = MAPPINGS . "/snomed-procedures.txt";
 
+    // -----------------------------------------------------------------------
+    // Part 1 — the letter
+    // -----------------------------------------------------------------------
     $prompt = <<<AIP
     You are a doctor in a hospital and are doing the patient discharge management.
 
     A $patage year old $patgender patient was admitted for the reason $reasondisplay (SNOMED: $reasoncode).
     The patient was finally discharged with $dischargetext (ICD-10: $dischargecode $dischargedisplay).
-    
+
     1. Invent a text authored by you as treating hospital physician back
-    to the primary care doctor of the patient (inter-colleague discharge report). 
+    to the primary care doctor of the patient (inter-colleague discharge report).
     The text should briefly summarize diagnostic assement folling the admission reason.
     and the treatment in hospital.
-      
-    Return the text only with no headline, pure text and not more than 500 words.
+
+    Return the text only with no headline, pure text and not more than 150 words.
     Embrace the text with this pattern: %%TEXT%%
-    
-    2. If you the look at the text of the hospital course, can you find a list of
-    procdures performed using the enclosed snomed-procedure XML with code/display with 
-    all possible procedures? Split the list into "diagnostic" procedures and final 
-    "therpeutic" procedures.
 
-    Return the list and only this list in the format
-    diagnostic|text|snomed-code|snomed-display respectively
-    therapeutic|text|snomed-code|snomed-display respectively
-    
-    Embrace the list with this pattern: %%PROCEDURES%%
-
-    Attached is the XML.
 AIP;
-    $prompt = trim($prompt);
-    // var_dump($prompt);  // DEBUG — halts-adjacent; remove before any reuse
 
-    // STEP 1: Upload snomed-procedures.txt to OpenAI Files API
-    $headers = [
-        "Content-Type: multipart/form-data",
-        "Authorization: Bearer " . OPEN_AI_API_KEY
-    ];
-
-    $ch = curl_init("https://api.openai.com/v1/files");
-    curl_setopt_array($ch, [
-        CURLOPT_HTTPHEADER     => $headers,
-        CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_POST           => true,
-        CURLOPT_POSTFIELDS     => [
-            "file"    => new CURLFile($snomedprocs),
-            "purpose" => "assistants"
-        ],
-        CURLOPT_TIMEOUT => 120,   // seconds
-        // For curl (OpenAI / Claude API / terminology API)
-        CURLOPT_CONNECTTIMEOUT => 10,
-        // And critically, enable low-speed abort so dead sockets break:
-        CURLOPT_LOW_SPEED_LIMIT => 1,
-        CURLOPT_LOW_SPEED_TIME => 60
-    ]);
-
-    $response = curl_exec($ch);
-    // var_dump($response);  // DEBUG — halts execution here in practice
-
-    $fileData = json_decode($response, true);
-    $fileId   = $fileData["id"];
-
-    // STEP 2: Submit prompt + file reference to OpenAI Responses API
-    $payload = [
-        "model" => "gpt-4.1",
-        "input" => [
-            [
-                "role"    => "user",
-                "content" => [
-                    ["type" => "input_text", "text" => $prompt],
-                    ["type" => "input_file", "file_id" => $fileId]
-                ]
-            ]
-        ],
-        "temperature" => 0
-    ];
-
-    $jsondata = json_encode($payload);
-    $headers  = [
-        "Content-Type: application/json",
-        "Authorization: Bearer " . OPEN_AI_API_KEY
-    ];
-
-    $ch = curl_init("https://api.openai.com/v1/responses");
-    curl_setopt($ch, CURLOPT_HTTPHEADER,     $headers);
-    curl_setopt($ch, CURLOPT_POST,           TRUE);
-    curl_setopt($ch, CURLOPT_POSTFIELDS,     $jsondata);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-    // For curl (OpenAI / Claude API / terminology API)
-    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
-    curl_setopt($ch, CURLOPT_TIMEOUT, 120);
-    // And critically, enable low-speed abort so dead sockets break:
-    curl_setopt($ch, CURLOPT_LOW_SPEED_LIMIT, 1);
-    curl_setopt($ch, CURLOPT_LOW_SPEED_TIME, 60);
-
-    $response = curl_exec($ch);
-    $code     = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-    $error    = curl_error($ch);
-
-    $phpres = json_decode($response, TRUE);
-    // var_dump($phpres); exit;  // DEBUG — halts execution; function never returns
-
-    // NOTE: The validation below uses $phpres['choices'] (OpenAI Chat Completions schema)
-    // but the Responses API returns a different structure — this would always fail.
-    $valid = TRUE;
-    if (!isset($phpres['choices'])) {
-        echo "+++ AI returned no value for \$phpres['choices'] unused_getAIHospitalCourse\n";
-        $valid = FALSE;
-    }
-    if (!isset($phpres['choices'][0]['message'])) {
-        echo "+++ AI returned no value for \$phpres['choices'][0]['message'] unused_getAIHospitalCourse\n";
-        $valid = FALSE;
-    }
-    if (!isset($phpres['choices'][0]['message']['content'])) {
-        echo "+++ AI returned no value for \$phpres['choices'][0]['message']['content'] unused_getAIHospitalCourse\n";
-        $valid = FALSE;
+    // -----------------------------------------------------------------------
+    // Part 2 — the procedures, chosen from the menu
+    // -----------------------------------------------------------------------
+    $menu = [];
+    if ($includeProcedures) {
+        $menu = procedureMenu([$reasondisplay, $dischargedisplay, $dischargetext]);
+        if ($menu === []) {
+            // Without a menu the model has nothing to choose from, and asking
+            // anyway is what produced invented codes. Drop the task instead.
+            lognlsev(2, WARNING, "............ +++ getAIHospitalCourse: procedure menu is "
+                . "empty, asking for the letter only");
+            $includeProcedures = FALSE;
+        }
     }
 
-    return [
-        'text'  => $valid ? $phpres['choices'][0]['message']['content'] : "",
-        'code'  => $code,
-        'error' => $error
-    ];
+    if ($includeProcedures) {
+        $menutext = procedureMenuAsText($menu);
+        $prompt .= <<<AIP
+
+    2. From the hospital course you have just written, list the procedures that were performed.
+
+    You MUST choose each procedure from the list below. The list is the only
+    permitted vocabulary: do not use a SNOMED code that is not in it, do not
+    invent one, and do not alter the display text. If a procedure you described
+    in the text is not in the list, leave it out of the list rather than
+    substituting a similar code.
+
+    Each line of the list is: snomed-code|snomed-display
+
+    $menutext
+
+    Give every procedure a date YYYY-MM-DD within the stay period $start to $end.
+    Split the result into "diagnostic" and "therapeutic" procedures.
+
+    Return the list and only this list, one procedure per line, in the format
+    diagnostic|date|text|snomed-code|snomed-display
+    therapeutic|date|text|snomed-code|snomed-display
+
+    where "text" is your own short sentence about that procedure and
+    snomed-code and snomed-display are copied verbatim from the list above.
+
+    Embrace the list with this pattern: %%PROCEDURES%%
+AIP;
+    }
+
+    $res = anthropicMessage(
+        [["type" => "text", "text" => trim($prompt)]],
+        "getAIHospitalCourse",
+        AI_MAX_TOKENS_HOSPITAL_COURSE
+    );
+
+    if ($res['code'] !== 200 || $res['text'] === "") {
+        return ['text' => "", 'code' => $res['code'], 'error' => $res['error']];
+    }
+    if ($res['truncated']) {
+        // The closing marker is missing, so the caller's split would take the
+        // rest of the answer as one field. Refuse the whole answer instead.
+        return ['text' => "", 'code' => $res['code'],
+                'error' => "answer truncated at " . AI_MAX_TOKENS_HOSPITAL_COURSE . " tokens"];
+    }
+
+    $text = $includeProcedures ? aiFilterProcedureBlock($res['text'], $menu, $start, $end)
+                               : $res['text'];
+
+    return ['text' => $text, 'code' => $res['code'], 'error' => $res['error']];
+}
+
+/**
+ * Keep only the procedure lines that survive validation.
+ *
+ * Checked per line, in this order, because each check assumes the one before:
+ *   1. five pipe-separated fields — a truncated or reordered line has fewer
+ *      or more, and the field swap that put the literal string "procedure"
+ *      into the code position had them in the wrong places;
+ *   2. type is diagnostic or therapeutic;
+ *   3. date parses and falls inside the stay;
+ *   4. the code is a concept of the procedure value set.
+ *
+ * The display is taken from the value set, not from the model, so a correct
+ * code with an invented label cannot get through either.
+ *
+ * @param  string               $answer  Full model answer.
+ * @param  array<string,string> $menu    code => display, what was offered.
+ * @return string  The answer with a validated %%PROCEDURES%% block.
+ */
+function aiFilterProcedureBlock(string $answer, array $menu, string $start, string $end): string
+{
+    $parts = explode("%%PROCEDURES%%", $answer);
+    if (count($parts) < 3) {
+        lognlsev(2, WARNING, "............ +++ getAIHospitalCourse: no %%PROCEDURES%% block "
+            . "in the answer");
+        return $answer;
+    }
+
+    $kept = [];
+    $dropped = 0;
+    foreach (explode("\n", trim($parts[1])) as $line) {
+        $line = trim($line);
+        if ($line === "") {
+            continue;
+        }
+        $items = explode("|", $line);
+        if (count($items) !== 5) {
+            $dropped++;
+            registerMapMissing("+++ Procedure line has " . count($items)
+                . " fields instead of 5: " . substr($line, 0, 80));
+            continue;
+        }
+
+        [$type, $date, $what, $code, $display] = array_map('trim', $items);
+
+        if ($type !== "diagnostic" && $type !== "therapeutic") {
+            $dropped++;
+            registerMapMissing("+++ Procedure type is neither diagnostic nor therapeutic: $type");
+            continue;
+        }
+        if (preg_match('/^\d{4}-\d{2}-\d{2}$/', $date) !== 1
+            || ($start !== "" && $date < substr($start, 0, 10))
+            || ($end   !== "" && $date > substr($end,   0, 10))) {
+            $dropped++;
+            registerMapMissing("+++ Procedure date $date is malformed or outside $start..$end");
+            continue;
+        }
+        if (!procedureIsKnown($code)) {
+            $dropped++;
+            registerMapMissing("+++ Procedure code not in " . PROCEDURE_VALUESET . ": $code ($display)");
+            continue;
+        }
+        if (!isset($menu[$code])) {
+            // In the value set but not on the menu: allowed through, because it
+            // is a real procedure concept, but worth knowing about — it means
+            // the model went outside the vocabulary it was given.
+            registerMapMissing("+++ Procedure code $code was not on the offered menu");
+        }
+
+        // The display comes from the terminology, never from the answer.
+        $kept[] = implode("|", [$type, $date, $what, $code, procedureDisplay($code)]);
+    }
+
+    lognl(3, "......... Hospital procedures: " . count($kept) . " kept, $dropped dropped");
+
+    $parts[1] = "\n" . implode("\n", $kept) . "\n";
+    return implode("%%PROCEDURES%%", $parts);
 }
 
 
+// ===========================================================================
+// post-processing
+// ===========================================================================
+
 /**
- * Apply post-processing corrections to AI-generated FHIR Shorthand (FSH) output.
+ * Repair the UCUM spellings models get wrong.
  *
- * Large language models occasionally emit UCUM unit codes without the required
- * curly-brace delimiters (e.g. "#tbl" instead of "#{tbl}"). This function
- * corrects the known offenders by normalising them to the UCUM annotation
- * syntax required by the FHIR FSH specification.
+ * Order matters: "#events/hr" is corrected before "#events/h", otherwise the
+ * shorter pattern matches first and leaves a trailing "r".
  *
- * Examples for orrections applied:
- *   #events/hr  →  #{events/h}   (heart-rate unit, non-standard abbreviation)
- *   #events/h   →  #{events/h}   (heart-rate unit, missing braces)
- *   #tbl        →  #{tbl}        (tablet dose form, missing braces)
- *   #cap        →  #{cap}        (capsule dose form, missing braces)
- *
- * The replacements are applied in a safe order: the longer pattern
- * "#events/hr" is corrected before "#events/h" to avoid a partial match
- * leaving a trailing "r" in the output.
- *
- * @param  string $fsh  Raw FSH string as returned by the AI (e.g. from
- *                      getAIsuggestedMedicationDosage() or getAIGoals()).
- *
- * @return string  The corrected FSH string with all known unit-code issues fixed.
+ * @param  string $fsh  Raw FSH as returned by the model.
+ * @return string
  */
-function applyCorrectionsOnAIflawsInFSH($fsh) {
+function applyCorrectionsOnAIflawsInFSH($fsh)
+{
     $tmp = str_replace("#events/hr",                 "#{events/h}",       $fsh);   // non-standard /hr abbreviation
     $tmp = str_replace("#events/h",                  "#{events/h}",       $tmp);   // missing curly braces
     $tmp = str_replace("#tbl",                       "#{tbl}",            $tmp);   // tablet dose form
@@ -1224,7 +735,7 @@ function applyCorrectionsOnAIflawsInFSH($fsh) {
     $tmp = str_replace("##/area",                    "#{#/area}",         $tmp);   // area
     $tmp = str_replace("#[#/area]",                  "#{[#/area]}",       $tmp);   // area
     $tmp = str_replace("##/HPF",                     "#{#/HPF}",         $tmp);    // HPF
-    $tmp = str_replace("#actuation",                 "#{actuation}",      $tmp);   // actuation    
+    $tmp = str_replace("#actuation",                 "#{actuation}",      $tmp);   // actuation
     $tmp = str_replace("#actuat",                    "#{actuation}",      $tmp);   // actuation
     $tmp = str_replace("#patch",                     "#{patch}",          $tmp);   // patch
     $tmp = str_replace("#INR",                       "#{INR}",            $tmp);   // INR

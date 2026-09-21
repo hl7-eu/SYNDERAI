@@ -1,0 +1,788 @@
+{
+  "resourceType": "Bundle",
+  "id": "f04dd665-4724-4784-8f1b-8a93d017259e",
+  "meta": {
+    "profile": [
+      "http://hl7.eu/fhir/laboratory/StructureDefinition/Bundle-eu-lab"
+    ]
+  },
+  "identifier": {
+    "assigner": {
+      "display": "HL7 Europe"
+    },
+    "system": "urn:oid:2.16.840.1.113883.2.51.999",
+    "value": "e889dca0-8483-46b0-8e82-bb0c94ee51d2"
+  },
+  "entry": [
+    {
+      "fullUrl": "urn:uuid:3984fecd-e40d-4539-b738-5ff729f8047c",
+      "resource": {
+        "resourceType": "Composition",
+        "id": "3984fecd-e40d-4539-b738-5ff729f8047c",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Composition-eu-lab"
+          ]
+        },
+        "extension": [
+          {
+            "url": "http://hl7.eu/fhir/extensions/StructureDefinition/composition-diagnosticReportReference",
+            "valueReference": {
+              "reference": "urn:uuid:2aa571d6-5554-4635-83ab-bbb9ab79eb01"
+            }
+          }
+        ],
+        "identifier": {
+          "assigner": {
+            "display": "HL7 Europe"
+          },
+          "system": "urn:oid:2.16.840.1.113883.2.51.999",
+          "value": "e19b4c74-7ec8-4476-94f4-679188ce8e35"
+        },
+        "author": [
+          {
+            "reference": "urn:uuid:f0953d6e-e6f7-48ed-9971-d35a637a34f0"
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "type": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ],
+          "text": "Laboratory Report"
+        },
+        "section": [
+          {
+            "code": {
+              "coding": [
+                {
+                  "code": "18719-5",
+                  "system": "http://loinc.org",
+                  "display": "Chemistry studies (set)"
+                }
+              ],
+              "text": "CHEM"
+            },
+            "entry": [
+              {
+                "reference": "urn:uuid:433f70fc-35c0-49e3-82fa-258e58528efa"
+              }
+            ],
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>CHEM</h3><table class=\"hl7__eu__lab__report\"><thead><tr><th>Test</th><th>10-JUN-2022</th><th>Reference&#xA0;Range</th><th>Unit</th></tr></thead><tbody><tr><td></td><td><strong>51.0 L</strong></td><td>60 - 89</td><td>mL/min/{1.73_m2}</td></tr></tbody></table></div>"
+            },
+            "title": "CHEM"
+          },
+          {
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>Annotation</h3><table class=\"hl7__eu__lab__report\"><tr><th>Conclusion and Recommendations based on this report and previous findings known to us</th></tr><tr><td>The patient shows mildly decreased kidney function (GFR 51 mL/min/1.73 m²), consistent with stage 3a chronic kidney disease. This may be age-related but warrants monitoring and consideration of renal risk factors, medication dosing, and avoidance of nephrotoxins. No other abnormalities reported.</td></tr></table></div>"
+            },
+            "code": {
+              "coding": [
+                {
+                  "code": "48767-8",
+                  "system": "http://loinc.org",
+                  "display": "Annotation comment [Interpretation] Narrative"
+                }
+              ]
+            },
+            "title": "Annotation comment"
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "final",
+        "subject": {
+          "reference": "urn:uuid:7dcf2e44-0b17-465c-93b6-9207b6e33050",
+          "display": "Rufino Sabater"
+        },
+        "date": "2022-06-10T01:25:28Z",
+        "title": "Laboratory Report",
+        "confidentiality": "N"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:2aa571d6-5554-4635-83ab-bbb9ab79eb01",
+      "resource": {
+        "resourceType": "DiagnosticReport",
+        "id": "2aa571d6-5554-4635-83ab-bbb9ab79eb01",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/DiagnosticReport-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "e19b4c74-7ec8-4476-94f4-679188ce8e35"
+          },
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "40d75a3b-1066-44ff-82d8-3295e96bd78e"
+          }
+        ],
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-DiagnosticReport.composition",
+            "valueReference": {
+              "reference": "urn:uuid:3984fecd-e40d-4539-b738-5ff729f8047c"
+            }
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:50665716-6f4e-400a-9e6c-6fde39a5fe03"
+          }
+        ],
+        "result": [
+          {
+            "reference": "urn:uuid:433f70fc-35c0-49e3-82fa-258e58528efa"
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "registered",
+        "code": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:7dcf2e44-0b17-465c-93b6-9207b6e33050",
+          "display": "Rufino Sabater"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:7dcf2e44-0b17-465c-93b6-9207b6e33050",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "7dcf2e44-0b17-465c-93b6-9207b6e33050",
+        "meta": {
+          "security": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "HTEST"
+            },
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "TRAIN"
+            }
+          ],
+          "tag": [
+            {
+              "system": "https://synderai.net/fhir/CodeSystem/tags",
+              "code": "synthetic",
+              "display": "SYNDERAI Synthetic data"
+            }
+          ],
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/patient-eu-core"
+          ]
+        },
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "JHN",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://ec.europa.eu/identifier/eci",
+            "value": "7476-403659-1"
+          },
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "MR",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://local.setting.eu/identifier",
+            "value": "169cbc84-e853-3b40-4177-bb0f04cd2228"
+          }
+        ],
+        "name": [
+          {
+            "given": [
+              "Rufino"
+            ],
+            "family": "Sabater",
+            "text": "Rufino Sabater"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Glorieta Susana Giner 18 Apt. 49",
+              "Apt. 49"
+            ],
+            "use": "home",
+            "type": "physical",
+            "postalCode": "42001",
+            "city": "Soria",
+            "country": "Spain"
+          }
+        ],
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "+34956 82 29 92"
+          }
+        ],
+        "extension": [
+          {
+            "extension": [
+              {
+                "url": "code",
+                "valueCodeableConcept": {
+                  "coding": [
+                    {
+                      "code": "ES",
+                      "system": "urn:iso:std:iso:3166"
+                    }
+                  ]
+                }
+              }
+            ],
+            "url": "http://hl7.org/fhir/StructureDefinition/patient-nationality"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__ips\"><tr><td>Rufino Sabater</td><td>male</td><td>19-May-1936</td></tr></table></div>"
+        },
+        "gender": "male",
+        "birthDate": "1936-05-19"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:2761e1de-244c-4116-9041-f2a5232a9aee",
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "2761e1de-244c-4116-9041-f2a5232a9aee",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/ServiceRequest-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "system": "http://example.org",
+            "value": "a5e48407-3275-428b-a639-ae7bdd1713af"
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:50665716-6f4e-400a-9e6c-6fde39a5fe03"
+          }
+        ],
+        "reasonCode": [
+          {
+            "coding": [
+              {
+                "code": "59621000",
+                "system": "http://snomed.info/sct",
+                "display": "Essential hypertension"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "237602007",
+                "system": "http://snomed.info/sct",
+                "display": "Metabolic syndrome X"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "73430006",
+                "system": "http://snomed.info/sct",
+                "display": "Sleep apnea"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "700378005",
+                "system": "http://snomed.info/sct",
+                "display": "Chronic kidney disease stage 3A"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "386810004",
+                "system": "http://snomed.info/sct",
+                "display": "Phobic disorder"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "68496003",
+                "system": "http://snomed.info/sct",
+                "display": "Polyp of colon"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "49436004",
+                "system": "http://snomed.info/sct",
+                "display": "Atrial fibrillation"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "414916001",
+                "system": "http://snomed.info/sct",
+                "display": "Obesity"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "52448006",
+                "system": "http://snomed.info/sct",
+                "display": "Dementia"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "386805003",
+                "system": "http://snomed.info/sct",
+                "display": "Mild neurocognitive disorder"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "201834006",
+                "system": "http://snomed.info/sct",
+                "display": "Localized, primary osteoarthritis of the hand"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "64859006",
+                "system": "http://snomed.info/sct",
+                "display": "Osteoporosis"
+              }
+            ]
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "active",
+        "intent": "order",
+        "code": {
+          "coding": [
+            {
+              "code": "108252007",
+              "system": "http://snomed.info/sct",
+              "display": "Laboratory procedure"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:7dcf2e44-0b17-465c-93b6-9207b6e33050",
+          "display": "Rufino Sabater"
+        },
+        "requester": {
+          "reference": "urn:uuid:d8797175-b683-45fb-9917-b4837b0c2278"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:d8797175-b683-45fb-9917-b4837b0c2278",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "d8797175-b683-45fb-9917-b4837b0c2278",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Role Id: d8797175-b683-45fb-9917-b4837b0c2278</div>"
+        },
+        "organization": {
+          "reference": "urn:uuid:9f8cd571-f9e7-455f-94a5-e4fe903f2fb2"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:9f8cd571-f9e7-455f-94a5-e4fe903f2fb2",
+      "resource": {
+        "resourceType": "Organization",
+        "id": "9f8cd571-f9e7-455f-94a5-e4fe903f2fb2",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/organization-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "e4072d9b-27be-4c0d-8eb8-c9e4bba7dc81"
+          }
+        ],
+        "address": [
+          {
+            "city": "Soria",
+            "postalCode": "42005",
+            "country": "Spain"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Organization: Virgen del Mirón</div>"
+        },
+        "name": "Virgen del Mirón"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:50665716-6f4e-400a-9e6c-6fde39a5fe03",
+      "resource": {
+        "resourceType": "Specimen",
+        "id": "50665716-6f4e-400a-9e6c-6fde39a5fe03",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Specimen-eu-lab"
+          ]
+        },
+        "collection": {
+          "collectedDateTime": "2022-06-09"
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Specimen</th><th>Collection Date</th></tr><tr><td>Blood specimen</td><td><span class=\"nb\">09-Jun-2022</span></td></tr></table></div>"
+        },
+        "type": {
+          "coding": [
+            {
+              "code": "119297000",
+              "system": "http://snomed.info/sct",
+              "display": "Blood specimen"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:433f70fc-35c0-49e3-82fa-258e58528efa",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "433f70fc-35c0-49e3-82fa-258e58528efa",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Observation-resultslab-eu-lab"
+          ]
+        },
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "laboratory",
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category"
+              }
+            ]
+          }
+        ],
+        "performer": [
+          {
+            "display": "The Central European Laboratory"
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "code": "98979-8",
+              "system": "http://loinc.org",
+              "display": "Glomerular filtration rate [Volume Rate/Area] in Serum, Plasma or Blood by Creatinine-based formula (CKD-EPI 2021)/1.73 sq M"
+            }
+          ],
+          "text": "Glomerular filtration rate [Volume Rate/Area] in Serum, Plasma or Blood by Creatinine-based formula (CKD-EPI 2021)/1.73 sq M"
+        },
+        "valueQuantity": {
+          "value": 51,
+          "unit": "mL/min/{1.73_m2}",
+          "code": "mL/min/{1.73_m2}",
+          "system": "http://unitsofmeasure.org"
+        },
+        "referenceRange": [
+          {
+            "low": {
+              "value": 60,
+              "code": "mL/min/{1.73_m2}",
+              "system": "http://unitsofmeasure.org"
+            },
+            "high": {
+              "value": 89,
+              "code": "mL/min/{1.73_m2}",
+              "system": "http://unitsofmeasure.org"
+            }
+          }
+        ],
+        "interpretation": [
+          {
+            "coding": [
+              {
+                "code": "L",
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                "display": "Low"
+              }
+            ]
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Test</th><th>10-Jun-2022</th><th>Reference&#xA0;Range</th><th>Flag</th><th>Unit</th></tr><tr><td>Glomerular filtration rate [Volume Rate/Area] in Serum, Plasma or Blood by Creatinine-based formula (CKD-EPI 2021)/1.73 sq M</td><td>51.0</td><td>60 - 89</td><td>L</td><td>mL/min/{1.73_m2}</td></tr></table></div>"
+        },
+        "status": "final",
+        "effectiveDateTime": "2022-06-09T23:25:28Z",
+        "subject": {
+          "reference": "urn:uuid:7dcf2e44-0b17-465c-93b6-9207b6e33050",
+          "display": "Rufino Sabater"
+        },
+        "specimen": {
+          "reference": "urn:uuid:50665716-6f4e-400a-9e6c-6fde39a5fe03"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:d6f2b3ed-6a1b-433c-89b9-f8af5cd0adbf",
+      "resource": {
+        "resourceType": "Device",
+        "id": "d6f2b3ed-6a1b-433c-89b9-f8af5cd0adbf",
+        "deviceName": [
+          {
+            "name": "SYNDERAI Synthetic Generator",
+            "type": "manufacturer-name"
+          }
+        ],
+        "version": [
+          {
+            "value": "5.0"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">SYNDERAI Synthetic Generator v5.0</div>"
+        },
+        "status": "active",
+        "distinctIdentifier": "synderai-generator-50",
+        "manufacturer": "SYNDERAI Project"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:3b195467-6d12-4ac6-a74a-fdc65e9406b4",
+      "resource": {
+        "resourceType": "Provenance",
+        "id": "3b195467-6d12-4ac6-a74a-fdc65e9406b4",
+        "target": [
+          {
+            "reference": "urn:uuid:7dcf2e44-0b17-465c-93b6-9207b6e33050"
+          },
+          {
+            "reference": "urn:uuid:3984fecd-e40d-4539-b738-5ff729f8047c"
+          },
+          {
+            "reference": "urn:uuid:f0953d6e-e6f7-48ed-9971-d35a637a34f0"
+          },
+          {
+            "reference": "urn:uuid:3618b75d-dcc7-4448-b639-d38d028ecc50"
+          },
+          {
+            "reference": "urn:uuid:d8797175-b683-45fb-9917-b4837b0c2278"
+          },
+          {
+            "reference": "urn:uuid:9f8cd571-f9e7-455f-94a5-e4fe903f2fb2"
+          }
+        ],
+        "activity": {
+          "coding": [
+            {
+              "code": "CREATE",
+              "system": "http://terminology.hl7.org/CodeSystem/v3-DataOperation",
+              "display": "create"
+            }
+          ],
+          "text": "Synthetic Example Data Generation"
+        },
+        "policy": [
+          "https://synderai.net/synderai-synthetic-data-policy"
+        ],
+        "agent": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "author",
+                  "system": "http://terminology.hl7.org/CodeSystem/provenance-participant-type",
+                  "display": "Author"
+                }
+              ],
+              "text": "author"
+            },
+            "who": {
+              "reference": "urn:uuid:d6f2b3ed-6a1b-433c-89b9-f8af5cd0adbf"
+            }
+          }
+        ],
+        "reason": [
+          {
+            "coding": [
+              {
+                "code": "TRAIN",
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+                "display": "training"
+              }
+            ],
+            "text": "Interoperability Testing and Training (non-clinical use)"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provenance for SYNDERAI Synthetic Example Data Resource</div>"
+        },
+        "recorded": "2022-06-10T03:25:28Z"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:f0953d6e-e6f7-48ed-9971-d35a637a34f0",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "f0953d6e-e6f7-48ed-9971-d35a637a34f0",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory Role Id: f0953d6e-e6f7-48ed-9971-d35a637a34f0</div>"
+        },
+        "practitioner": {
+          "reference": "urn:uuid:3618b75d-dcc7-4448-b639-d38d028ecc50"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:3618b75d-dcc7-4448-b639-d38d028ecc50",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "3618b75d-dcc7-4448-b639-d38d028ecc50",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitioner-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "cc018757-b762-47eb-afa1-e2563d4cdf04"
+          }
+        ],
+        "name": [
+          {
+            "prefix": [
+              "dr"
+            ],
+            "given": [
+              "Ex"
+            ],
+            "family": "Ample"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Laboratoire Central Européenne",
+              "Boulevard du Jardin Botanique 32"
+            ],
+            "postalCode": "1000",
+            "city": "Brussels",
+            "country": "Belgium"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory: Laboratoire Central Européenne, 1000 Brussels, Belgium</div>"
+        }
+      }
+    }
+  ],
+  "type": "document",
+  "timestamp": "2022-06-10T03:25:28Z"
+}

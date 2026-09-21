@@ -1,0 +1,718 @@
+{
+  "resourceType": "Bundle",
+  "id": "544dcb0c-1f13-4699-80cc-9e63918dab9f",
+  "meta": {
+    "profile": [
+      "http://hl7.eu/fhir/laboratory/StructureDefinition/Bundle-eu-lab"
+    ]
+  },
+  "identifier": {
+    "assigner": {
+      "display": "HL7 Europe"
+    },
+    "system": "urn:oid:2.16.840.1.113883.2.51.999",
+    "value": "402bed4d-2e41-401a-a582-b6e37647f767"
+  },
+  "entry": [
+    {
+      "fullUrl": "urn:uuid:39b43006-97e4-48d4-9619-874ffefa0341",
+      "resource": {
+        "resourceType": "Composition",
+        "id": "39b43006-97e4-48d4-9619-874ffefa0341",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Composition-eu-lab"
+          ]
+        },
+        "extension": [
+          {
+            "url": "http://hl7.eu/fhir/extensions/StructureDefinition/composition-diagnosticReportReference",
+            "valueReference": {
+              "reference": "urn:uuid:14b2a6ec-0272-4c66-8d17-5187394644e7"
+            }
+          }
+        ],
+        "identifier": {
+          "assigner": {
+            "display": "HL7 Europe"
+          },
+          "system": "urn:oid:2.16.840.1.113883.2.51.999",
+          "value": "b8405048-e895-4c40-8191-2a9c6ec0372d"
+        },
+        "author": [
+          {
+            "reference": "urn:uuid:95e6a401-f011-43f3-a097-6232c37a8386"
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "type": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ],
+          "text": "Laboratory Report"
+        },
+        "section": [
+          {
+            "code": {
+              "coding": [
+                {
+                  "code": "18719-5",
+                  "system": "http://loinc.org",
+                  "display": "Chemistry studies (set)"
+                }
+              ],
+              "text": "CHEM"
+            },
+            "entry": [
+              {
+                "reference": "urn:uuid:458bdca3-4418-4916-90bb-14c260166f38"
+              }
+            ],
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>CHEM</h3><table class=\"hl7__eu__lab__report\"><thead><tr><th>Test</th><th>01-FEB-2003</th><th>Reference&#xA0;Range</th><th>Unit</th></tr></thead><tbody><tr><td></td><td><strong>34.0 L</strong></td><td>60 - 89</td><td>mL/min/{1.73_m2}</td></tr></tbody></table></div>"
+            },
+            "title": "CHEM"
+          },
+          {
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>Annotation</h3><table class=\"hl7__eu__lab__report\"><tr><th>Conclusion and Recommendations based on this report and previous findings known to us:</th></tr><tr><td>The patient shows a significantly reduced glomerular filtration rate (GFR) at 34 mL/min/1.73m², indicating moderate to severe chronic kidney disease (CKD stage 3b-4). This warrants further nephrological evaluation, monitoring of renal function, and assessment for complications or progression.</td></tr></table></div>"
+            },
+            "code": {
+              "coding": [
+                {
+                  "code": "48767-8",
+                  "system": "http://loinc.org",
+                  "display": "Annotation comment [Interpretation] Narrative"
+                }
+              ]
+            },
+            "title": "Annotation comment"
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "final",
+        "subject": {
+          "reference": "urn:uuid:adb3108e-2a72-4e01-9136-f15df9fdccc8",
+          "display": "Friedrich Meier"
+        },
+        "date": "2003-02-01T06:09:59Z",
+        "title": "Laboratory Report",
+        "confidentiality": "N"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:14b2a6ec-0272-4c66-8d17-5187394644e7",
+      "resource": {
+        "resourceType": "DiagnosticReport",
+        "id": "14b2a6ec-0272-4c66-8d17-5187394644e7",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/DiagnosticReport-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "b8405048-e895-4c40-8191-2a9c6ec0372d"
+          },
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "2ddf83f1-51a8-414c-b9c5-8b13dca98873"
+          }
+        ],
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-DiagnosticReport.composition",
+            "valueReference": {
+              "reference": "urn:uuid:39b43006-97e4-48d4-9619-874ffefa0341"
+            }
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:e5c56994-af4c-423b-bcf1-01eb5d144401"
+          }
+        ],
+        "result": [
+          {
+            "reference": "urn:uuid:458bdca3-4418-4916-90bb-14c260166f38"
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "registered",
+        "code": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:adb3108e-2a72-4e01-9136-f15df9fdccc8",
+          "display": "Friedrich Meier"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:adb3108e-2a72-4e01-9136-f15df9fdccc8",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "adb3108e-2a72-4e01-9136-f15df9fdccc8",
+        "meta": {
+          "security": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "HTEST"
+            },
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "TRAIN"
+            }
+          ],
+          "tag": [
+            {
+              "system": "https://synderai.net/fhir/CodeSystem/tags",
+              "code": "synthetic",
+              "display": "SYNDERAI Synthetic data"
+            }
+          ],
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/patient-eu-core"
+          ]
+        },
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "JHN",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://ec.europa.eu/identifier/eci",
+            "value": "5946-161620-9"
+          },
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "MR",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://local.setting.eu/identifier",
+            "value": "15caa794-f6c6-dfd4-7b3f-ff941bd3a156"
+          }
+        ],
+        "name": [
+          {
+            "given": [
+              "Friedrich"
+            ],
+            "family": "Meier",
+            "text": "Friedrich Meier"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Carlotta-Meister-Platz 78"
+            ],
+            "use": "home",
+            "type": "physical",
+            "postalCode": "3874",
+            "city": "Litschau",
+            "country": "Austria"
+          }
+        ],
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "02561/85859228"
+          }
+        ],
+        "extension": [
+          {
+            "extension": [
+              {
+                "url": "code",
+                "valueCodeableConcept": {
+                  "coding": [
+                    {
+                      "code": "AT",
+                      "system": "urn:iso:std:iso:3166"
+                    }
+                  ]
+                }
+              }
+            ],
+            "url": "http://hl7.org/fhir/StructureDefinition/patient-nationality"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__ips\"><tr><td>Friedrich Meier</td><td>male</td><td>06-Apr-1954</td></tr></table></div>"
+        },
+        "gender": "male",
+        "birthDate": "1954-04-06"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:cd3aa96d-14c7-4a95-b010-70b9ef1d65ee",
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "cd3aa96d-14c7-4a95-b010-70b9ef1d65ee",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/ServiceRequest-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "system": "http://example.org",
+            "value": "22ca4786-31f0-44e3-be4b-cbb1e9295218"
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:e5c56994-af4c-423b-bcf1-01eb5d144401"
+          }
+        ],
+        "reasonCode": [
+          {
+            "coding": [
+              {
+                "code": "433146000",
+                "system": "http://snomed.info/sct",
+                "display": "Chronic kidney disease stage 5"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "59621000",
+                "system": "http://snomed.info/sct",
+                "display": "Essential hypertension"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "78275009",
+                "system": "http://snomed.info/sct",
+                "display": "Obstructive sleep apnea syndrome"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "195967001",
+                "system": "http://snomed.info/sct",
+                "display": "Asthma"
+              }
+            ]
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "active",
+        "intent": "order",
+        "code": {
+          "coding": [
+            {
+              "code": "108252007",
+              "system": "http://snomed.info/sct",
+              "display": "Laboratory procedure"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:adb3108e-2a72-4e01-9136-f15df9fdccc8",
+          "display": "Friedrich Meier"
+        },
+        "requester": {
+          "reference": "urn:uuid:c561525d-2c60-45b9-a5e9-b5c4063f00fa"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:c561525d-2c60-45b9-a5e9-b5c4063f00fa",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "c561525d-2c60-45b9-a5e9-b5c4063f00fa",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Role Id: c561525d-2c60-45b9-a5e9-b5c4063f00fa</div>"
+        },
+        "organization": {
+          "reference": "urn:uuid:3f225b5d-adb5-42bb-9a73-d0b63cf733c3"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:3f225b5d-adb5-42bb-9a73-d0b63cf733c3",
+      "resource": {
+        "resourceType": "Organization",
+        "id": "3f225b5d-adb5-42bb-9a73-d0b63cf733c3",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/organization-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "7dfc8cfc-9f78-45a4-8fcf-76271e880bae"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Conrathstraße 17"
+            ],
+            "city": "Gmünd",
+            "postalCode": "3950",
+            "country": "Austria"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Organization: Landesklinikum Gmünd</div>"
+        },
+        "name": "Landesklinikum Gmünd"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:e5c56994-af4c-423b-bcf1-01eb5d144401",
+      "resource": {
+        "resourceType": "Specimen",
+        "id": "e5c56994-af4c-423b-bcf1-01eb5d144401",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Specimen-eu-lab"
+          ]
+        },
+        "collection": {
+          "collectedDateTime": "2003-02-01"
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Specimen</th><th>Collection Date</th></tr><tr><td>Blood specimen</td><td><span class=\"nb\">01-Feb-2003</span></td></tr></table></div>"
+        },
+        "type": {
+          "coding": [
+            {
+              "code": "119297000",
+              "system": "http://snomed.info/sct",
+              "display": "Blood specimen"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:458bdca3-4418-4916-90bb-14c260166f38",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "458bdca3-4418-4916-90bb-14c260166f38",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Observation-resultslab-eu-lab"
+          ]
+        },
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "laboratory",
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category"
+              }
+            ]
+          }
+        ],
+        "performer": [
+          {
+            "display": "The Central European Laboratory"
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "code": "98979-8",
+              "system": "http://loinc.org",
+              "display": "Glomerular filtration rate [Volume Rate/Area] in Serum, Plasma or Blood by Creatinine-based formula (CKD-EPI 2021)/1.73 sq M"
+            }
+          ],
+          "text": "Glomerular filtration rate [Volume Rate/Area] in Serum, Plasma or Blood by Creatinine-based formula (CKD-EPI 2021)/1.73 sq M"
+        },
+        "valueQuantity": {
+          "value": 34,
+          "unit": "mL/min/{1.73_m2}",
+          "code": "mL/min/{1.73_m2}",
+          "system": "http://unitsofmeasure.org"
+        },
+        "referenceRange": [
+          {
+            "low": {
+              "value": 60,
+              "code": "mL/min/{1.73_m2}",
+              "system": "http://unitsofmeasure.org"
+            },
+            "high": {
+              "value": 89,
+              "code": "mL/min/{1.73_m2}",
+              "system": "http://unitsofmeasure.org"
+            }
+          }
+        ],
+        "interpretation": [
+          {
+            "coding": [
+              {
+                "code": "L",
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                "display": "Low"
+              }
+            ]
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Test</th><th>01-Feb-2003</th><th>Reference&#xA0;Range</th><th>Flag</th><th>Unit</th></tr><tr><td>Glomerular filtration rate [Volume Rate/Area] in Serum, Plasma or Blood by Creatinine-based formula (CKD-EPI 2021)/1.73 sq M</td><td>34.0</td><td>60 - 89</td><td>L</td><td>mL/min/{1.73_m2}</td></tr></table></div>"
+        },
+        "status": "final",
+        "effectiveDateTime": "2003-02-01T05:09:59Z",
+        "subject": {
+          "reference": "urn:uuid:adb3108e-2a72-4e01-9136-f15df9fdccc8",
+          "display": "Friedrich Meier"
+        },
+        "specimen": {
+          "reference": "urn:uuid:e5c56994-af4c-423b-bcf1-01eb5d144401"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:483c9a5c-98d2-4039-b72f-1af28386e221",
+      "resource": {
+        "resourceType": "Device",
+        "id": "483c9a5c-98d2-4039-b72f-1af28386e221",
+        "deviceName": [
+          {
+            "name": "SYNDERAI Synthetic Generator",
+            "type": "manufacturer-name"
+          }
+        ],
+        "version": [
+          {
+            "value": "5.0"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">SYNDERAI Synthetic Generator v5.0</div>"
+        },
+        "status": "active",
+        "distinctIdentifier": "synderai-generator-50",
+        "manufacturer": "SYNDERAI Project"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:74591ec4-dce3-45a6-a681-0801bd69c71a",
+      "resource": {
+        "resourceType": "Provenance",
+        "id": "74591ec4-dce3-45a6-a681-0801bd69c71a",
+        "target": [
+          {
+            "reference": "urn:uuid:adb3108e-2a72-4e01-9136-f15df9fdccc8"
+          },
+          {
+            "reference": "urn:uuid:39b43006-97e4-48d4-9619-874ffefa0341"
+          },
+          {
+            "reference": "urn:uuid:95e6a401-f011-43f3-a097-6232c37a8386"
+          },
+          {
+            "reference": "urn:uuid:c723a747-0532-41d3-a936-8b01b1d01e25"
+          },
+          {
+            "reference": "urn:uuid:c561525d-2c60-45b9-a5e9-b5c4063f00fa"
+          },
+          {
+            "reference": "urn:uuid:3f225b5d-adb5-42bb-9a73-d0b63cf733c3"
+          }
+        ],
+        "activity": {
+          "coding": [
+            {
+              "code": "CREATE",
+              "system": "http://terminology.hl7.org/CodeSystem/v3-DataOperation",
+              "display": "create"
+            }
+          ],
+          "text": "Synthetic Example Data Generation"
+        },
+        "policy": [
+          "https://synderai.net/synderai-synthetic-data-policy"
+        ],
+        "agent": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "author",
+                  "system": "http://terminology.hl7.org/CodeSystem/provenance-participant-type",
+                  "display": "Author"
+                }
+              ],
+              "text": "author"
+            },
+            "who": {
+              "reference": "urn:uuid:483c9a5c-98d2-4039-b72f-1af28386e221"
+            }
+          }
+        ],
+        "reason": [
+          {
+            "coding": [
+              {
+                "code": "TRAIN",
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+                "display": "training"
+              }
+            ],
+            "text": "Interoperability Testing and Training (non-clinical use)"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provenance for SYNDERAI Synthetic Example Data Resource</div>"
+        },
+        "recorded": "2003-02-01T07:09:59Z"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:95e6a401-f011-43f3-a097-6232c37a8386",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "95e6a401-f011-43f3-a097-6232c37a8386",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory Role Id: 95e6a401-f011-43f3-a097-6232c37a8386</div>"
+        },
+        "practitioner": {
+          "reference": "urn:uuid:c723a747-0532-41d3-a936-8b01b1d01e25"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:c723a747-0532-41d3-a936-8b01b1d01e25",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "c723a747-0532-41d3-a936-8b01b1d01e25",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitioner-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "c5f41a4a-a083-4255-9795-e28be44b8ec7"
+          }
+        ],
+        "name": [
+          {
+            "prefix": [
+              "dr"
+            ],
+            "given": [
+              "Ex"
+            ],
+            "family": "Ample"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Laboratoire Central Européenne",
+              "Boulevard du Jardin Botanique 32"
+            ],
+            "postalCode": "1000",
+            "city": "Brussels",
+            "country": "Belgium"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory: Laboratoire Central Européenne, 1000 Brussels, Belgium</div>"
+        }
+      }
+    }
+  ],
+  "type": "document",
+  "timestamp": "2003-02-01T07:09:59Z"
+}

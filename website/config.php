@@ -72,6 +72,11 @@ $MENU = [
         "title" => "Credits+",
         "menu" => "credits",
         "file" => "CCC.md"
+    ],
+    [
+        "title" => "Synthea",
+        "menu" => "synthea",
+        "file" => "SYNTHEA.md"
     ]
 ];
 /*
@@ -95,7 +100,7 @@ $MENU = [
 $NAV = [
     ['type' => 'link',  'menu'  => 'index'],
     ['type' => 'group', 'label' => 'About',
-                        'items' => ['story', 'principles', 'personas', 'credits']],
+                        'items' => ['story', 'principles', 'personas', 'synthea', 'credits']],
     ['type' => 'group', 'label' => 'Data',
                         'items' => ['examples', 'dashboards', 'downloads']],
     ['type' => 'group', 'label' => 'Project',

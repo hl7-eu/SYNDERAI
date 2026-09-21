@@ -31,10 +31,27 @@ echo "Loaded $(wc -l < "${VALID_REGIONS_FILE}" | tr -d ' ') backed regions from 
 # The run_region weights below are population shares that sum to ~1.409, not 1.
 # Without this, "-p 40000" silently produced ~56,000 patients. Read the weights
 # out of this script itself and divide by their sum, so TOTAL means TOTAL.
+# LC_ALL=C on every awk that touches a number. awk reads and writes decimals
+# through LC_NUMERIC: under a comma-decimal locale (de_DE and most of Europe)
+# it parses "0.0481930080" as 0, stops at the period, and prints the sum as
+# "0,000000000". The weights then sum to zero, every per-region count is a
+# division by zero, and each java call gets an empty -p and dies in
+# milliseconds - 291 empty region directories and no error anyone reads.
+# The prefix is per command on purpose: exporting LC_ALL=C for the whole script
+# would also reach the python3 call above, whose output contains region names
+# like "Łódź" and "Šiaulių".
 WEIGHT_SUM=$(grep -E "^run_region[[:space:]]+['\"]" "${BASH_SOURCE[0]}" \
-             | awk '{print $NF}' | awk '{s+=$1} END{printf "%.9f", s}')
+             | LC_ALL=C awk '{print $NF}' | LC_ALL=C awk '{s+=$1} END{printf "%.9f", s}')
 REGION_COUNT=$(grep -cE "^run_region[[:space:]]+['\"]" "${BASH_SOURCE[0]}")
 echo "Region weights sum to ${WEIGHT_SUM} across ${REGION_COUNT} regions; normalising to 1."
+
+# Fail once and loudly rather than 291 times and silently.
+if ! LC_ALL=C awk -v ws="${WEIGHT_SUM}" 'BEGIN{exit !(ws+0 > 0)}'; then
+    echo "ERROR: the region weights summed to '${WEIGHT_SUM}', which cannot be used"
+    echo "       as a divisor. This is what a comma-decimal locale does to awk."
+    echo "       Current LC_ALL='${LC_ALL-}' LC_NUMERIC='${LC_NUMERIC-}' LANG='${LANG-}'."
+    exit 1
+fi
 
 # --- Export tunables --------------------------------------------------------
 # claims.csv and claims_transactions.csv are ~81% of the CSV volume and are not
@@ -59,8 +76,15 @@ run_region() {
         echo "--- SKIP ${REGION}: no geography data (not in zipcodes_europe.csv)"
         return 0
     fi
-    local N=$(awk -v t="$TOTAL" -v w="$WEIGHT" -v ws="$WEIGHT_SUM" \
+    # LC_ALL=C for the same reason as the weight sum above: "$WEIGHT" is a
+    # decimal literal and must be read with a period.
+    local N=$(LC_ALL=C awk -v t="$TOTAL" -v w="$WEIGHT" -v ws="$WEIGHT_SUM" \
               'BEGIN{n=int(t*(w/ws)+0.5); print (n<1)?1:n}')
+    if [ -z "${N}" ]; then
+        echo "--- FAIL ${REGION}: could not compute a patient count from weight ${WEIGHT}"
+        ERRORS=$((ERRORS+1))
+        return 1
+    fi
     local DIR_NAME=$(echo "${REGION}" | tr " /'" "___")
     local OUT_DIR="${REGIONS_DIR}/${DIR_NAME}"
     mkdir -p "${OUT_DIR}"

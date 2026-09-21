@@ -1,0 +1,709 @@
+{
+  "resourceType": "Bundle",
+  "id": "bc317a2d-533b-430c-adae-08f1e59e4d45",
+  "meta": {
+    "profile": [
+      "http://hl7.eu/fhir/laboratory/StructureDefinition/Bundle-eu-lab"
+    ]
+  },
+  "identifier": {
+    "assigner": {
+      "display": "HL7 Europe"
+    },
+    "system": "urn:oid:2.16.840.1.113883.2.51.999",
+    "value": "d3d178a2-e0a2-4e36-946f-1fc4c73f336f"
+  },
+  "entry": [
+    {
+      "fullUrl": "urn:uuid:aabc4562-9734-4841-9a86-816f1d312cb1",
+      "resource": {
+        "resourceType": "Composition",
+        "id": "aabc4562-9734-4841-9a86-816f1d312cb1",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Composition-eu-lab"
+          ]
+        },
+        "extension": [
+          {
+            "url": "http://hl7.eu/fhir/extensions/StructureDefinition/composition-diagnosticReportReference",
+            "valueReference": {
+              "reference": "urn:uuid:0bb26ca6-119d-4402-877a-8202b2891f85"
+            }
+          }
+        ],
+        "identifier": {
+          "assigner": {
+            "display": "HL7 Europe"
+          },
+          "system": "urn:oid:2.16.840.1.113883.2.51.999",
+          "value": "749a0431-cc19-43e6-931e-576fbcbb38e2"
+        },
+        "author": [
+          {
+            "reference": "urn:uuid:cb746f75-95b8-48a9-a2c0-a7480f3103df"
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "type": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ],
+          "text": "Laboratory Report"
+        },
+        "section": [
+          {
+            "code": {
+              "coding": [
+                {
+                  "code": "18719-5",
+                  "system": "http://loinc.org",
+                  "display": "Chemistry studies (set)"
+                }
+              ],
+              "text": "CHEM"
+            },
+            "entry": [
+              {
+                "reference": "urn:uuid:e496d0ee-9c9c-41b8-b22b-5d829ebb3c66"
+              }
+            ],
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>CHEM</h3><table class=\"hl7__eu__lab__report\"><thead><tr><th>Test</th><th>25-AUG-2015</th><th>Reference&#xA0;Range</th><th>Unit</th></tr></thead><tbody><tr><td></td><td><strong>47.4 H</strong></td><td>20 - 42</td><td>mmol/mol</td></tr></tbody></table></div>"
+            },
+            "title": "CHEM"
+          },
+          {
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>Annotation</h3><table class=\"hl7__eu__lab__report\"><tr><th>Conclusion and Recommendations based on this report and previous findings known to us</th></tr><tr><td>The patient’s HbA1c is elevated (47.4 mmol/mol; normal: 20–42 mmol/mol), indicating suboptimal glycemic control and suggesting either undiagnosed diabetes mellitus or insufficient management of known diabetes. Clinical correlation and further evaluation are recommended.</td></tr></table></div>"
+            },
+            "code": {
+              "coding": [
+                {
+                  "code": "48767-8",
+                  "system": "http://loinc.org",
+                  "display": "Annotation comment [Interpretation] Narrative"
+                }
+              ]
+            },
+            "title": "Annotation comment"
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "final",
+        "subject": {
+          "reference": "urn:uuid:985ed5cc-abc4-4bb3-862b-4463e8c43bc9",
+          "display": "Apolonia Bystroń"
+        },
+        "date": "2015-08-25T08:08:09Z",
+        "title": "Laboratory Report",
+        "confidentiality": "N"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:0bb26ca6-119d-4402-877a-8202b2891f85",
+      "resource": {
+        "resourceType": "DiagnosticReport",
+        "id": "0bb26ca6-119d-4402-877a-8202b2891f85",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/DiagnosticReport-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "749a0431-cc19-43e6-931e-576fbcbb38e2"
+          },
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "aed2cb9e-c5de-4fad-85fd-43a795f4cc4e"
+          }
+        ],
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-DiagnosticReport.composition",
+            "valueReference": {
+              "reference": "urn:uuid:aabc4562-9734-4841-9a86-816f1d312cb1"
+            }
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:053104e5-7045-4bbe-a99c-393e607ccc43"
+          }
+        ],
+        "result": [
+          {
+            "reference": "urn:uuid:e496d0ee-9c9c-41b8-b22b-5d829ebb3c66"
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "registered",
+        "code": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:985ed5cc-abc4-4bb3-862b-4463e8c43bc9",
+          "display": "Apolonia Bystroń"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:985ed5cc-abc4-4bb3-862b-4463e8c43bc9",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "985ed5cc-abc4-4bb3-862b-4463e8c43bc9",
+        "meta": {
+          "security": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "HTEST"
+            },
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "TRAIN"
+            }
+          ],
+          "tag": [
+            {
+              "system": "https://synderai.net/fhir/CodeSystem/tags",
+              "code": "synthetic",
+              "display": "SYNDERAI Synthetic data"
+            }
+          ],
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/patient-eu-core"
+          ]
+        },
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "JHN",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://ec.europa.eu/identifier/eci",
+            "value": "9918-373611-7"
+          },
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "MR",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://local.setting.eu/identifier",
+            "value": "a7cf79a7-0c20-ade9-a9b5-f80f1de54538"
+          }
+        ],
+        "name": [
+          {
+            "given": [
+              "Apolonia"
+            ],
+            "family": "Bystroń",
+            "text": "Apolonia Bystroń"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "pl. Kruczkowskiego 108"
+            ],
+            "use": "home",
+            "type": "physical",
+            "postalCode": "62-020",
+            "city": "Swarzędz",
+            "country": "Poland"
+          }
+        ],
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "+48 607 522 142"
+          }
+        ],
+        "extension": [
+          {
+            "extension": [
+              {
+                "url": "code",
+                "valueCodeableConcept": {
+                  "coding": [
+                    {
+                      "code": "PL",
+                      "system": "urn:iso:std:iso:3166"
+                    }
+                  ]
+                }
+              }
+            ],
+            "url": "http://hl7.org/fhir/StructureDefinition/patient-nationality"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__ips\"><tr><td>Apolonia Bystroń</td><td>female</td><td>28-Nov-1990</td></tr></table></div>"
+        },
+        "gender": "female",
+        "birthDate": "1990-11-28"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:827cf7e5-2ae1-4bfe-a91a-39f42c6f3b4e",
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "827cf7e5-2ae1-4bfe-a91a-39f42c6f3b4e",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/ServiceRequest-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "system": "http://example.org",
+            "value": "05ef2f35-92b4-47a2-8d71-18d24ebf8646"
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:053104e5-7045-4bbe-a99c-393e607ccc43"
+          }
+        ],
+        "reasonCode": [
+          {
+            "coding": [
+              {
+                "code": "203646004",
+                "system": "http://snomed.info/sct",
+                "display": "Adolescent idiopathic scoliosis"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "44054006",
+                "system": "http://snomed.info/sct",
+                "display": "Type 2 diabetes mellitus"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "237602007",
+                "system": "http://snomed.info/sct",
+                "display": "Metabolic syndrome X"
+              }
+            ]
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "active",
+        "intent": "order",
+        "code": {
+          "coding": [
+            {
+              "code": "108252007",
+              "system": "http://snomed.info/sct",
+              "display": "Laboratory procedure"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:985ed5cc-abc4-4bb3-862b-4463e8c43bc9",
+          "display": "Apolonia Bystroń"
+        },
+        "requester": {
+          "reference": "urn:uuid:0efa2dad-153d-4c07-acab-88f8f390458d"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:0efa2dad-153d-4c07-acab-88f8f390458d",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "0efa2dad-153d-4c07-acab-88f8f390458d",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Role Id: 0efa2dad-153d-4c07-acab-88f8f390458d</div>"
+        },
+        "organization": {
+          "reference": "urn:uuid:958397c9-6fc9-4d77-9a61-da0babc39c24"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:958397c9-6fc9-4d77-9a61-da0babc39c24",
+      "resource": {
+        "resourceType": "Organization",
+        "id": "958397c9-6fc9-4d77-9a61-da0babc39c24",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/organization-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "c6399091-b880-4f5c-86d9-be08a31e41d1"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Tysiąclecia 20A"
+            ],
+            "city": "Swarzędz",
+            "postalCode": "62-020",
+            "country": "Poland"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Organization: CenterMed</div>"
+        },
+        "name": "CenterMed"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:053104e5-7045-4bbe-a99c-393e607ccc43",
+      "resource": {
+        "resourceType": "Specimen",
+        "id": "053104e5-7045-4bbe-a99c-393e607ccc43",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Specimen-eu-lab"
+          ]
+        },
+        "collection": {
+          "collectedDateTime": "2015-08-25"
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Specimen</th><th>Collection Date</th></tr><tr><td>Blood specimen</td><td><span class=\"nb\">25-Aug-2015</span></td></tr></table></div>"
+        },
+        "type": {
+          "coding": [
+            {
+              "code": "119297000",
+              "system": "http://snomed.info/sct",
+              "display": "Blood specimen"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:e496d0ee-9c9c-41b8-b22b-5d829ebb3c66",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "e496d0ee-9c9c-41b8-b22b-5d829ebb3c66",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Observation-resultslab-eu-lab"
+          ]
+        },
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "laboratory",
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category"
+              }
+            ]
+          }
+        ],
+        "performer": [
+          {
+            "display": "The Central European Laboratory"
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "code": "59261-8",
+              "system": "http://loinc.org",
+              "display": "Hemoglobin A1c/Hemoglobin.total standardized per IFCC-RMP for CDT in Blood"
+            }
+          ],
+          "text": "Hemoglobin A1c/Hemoglobin.total standardized per IFCC-RMP for CDT in Blood"
+        },
+        "valueQuantity": {
+          "value": 47.4,
+          "unit": "mmol/mol",
+          "code": "mmol/mol",
+          "system": "http://unitsofmeasure.org"
+        },
+        "referenceRange": [
+          {
+            "low": {
+              "value": 20,
+              "code": "mmol/mol",
+              "system": "http://unitsofmeasure.org"
+            },
+            "high": {
+              "value": 42,
+              "code": "mmol/mol",
+              "system": "http://unitsofmeasure.org"
+            }
+          }
+        ],
+        "interpretation": [
+          {
+            "coding": [
+              {
+                "code": "H",
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                "display": "High"
+              }
+            ]
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Test</th><th>25-Aug-2015</th><th>Reference&#xA0;Range</th><th>Flag</th><th>Unit</th></tr><tr><td>Hemoglobin A1c/Hemoglobin.total standardized per IFCC-RMP for CDT in Blood</td><td>47.4</td><td>20 - 42</td><td>H</td><td>mmol/mol</td></tr></table></div>"
+        },
+        "status": "final",
+        "effectiveDateTime": "2015-08-25T06:08:09Z",
+        "subject": {
+          "reference": "urn:uuid:985ed5cc-abc4-4bb3-862b-4463e8c43bc9",
+          "display": "Apolonia Bystroń"
+        },
+        "specimen": {
+          "reference": "urn:uuid:053104e5-7045-4bbe-a99c-393e607ccc43"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:6290a3e0-c78c-4633-a3af-a85bdac1e2f0",
+      "resource": {
+        "resourceType": "Device",
+        "id": "6290a3e0-c78c-4633-a3af-a85bdac1e2f0",
+        "deviceName": [
+          {
+            "name": "SYNDERAI Synthetic Generator",
+            "type": "manufacturer-name"
+          }
+        ],
+        "version": [
+          {
+            "value": "5.0"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">SYNDERAI Synthetic Generator v5.0</div>"
+        },
+        "status": "active",
+        "distinctIdentifier": "synderai-generator-50",
+        "manufacturer": "SYNDERAI Project"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:03987d7d-f111-491d-b265-e71b3c92fc86",
+      "resource": {
+        "resourceType": "Provenance",
+        "id": "03987d7d-f111-491d-b265-e71b3c92fc86",
+        "target": [
+          {
+            "reference": "urn:uuid:985ed5cc-abc4-4bb3-862b-4463e8c43bc9"
+          },
+          {
+            "reference": "urn:uuid:aabc4562-9734-4841-9a86-816f1d312cb1"
+          },
+          {
+            "reference": "urn:uuid:cb746f75-95b8-48a9-a2c0-a7480f3103df"
+          },
+          {
+            "reference": "urn:uuid:a542b44a-803c-48c8-934e-540e5155bb99"
+          },
+          {
+            "reference": "urn:uuid:0efa2dad-153d-4c07-acab-88f8f390458d"
+          },
+          {
+            "reference": "urn:uuid:958397c9-6fc9-4d77-9a61-da0babc39c24"
+          }
+        ],
+        "activity": {
+          "coding": [
+            {
+              "code": "CREATE",
+              "system": "http://terminology.hl7.org/CodeSystem/v3-DataOperation",
+              "display": "create"
+            }
+          ],
+          "text": "Synthetic Example Data Generation"
+        },
+        "policy": [
+          "https://synderai.net/synderai-synthetic-data-policy"
+        ],
+        "agent": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "author",
+                  "system": "http://terminology.hl7.org/CodeSystem/provenance-participant-type",
+                  "display": "Author"
+                }
+              ],
+              "text": "author"
+            },
+            "who": {
+              "reference": "urn:uuid:6290a3e0-c78c-4633-a3af-a85bdac1e2f0"
+            }
+          }
+        ],
+        "reason": [
+          {
+            "coding": [
+              {
+                "code": "TRAIN",
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+                "display": "training"
+              }
+            ],
+            "text": "Interoperability Testing and Training (non-clinical use)"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provenance for SYNDERAI Synthetic Example Data Resource</div>"
+        },
+        "recorded": "2015-08-25T10:08:09Z"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:cb746f75-95b8-48a9-a2c0-a7480f3103df",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "cb746f75-95b8-48a9-a2c0-a7480f3103df",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory Role Id: cb746f75-95b8-48a9-a2c0-a7480f3103df</div>"
+        },
+        "practitioner": {
+          "reference": "urn:uuid:a542b44a-803c-48c8-934e-540e5155bb99"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:a542b44a-803c-48c8-934e-540e5155bb99",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "a542b44a-803c-48c8-934e-540e5155bb99",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitioner-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "8ce1b819-fde8-48f3-aaa9-e0b0d39d548e"
+          }
+        ],
+        "name": [
+          {
+            "prefix": [
+              "dr"
+            ],
+            "given": [
+              "Ex"
+            ],
+            "family": "Ample"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Laboratoire Central Européenne",
+              "Boulevard du Jardin Botanique 32"
+            ],
+            "postalCode": "1000",
+            "city": "Brussels",
+            "country": "Belgium"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory: Laboratoire Central Européenne, 1000 Brussels, Belgium</div>"
+        }
+      }
+    }
+  ],
+  "type": "document",
+  "timestamp": "2015-08-25T10:08:09Z"
+}

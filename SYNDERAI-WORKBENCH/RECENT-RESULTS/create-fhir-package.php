@@ -13,7 +13,7 @@ $PYTHON = "python3";
 
 $starttimer = time();   // for emiting teh elapsed time register the start time
 
-$THISSYNDERAIVERSION = "2.1.0";
+$THISSYNDERAIVERSION = "4.0.1";
 $SYNTHETICDATAURL = "http://hl7.eu/fhir/syntheticdata";
 $SUPPORTEDARTIFACTS = [
     [
@@ -129,7 +129,7 @@ $longdate = date("j F Y H:i", $now);
 $signature = date("Ymd", $now);
 $thisversion = "$THISSYNDERAIVERSION+$signature";
 $pack = [
-    "name" => "hl7.fhir.eu.syntheticdata",
+    "name" => "hl7.fhir.eu.syntheticdata.$small",
     "date" => "$shortdate",
     "type" => "Examples",
     "license" => "AGPL-3.0",
@@ -158,8 +158,7 @@ $pack = [
         "hl7.fhir.r4.core" => "4.0.1"
     ],
     "directories" => [
-        "lib" => "package",
-        "example" => "example"
+        "lib" => "package"
     ],
     "jurisdiction" => "http://unstats.un.org/unsd/methods/m49/m49.htm#150"
 ];

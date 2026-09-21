@@ -1,0 +1,771 @@
+{
+  "resourceType": "Bundle",
+  "id": "3a477afe-3abe-49e7-b770-88daf5549f90",
+  "meta": {
+    "profile": [
+      "http://hl7.eu/fhir/laboratory/StructureDefinition/Bundle-eu-lab"
+    ]
+  },
+  "identifier": {
+    "assigner": {
+      "display": "HL7 Europe"
+    },
+    "system": "urn:oid:2.16.840.1.113883.2.51.999",
+    "value": "8d164342-3f15-41f5-80fd-557331b3cf0f"
+  },
+  "entry": [
+    {
+      "fullUrl": "urn:uuid:3cea4c11-74ef-4f81-80a7-81c41c70d1dc",
+      "resource": {
+        "resourceType": "Composition",
+        "id": "3cea4c11-74ef-4f81-80a7-81c41c70d1dc",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Composition-eu-lab"
+          ]
+        },
+        "extension": [
+          {
+            "url": "http://hl7.eu/fhir/extensions/StructureDefinition/composition-diagnosticReportReference",
+            "valueReference": {
+              "reference": "urn:uuid:27ec059e-ac29-46c7-b1c2-ce8a2acaf529"
+            }
+          }
+        ],
+        "identifier": {
+          "assigner": {
+            "display": "HL7 Europe"
+          },
+          "system": "urn:oid:2.16.840.1.113883.2.51.999",
+          "value": "2891218f-2d6d-4bc2-87f3-cc0a3c2bc877"
+        },
+        "author": [
+          {
+            "reference": "urn:uuid:1be0a948-4718-43e8-9a23-a810bb27f896"
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "type": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ],
+          "text": "Laboratory Report"
+        },
+        "section": [
+          {
+            "code": {
+              "coding": [
+                {
+                  "code": "18719-5",
+                  "system": "http://loinc.org",
+                  "display": "Chemistry studies (set)"
+                }
+              ],
+              "text": "CHEM"
+            },
+            "entry": [
+              {
+                "reference": "urn:uuid:451d675c-8479-41ef-abcb-5a33deb2d8f0"
+              }
+            ],
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>CHEM</h3><table class=\"hl7__eu__lab__report\"><thead><tr><th>Test</th><th>17-APR-2020</th><th>Reference&#xA0;Range</th><th>Unit</th></tr></thead><tbody><tr><td></td><td>0.7</td><td>0 - 4</td><td>ng/mL</td></tr></tbody></table></div>"
+            },
+            "title": "CHEM"
+          },
+          {
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>Annotation</h3><table class=\"hl7__eu__lab__report\"><tr><th>Conclusion and Recommendations based on this report and previous findings known to us:</th></tr><tr><td>Prostate-specific antigen (PSA) is within the normal range, indicating no laboratory evidence of prostate pathology at this time. No further action required from a laboratory perspective.</td></tr></table></div>"
+            },
+            "code": {
+              "coding": [
+                {
+                  "code": "48767-8",
+                  "system": "http://loinc.org",
+                  "display": "Annotation comment [Interpretation] Narrative"
+                }
+              ]
+            },
+            "title": "Annotation comment"
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "final",
+        "subject": {
+          "reference": "urn:uuid:414ebdb7-001d-4e94-a3ad-a16abe866535",
+          "display": "Patrizio Lussu"
+        },
+        "date": "2020-04-17T10:50:18Z",
+        "title": "Laboratory Report",
+        "confidentiality": "N"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:27ec059e-ac29-46c7-b1c2-ce8a2acaf529",
+      "resource": {
+        "resourceType": "DiagnosticReport",
+        "id": "27ec059e-ac29-46c7-b1c2-ce8a2acaf529",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/DiagnosticReport-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "2891218f-2d6d-4bc2-87f3-cc0a3c2bc877"
+          },
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "b10a46b1-d30a-48f6-9f99-dfcb12adc182"
+          }
+        ],
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-DiagnosticReport.composition",
+            "valueReference": {
+              "reference": "urn:uuid:3cea4c11-74ef-4f81-80a7-81c41c70d1dc"
+            }
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:fe90474a-9317-4466-b812-9125be6548ea"
+          }
+        ],
+        "result": [
+          {
+            "reference": "urn:uuid:451d675c-8479-41ef-abcb-5a33deb2d8f0"
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "registered",
+        "code": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:414ebdb7-001d-4e94-a3ad-a16abe866535",
+          "display": "Patrizio Lussu"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:414ebdb7-001d-4e94-a3ad-a16abe866535",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "414ebdb7-001d-4e94-a3ad-a16abe866535",
+        "meta": {
+          "security": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "HTEST"
+            },
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "TRAIN"
+            }
+          ],
+          "tag": [
+            {
+              "system": "https://synderai.net/fhir/CodeSystem/tags",
+              "code": "synthetic",
+              "display": "SYNDERAI Synthetic data"
+            }
+          ],
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/patient-eu-core"
+          ]
+        },
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "JHN",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://ec.europa.eu/identifier/eci",
+            "value": "7669-715118-1"
+          },
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "MR",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://local.setting.eu/identifier",
+            "value": "fee23302-4eae-1008-d46a-8157f5908cfe"
+          }
+        ],
+        "name": [
+          {
+            "given": [
+              "Patrizio"
+            ],
+            "family": "Lussu",
+            "text": "Patrizio Lussu"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Incrocio Luigi, 94 Appartamento 39",
+              "Appartamento 39"
+            ],
+            "use": "home",
+            "type": "physical",
+            "postalCode": "20121",
+            "city": "Villa Pasquali",
+            "country": "Italy"
+          }
+        ],
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "3415115324"
+          }
+        ],
+        "extension": [
+          {
+            "extension": [
+              {
+                "url": "code",
+                "valueCodeableConcept": {
+                  "coding": [
+                    {
+                      "code": "IT",
+                      "system": "urn:iso:std:iso:3166"
+                    }
+                  ]
+                }
+              }
+            ],
+            "url": "http://hl7.org/fhir/StructureDefinition/patient-nationality"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__ips\"><tr><td>Patrizio Lussu</td><td>male</td><td>02-Mar-1939</td></tr></table></div>"
+        },
+        "gender": "male",
+        "birthDate": "1939-03-02"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:b186f84e-f6cf-4ed8-af23-35141be9eb0f",
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "b186f84e-f6cf-4ed8-af23-35141be9eb0f",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/ServiceRequest-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "system": "http://example.org",
+            "value": "72138762-f774-4d1f-b55c-2fc694879ace"
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:fe90474a-9317-4466-b812-9125be6548ea"
+          }
+        ],
+        "reasonCode": [
+          {
+            "coding": [
+              {
+                "code": "414916001",
+                "system": "http://snomed.info/sct",
+                "display": "Obesity"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "237602007",
+                "system": "http://snomed.info/sct",
+                "display": "Metabolic syndrome X"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "7200002",
+                "system": "http://snomed.info/sct",
+                "display": "Alcoholism"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "59621000",
+                "system": "http://snomed.info/sct",
+                "display": "Essential hypertension"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "239873007",
+                "system": "http://snomed.info/sct",
+                "display": "Osteoarthritis of knee"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "55822004",
+                "system": "http://snomed.info/sct",
+                "display": "Hyperlipidemia"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "78275009",
+                "system": "http://snomed.info/sct",
+                "display": "Obstructive sleep apnea syndrome"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "254637007",
+                "system": "http://snomed.info/sct",
+                "display": "Non-small cell lung cancer"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "414545008",
+                "system": "http://snomed.info/sct",
+                "display": "Ischemic heart disease"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "126906006",
+                "system": "http://snomed.info/sct",
+                "display": "Neoplasm of prostate"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "69896004",
+                "system": "http://snomed.info/sct",
+                "display": "Rheumatoid arthritis"
+              }
+            ]
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "active",
+        "intent": "order",
+        "code": {
+          "coding": [
+            {
+              "code": "108252007",
+              "system": "http://snomed.info/sct",
+              "display": "Laboratory procedure"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:414ebdb7-001d-4e94-a3ad-a16abe866535",
+          "display": "Patrizio Lussu"
+        },
+        "requester": {
+          "reference": "urn:uuid:cf5f1911-2a30-46d5-81c8-da7d48e5d128"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:cf5f1911-2a30-46d5-81c8-da7d48e5d128",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "cf5f1911-2a30-46d5-81c8-da7d48e5d128",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Role Id: cf5f1911-2a30-46d5-81c8-da7d48e5d128</div>"
+        },
+        "organization": {
+          "reference": "urn:uuid:7b530e8a-c0be-4cbc-ae61-cb19c226dfec"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:7b530e8a-c0be-4cbc-ae61-cb19c226dfec",
+      "resource": {
+        "resourceType": "Organization",
+        "id": "7b530e8a-c0be-4cbc-ae61-cb19c226dfec",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/organization-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "1341e0a6-801b-4450-8026-40ebbcf4e67a"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Via Don Paolo Antonini nan"
+            ],
+            "city": "Casalmaggiore",
+            "postalCode": "26041",
+            "country": "Italy"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Organization: Co.Me.Te. Cooperativa Medici del Territorio - Societa' Cooperativa a R. L.</div>"
+        },
+        "name": "Co.Me.Te. Cooperativa Medici del Territorio - Societa' Cooperativa a R. L."
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:fe90474a-9317-4466-b812-9125be6548ea",
+      "resource": {
+        "resourceType": "Specimen",
+        "id": "fe90474a-9317-4466-b812-9125be6548ea",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Specimen-eu-lab"
+          ]
+        },
+        "collection": {
+          "collectedDateTime": "2020-04-17"
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Specimen</th><th>Collection Date</th></tr><tr><td>Acellular blood (serum or plasma) specimen</td><td><span class=\"nb\">17-Apr-2020</span></td></tr></table></div>"
+        },
+        "type": {
+          "coding": [
+            {
+              "code": "122592007",
+              "system": "http://snomed.info/sct",
+              "display": "Acellular blood (serum or plasma) specimen"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:451d675c-8479-41ef-abcb-5a33deb2d8f0",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "451d675c-8479-41ef-abcb-5a33deb2d8f0",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Observation-resultslab-eu-lab"
+          ]
+        },
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "laboratory",
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category"
+              }
+            ]
+          }
+        ],
+        "performer": [
+          {
+            "display": "The Central European Laboratory"
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "code": "2857-1",
+              "system": "http://loinc.org",
+              "display": "Prostate specific Ag [Mass/volume] in Serum or Plasma"
+            }
+          ],
+          "text": "Prostate specific Ag [Mass/volume] in Serum or Plasma"
+        },
+        "valueQuantity": {
+          "value": 0.7,
+          "unit": "ng/mL",
+          "code": "ng/mL",
+          "system": "http://unitsofmeasure.org"
+        },
+        "referenceRange": [
+          {
+            "low": {
+              "value": 0,
+              "code": "ng/mL",
+              "system": "http://unitsofmeasure.org"
+            },
+            "high": {
+              "value": 4,
+              "code": "ng/mL",
+              "system": "http://unitsofmeasure.org"
+            }
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Test</th><th>17-Apr-2020</th><th>Reference&#xA0;Range</th><th>Flag</th><th>Unit</th></tr><tr><td>Prostate specific Ag [Mass/volume] in Serum or Plasma</td><td>0.7</td><td>0 - 4</td><td></td><td>ng/mL</td></tr></table></div>"
+        },
+        "status": "final",
+        "effectiveDateTime": "2020-04-17T08:50:18Z",
+        "subject": {
+          "reference": "urn:uuid:414ebdb7-001d-4e94-a3ad-a16abe866535",
+          "display": "Patrizio Lussu"
+        },
+        "specimen": {
+          "reference": "urn:uuid:fe90474a-9317-4466-b812-9125be6548ea"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:593200ba-5f37-435a-84da-4bc664cbbe8c",
+      "resource": {
+        "resourceType": "Device",
+        "id": "593200ba-5f37-435a-84da-4bc664cbbe8c",
+        "deviceName": [
+          {
+            "name": "SYNDERAI Synthetic Generator",
+            "type": "manufacturer-name"
+          }
+        ],
+        "version": [
+          {
+            "value": "5.0"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">SYNDERAI Synthetic Generator v5.0</div>"
+        },
+        "status": "active",
+        "distinctIdentifier": "synderai-generator-50",
+        "manufacturer": "SYNDERAI Project"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:65a528b0-3acc-4c59-a9c2-860c0757640d",
+      "resource": {
+        "resourceType": "Provenance",
+        "id": "65a528b0-3acc-4c59-a9c2-860c0757640d",
+        "target": [
+          {
+            "reference": "urn:uuid:414ebdb7-001d-4e94-a3ad-a16abe866535"
+          },
+          {
+            "reference": "urn:uuid:3cea4c11-74ef-4f81-80a7-81c41c70d1dc"
+          },
+          {
+            "reference": "urn:uuid:1be0a948-4718-43e8-9a23-a810bb27f896"
+          },
+          {
+            "reference": "urn:uuid:34f1344c-f7fb-454f-9d55-a633b970023b"
+          },
+          {
+            "reference": "urn:uuid:cf5f1911-2a30-46d5-81c8-da7d48e5d128"
+          },
+          {
+            "reference": "urn:uuid:7b530e8a-c0be-4cbc-ae61-cb19c226dfec"
+          }
+        ],
+        "activity": {
+          "coding": [
+            {
+              "code": "CREATE",
+              "system": "http://terminology.hl7.org/CodeSystem/v3-DataOperation",
+              "display": "create"
+            }
+          ],
+          "text": "Synthetic Example Data Generation"
+        },
+        "policy": [
+          "https://synderai.net/synderai-synthetic-data-policy"
+        ],
+        "agent": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "author",
+                  "system": "http://terminology.hl7.org/CodeSystem/provenance-participant-type",
+                  "display": "Author"
+                }
+              ],
+              "text": "author"
+            },
+            "who": {
+              "reference": "urn:uuid:593200ba-5f37-435a-84da-4bc664cbbe8c"
+            }
+          }
+        ],
+        "reason": [
+          {
+            "coding": [
+              {
+                "code": "TRAIN",
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+                "display": "training"
+              }
+            ],
+            "text": "Interoperability Testing and Training (non-clinical use)"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provenance for SYNDERAI Synthetic Example Data Resource</div>"
+        },
+        "recorded": "2020-04-17T12:50:18Z"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:1be0a948-4718-43e8-9a23-a810bb27f896",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "1be0a948-4718-43e8-9a23-a810bb27f896",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory Role Id: 1be0a948-4718-43e8-9a23-a810bb27f896</div>"
+        },
+        "practitioner": {
+          "reference": "urn:uuid:34f1344c-f7fb-454f-9d55-a633b970023b"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:34f1344c-f7fb-454f-9d55-a633b970023b",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "34f1344c-f7fb-454f-9d55-a633b970023b",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitioner-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "c442ad44-5584-4b22-af46-9bd5db4f503e"
+          }
+        ],
+        "name": [
+          {
+            "prefix": [
+              "dr"
+            ],
+            "given": [
+              "Ex"
+            ],
+            "family": "Ample"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Laboratoire Central Européenne",
+              "Boulevard du Jardin Botanique 32"
+            ],
+            "postalCode": "1000",
+            "city": "Brussels",
+            "country": "Belgium"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory: Laboratoire Central Européenne, 1000 Brussels, Belgium</div>"
+        }
+      }
+    }
+  ],
+  "type": "document",
+  "timestamp": "2020-04-17T12:50:18Z"
+}

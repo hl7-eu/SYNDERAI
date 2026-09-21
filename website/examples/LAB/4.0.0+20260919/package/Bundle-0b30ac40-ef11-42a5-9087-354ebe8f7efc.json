@@ -1,0 +1,731 @@
+{
+  "resourceType": "Bundle",
+  "id": "0b30ac40-ef11-42a5-9087-354ebe8f7efc",
+  "meta": {
+    "profile": [
+      "http://hl7.eu/fhir/laboratory/StructureDefinition/Bundle-eu-lab"
+    ]
+  },
+  "identifier": {
+    "assigner": {
+      "display": "HL7 Europe"
+    },
+    "system": "urn:oid:2.16.840.1.113883.2.51.999",
+    "value": "8330c8c1-7c75-4c40-89c7-deda747a4c0d"
+  },
+  "entry": [
+    {
+      "fullUrl": "urn:uuid:04d99fec-a78d-411a-8f7e-bbea93e3da3d",
+      "resource": {
+        "resourceType": "Composition",
+        "id": "04d99fec-a78d-411a-8f7e-bbea93e3da3d",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Composition-eu-lab"
+          ]
+        },
+        "extension": [
+          {
+            "url": "http://hl7.eu/fhir/extensions/StructureDefinition/composition-diagnosticReportReference",
+            "valueReference": {
+              "reference": "urn:uuid:3340ba74-9f05-4274-aa96-ba72e68d333c"
+            }
+          }
+        ],
+        "identifier": {
+          "assigner": {
+            "display": "HL7 Europe"
+          },
+          "system": "urn:oid:2.16.840.1.113883.2.51.999",
+          "value": "a4f3d28d-06f1-4626-9917-c77db9e75fac"
+        },
+        "author": [
+          {
+            "reference": "urn:uuid:8fd615b0-99a2-4238-b0f0-b7be76165c03"
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "type": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ],
+          "text": "Laboratory Report"
+        },
+        "section": [
+          {
+            "code": {
+              "coding": [
+                {
+                  "code": "18719-5",
+                  "system": "http://loinc.org",
+                  "display": "Chemistry studies (set)"
+                }
+              ],
+              "text": "CHEM"
+            },
+            "entry": [
+              {
+                "reference": "urn:uuid:e4862165-adad-47ff-b1e0-1459b6cfac87"
+              }
+            ],
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>CHEM</h3><table class=\"hl7__eu__lab__report\"><thead><tr><th>Test</th><th>03-DEC-2016</th><th>Reference&#xA0;Range</th><th>Unit</th></tr></thead><tbody><tr><td></td><td>62.0</td><td>60 - 120</td><td>mL/min/{1.73_m2}</td></tr></tbody></table></div>"
+            },
+            "title": "CHEM"
+          },
+          {
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>Annotation</h3><table class=\"hl7__eu__lab__report\"><tr><th>Conclusion and Recommendations based on this report and previous findings known to us:</th></tr><tr><td>The patient’s estimated glomerular filtration rate (eGFR) is slightly above the lower limit of normal, indicating mildly reduced kidney function. This may be age-related but should be monitored over time, especially if there are risk factors for chronic kidney disease. No acute abnormality is evident.</td></tr></table></div>"
+            },
+            "code": {
+              "coding": [
+                {
+                  "code": "48767-8",
+                  "system": "http://loinc.org",
+                  "display": "Annotation comment [Interpretation] Narrative"
+                }
+              ]
+            },
+            "title": "Annotation comment"
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "final",
+        "subject": {
+          "reference": "urn:uuid:6f07beca-427b-463b-9019-aac23f5932e1",
+          "display": "Eduarda Baptista"
+        },
+        "date": "2016-12-03T07:40:26Z",
+        "title": "Laboratory Report",
+        "confidentiality": "N"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:3340ba74-9f05-4274-aa96-ba72e68d333c",
+      "resource": {
+        "resourceType": "DiagnosticReport",
+        "id": "3340ba74-9f05-4274-aa96-ba72e68d333c",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/DiagnosticReport-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "a4f3d28d-06f1-4626-9917-c77db9e75fac"
+          },
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "c1c504c8-89ee-446b-8872-2e9a2012dff6"
+          }
+        ],
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-DiagnosticReport.composition",
+            "valueReference": {
+              "reference": "urn:uuid:04d99fec-a78d-411a-8f7e-bbea93e3da3d"
+            }
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:aa7a770a-56a7-4233-bb1f-ce571c801e34"
+          }
+        ],
+        "result": [
+          {
+            "reference": "urn:uuid:e4862165-adad-47ff-b1e0-1459b6cfac87"
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "registered",
+        "code": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:6f07beca-427b-463b-9019-aac23f5932e1",
+          "display": "Eduarda Baptista"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:6f07beca-427b-463b-9019-aac23f5932e1",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "6f07beca-427b-463b-9019-aac23f5932e1",
+        "meta": {
+          "security": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "HTEST"
+            },
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "TRAIN"
+            }
+          ],
+          "tag": [
+            {
+              "system": "https://synderai.net/fhir/CodeSystem/tags",
+              "code": "synthetic",
+              "display": "SYNDERAI Synthetic data"
+            }
+          ],
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/patient-eu-core"
+          ]
+        },
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "JHN",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://ec.europa.eu/identifier/eci",
+            "value": "9167-135109-5"
+          },
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "MR",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://local.setting.eu/identifier",
+            "value": "ab2c9097-a1fa-3a12-9e4a-8a5b19bc7432"
+          }
+        ],
+        "name": [
+          {
+            "given": [
+              "Eduarda"
+            ],
+            "family": "Baptista",
+            "text": "Eduarda Baptista"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "R. de Jesus, S/N"
+            ],
+            "use": "home",
+            "type": "physical",
+            "postalCode": "3730-240",
+            "city": "Vale de Cambra",
+            "country": "Portugal"
+          }
+        ],
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "(351) 934201884"
+          }
+        ],
+        "extension": [
+          {
+            "extension": [
+              {
+                "url": "code",
+                "valueCodeableConcept": {
+                  "coding": [
+                    {
+                      "code": "PT",
+                      "system": "urn:iso:std:iso:3166"
+                    }
+                  ]
+                }
+              }
+            ],
+            "url": "http://hl7.org/fhir/StructureDefinition/patient-nationality"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__ips\"><tr><td>Eduarda Baptista</td><td>female</td><td>17-Apr-1951</td></tr></table></div>"
+        },
+        "gender": "female",
+        "birthDate": "1951-04-17"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:db6a4986-a0a2-478a-9259-b5104f62019c",
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "db6a4986-a0a2-478a-9259-b5104f62019c",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/ServiceRequest-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "system": "http://example.org",
+            "value": "9d244f47-411c-49a7-a72a-9fb33e3d447d"
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:aa7a770a-56a7-4233-bb1f-ce571c801e34"
+          }
+        ],
+        "reasonCode": [
+          {
+            "coding": [
+              {
+                "code": "59621000",
+                "system": "http://snomed.info/sct",
+                "display": "Essential hypertension"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "431855005",
+                "system": "http://snomed.info/sct",
+                "display": "Chronic kidney disease stage 1"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "237602007",
+                "system": "http://snomed.info/sct",
+                "display": "Metabolic syndrome X"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "239872002",
+                "system": "http://snomed.info/sct",
+                "display": "Osteoarthritis of hip"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "414545008",
+                "system": "http://snomed.info/sct",
+                "display": "Ischemic heart disease"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "64859006",
+                "system": "http://snomed.info/sct",
+                "display": "Osteoporosis"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "55822004",
+                "system": "http://snomed.info/sct",
+                "display": "Hyperlipidemia"
+              }
+            ]
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "active",
+        "intent": "order",
+        "code": {
+          "coding": [
+            {
+              "code": "108252007",
+              "system": "http://snomed.info/sct",
+              "display": "Laboratory procedure"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:6f07beca-427b-463b-9019-aac23f5932e1",
+          "display": "Eduarda Baptista"
+        },
+        "requester": {
+          "reference": "urn:uuid:9785808b-dffe-40db-a4a6-349101e3ec96"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:9785808b-dffe-40db-a4a6-349101e3ec96",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "9785808b-dffe-40db-a4a6-349101e3ec96",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Role Id: 9785808b-dffe-40db-a4a6-349101e3ec96</div>"
+        },
+        "organization": {
+          "reference": "urn:uuid:54f017c5-93a2-4466-bf0f-5a862c94d0e2"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:54f017c5-93a2-4466-bf0f-5a862c94d0e2",
+      "resource": {
+        "resourceType": "Organization",
+        "id": "54f017c5-93a2-4466-bf0f-5a862c94d0e2",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/organization-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "0a292f13-51cc-457d-b10b-3c5a96e3668c"
+          }
+        ],
+        "address": [
+          {
+            "city": "Vale de Cambra",
+            "postalCode": "3730-240",
+            "country": "Portugal"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Organization: Hospital de Vale de CambraCentro de Saúde</div>"
+        },
+        "name": "Hospital de Vale de CambraCentro de Saúde"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:aa7a770a-56a7-4233-bb1f-ce571c801e34",
+      "resource": {
+        "resourceType": "Specimen",
+        "id": "aa7a770a-56a7-4233-bb1f-ce571c801e34",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Specimen-eu-lab"
+          ]
+        },
+        "collection": {
+          "collectedDateTime": "2016-12-03"
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Specimen</th><th>Collection Date</th></tr><tr><td>Blood specimen</td><td><span class=\"nb\">03-Dec-2016</span></td></tr></table></div>"
+        },
+        "type": {
+          "coding": [
+            {
+              "code": "119297000",
+              "system": "http://snomed.info/sct",
+              "display": "Blood specimen"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:e4862165-adad-47ff-b1e0-1459b6cfac87",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "e4862165-adad-47ff-b1e0-1459b6cfac87",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Observation-resultslab-eu-lab"
+          ]
+        },
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "laboratory",
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category"
+              }
+            ]
+          }
+        ],
+        "performer": [
+          {
+            "display": "The Central European Laboratory"
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "code": "98979-8",
+              "system": "http://loinc.org",
+              "display": "Glomerular filtration rate [Volume Rate/Area] in Serum, Plasma or Blood by Creatinine-based formula (CKD-EPI 2021)/1.73 sq M"
+            }
+          ],
+          "text": "Glomerular filtration rate [Volume Rate/Area] in Serum, Plasma or Blood by Creatinine-based formula (CKD-EPI 2021)/1.73 sq M"
+        },
+        "valueQuantity": {
+          "value": 62,
+          "unit": "mL/min/{1.73_m2}",
+          "code": "mL/min/{1.73_m2}",
+          "system": "http://unitsofmeasure.org"
+        },
+        "referenceRange": [
+          {
+            "low": {
+              "value": 60,
+              "code": "mL/min/{1.73_m2}",
+              "system": "http://unitsofmeasure.org"
+            },
+            "high": {
+              "value": 120,
+              "code": "mL/min/{1.73_m2}",
+              "system": "http://unitsofmeasure.org"
+            }
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Test</th><th>03-Dec-2016</th><th>Reference&#xA0;Range</th><th>Flag</th><th>Unit</th></tr><tr><td>Glomerular filtration rate [Volume Rate/Area] in Serum, Plasma or Blood by Creatinine-based formula (CKD-EPI 2021)/1.73 sq M</td><td>62.0</td><td>60 - 120</td><td></td><td>mL/min/{1.73_m2}</td></tr></table></div>"
+        },
+        "status": "final",
+        "effectiveDateTime": "2016-12-03T06:40:26Z",
+        "subject": {
+          "reference": "urn:uuid:6f07beca-427b-463b-9019-aac23f5932e1",
+          "display": "Eduarda Baptista"
+        },
+        "specimen": {
+          "reference": "urn:uuid:aa7a770a-56a7-4233-bb1f-ce571c801e34"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:80e65fa4-3045-4f8b-9fa6-632bb5588ed0",
+      "resource": {
+        "resourceType": "Device",
+        "id": "80e65fa4-3045-4f8b-9fa6-632bb5588ed0",
+        "deviceName": [
+          {
+            "name": "SYNDERAI Synthetic Generator",
+            "type": "manufacturer-name"
+          }
+        ],
+        "version": [
+          {
+            "value": "5.0"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">SYNDERAI Synthetic Generator v5.0</div>"
+        },
+        "status": "active",
+        "distinctIdentifier": "synderai-generator-50",
+        "manufacturer": "SYNDERAI Project"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:5c66467e-ade9-481a-9650-5ae2ba5edb77",
+      "resource": {
+        "resourceType": "Provenance",
+        "id": "5c66467e-ade9-481a-9650-5ae2ba5edb77",
+        "target": [
+          {
+            "reference": "urn:uuid:6f07beca-427b-463b-9019-aac23f5932e1"
+          },
+          {
+            "reference": "urn:uuid:04d99fec-a78d-411a-8f7e-bbea93e3da3d"
+          },
+          {
+            "reference": "urn:uuid:8fd615b0-99a2-4238-b0f0-b7be76165c03"
+          },
+          {
+            "reference": "urn:uuid:320701dc-6b97-4075-849d-32efb6a5de9c"
+          },
+          {
+            "reference": "urn:uuid:9785808b-dffe-40db-a4a6-349101e3ec96"
+          },
+          {
+            "reference": "urn:uuid:54f017c5-93a2-4466-bf0f-5a862c94d0e2"
+          }
+        ],
+        "activity": {
+          "coding": [
+            {
+              "code": "CREATE",
+              "system": "http://terminology.hl7.org/CodeSystem/v3-DataOperation",
+              "display": "create"
+            }
+          ],
+          "text": "Synthetic Example Data Generation"
+        },
+        "policy": [
+          "https://synderai.net/synderai-synthetic-data-policy"
+        ],
+        "agent": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "author",
+                  "system": "http://terminology.hl7.org/CodeSystem/provenance-participant-type",
+                  "display": "Author"
+                }
+              ],
+              "text": "author"
+            },
+            "who": {
+              "reference": "urn:uuid:80e65fa4-3045-4f8b-9fa6-632bb5588ed0"
+            }
+          }
+        ],
+        "reason": [
+          {
+            "coding": [
+              {
+                "code": "TRAIN",
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+                "display": "training"
+              }
+            ],
+            "text": "Interoperability Testing and Training (non-clinical use)"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provenance for SYNDERAI Synthetic Example Data Resource</div>"
+        },
+        "recorded": "2016-12-03T08:40:26Z"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:8fd615b0-99a2-4238-b0f0-b7be76165c03",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "8fd615b0-99a2-4238-b0f0-b7be76165c03",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory Role Id: 8fd615b0-99a2-4238-b0f0-b7be76165c03</div>"
+        },
+        "practitioner": {
+          "reference": "urn:uuid:320701dc-6b97-4075-849d-32efb6a5de9c"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:320701dc-6b97-4075-849d-32efb6a5de9c",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "320701dc-6b97-4075-849d-32efb6a5de9c",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitioner-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "14b61ef4-4cdb-4f73-b5f7-518b253dbe2e"
+          }
+        ],
+        "name": [
+          {
+            "prefix": [
+              "dr"
+            ],
+            "given": [
+              "Ex"
+            ],
+            "family": "Ample"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Laboratoire Central Européenne",
+              "Boulevard du Jardin Botanique 32"
+            ],
+            "postalCode": "1000",
+            "city": "Brussels",
+            "country": "Belgium"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory: Laboratoire Central Européenne, 1000 Brussels, Belgium</div>"
+        }
+      }
+    }
+  ],
+  "type": "document",
+  "timestamp": "2016-12-03T08:40:26Z"
+}

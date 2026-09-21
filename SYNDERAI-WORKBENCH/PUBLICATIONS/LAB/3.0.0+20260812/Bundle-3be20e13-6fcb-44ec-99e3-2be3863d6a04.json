@@ -1,0 +1,745 @@
+{
+  "resourceType": "Bundle",
+  "id": "3be20e13-6fcb-44ec-99e3-2be3863d6a04",
+  "meta": {
+    "profile": [
+      "http://hl7.eu/fhir/laboratory/StructureDefinition/Bundle-eu-lab"
+    ]
+  },
+  "identifier": {
+    "assigner": {
+      "display": "HL7 Europe"
+    },
+    "system": "urn:oid:2.16.840.1.113883.2.51.999",
+    "value": "384fd48e-98b6-4f9f-8472-27b5304df00c"
+  },
+  "entry": [
+    {
+      "fullUrl": "urn:uuid:7af4fb6a-5a5c-4cbc-b6cc-48cdba4ddb30",
+      "resource": {
+        "resourceType": "Composition",
+        "id": "7af4fb6a-5a5c-4cbc-b6cc-48cdba4ddb30",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Composition-eu-lab"
+          ]
+        },
+        "extension": [
+          {
+            "url": "http://hl7.eu/fhir/extensions/StructureDefinition/composition-diagnosticReportReference",
+            "valueReference": {
+              "reference": "urn:uuid:c90637a0-9c3e-4bd2-a715-adf8766bfaf9"
+            }
+          }
+        ],
+        "identifier": {
+          "assigner": {
+            "display": "HL7 Europe"
+          },
+          "system": "urn:oid:2.16.840.1.113883.2.51.999",
+          "value": "f2df3102-7eb7-4568-ba8d-b5258a5b87fa"
+        },
+        "author": [
+          {
+            "reference": "urn:uuid:b70cdc53-b6f7-4ae8-8664-7fc0d680ae1f"
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "type": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ],
+          "text": "Laboratory Report"
+        },
+        "section": [
+          {
+            "code": {
+              "coding": [
+                {
+                  "code": "18719-5",
+                  "system": "http://loinc.org",
+                  "display": "Chemistry studies (set)"
+                }
+              ],
+              "text": "CHEM"
+            },
+            "entry": [
+              {
+                "reference": "urn:uuid:47d12def-e873-4497-a561-2ffb7583aeeb"
+              }
+            ],
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>CHEM</h3><table class=\"hl7__eu__lab__report\"><thead><tr><th>Test</th><th>04-DEC-2021</th><th>Reference&#xA0;Range</th><th>Unit</th></tr></thead><tbody><tr><td></td><td><strong>49.6 H</strong></td><td>20 - 42</td><td>mmol/mol</td></tr></tbody></table></div>"
+            },
+            "title": "CHEM"
+          },
+          {
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>Annotation</h3><table class=\"hl7__eu__lab__report\"><tr><th>Conclusion and Recommendations based on this report and previous findings known to us</th></tr><tr><td>The patient’s HbA1c is elevated, indicating suboptimal long-term glycemic control and likely poorly controlled diabetes mellitus. This increases the risk for microvascular and macrovascular complications. Clinical correlation and optimization of diabetes management are recommended.</td></tr></table></div>"
+            },
+            "code": {
+              "coding": [
+                {
+                  "code": "48767-8",
+                  "system": "http://loinc.org",
+                  "display": "Annotation comment [Interpretation] Narrative"
+                }
+              ]
+            },
+            "title": "Annotation comment"
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "final",
+        "subject": {
+          "reference": "urn:uuid:3fa9f231-d011-4d09-8d62-c46e58e82633",
+          "display": "Gundolf Zobel"
+        },
+        "date": "2021-12-04T17:07:23Z",
+        "title": "Laboratory Report",
+        "confidentiality": "N"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:c90637a0-9c3e-4bd2-a715-adf8766bfaf9",
+      "resource": {
+        "resourceType": "DiagnosticReport",
+        "id": "c90637a0-9c3e-4bd2-a715-adf8766bfaf9",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/DiagnosticReport-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "f2df3102-7eb7-4568-ba8d-b5258a5b87fa"
+          },
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "374a3257-e9cb-4f80-b136-0a80d0e23380"
+          }
+        ],
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-DiagnosticReport.composition",
+            "valueReference": {
+              "reference": "urn:uuid:7af4fb6a-5a5c-4cbc-b6cc-48cdba4ddb30"
+            }
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:e7c10084-c8d6-42e4-96f7-1d0379bdd9fe"
+          }
+        ],
+        "result": [
+          {
+            "reference": "urn:uuid:47d12def-e873-4497-a561-2ffb7583aeeb"
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "registered",
+        "code": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:3fa9f231-d011-4d09-8d62-c46e58e82633",
+          "display": "Gundolf Zobel"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:3fa9f231-d011-4d09-8d62-c46e58e82633",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "3fa9f231-d011-4d09-8d62-c46e58e82633",
+        "meta": {
+          "security": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "HTEST"
+            },
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "TRAIN"
+            }
+          ],
+          "tag": [
+            {
+              "system": "https://synderai.net/fhir/CodeSystem/tags",
+              "code": "synthetic",
+              "display": "SYNDERAI Synthetic data"
+            }
+          ],
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/patient-eu-core"
+          ]
+        },
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "JHN",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://ec.europa.eu/identifier/eci",
+            "value": "7900-777895-8"
+          },
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "MR",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://local.setting.eu/identifier",
+            "value": "04b2a010-55a8-baf5-1cdf-6781a9ec3e74"
+          }
+        ],
+        "name": [
+          {
+            "given": [
+              "Gundolf"
+            ],
+            "family": "Zobel",
+            "text": "Gundolf Zobel"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Sieringgasse 25"
+            ],
+            "use": "home",
+            "type": "physical",
+            "postalCode": "49593",
+            "city": "Bersenbrück",
+            "country": "Germany"
+          }
+        ],
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "+49(0)7163399695"
+          }
+        ],
+        "extension": [
+          {
+            "extension": [
+              {
+                "url": "code",
+                "valueCodeableConcept": {
+                  "coding": [
+                    {
+                      "code": "DE",
+                      "system": "urn:iso:std:iso:3166"
+                    }
+                  ]
+                }
+              }
+            ],
+            "url": "http://hl7.org/fhir/StructureDefinition/patient-nationality"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__ips\"><tr><td>Gundolf Zobel</td><td>male</td><td>30-Apr-1947</td></tr></table></div>"
+        },
+        "gender": "male",
+        "birthDate": "1947-04-30"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:7f1cafe4-bb3b-4e41-8260-a39399a1e941",
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "7f1cafe4-bb3b-4e41-8260-a39399a1e941",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/ServiceRequest-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "system": "http://example.org",
+            "value": "ac9fc91d-0e2e-4699-a3c0-43ddd721770e"
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:e7c10084-c8d6-42e4-96f7-1d0379bdd9fe"
+          }
+        ],
+        "reasonCode": [
+          {
+            "coding": [
+              {
+                "code": "59621000",
+                "system": "http://snomed.info/sct",
+                "display": "Essential hypertension"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "44054006",
+                "system": "http://snomed.info/sct",
+                "display": "Type 2 diabetes mellitus"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "49049000",
+                "system": "http://snomed.info/sct",
+                "display": "Parkinson's disease"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "237602007",
+                "system": "http://snomed.info/sct",
+                "display": "Metabolic syndrome X"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "239873007",
+                "system": "http://snomed.info/sct",
+                "display": "Osteoarthritis of knee"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "127013003",
+                "system": "http://snomed.info/sct",
+                "display": "Disorder of kidney due to diabetes mellitus"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "230572002",
+                "system": "http://snomed.info/sct",
+                "display": "Neuropathy due to diabetes mellitus"
+              }
+            ]
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "active",
+        "intent": "order",
+        "code": {
+          "coding": [
+            {
+              "code": "108252007",
+              "system": "http://snomed.info/sct",
+              "display": "Laboratory procedure"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:3fa9f231-d011-4d09-8d62-c46e58e82633",
+          "display": "Gundolf Zobel"
+        },
+        "requester": {
+          "reference": "urn:uuid:e4e64e35-ca89-4823-aa37-3a321f70c93c"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:e4e64e35-ca89-4823-aa37-3a321f70c93c",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "e4e64e35-ca89-4823-aa37-3a321f70c93c",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Role Id: e4e64e35-ca89-4823-aa37-3a321f70c93c</div>"
+        },
+        "organization": {
+          "reference": "urn:uuid:c5a77065-c3cb-4fd1-880d-16bf16c4f7ed"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:c5a77065-c3cb-4fd1-880d-16bf16c4f7ed",
+      "resource": {
+        "resourceType": "Organization",
+        "id": "c5a77065-c3cb-4fd1-880d-16bf16c4f7ed",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/organization-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "554fdd3f-fb43-455c-aea9-5b5457a558fd"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Loxter Hof 3"
+            ],
+            "city": "Quakenbrück",
+            "postalCode": "49610",
+            "country": "Germany"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Organization: Praxisgemeinschaft Loxter Hof</div>"
+        },
+        "name": "Praxisgemeinschaft Loxter Hof"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:e7c10084-c8d6-42e4-96f7-1d0379bdd9fe",
+      "resource": {
+        "resourceType": "Specimen",
+        "id": "e7c10084-c8d6-42e4-96f7-1d0379bdd9fe",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Specimen-eu-lab"
+          ]
+        },
+        "collection": {
+          "collectedDateTime": "2021-12-04"
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Specimen</th><th>Collection Date</th></tr><tr><td>Blood specimen</td><td><span class=\"nb\">04-Dec-2021</span></td></tr></table></div>"
+        },
+        "type": {
+          "coding": [
+            {
+              "code": "119297000",
+              "system": "http://snomed.info/sct",
+              "display": "Blood specimen"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:47d12def-e873-4497-a561-2ffb7583aeeb",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "47d12def-e873-4497-a561-2ffb7583aeeb",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Observation-resultslab-eu-lab"
+          ]
+        },
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "laboratory",
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category"
+              }
+            ]
+          }
+        ],
+        "performer": [
+          {
+            "display": "The Central European Laboratory"
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "code": "59261-8",
+              "system": "http://loinc.org",
+              "display": "Hemoglobin A1c/Hemoglobin.total standardized per IFCC-RMP for CDT in Blood"
+            }
+          ],
+          "text": "Hemoglobin A1c/Hemoglobin.total standardized per IFCC-RMP for CDT in Blood"
+        },
+        "valueQuantity": {
+          "value": 49.6,
+          "unit": "mmol/mol",
+          "code": "mmol/mol",
+          "system": "http://unitsofmeasure.org"
+        },
+        "referenceRange": [
+          {
+            "low": {
+              "value": 20,
+              "code": "mmol/mol",
+              "system": "http://unitsofmeasure.org"
+            },
+            "high": {
+              "value": 42,
+              "code": "mmol/mol",
+              "system": "http://unitsofmeasure.org"
+            }
+          }
+        ],
+        "interpretation": [
+          {
+            "coding": [
+              {
+                "code": "H",
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                "display": "High"
+              }
+            ]
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Test</th><th>04-Dec-2021</th><th>Reference&#xA0;Range</th><th>Flag</th><th>Unit</th></tr><tr><td>Hemoglobin A1c/Hemoglobin.total standardized per IFCC-RMP for CDT in Blood</td><td>49.6</td><td>20 - 42</td><td>H</td><td>mmol/mol</td></tr></table></div>"
+        },
+        "status": "final",
+        "effectiveDateTime": "2021-12-04T16:07:23Z",
+        "subject": {
+          "reference": "urn:uuid:3fa9f231-d011-4d09-8d62-c46e58e82633",
+          "display": "Gundolf Zobel"
+        },
+        "specimen": {
+          "reference": "urn:uuid:e7c10084-c8d6-42e4-96f7-1d0379bdd9fe"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:6de3fcc2-b319-4216-91a8-39bb9f5d3a23",
+      "resource": {
+        "resourceType": "Device",
+        "id": "6de3fcc2-b319-4216-91a8-39bb9f5d3a23",
+        "deviceName": [
+          {
+            "name": "SYNDERAI Synthetic Generator",
+            "type": "manufacturer-name"
+          }
+        ],
+        "version": [
+          {
+            "value": "5.0"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">SYNDERAI Synthetic Generator v5.0</div>"
+        },
+        "status": "active",
+        "distinctIdentifier": "synderai-generator-50",
+        "manufacturer": "SYNDERAI Project"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:6446a644-ed0b-4224-87f1-63810637bfb4",
+      "resource": {
+        "resourceType": "Provenance",
+        "id": "6446a644-ed0b-4224-87f1-63810637bfb4",
+        "target": [
+          {
+            "reference": "urn:uuid:3fa9f231-d011-4d09-8d62-c46e58e82633"
+          },
+          {
+            "reference": "urn:uuid:7af4fb6a-5a5c-4cbc-b6cc-48cdba4ddb30"
+          },
+          {
+            "reference": "urn:uuid:b70cdc53-b6f7-4ae8-8664-7fc0d680ae1f"
+          },
+          {
+            "reference": "urn:uuid:83727b27-564f-4513-92a6-12ce2475fcca"
+          },
+          {
+            "reference": "urn:uuid:e4e64e35-ca89-4823-aa37-3a321f70c93c"
+          },
+          {
+            "reference": "urn:uuid:c5a77065-c3cb-4fd1-880d-16bf16c4f7ed"
+          }
+        ],
+        "activity": {
+          "coding": [
+            {
+              "code": "CREATE",
+              "system": "http://terminology.hl7.org/CodeSystem/v3-DataOperation",
+              "display": "create"
+            }
+          ],
+          "text": "Synthetic Example Data Generation"
+        },
+        "policy": [
+          "https://synderai.net/synderai-synthetic-data-policy"
+        ],
+        "agent": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "author",
+                  "system": "http://terminology.hl7.org/CodeSystem/provenance-participant-type",
+                  "display": "Author"
+                }
+              ],
+              "text": "author"
+            },
+            "who": {
+              "reference": "urn:uuid:6de3fcc2-b319-4216-91a8-39bb9f5d3a23"
+            }
+          }
+        ],
+        "reason": [
+          {
+            "coding": [
+              {
+                "code": "TRAIN",
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+                "display": "training"
+              }
+            ],
+            "text": "Interoperability Testing and Training (non-clinical use)"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provenance for SYNDERAI Synthetic Example Data Resource</div>"
+        },
+        "recorded": "2021-12-04T18:07:23Z"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:b70cdc53-b6f7-4ae8-8664-7fc0d680ae1f",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "b70cdc53-b6f7-4ae8-8664-7fc0d680ae1f",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory Role Id: b70cdc53-b6f7-4ae8-8664-7fc0d680ae1f</div>"
+        },
+        "practitioner": {
+          "reference": "urn:uuid:83727b27-564f-4513-92a6-12ce2475fcca"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:83727b27-564f-4513-92a6-12ce2475fcca",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "83727b27-564f-4513-92a6-12ce2475fcca",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitioner-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "9ff3c12a-fd07-420e-a198-81d1a45f63c0"
+          }
+        ],
+        "name": [
+          {
+            "prefix": [
+              "dr"
+            ],
+            "given": [
+              "Ex"
+            ],
+            "family": "Ample"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Laboratoire Central Européenne",
+              "Boulevard du Jardin Botanique 32"
+            ],
+            "postalCode": "1000",
+            "city": "Brussels",
+            "country": "Belgium"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory: Laboratoire Central Européenne, 1000 Brussels, Belgium</div>"
+        }
+      }
+    }
+  ],
+  "type": "document",
+  "timestamp": "2021-12-04T18:07:23Z"
+}

@@ -1,0 +1,683 @@
+{
+  "resourceType": "Bundle",
+  "id": "1e267d6b-c80b-4e24-89a9-4180baed8d03",
+  "meta": {
+    "profile": [
+      "http://hl7.eu/fhir/laboratory/StructureDefinition/Bundle-eu-lab"
+    ]
+  },
+  "identifier": {
+    "assigner": {
+      "display": "HL7 Europe"
+    },
+    "system": "urn:oid:2.16.840.1.113883.2.51.999",
+    "value": "af9633f7-12f8-4eb1-8e15-4c369fd219c3"
+  },
+  "entry": [
+    {
+      "fullUrl": "urn:uuid:625f0975-55b4-4e5f-be7b-f98722024af9",
+      "resource": {
+        "resourceType": "Composition",
+        "id": "625f0975-55b4-4e5f-be7b-f98722024af9",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Composition-eu-lab"
+          ]
+        },
+        "extension": [
+          {
+            "url": "http://hl7.eu/fhir/extensions/StructureDefinition/composition-diagnosticReportReference",
+            "valueReference": {
+              "reference": "urn:uuid:adf89d57-a1ea-4e4e-94e7-9f070b644558"
+            }
+          }
+        ],
+        "identifier": {
+          "assigner": {
+            "display": "HL7 Europe"
+          },
+          "system": "urn:oid:2.16.840.1.113883.2.51.999",
+          "value": "81ffc4d7-37aa-48a3-9969-60f51b67398b"
+        },
+        "author": [
+          {
+            "reference": "urn:uuid:e2aeb2f1-c697-455f-b57a-ee47c09bdf9f"
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "type": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ],
+          "text": "Laboratory Report"
+        },
+        "section": [
+          {
+            "code": {
+              "coding": [
+                {
+                  "code": "18725-2",
+                  "system": "http://loinc.org",
+                  "display": "Microbiology studies (set)"
+                }
+              ],
+              "text": "PANEL.MICRO"
+            },
+            "entry": [
+              {
+                "reference": "urn:uuid:e02d147f-e382-4da6-a98e-3deb8e2673af"
+              }
+            ],
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>PANEL.MICRO</h3><table class=\"hl7__eu__lab__report\"><thead><tr><th>Test</th><th>01-APR-2020</th><th>Reference&#xA0;Range</th><th>Unit</th></tr></thead><tbody><tr><td></td><td>Detected</td><td></td><td></td></tr></tbody></table></div>"
+            },
+            "title": "PANEL.MICRO"
+          },
+          {
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>Annotation</h3><table class=\"hl7__eu__lab__report\"><tr><th>Conclusion and Recommendations based on this report and previous findings known to us:</th></tr><tr><td>SARS-CoV-2 RNA was detected in the respiratory specimen, indicating an active COVID-19 infection. Clinical correlation and appropriate infection control measures are recommended.</td></tr></table></div>"
+            },
+            "code": {
+              "coding": [
+                {
+                  "code": "48767-8",
+                  "system": "http://loinc.org",
+                  "display": "Annotation comment [Interpretation] Narrative"
+                }
+              ]
+            },
+            "title": "Annotation comment"
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "final",
+        "subject": {
+          "reference": "urn:uuid:069011cb-58a3-4933-97e1-f45f5962284b",
+          "display": "Marta Giorgetti"
+        },
+        "date": "2020-04-01T22:52:08Z",
+        "title": "Laboratory Report",
+        "confidentiality": "N"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:adf89d57-a1ea-4e4e-94e7-9f070b644558",
+      "resource": {
+        "resourceType": "DiagnosticReport",
+        "id": "adf89d57-a1ea-4e4e-94e7-9f070b644558",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/DiagnosticReport-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "81ffc4d7-37aa-48a3-9969-60f51b67398b"
+          },
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "a2ec2585-1d5f-49e5-874e-f15abbd62fe5"
+          }
+        ],
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-DiagnosticReport.composition",
+            "valueReference": {
+              "reference": "urn:uuid:625f0975-55b4-4e5f-be7b-f98722024af9"
+            }
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:ebb8629d-09eb-40cb-8124-3027187024b0"
+          }
+        ],
+        "result": [
+          {
+            "reference": "urn:uuid:e02d147f-e382-4da6-a98e-3deb8e2673af"
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "registered",
+        "code": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:069011cb-58a3-4933-97e1-f45f5962284b",
+          "display": "Marta Giorgetti"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:069011cb-58a3-4933-97e1-f45f5962284b",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "069011cb-58a3-4933-97e1-f45f5962284b",
+        "meta": {
+          "security": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "HTEST"
+            },
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "TRAIN"
+            }
+          ],
+          "tag": [
+            {
+              "system": "https://synderai.net/fhir/CodeSystem/tags",
+              "code": "synthetic",
+              "display": "SYNDERAI Synthetic data"
+            }
+          ],
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/patient-eu-core"
+          ]
+        },
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "JHN",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://ec.europa.eu/identifier/eci",
+            "value": "4489-186686-3"
+          },
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "MR",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://local.setting.eu/identifier",
+            "value": "d5e833e1-2ddc-843b-1778-07e0e3b9b8db"
+          }
+        ],
+        "name": [
+          {
+            "given": [
+              "Marta"
+            ],
+            "family": "Giorgetti",
+            "text": "Marta Giorgetti"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Canale Michela, 157"
+            ],
+            "use": "home",
+            "type": "physical",
+            "postalCode": "41012",
+            "city": "Quercioli",
+            "country": "Italy"
+          }
+        ],
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "3757529014"
+          }
+        ],
+        "extension": [
+          {
+            "extension": [
+              {
+                "url": "code",
+                "valueCodeableConcept": {
+                  "coding": [
+                    {
+                      "code": "IT",
+                      "system": "urn:iso:std:iso:3166"
+                    }
+                  ]
+                }
+              }
+            ],
+            "url": "http://hl7.org/fhir/StructureDefinition/patient-nationality"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__ips\"><tr><td>Marta Giorgetti</td><td>female</td><td>07-Mar-1962</td></tr></table></div>"
+        },
+        "gender": "female",
+        "birthDate": "1962-03-07"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:ddaa5801-3eb2-41a3-85ee-5c437633090d",
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "ddaa5801-3eb2-41a3-85ee-5c437633090d",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/ServiceRequest-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "system": "http://example.org",
+            "value": "6627eb92-5929-4318-bbee-69398716bcf6"
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:ebb8629d-09eb-40cb-8124-3027187024b0"
+          }
+        ],
+        "reasonCode": [
+          {
+            "coding": [
+              {
+                "code": "363402007",
+                "system": "http://snomed.info/sct",
+                "display": "Malignant neoplasm of esophagus"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "26929004",
+                "system": "http://snomed.info/sct",
+                "display": "Alzheimer's disease"
+              }
+            ]
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "active",
+        "intent": "order",
+        "code": {
+          "coding": [
+            {
+              "code": "108252007",
+              "system": "http://snomed.info/sct",
+              "display": "Laboratory procedure"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:069011cb-58a3-4933-97e1-f45f5962284b",
+          "display": "Marta Giorgetti"
+        },
+        "requester": {
+          "reference": "urn:uuid:d9bcd035-842d-4dce-8fd7-6d92201f0a22"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:d9bcd035-842d-4dce-8fd7-6d92201f0a22",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "d9bcd035-842d-4dce-8fd7-6d92201f0a22",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Role Id: d9bcd035-842d-4dce-8fd7-6d92201f0a22</div>"
+        },
+        "organization": {
+          "reference": "urn:uuid:6c305752-8f01-49ce-85ad-a9ccb306223c"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:6c305752-8f01-49ce-85ad-a9ccb306223c",
+      "resource": {
+        "resourceType": "Organization",
+        "id": "6c305752-8f01-49ce-85ad-a9ccb306223c",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/organization-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "3f90e16c-1e05-4ef7-80a8-dcb733015a43"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Piazzale Rita Levi Montalcini nan"
+            ],
+            "city": "Casalecchio di Reno",
+            "postalCode": "40033",
+            "country": "Italy"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Organization: Casa della Salute</div>"
+        },
+        "name": "Casa della Salute"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:ebb8629d-09eb-40cb-8124-3027187024b0",
+      "resource": {
+        "resourceType": "Specimen",
+        "id": "ebb8629d-09eb-40cb-8124-3027187024b0",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Specimen-eu-lab"
+          ]
+        },
+        "collection": {
+          "collectedDateTime": "2020-04-01"
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Specimen</th><th>Collection Date</th></tr><tr><td>Specimen from respiratory system</td><td><span class=\"nb\">01-Apr-2020</span></td></tr></table></div>"
+        },
+        "type": {
+          "coding": [
+            {
+              "code": "258603007",
+              "system": "http://snomed.info/sct",
+              "display": "Specimen from respiratory system"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:e02d147f-e382-4da6-a98e-3deb8e2673af",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "e02d147f-e382-4da6-a98e-3deb8e2673af",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Observation-resultslab-eu-lab"
+          ]
+        },
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "laboratory",
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category"
+              }
+            ]
+          }
+        ],
+        "performer": [
+          {
+            "display": "The Central European Laboratory"
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "code": "94531-1",
+              "system": "http://loinc.org",
+              "display": "SARS-CoV-2 (COVID-19) RNA panel - Respiratory system specimen by NAA with probe detection"
+            }
+          ],
+          "text": "SARS-CoV-2 (COVID-19) RNA panel - Respiratory system specimen by NAA with probe detection"
+        },
+        "referenceRange": [
+          {
+            "text": "Detected"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Test</th><th>01-Apr-2020</th><th>Reference&#xA0;Range</th><th>Flag</th><th>Unit</th></tr><tr><td>SARS-CoV-2 (COVID-19) RNA panel - Respiratory system specimen by NAA with probe detection</td><td>Detected</td><td>Detected</td><td></td><td>-</td></tr></table></div>"
+        },
+        "status": "final",
+        "effectiveDateTime": "2020-04-01T20:52:08Z",
+        "subject": {
+          "reference": "urn:uuid:069011cb-58a3-4933-97e1-f45f5962284b",
+          "display": "Marta Giorgetti"
+        },
+        "valueCodeableConcept": {
+          "coding": [
+            {
+              "code": "260373001",
+              "system": "http://snomed.info/sct",
+              "display": "Detected"
+            }
+          ]
+        },
+        "specimen": {
+          "reference": "urn:uuid:ebb8629d-09eb-40cb-8124-3027187024b0"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:f937759f-92a5-425b-8c1a-db852d73675a",
+      "resource": {
+        "resourceType": "Device",
+        "id": "f937759f-92a5-425b-8c1a-db852d73675a",
+        "deviceName": [
+          {
+            "name": "SYNDERAI Synthetic Generator",
+            "type": "manufacturer-name"
+          }
+        ],
+        "version": [
+          {
+            "value": "5.0"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">SYNDERAI Synthetic Generator v5.0</div>"
+        },
+        "status": "active",
+        "distinctIdentifier": "synderai-generator-50",
+        "manufacturer": "SYNDERAI Project"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:b0bbccc0-6951-415b-b176-307edce12179",
+      "resource": {
+        "resourceType": "Provenance",
+        "id": "b0bbccc0-6951-415b-b176-307edce12179",
+        "target": [
+          {
+            "reference": "urn:uuid:069011cb-58a3-4933-97e1-f45f5962284b"
+          },
+          {
+            "reference": "urn:uuid:625f0975-55b4-4e5f-be7b-f98722024af9"
+          },
+          {
+            "reference": "urn:uuid:e2aeb2f1-c697-455f-b57a-ee47c09bdf9f"
+          },
+          {
+            "reference": "urn:uuid:71159e3c-693a-4950-858a-eb42e5b4522f"
+          },
+          {
+            "reference": "urn:uuid:d9bcd035-842d-4dce-8fd7-6d92201f0a22"
+          },
+          {
+            "reference": "urn:uuid:6c305752-8f01-49ce-85ad-a9ccb306223c"
+          }
+        ],
+        "activity": {
+          "coding": [
+            {
+              "code": "CREATE",
+              "system": "http://terminology.hl7.org/CodeSystem/v3-DataOperation",
+              "display": "create"
+            }
+          ],
+          "text": "Synthetic Example Data Generation"
+        },
+        "policy": [
+          "https://synderai.net/synderai-synthetic-data-policy"
+        ],
+        "agent": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "author",
+                  "system": "http://terminology.hl7.org/CodeSystem/provenance-participant-type",
+                  "display": "Author"
+                }
+              ],
+              "text": "author"
+            },
+            "who": {
+              "reference": "urn:uuid:f937759f-92a5-425b-8c1a-db852d73675a"
+            }
+          }
+        ],
+        "reason": [
+          {
+            "coding": [
+              {
+                "code": "TRAIN",
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+                "display": "training"
+              }
+            ],
+            "text": "Interoperability Testing and Training (non-clinical use)"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provenance for SYNDERAI Synthetic Example Data Resource</div>"
+        },
+        "recorded": "2020-04-02T00:52:08Z"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:e2aeb2f1-c697-455f-b57a-ee47c09bdf9f",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "e2aeb2f1-c697-455f-b57a-ee47c09bdf9f",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory Role Id: e2aeb2f1-c697-455f-b57a-ee47c09bdf9f</div>"
+        },
+        "practitioner": {
+          "reference": "urn:uuid:71159e3c-693a-4950-858a-eb42e5b4522f"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:71159e3c-693a-4950-858a-eb42e5b4522f",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "71159e3c-693a-4950-858a-eb42e5b4522f",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitioner-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "d30b51b8-5e8d-4ebd-8827-d6ef9725beae"
+          }
+        ],
+        "name": [
+          {
+            "prefix": [
+              "dr"
+            ],
+            "given": [
+              "Ex"
+            ],
+            "family": "Ample"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Laboratoire Central Européenne",
+              "Boulevard du Jardin Botanique 32"
+            ],
+            "postalCode": "1000",
+            "city": "Brussels",
+            "country": "Belgium"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory: Laboratoire Central Européenne, 1000 Brussels, Belgium</div>"
+        }
+      }
+    }
+  ],
+  "type": "document",
+  "timestamp": "2020-04-02T00:52:08Z"
+}

@@ -7,6 +7,8 @@ $HTMLvitals = "";
 $HEADvitals = "";
 $amalghtml = array();
 $pdat->vitalsignentries = array();
+
+require_once __DIR__ . "/../lib/vital-guards.php";
 if ($pdat->vitalsigns !== NULL) {
   // add heading for first round
   $HTMLvitals = "<tr><th>Vital Signs</th><th>$pdat->vitalsignslastdate</th><th>$pdat->vitalsignslastbutonedate</th></tr>";
@@ -14,6 +16,11 @@ if ($pdat->vitalsigns !== NULL) {
     // var_dump($gdata);
     if ($key === $pdat->vitalsignslastdate) {
       foreach($gdata as $sdata) {
+        if (!vitalHasCode($sdata)) {
+          lognlsev(2, ERROR, "......... +++ Vital sign without an observation code, skipped\n");
+          registerMapMissing("+++ Vital sign without an observation code");
+          continue;
+        }
         $vitalinstanceid = uuid();
         // var_dump($sdata);
         list($tmpfsh, $tmphtml, $HEADvitals, $vitainstance) = 
@@ -47,6 +54,11 @@ if ($pdat->vitalsigns !== NULL) {
     // var_dump($sdata);
     if ($key === $pdat->vitalsignslastbutonedate) {
       foreach($gdata as $sdata) {
+        if (!vitalHasCode($sdata)) {
+          lognlsev(2, ERROR, "......... +++ Vital sign without an observation code, skipped\n");
+          registerMapMissing("+++ Vital sign without an observation code");
+          continue;
+        }
         $vitalinstanceid = uuid();
         // var_dump($sdata);
         list($tmpfsh, $tmphtml, $HEADvitals, $vitainstance) =

@@ -1,0 +1,691 @@
+{
+  "resourceType": "Bundle",
+  "id": "7107fb17-fd4e-441f-8487-e6dfe5cbbd60",
+  "meta": {
+    "profile": [
+      "http://hl7.eu/fhir/laboratory/StructureDefinition/Bundle-eu-lab"
+    ]
+  },
+  "identifier": {
+    "assigner": {
+      "display": "HL7 Europe"
+    },
+    "system": "urn:oid:2.16.840.1.113883.2.51.999",
+    "value": "962f8642-cd48-4995-8a95-93ae0fa713cb"
+  },
+  "entry": [
+    {
+      "fullUrl": "urn:uuid:97e75285-f8ea-4e13-8467-8b1ac9796ed3",
+      "resource": {
+        "resourceType": "Composition",
+        "id": "97e75285-f8ea-4e13-8467-8b1ac9796ed3",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Composition-eu-lab"
+          ]
+        },
+        "extension": [
+          {
+            "url": "http://hl7.eu/fhir/extensions/StructureDefinition/composition-diagnosticReportReference",
+            "valueReference": {
+              "reference": "urn:uuid:4a54d361-7fe4-41e3-bc14-072b4a3dd550"
+            }
+          }
+        ],
+        "identifier": {
+          "assigner": {
+            "display": "HL7 Europe"
+          },
+          "system": "urn:oid:2.16.840.1.113883.2.51.999",
+          "value": "2022e989-7f51-4fc8-984a-e4af4a7a43ff"
+        },
+        "author": [
+          {
+            "reference": "urn:uuid:84c33008-ea66-4967-ba18-47fa74fb88fd"
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "type": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ],
+          "text": "Laboratory Report"
+        },
+        "section": [
+          {
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>Annotation</h3><table class=\"hl7__eu__lab__report\"><tr><th>Conclusion and Recommendations based on this report and previous findings known to us</th></tr><tr><td>CD4+ T helper cell count is within the normal range, indicating no evidence of immunodeficiency or acute immunological concern based on this parameter. No further laboratory action required for this analyte at this time.</td></tr></table></div>"
+            },
+            "code": {
+              "coding": [
+                {
+                  "code": "48767-8",
+                  "system": "http://loinc.org",
+                  "display": "Annotation comment [Interpretation] Narrative"
+                }
+              ]
+            },
+            "title": "Annotation comment"
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "final",
+        "subject": {
+          "reference": "urn:uuid:afd197df-8c80-40ed-b8ba-4659aa9b2eae",
+          "display": "Vanesa Ene"
+        },
+        "date": "2020-02-14T19:35:06Z",
+        "title": "Laboratory Report",
+        "confidentiality": "N"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:4a54d361-7fe4-41e3-bc14-072b4a3dd550",
+      "resource": {
+        "resourceType": "DiagnosticReport",
+        "id": "4a54d361-7fe4-41e3-bc14-072b4a3dd550",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/DiagnosticReport-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "2022e989-7f51-4fc8-984a-e4af4a7a43ff"
+          },
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "913fef6c-fe0c-49d7-8983-dda95bc66d29"
+          }
+        ],
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-DiagnosticReport.composition",
+            "valueReference": {
+              "reference": "urn:uuid:97e75285-f8ea-4e13-8467-8b1ac9796ed3"
+            }
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:388b2b85-e0d0-48d9-9bb8-fe477cbf0945"
+          }
+        ],
+        "result": [
+          {
+            "reference": "urn:uuid:670ab00c-8d34-4ed1-8022-cee663f1e1a0"
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "registered",
+        "code": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:afd197df-8c80-40ed-b8ba-4659aa9b2eae",
+          "display": "Vanesa Ene"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:afd197df-8c80-40ed-b8ba-4659aa9b2eae",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "afd197df-8c80-40ed-b8ba-4659aa9b2eae",
+        "meta": {
+          "security": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "HTEST"
+            },
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "TRAIN"
+            }
+          ],
+          "tag": [
+            {
+              "system": "https://synderai.net/fhir/CodeSystem/tags",
+              "code": "synthetic",
+              "display": "SYNDERAI Synthetic data"
+            }
+          ],
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/patient-eu-core"
+          ]
+        },
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "JHN",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://ec.europa.eu/identifier/eci",
+            "value": "7284-393141-0"
+          },
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "MR",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://local.setting.eu/identifier",
+            "value": "c709dbdd-f6ed-1909-f1bb-35031eee8fa5"
+          }
+        ],
+        "name": [
+          {
+            "given": [
+              "Vanesa"
+            ],
+            "family": "Ene",
+            "text": "Vanesa Ene"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Aleea Stănescu Nr. 47"
+            ],
+            "use": "home",
+            "type": "physical",
+            "postalCode": "407055",
+            "city": "Tunari",
+            "country": "Romania"
+          }
+        ],
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "0748 407 661"
+          }
+        ],
+        "extension": [
+          {
+            "extension": [
+              {
+                "url": "code",
+                "valueCodeableConcept": {
+                  "coding": [
+                    {
+                      "code": "RO",
+                      "system": "urn:iso:std:iso:3166"
+                    }
+                  ]
+                }
+              }
+            ],
+            "url": "http://hl7.org/fhir/StructureDefinition/patient-nationality"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__ips\"><tr><td>Vanesa Ene</td><td>female</td><td>09-May-1989</td></tr></table></div>"
+        },
+        "gender": "female",
+        "birthDate": "1989-05-09"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:11ae14a2-ce54-4916-9999-f77697aba713",
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "11ae14a2-ce54-4916-9999-f77697aba713",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/ServiceRequest-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "system": "http://example.org",
+            "value": "3345499b-a6f4-4214-99a8-ea894f31e5ec"
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:388b2b85-e0d0-48d9-9bb8-fe477cbf0945"
+          }
+        ],
+        "reasonCode": [
+          {
+            "coding": [
+              {
+                "code": "197927001",
+                "system": "http://snomed.info/sct",
+                "display": "Recurrent urinary tract infection"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "86406008",
+                "system": "http://snomed.info/sct",
+                "display": "Human immunodeficiency virus infection"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "271737000",
+                "system": "http://snomed.info/sct",
+                "display": "Anemia"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "25501002",
+                "system": "http://snomed.info/sct",
+                "display": "Social phobia"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "13645005",
+                "system": "http://snomed.info/sct",
+                "display": "Chronic obstructive pulmonary disease"
+              }
+            ]
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "active",
+        "intent": "order",
+        "code": {
+          "coding": [
+            {
+              "code": "108252007",
+              "system": "http://snomed.info/sct",
+              "display": "Laboratory procedure"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:afd197df-8c80-40ed-b8ba-4659aa9b2eae",
+          "display": "Vanesa Ene"
+        },
+        "requester": {
+          "reference": "urn:uuid:f85026de-39c8-49c2-925f-f18cec7cd795"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:f85026de-39c8-49c2-925f-f18cec7cd795",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "f85026de-39c8-49c2-925f-f18cec7cd795",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Role Id: f85026de-39c8-49c2-925f-f18cec7cd795</div>"
+        },
+        "organization": {
+          "reference": "urn:uuid:8930d7cc-a361-47ff-8f8a-39fe6093a27c"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:8930d7cc-a361-47ff-8f8a-39fe6093a27c",
+      "resource": {
+        "resourceType": "Organization",
+        "id": "8930d7cc-a361-47ff-8f8a-39fe6093a27c",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/organization-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "3fce6905-c491-4df8-b2c8-44503634a06f"
+          }
+        ],
+        "address": [
+          {
+            "city": "Cluj-Napoca",
+            "postalCode": "400132",
+            "country": "Romania"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Organization: Spitalul Militar</div>"
+        },
+        "name": "Spitalul Militar"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:388b2b85-e0d0-48d9-9bb8-fe477cbf0945",
+      "resource": {
+        "resourceType": "Specimen",
+        "id": "388b2b85-e0d0-48d9-9bb8-fe477cbf0945",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Specimen-eu-lab"
+          ]
+        },
+        "collection": {
+          "collectedDateTime": "2020-02-14"
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Specimen</th><th>Collection Date</th></tr><tr><td>Blood specimen</td><td><span class=\"nb\">14-Feb-2020</span></td></tr></table></div>"
+        },
+        "type": {
+          "coding": [
+            {
+              "code": "119297000",
+              "system": "http://snomed.info/sct",
+              "display": "Blood specimen"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:670ab00c-8d34-4ed1-8022-cee663f1e1a0",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "670ab00c-8d34-4ed1-8022-cee663f1e1a0",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Observation-resultslab-eu-lab"
+          ]
+        },
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "laboratory",
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category"
+              }
+            ]
+          }
+        ],
+        "performer": [
+          {
+            "display": "The Central European Laboratory"
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "code": "24467-3",
+              "system": "http://loinc.org",
+              "display": "CD3+CD4+ (T4 helper) cells [#/volume] in Blood"
+            }
+          ],
+          "text": "CD3+CD4+ (T4 helper) cells [#/volume] in Blood"
+        },
+        "valueQuantity": {
+          "value": 676,
+          "unit": "/uL",
+          "code": "/uL",
+          "system": "http://unitsofmeasure.org"
+        },
+        "referenceRange": [
+          {
+            "low": {
+              "value": 500,
+              "code": "/uL",
+              "system": "http://unitsofmeasure.org"
+            },
+            "high": {
+              "value": 1600,
+              "code": "/uL",
+              "system": "http://unitsofmeasure.org"
+            }
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Test</th><th>14-Feb-2020</th><th>Reference&#xA0;Range</th><th>Flag</th><th>Unit</th></tr><tr><td>CD3+CD4+ (T4 helper) cells [#/volume] in Blood</td><td>676.0</td><td>500 - 1600</td><td></td><td>/uL</td></tr></table></div>"
+        },
+        "status": "final",
+        "effectiveDateTime": "2020-02-14T18:35:06Z",
+        "subject": {
+          "reference": "urn:uuid:afd197df-8c80-40ed-b8ba-4659aa9b2eae",
+          "display": "Vanesa Ene"
+        },
+        "specimen": {
+          "reference": "urn:uuid:388b2b85-e0d0-48d9-9bb8-fe477cbf0945"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:73e7737f-09b1-45b6-a8b7-f98930bcbe86",
+      "resource": {
+        "resourceType": "Device",
+        "id": "73e7737f-09b1-45b6-a8b7-f98930bcbe86",
+        "deviceName": [
+          {
+            "name": "SYNDERAI Synthetic Generator",
+            "type": "manufacturer-name"
+          }
+        ],
+        "version": [
+          {
+            "value": "5.0"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">SYNDERAI Synthetic Generator v5.0</div>"
+        },
+        "status": "active",
+        "distinctIdentifier": "synderai-generator-50",
+        "manufacturer": "SYNDERAI Project"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:db1f1725-af3a-4ea2-85bf-0da06436e584",
+      "resource": {
+        "resourceType": "Provenance",
+        "id": "db1f1725-af3a-4ea2-85bf-0da06436e584",
+        "target": [
+          {
+            "reference": "urn:uuid:afd197df-8c80-40ed-b8ba-4659aa9b2eae"
+          },
+          {
+            "reference": "urn:uuid:97e75285-f8ea-4e13-8467-8b1ac9796ed3"
+          },
+          {
+            "reference": "urn:uuid:84c33008-ea66-4967-ba18-47fa74fb88fd"
+          },
+          {
+            "reference": "urn:uuid:d8f06f69-d88b-4870-b075-8a51753d59f3"
+          },
+          {
+            "reference": "urn:uuid:f85026de-39c8-49c2-925f-f18cec7cd795"
+          },
+          {
+            "reference": "urn:uuid:8930d7cc-a361-47ff-8f8a-39fe6093a27c"
+          }
+        ],
+        "activity": {
+          "coding": [
+            {
+              "code": "CREATE",
+              "system": "http://terminology.hl7.org/CodeSystem/v3-DataOperation",
+              "display": "create"
+            }
+          ],
+          "text": "Synthetic Example Data Generation"
+        },
+        "policy": [
+          "https://synderai.net/synderai-synthetic-data-policy"
+        ],
+        "agent": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "author",
+                  "system": "http://terminology.hl7.org/CodeSystem/provenance-participant-type",
+                  "display": "Author"
+                }
+              ],
+              "text": "author"
+            },
+            "who": {
+              "reference": "urn:uuid:73e7737f-09b1-45b6-a8b7-f98930bcbe86"
+            }
+          }
+        ],
+        "reason": [
+          {
+            "coding": [
+              {
+                "code": "TRAIN",
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+                "display": "training"
+              }
+            ],
+            "text": "Interoperability Testing and Training (non-clinical use)"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provenance for SYNDERAI Synthetic Example Data Resource</div>"
+        },
+        "recorded": "2020-02-14T20:35:06Z"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:84c33008-ea66-4967-ba18-47fa74fb88fd",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "84c33008-ea66-4967-ba18-47fa74fb88fd",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory Role Id: 84c33008-ea66-4967-ba18-47fa74fb88fd</div>"
+        },
+        "practitioner": {
+          "reference": "urn:uuid:d8f06f69-d88b-4870-b075-8a51753d59f3"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:d8f06f69-d88b-4870-b075-8a51753d59f3",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "d8f06f69-d88b-4870-b075-8a51753d59f3",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitioner-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "7af72ffa-7725-4389-bb52-5535dfb486ce"
+          }
+        ],
+        "name": [
+          {
+            "prefix": [
+              "dr"
+            ],
+            "given": [
+              "Ex"
+            ],
+            "family": "Ample"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Laboratoire Central Européenne",
+              "Boulevard du Jardin Botanique 32"
+            ],
+            "postalCode": "1000",
+            "city": "Brussels",
+            "country": "Belgium"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory: Laboratoire Central Européenne, 1000 Brussels, Belgium</div>"
+        }
+      }
+    }
+  ],
+  "type": "document",
+  "timestamp": "2020-02-14T20:35:06Z"
+}

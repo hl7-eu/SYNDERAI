@@ -1,0 +1,751 @@
+{
+  "resourceType": "Bundle",
+  "id": "1b62206b-dc0b-4b53-80d4-0bfae5d62741",
+  "meta": {
+    "profile": [
+      "http://hl7.eu/fhir/laboratory/StructureDefinition/Bundle-eu-lab"
+    ]
+  },
+  "identifier": {
+    "assigner": {
+      "display": "HL7 Europe"
+    },
+    "system": "urn:oid:2.16.840.1.113883.2.51.999",
+    "value": "b59c3d28-5477-44dc-b00b-a13644a1df69"
+  },
+  "entry": [
+    {
+      "fullUrl": "urn:uuid:d5d51ee8-3f9b-43ab-934d-0264057ab01b",
+      "resource": {
+        "resourceType": "Composition",
+        "id": "d5d51ee8-3f9b-43ab-934d-0264057ab01b",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Composition-eu-lab"
+          ]
+        },
+        "extension": [
+          {
+            "url": "http://hl7.eu/fhir/extensions/StructureDefinition/composition-diagnosticReportReference",
+            "valueReference": {
+              "reference": "urn:uuid:439ffd0f-5953-4154-9b1c-093f7f3bcf83"
+            }
+          }
+        ],
+        "identifier": {
+          "assigner": {
+            "display": "HL7 Europe"
+          },
+          "system": "urn:oid:2.16.840.1.113883.2.51.999",
+          "value": "45275c64-ed85-4902-871f-725ff787d411"
+        },
+        "author": [
+          {
+            "reference": "urn:uuid:4650062f-0fe1-4999-81d8-417e419d8ef1"
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "type": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ],
+          "text": "Laboratory Report"
+        },
+        "section": [
+          {
+            "code": {
+              "coding": [
+                {
+                  "code": "18719-5",
+                  "system": "http://loinc.org",
+                  "display": "Chemistry studies (set)"
+                }
+              ],
+              "text": "CHEM"
+            },
+            "entry": [
+              {
+                "reference": "urn:uuid:3b885ee4-4675-43d3-a620-71c5a346ebe1"
+              }
+            ],
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>CHEM</h3><table class=\"hl7__eu__lab__report\"><thead><tr><th>Test</th><th>03-JUN-2023</th><th>Reference&#xA0;Range</th><th>Unit</th></tr></thead><tbody><tr><td></td><td><strong>51.8 H</strong></td><td>20 - 42</td><td>mmol/mol</td></tr></tbody></table></div>"
+            },
+            "title": "CHEM"
+          },
+          {
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>Annotation</h3><table class=\"hl7__eu__lab__report\"><tr><th>Conclusion and Recommendations based on this report and previous findings known to us:</th></tr><tr><td>The patient’s HbA1c is significantly elevated, indicating poor long-term glycemic control and likely uncontrolled diabetes mellitus. Clinical correlation and optimization of diabetes management are recommended to reduce the risk of complications.</td></tr></table></div>"
+            },
+            "code": {
+              "coding": [
+                {
+                  "code": "48767-8",
+                  "system": "http://loinc.org",
+                  "display": "Annotation comment [Interpretation] Narrative"
+                }
+              ]
+            },
+            "title": "Annotation comment"
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "final",
+        "subject": {
+          "reference": "urn:uuid:a11c532b-b650-46d8-bfcf-fe0aa9409cd1",
+          "display": "Nechifor Dobre"
+        },
+        "date": "2023-06-03T20:30:48Z",
+        "title": "Laboratory Report",
+        "confidentiality": "N"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:439ffd0f-5953-4154-9b1c-093f7f3bcf83",
+      "resource": {
+        "resourceType": "DiagnosticReport",
+        "id": "439ffd0f-5953-4154-9b1c-093f7f3bcf83",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/DiagnosticReport-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "45275c64-ed85-4902-871f-725ff787d411"
+          },
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "231c4065-42d0-4cb8-a938-56c705bc9c83"
+          }
+        ],
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-DiagnosticReport.composition",
+            "valueReference": {
+              "reference": "urn:uuid:d5d51ee8-3f9b-43ab-934d-0264057ab01b"
+            }
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:bf6245cc-f8da-4227-86a3-511f432c4321"
+          }
+        ],
+        "result": [
+          {
+            "reference": "urn:uuid:3b885ee4-4675-43d3-a620-71c5a346ebe1"
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "registered",
+        "code": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:a11c532b-b650-46d8-bfcf-fe0aa9409cd1",
+          "display": "Nechifor Dobre"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:a11c532b-b650-46d8-bfcf-fe0aa9409cd1",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "a11c532b-b650-46d8-bfcf-fe0aa9409cd1",
+        "meta": {
+          "security": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "HTEST"
+            },
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "TRAIN"
+            }
+          ],
+          "tag": [
+            {
+              "system": "https://synderai.net/fhir/CodeSystem/tags",
+              "code": "synthetic",
+              "display": "SYNDERAI Synthetic data"
+            }
+          ],
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/patient-eu-core"
+          ]
+        },
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "JHN",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://ec.europa.eu/identifier/eci",
+            "value": "6126-941459-7"
+          },
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "MR",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://local.setting.eu/identifier",
+            "value": "49522fd0-2acb-bef5-ed6a-e9c7abbfdea6"
+          }
+        ],
+        "name": [
+          {
+            "given": [
+              "Nechifor"
+            ],
+            "family": "Dobre",
+            "text": "Nechifor Dobre"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Bulevardul Natalia Albu"
+            ],
+            "use": "home",
+            "type": "physical",
+            "postalCode": "077015",
+            "city": "Buftea",
+            "country": "Romania"
+          }
+        ],
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "0241 736 179"
+          }
+        ],
+        "extension": [
+          {
+            "extension": [
+              {
+                "url": "code",
+                "valueCodeableConcept": {
+                  "coding": [
+                    {
+                      "code": "RO",
+                      "system": "urn:iso:std:iso:3166"
+                    }
+                  ]
+                }
+              }
+            ],
+            "url": "http://hl7.org/fhir/StructureDefinition/patient-nationality"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__ips\"><tr><td>Nechifor Dobre</td><td>male</td><td>12-Feb-1948</td></tr></table></div>"
+        },
+        "gender": "male",
+        "birthDate": "1948-02-12"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:d2c47f51-1b9e-44cf-81dc-eab6c1afea05",
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "d2c47f51-1b9e-44cf-81dc-eab6c1afea05",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/ServiceRequest-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "system": "http://example.org",
+            "value": "75fae15c-eb70-48b7-8d8d-2920175bc022"
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:bf6245cc-f8da-4227-86a3-511f432c4321"
+          }
+        ],
+        "reasonCode": [
+          {
+            "coding": [
+              {
+                "code": "78275009",
+                "system": "http://snomed.info/sct",
+                "display": "Obstructive sleep apnea syndrome"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "55822004",
+                "system": "http://snomed.info/sct",
+                "display": "Hyperlipidemia"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "237602007",
+                "system": "http://snomed.info/sct",
+                "display": "Metabolic syndrome X"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "59621000",
+                "system": "http://snomed.info/sct",
+                "display": "Essential hypertension"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "44054006",
+                "system": "http://snomed.info/sct",
+                "display": "Type 2 diabetes mellitus"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "414545008",
+                "system": "http://snomed.info/sct",
+                "display": "Ischemic heart disease"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "26929004",
+                "system": "http://snomed.info/sct",
+                "display": "Alzheimer's disease"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "88805009",
+                "system": "http://snomed.info/sct",
+                "display": "Chronic congestive heart failure"
+              }
+            ]
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "active",
+        "intent": "order",
+        "code": {
+          "coding": [
+            {
+              "code": "108252007",
+              "system": "http://snomed.info/sct",
+              "display": "Laboratory procedure"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:a11c532b-b650-46d8-bfcf-fe0aa9409cd1",
+          "display": "Nechifor Dobre"
+        },
+        "requester": {
+          "reference": "urn:uuid:eb405708-e632-4606-b7b9-97ac027afa7c"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:eb405708-e632-4606-b7b9-97ac027afa7c",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "eb405708-e632-4606-b7b9-97ac027afa7c",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Role Id: eb405708-e632-4606-b7b9-97ac027afa7c</div>"
+        },
+        "organization": {
+          "reference": "urn:uuid:1bd7652f-b03e-4417-80a1-fc75041af9ed"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:1bd7652f-b03e-4417-80a1-fc75041af9ed",
+      "resource": {
+        "resourceType": "Organization",
+        "id": "1bd7652f-b03e-4417-80a1-fc75041af9ed",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/organization-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "192b08d0-af41-4bfc-b478-440ddc7cb05c"
+          }
+        ],
+        "address": [
+          {
+            "city": "Otopeni",
+            "postalCode": "075100",
+            "country": "Romania"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Organization: Institutul Național de Gerontologie Ana Aslan - Otopeni</div>"
+        },
+        "name": "Institutul Național de Gerontologie Ana Aslan - Otopeni"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:bf6245cc-f8da-4227-86a3-511f432c4321",
+      "resource": {
+        "resourceType": "Specimen",
+        "id": "bf6245cc-f8da-4227-86a3-511f432c4321",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Specimen-eu-lab"
+          ]
+        },
+        "collection": {
+          "collectedDateTime": "2023-06-03"
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Specimen</th><th>Collection Date</th></tr><tr><td>Blood specimen</td><td><span class=\"nb\">03-Jun-2023</span></td></tr></table></div>"
+        },
+        "type": {
+          "coding": [
+            {
+              "code": "119297000",
+              "system": "http://snomed.info/sct",
+              "display": "Blood specimen"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:3b885ee4-4675-43d3-a620-71c5a346ebe1",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "3b885ee4-4675-43d3-a620-71c5a346ebe1",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Observation-resultslab-eu-lab"
+          ]
+        },
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "laboratory",
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category"
+              }
+            ]
+          }
+        ],
+        "performer": [
+          {
+            "display": "The Central European Laboratory"
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "code": "59261-8",
+              "system": "http://loinc.org",
+              "display": "Hemoglobin A1c/Hemoglobin.total standardized per IFCC-RMP for CDT in Blood"
+            }
+          ],
+          "text": "Hemoglobin A1c/Hemoglobin.total standardized per IFCC-RMP for CDT in Blood"
+        },
+        "valueQuantity": {
+          "value": 51.8,
+          "unit": "mmol/mol",
+          "code": "mmol/mol",
+          "system": "http://unitsofmeasure.org"
+        },
+        "referenceRange": [
+          {
+            "low": {
+              "value": 20,
+              "code": "mmol/mol",
+              "system": "http://unitsofmeasure.org"
+            },
+            "high": {
+              "value": 42,
+              "code": "mmol/mol",
+              "system": "http://unitsofmeasure.org"
+            }
+          }
+        ],
+        "interpretation": [
+          {
+            "coding": [
+              {
+                "code": "H",
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                "display": "High"
+              }
+            ]
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Test</th><th>03-Jun-2023</th><th>Reference&#xA0;Range</th><th>Flag</th><th>Unit</th></tr><tr><td>Hemoglobin A1c/Hemoglobin.total standardized per IFCC-RMP for CDT in Blood</td><td>51.8</td><td>20 - 42</td><td>H</td><td>mmol/mol</td></tr></table></div>"
+        },
+        "status": "final",
+        "effectiveDateTime": "2023-06-03T18:30:48Z",
+        "subject": {
+          "reference": "urn:uuid:a11c532b-b650-46d8-bfcf-fe0aa9409cd1",
+          "display": "Nechifor Dobre"
+        },
+        "specimen": {
+          "reference": "urn:uuid:bf6245cc-f8da-4227-86a3-511f432c4321"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:580c13d3-90be-4aa8-bbc1-94c6223fc9b3",
+      "resource": {
+        "resourceType": "Device",
+        "id": "580c13d3-90be-4aa8-bbc1-94c6223fc9b3",
+        "deviceName": [
+          {
+            "name": "SYNDERAI Synthetic Generator",
+            "type": "manufacturer-name"
+          }
+        ],
+        "version": [
+          {
+            "value": "5.0"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">SYNDERAI Synthetic Generator v5.0</div>"
+        },
+        "status": "active",
+        "distinctIdentifier": "synderai-generator-50",
+        "manufacturer": "SYNDERAI Project"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:d745654c-46b9-4dee-b642-9b77a00491d7",
+      "resource": {
+        "resourceType": "Provenance",
+        "id": "d745654c-46b9-4dee-b642-9b77a00491d7",
+        "target": [
+          {
+            "reference": "urn:uuid:a11c532b-b650-46d8-bfcf-fe0aa9409cd1"
+          },
+          {
+            "reference": "urn:uuid:d5d51ee8-3f9b-43ab-934d-0264057ab01b"
+          },
+          {
+            "reference": "urn:uuid:4650062f-0fe1-4999-81d8-417e419d8ef1"
+          },
+          {
+            "reference": "urn:uuid:368af166-19de-44c6-907d-5c2dcf5ca968"
+          },
+          {
+            "reference": "urn:uuid:eb405708-e632-4606-b7b9-97ac027afa7c"
+          },
+          {
+            "reference": "urn:uuid:1bd7652f-b03e-4417-80a1-fc75041af9ed"
+          }
+        ],
+        "activity": {
+          "coding": [
+            {
+              "code": "CREATE",
+              "system": "http://terminology.hl7.org/CodeSystem/v3-DataOperation",
+              "display": "create"
+            }
+          ],
+          "text": "Synthetic Example Data Generation"
+        },
+        "policy": [
+          "https://synderai.net/synderai-synthetic-data-policy"
+        ],
+        "agent": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "author",
+                  "system": "http://terminology.hl7.org/CodeSystem/provenance-participant-type",
+                  "display": "Author"
+                }
+              ],
+              "text": "author"
+            },
+            "who": {
+              "reference": "urn:uuid:580c13d3-90be-4aa8-bbc1-94c6223fc9b3"
+            }
+          }
+        ],
+        "reason": [
+          {
+            "coding": [
+              {
+                "code": "TRAIN",
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+                "display": "training"
+              }
+            ],
+            "text": "Interoperability Testing and Training (non-clinical use)"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provenance for SYNDERAI Synthetic Example Data Resource</div>"
+        },
+        "recorded": "2023-06-03T22:30:48Z"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:4650062f-0fe1-4999-81d8-417e419d8ef1",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "4650062f-0fe1-4999-81d8-417e419d8ef1",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory Role Id: 4650062f-0fe1-4999-81d8-417e419d8ef1</div>"
+        },
+        "practitioner": {
+          "reference": "urn:uuid:368af166-19de-44c6-907d-5c2dcf5ca968"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:368af166-19de-44c6-907d-5c2dcf5ca968",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "368af166-19de-44c6-907d-5c2dcf5ca968",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitioner-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "7f928473-2f6e-415f-b02e-a2c5458cd8ff"
+          }
+        ],
+        "name": [
+          {
+            "prefix": [
+              "dr"
+            ],
+            "given": [
+              "Ex"
+            ],
+            "family": "Ample"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Laboratoire Central Européenne",
+              "Boulevard du Jardin Botanique 32"
+            ],
+            "postalCode": "1000",
+            "city": "Brussels",
+            "country": "Belgium"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory: Laboratoire Central Européenne, 1000 Brussels, Belgium</div>"
+        }
+      }
+    }
+  ],
+  "type": "document",
+  "timestamp": "2023-06-03T22:30:48Z"
+}

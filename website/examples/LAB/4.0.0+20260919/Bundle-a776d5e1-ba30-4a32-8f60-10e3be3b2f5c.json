@@ -1,0 +1,778 @@
+{
+  "resourceType": "Bundle",
+  "id": "a776d5e1-ba30-4a32-8f60-10e3be3b2f5c",
+  "meta": {
+    "profile": [
+      "http://hl7.eu/fhir/laboratory/StructureDefinition/Bundle-eu-lab"
+    ]
+  },
+  "identifier": {
+    "assigner": {
+      "display": "HL7 Europe"
+    },
+    "system": "urn:oid:2.16.840.1.113883.2.51.999",
+    "value": "316cd818-6fdd-4cd3-a0bf-7fe4b01da4fd"
+  },
+  "entry": [
+    {
+      "fullUrl": "urn:uuid:dac93181-d830-48eb-846b-f2ecd31a445b",
+      "resource": {
+        "resourceType": "Composition",
+        "id": "dac93181-d830-48eb-846b-f2ecd31a445b",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Composition-eu-lab"
+          ]
+        },
+        "extension": [
+          {
+            "url": "http://hl7.eu/fhir/extensions/StructureDefinition/composition-diagnosticReportReference",
+            "valueReference": {
+              "reference": "urn:uuid:a03394c6-94c0-46c7-8b06-849734adb878"
+            }
+          }
+        ],
+        "identifier": {
+          "assigner": {
+            "display": "HL7 Europe"
+          },
+          "system": "urn:oid:2.16.840.1.113883.2.51.999",
+          "value": "b11c0124-deaa-4c9c-ab80-01ccd0e1c840"
+        },
+        "author": [
+          {
+            "reference": "urn:uuid:95c80be1-6597-48e3-9762-80da4abbe5b3"
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "type": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ],
+          "text": "Laboratory Report"
+        },
+        "section": [
+          {
+            "code": {
+              "coding": [
+                {
+                  "code": "18719-5",
+                  "system": "http://loinc.org",
+                  "display": "Chemistry studies (set)"
+                }
+              ],
+              "text": "CHEM"
+            },
+            "entry": [
+              {
+                "reference": "urn:uuid:827b1c32-b7df-4b5f-9562-8e19b29976e6"
+              }
+            ],
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>CHEM</h3><table class=\"hl7__eu__lab__report\"><thead><tr><th>Test</th><th>07-JUN-2020</th><th>Reference&#xA0;Range</th><th>Unit</th></tr></thead><tbody><tr><td></td><td><strong>58.0 L</strong></td><td>60 - 90</td><td>mL/min/{1.73_m2}</td></tr></tbody></table></div>"
+            },
+            "title": "CHEM"
+          },
+          {
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>Annotation</h3><table class=\"hl7__eu__lab__report\"><tr><th>Conclusion and Recommendations based on this report and previous findings known to us:</th></tr><tr><td>The patient shows mildly decreased kidney function (GFR 58 mL/min/1.73 m²), consistent with stage 2-3a chronic kidney disease. This may be age-related but warrants monitoring and consideration of potential underlying causes, medication adjustments, and risk factor management. No other abnormalities reported.</td></tr></table></div>"
+            },
+            "code": {
+              "coding": [
+                {
+                  "code": "48767-8",
+                  "system": "http://loinc.org",
+                  "display": "Annotation comment [Interpretation] Narrative"
+                }
+              ]
+            },
+            "title": "Annotation comment"
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "final",
+        "subject": {
+          "reference": "urn:uuid:db99331c-9531-41df-8b61-956f1fe9e7f8",
+          "display": "Amber van Vliet"
+        },
+        "date": "2020-06-07T22:13:45Z",
+        "title": "Laboratory Report",
+        "confidentiality": "N"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:a03394c6-94c0-46c7-8b06-849734adb878",
+      "resource": {
+        "resourceType": "DiagnosticReport",
+        "id": "a03394c6-94c0-46c7-8b06-849734adb878",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/DiagnosticReport-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "b11c0124-deaa-4c9c-ab80-01ccd0e1c840"
+          },
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "a2da791b-22f5-4be0-ad07-175ba642dcdd"
+          }
+        ],
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-DiagnosticReport.composition",
+            "valueReference": {
+              "reference": "urn:uuid:dac93181-d830-48eb-846b-f2ecd31a445b"
+            }
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:6dfb7629-91bf-479d-9365-d605ff7d048d"
+          }
+        ],
+        "result": [
+          {
+            "reference": "urn:uuid:827b1c32-b7df-4b5f-9562-8e19b29976e6"
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "registered",
+        "code": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:db99331c-9531-41df-8b61-956f1fe9e7f8",
+          "display": "Amber van Vliet"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:db99331c-9531-41df-8b61-956f1fe9e7f8",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "db99331c-9531-41df-8b61-956f1fe9e7f8",
+        "meta": {
+          "security": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "HTEST"
+            },
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "TRAIN"
+            }
+          ],
+          "tag": [
+            {
+              "system": "https://synderai.net/fhir/CodeSystem/tags",
+              "code": "synthetic",
+              "display": "SYNDERAI Synthetic data"
+            }
+          ],
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/patient-eu-core"
+          ]
+        },
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "JHN",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://ec.europa.eu/identifier/eci",
+            "value": "5689-699777-4"
+          },
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "MR",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://local.setting.eu/identifier",
+            "value": "88c3c4ea-9f35-f51f-1e5a-2efecb50b52c"
+          }
+        ],
+        "name": [
+          {
+            "given": [
+              "Amber"
+            ],
+            "family": "van Vliet",
+            "text": "Amber van Vliet"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Molenweg 5"
+            ],
+            "use": "home",
+            "type": "physical",
+            "postalCode": "8191 KA",
+            "city": "Wapenveld",
+            "country": "Netherlands"
+          }
+        ],
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "066-8837164"
+          }
+        ],
+        "extension": [
+          {
+            "extension": [
+              {
+                "url": "code",
+                "valueCodeableConcept": {
+                  "coding": [
+                    {
+                      "code": "NL",
+                      "system": "urn:iso:std:iso:3166"
+                    }
+                  ]
+                }
+              }
+            ],
+            "url": "http://hl7.org/fhir/StructureDefinition/patient-nationality"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__ips\"><tr><td>Amber van Vliet</td><td>female</td><td>11-Apr-1942</td></tr></table></div>"
+        },
+        "gender": "female",
+        "birthDate": "1942-04-11"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:edf64f1a-e0d8-46c0-9314-0348bf766dd8",
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "edf64f1a-e0d8-46c0-9314-0348bf766dd8",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/ServiceRequest-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "system": "http://example.org",
+            "value": "aaad11c9-88c6-4108-9b6a-2899b4bb033d"
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:6dfb7629-91bf-479d-9365-d605ff7d048d"
+          }
+        ],
+        "reasonCode": [
+          {
+            "coding": [
+              {
+                "code": "59621000",
+                "system": "http://snomed.info/sct",
+                "display": "Essential hypertension"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "68496003",
+                "system": "http://snomed.info/sct",
+                "display": "Polyp of colon"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "13645005",
+                "system": "http://snomed.info/sct",
+                "display": "Chronic obstructive pulmonary disease"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "237602007",
+                "system": "http://snomed.info/sct",
+                "display": "Metabolic syndrome X"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "48724000",
+                "system": "http://snomed.info/sct",
+                "display": "Mitral valve regurgitation"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "44054006",
+                "system": "http://snomed.info/sct",
+                "display": "Type 2 diabetes mellitus"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "55822004",
+                "system": "http://snomed.info/sct",
+                "display": "Hyperlipidemia"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "433144002",
+                "system": "http://snomed.info/sct",
+                "display": "Chronic kidney disease stage 3"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "64859006",
+                "system": "http://snomed.info/sct",
+                "display": "Osteoporosis"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "201834006",
+                "system": "http://snomed.info/sct",
+                "display": "Localized, primary osteoarthritis of the hand"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "88805009",
+                "system": "http://snomed.info/sct",
+                "display": "Chronic congestive heart failure"
+              }
+            ]
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "active",
+        "intent": "order",
+        "code": {
+          "coding": [
+            {
+              "code": "108252007",
+              "system": "http://snomed.info/sct",
+              "display": "Laboratory procedure"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:db99331c-9531-41df-8b61-956f1fe9e7f8",
+          "display": "Amber van Vliet"
+        },
+        "requester": {
+          "reference": "urn:uuid:00e97338-b2ee-4932-a1af-70c1a79131dc"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:00e97338-b2ee-4932-a1af-70c1a79131dc",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "00e97338-b2ee-4932-a1af-70c1a79131dc",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Role Id: 00e97338-b2ee-4932-a1af-70c1a79131dc</div>"
+        },
+        "organization": {
+          "reference": "urn:uuid:c05dc544-7e09-4f31-b149-79c7be6cfcbd"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:c05dc544-7e09-4f31-b149-79c7be6cfcbd",
+      "resource": {
+        "resourceType": "Organization",
+        "id": "c05dc544-7e09-4f31-b149-79c7be6cfcbd",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/organization-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "fdb2111f-16eb-4969-88f0-1f46ecdd347e"
+          }
+        ],
+        "address": [
+          {
+            "city": "Zwolle",
+            "postalCode": "8021 DB",
+            "country": "Netherlands"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Organization: Huisartsenpraktijk Berkenhove</div>"
+        },
+        "name": "Huisartsenpraktijk Berkenhove"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:6dfb7629-91bf-479d-9365-d605ff7d048d",
+      "resource": {
+        "resourceType": "Specimen",
+        "id": "6dfb7629-91bf-479d-9365-d605ff7d048d",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Specimen-eu-lab"
+          ]
+        },
+        "collection": {
+          "collectedDateTime": "2020-06-07"
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Specimen</th><th>Collection Date</th></tr><tr><td>Blood specimen</td><td><span class=\"nb\">07-Jun-2020</span></td></tr></table></div>"
+        },
+        "type": {
+          "coding": [
+            {
+              "code": "119297000",
+              "system": "http://snomed.info/sct",
+              "display": "Blood specimen"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:827b1c32-b7df-4b5f-9562-8e19b29976e6",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "827b1c32-b7df-4b5f-9562-8e19b29976e6",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Observation-resultslab-eu-lab"
+          ]
+        },
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "laboratory",
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category"
+              }
+            ]
+          }
+        ],
+        "performer": [
+          {
+            "display": "The Central European Laboratory"
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "code": "98979-8",
+              "system": "http://loinc.org",
+              "display": "Glomerular filtration rate [Volume Rate/Area] in Serum, Plasma or Blood by Creatinine-based formula (CKD-EPI 2021)/1.73 sq M"
+            }
+          ],
+          "text": "Glomerular filtration rate [Volume Rate/Area] in Serum, Plasma or Blood by Creatinine-based formula (CKD-EPI 2021)/1.73 sq M"
+        },
+        "valueQuantity": {
+          "value": 58,
+          "unit": "mL/min/{1.73_m2}",
+          "code": "mL/min/{1.73_m2}",
+          "system": "http://unitsofmeasure.org"
+        },
+        "referenceRange": [
+          {
+            "low": {
+              "value": 60,
+              "code": "mL/min/{1.73_m2}",
+              "system": "http://unitsofmeasure.org"
+            },
+            "high": {
+              "value": 90,
+              "code": "mL/min/{1.73_m2}",
+              "system": "http://unitsofmeasure.org"
+            }
+          }
+        ],
+        "interpretation": [
+          {
+            "coding": [
+              {
+                "code": "L",
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                "display": "Low"
+              }
+            ]
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Test</th><th>07-Jun-2020</th><th>Reference&#xA0;Range</th><th>Flag</th><th>Unit</th></tr><tr><td>Glomerular filtration rate [Volume Rate/Area] in Serum, Plasma or Blood by Creatinine-based formula (CKD-EPI 2021)/1.73 sq M</td><td>58.0</td><td>60 - 90</td><td>L</td><td>mL/min/{1.73_m2}</td></tr></table></div>"
+        },
+        "status": "final",
+        "effectiveDateTime": "2020-06-07T20:13:45Z",
+        "subject": {
+          "reference": "urn:uuid:db99331c-9531-41df-8b61-956f1fe9e7f8",
+          "display": "Amber van Vliet"
+        },
+        "specimen": {
+          "reference": "urn:uuid:6dfb7629-91bf-479d-9365-d605ff7d048d"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:849d4688-fc47-466d-811b-a95347be4abe",
+      "resource": {
+        "resourceType": "Device",
+        "id": "849d4688-fc47-466d-811b-a95347be4abe",
+        "deviceName": [
+          {
+            "name": "SYNDERAI Synthetic Generator",
+            "type": "manufacturer-name"
+          }
+        ],
+        "version": [
+          {
+            "value": "5.0"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">SYNDERAI Synthetic Generator v5.0</div>"
+        },
+        "status": "active",
+        "distinctIdentifier": "synderai-generator-50",
+        "manufacturer": "SYNDERAI Project"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:6d26d346-1743-41bb-b707-d40eea45712f",
+      "resource": {
+        "resourceType": "Provenance",
+        "id": "6d26d346-1743-41bb-b707-d40eea45712f",
+        "target": [
+          {
+            "reference": "urn:uuid:db99331c-9531-41df-8b61-956f1fe9e7f8"
+          },
+          {
+            "reference": "urn:uuid:dac93181-d830-48eb-846b-f2ecd31a445b"
+          },
+          {
+            "reference": "urn:uuid:95c80be1-6597-48e3-9762-80da4abbe5b3"
+          },
+          {
+            "reference": "urn:uuid:87b8e838-3c1b-419b-ad71-5eef09ac9a4f"
+          },
+          {
+            "reference": "urn:uuid:00e97338-b2ee-4932-a1af-70c1a79131dc"
+          },
+          {
+            "reference": "urn:uuid:c05dc544-7e09-4f31-b149-79c7be6cfcbd"
+          }
+        ],
+        "activity": {
+          "coding": [
+            {
+              "code": "CREATE",
+              "system": "http://terminology.hl7.org/CodeSystem/v3-DataOperation",
+              "display": "create"
+            }
+          ],
+          "text": "Synthetic Example Data Generation"
+        },
+        "policy": [
+          "https://synderai.net/synderai-synthetic-data-policy"
+        ],
+        "agent": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "author",
+                  "system": "http://terminology.hl7.org/CodeSystem/provenance-participant-type",
+                  "display": "Author"
+                }
+              ],
+              "text": "author"
+            },
+            "who": {
+              "reference": "urn:uuid:849d4688-fc47-466d-811b-a95347be4abe"
+            }
+          }
+        ],
+        "reason": [
+          {
+            "coding": [
+              {
+                "code": "TRAIN",
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+                "display": "training"
+              }
+            ],
+            "text": "Interoperability Testing and Training (non-clinical use)"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provenance for SYNDERAI Synthetic Example Data Resource</div>"
+        },
+        "recorded": "2020-06-08T00:13:45Z"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:95c80be1-6597-48e3-9762-80da4abbe5b3",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "95c80be1-6597-48e3-9762-80da4abbe5b3",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory Role Id: 95c80be1-6597-48e3-9762-80da4abbe5b3</div>"
+        },
+        "practitioner": {
+          "reference": "urn:uuid:87b8e838-3c1b-419b-ad71-5eef09ac9a4f"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:87b8e838-3c1b-419b-ad71-5eef09ac9a4f",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "87b8e838-3c1b-419b-ad71-5eef09ac9a4f",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitioner-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "cb383e98-b91d-4d8a-9daf-af2225151b61"
+          }
+        ],
+        "name": [
+          {
+            "prefix": [
+              "dr"
+            ],
+            "given": [
+              "Ex"
+            ],
+            "family": "Ample"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Laboratoire Central Européenne",
+              "Boulevard du Jardin Botanique 32"
+            ],
+            "postalCode": "1000",
+            "city": "Brussels",
+            "country": "Belgium"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory: Laboratoire Central Européenne, 1000 Brussels, Belgium</div>"
+        }
+      }
+    }
+  ],
+  "type": "document",
+  "timestamp": "2020-06-08T00:13:45Z"
+}

@@ -1,0 +1,734 @@
+{
+  "resourceType": "Bundle",
+  "id": "a6df9c77-704d-4dc4-a877-9042a2c8bb1c",
+  "meta": {
+    "profile": [
+      "http://hl7.eu/fhir/laboratory/StructureDefinition/Bundle-eu-lab"
+    ]
+  },
+  "identifier": {
+    "assigner": {
+      "display": "HL7 Europe"
+    },
+    "system": "urn:oid:2.16.840.1.113883.2.51.999",
+    "value": "9080fab5-7af8-45fc-a9a1-f21723b2833b"
+  },
+  "entry": [
+    {
+      "fullUrl": "urn:uuid:5c98b1d6-2291-4590-a294-e57c2d2555b7",
+      "resource": {
+        "resourceType": "Composition",
+        "id": "5c98b1d6-2291-4590-a294-e57c2d2555b7",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Composition-eu-lab"
+          ]
+        },
+        "extension": [
+          {
+            "url": "http://hl7.eu/fhir/extensions/StructureDefinition/composition-diagnosticReportReference",
+            "valueReference": {
+              "reference": "urn:uuid:4e34b96e-3262-463b-88c9-4d24ebe10c51"
+            }
+          }
+        ],
+        "identifier": {
+          "assigner": {
+            "display": "HL7 Europe"
+          },
+          "system": "urn:oid:2.16.840.1.113883.2.51.999",
+          "value": "1771fe7f-7902-42b2-81f9-71bbd3d56d50"
+        },
+        "author": [
+          {
+            "reference": "urn:uuid:4a32fda2-ed7a-449a-b1a0-f5b9b3805761"
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "type": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ],
+          "text": "Laboratory Report"
+        },
+        "section": [
+          {
+            "code": {
+              "coding": [
+                {
+                  "code": "18719-5",
+                  "system": "http://loinc.org",
+                  "display": "Chemistry studies (set)"
+                }
+              ],
+              "text": "CHEM"
+            },
+            "entry": [
+              {
+                "reference": "urn:uuid:28f5ec28-7c66-45a1-bede-b8817baec282"
+              }
+            ],
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>CHEM</h3><table class=\"hl7__eu__lab__report\"><thead><tr><th>Test</th><th>13-SEP-2004</th><th>Reference&#xA0;Range</th><th>Unit</th></tr></thead><tbody><tr><td></td><td>62.0</td><td>60 - 89</td><td>mL/min/{1.73_m2}</td></tr></tbody></table></div>"
+            },
+            "title": "CHEM"
+          },
+          {
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>Annotation</h3><table class=\"hl7__eu__lab__report\"><tr><th>Conclusion and Recommendations based on this report and previous findings known to us:</th></tr><tr><td>The patient’s estimated glomerular filtration rate (eGFR) is mildly decreased (62 mL/min/1.73 m²), consistent with stage 2-3a chronic kidney disease, which is common in elderly individuals. Renal function should be monitored over time, and potential risk factors or nephrotoxic medications should be reviewed. No acute abnormality is indicated.</td></tr></table></div>"
+            },
+            "code": {
+              "coding": [
+                {
+                  "code": "48767-8",
+                  "system": "http://loinc.org",
+                  "display": "Annotation comment [Interpretation] Narrative"
+                }
+              ]
+            },
+            "title": "Annotation comment"
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "final",
+        "subject": {
+          "reference": "urn:uuid:081175ff-95ba-49bd-b508-5f36ca9246de",
+          "display": "Arpád Dudik"
+        },
+        "date": "2004-09-13T08:37:36Z",
+        "title": "Laboratory Report",
+        "confidentiality": "N"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:4e34b96e-3262-463b-88c9-4d24ebe10c51",
+      "resource": {
+        "resourceType": "DiagnosticReport",
+        "id": "4e34b96e-3262-463b-88c9-4d24ebe10c51",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/DiagnosticReport-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "1771fe7f-7902-42b2-81f9-71bbd3d56d50"
+          },
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "0ee57253-4e2e-44d8-9f34-7bb21154af60"
+          }
+        ],
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-DiagnosticReport.composition",
+            "valueReference": {
+              "reference": "urn:uuid:5c98b1d6-2291-4590-a294-e57c2d2555b7"
+            }
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:fe5086ba-7423-4584-b459-d48ae3478ef3"
+          }
+        ],
+        "result": [
+          {
+            "reference": "urn:uuid:28f5ec28-7c66-45a1-bede-b8817baec282"
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "registered",
+        "code": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:081175ff-95ba-49bd-b508-5f36ca9246de",
+          "display": "Arpád Dudik"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:081175ff-95ba-49bd-b508-5f36ca9246de",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "081175ff-95ba-49bd-b508-5f36ca9246de",
+        "meta": {
+          "security": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "HTEST"
+            },
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "TRAIN"
+            }
+          ],
+          "tag": [
+            {
+              "system": "https://synderai.net/fhir/CodeSystem/tags",
+              "code": "synthetic",
+              "display": "SYNDERAI Synthetic data"
+            }
+          ],
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/patient-eu-core"
+          ]
+        },
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "JHN",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://ec.europa.eu/identifier/eci",
+            "value": "5964-616717-7"
+          },
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "MR",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://local.setting.eu/identifier",
+            "value": "a85ffe61-4304-2ecc-9ad1-8920b84a01ac"
+          }
+        ],
+        "name": [
+          {
+            "given": [
+              "Arpád"
+            ],
+            "family": "Dudik",
+            "text": "Arpád Dudik"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Vápenná 26"
+            ],
+            "use": "home",
+            "type": "physical",
+            "postalCode": "02301",
+            "city": "Krásno nad Kysucou",
+            "country": "Slovakia"
+          }
+        ],
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "+421 54 114 8111"
+          }
+        ],
+        "extension": [
+          {
+            "extension": [
+              {
+                "url": "code",
+                "valueCodeableConcept": {
+                  "coding": [
+                    {
+                      "code": "SK",
+                      "system": "urn:iso:std:iso:3166"
+                    }
+                  ]
+                }
+              }
+            ],
+            "url": "http://hl7.org/fhir/StructureDefinition/patient-nationality"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__ips\"><tr><td>Arpád Dudik</td><td>male</td><td>07-Feb-1946</td></tr></table></div>"
+        },
+        "gender": "male",
+        "birthDate": "1946-02-07"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:c048294d-edf9-406c-b37c-4d7688cd5b02",
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "c048294d-edf9-406c-b37c-4d7688cd5b02",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/ServiceRequest-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "system": "http://example.org",
+            "value": "4abbe100-252c-4f55-ac72-5cc22fe053f6"
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:fe5086ba-7423-4584-b459-d48ae3478ef3"
+          }
+        ],
+        "reasonCode": [
+          {
+            "coding": [
+              {
+                "code": "40930008",
+                "system": "http://snomed.info/sct",
+                "display": "Hypothyroidism"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "237602007",
+                "system": "http://snomed.info/sct",
+                "display": "Metabolic syndrome X"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "431855005",
+                "system": "http://snomed.info/sct",
+                "display": "Chronic kidney disease stage 1"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "414916001",
+                "system": "http://snomed.info/sct",
+                "display": "Obesity"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "59621000",
+                "system": "http://snomed.info/sct",
+                "display": "Essential hypertension"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "60234000",
+                "system": "http://snomed.info/sct",
+                "display": "Aortic valve regurgitation"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "414545008",
+                "system": "http://snomed.info/sct",
+                "display": "Ischemic heart disease"
+              }
+            ]
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "active",
+        "intent": "order",
+        "code": {
+          "coding": [
+            {
+              "code": "108252007",
+              "system": "http://snomed.info/sct",
+              "display": "Laboratory procedure"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:081175ff-95ba-49bd-b508-5f36ca9246de",
+          "display": "Arpád Dudik"
+        },
+        "requester": {
+          "reference": "urn:uuid:c639d371-7ec6-4e63-8613-97965bc4a86f"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:c639d371-7ec6-4e63-8613-97965bc4a86f",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "c639d371-7ec6-4e63-8613-97965bc4a86f",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Role Id: c639d371-7ec6-4e63-8613-97965bc4a86f</div>"
+        },
+        "organization": {
+          "reference": "urn:uuid:20fa161a-9932-4f4a-bf6d-12a9170c577f"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:20fa161a-9932-4f4a-bf6d-12a9170c577f",
+      "resource": {
+        "resourceType": "Organization",
+        "id": "20fa161a-9932-4f4a-bf6d-12a9170c577f",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/organization-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "595fe125-c97a-4e54-a31e-e04054e13acb"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Palárikova 2311"
+            ],
+            "city": "Čadca",
+            "postalCode": "022 01",
+            "country": "Slovakia"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Organization: Kysucká nemocnica s poliklinikou Čadca</div>"
+        },
+        "name": "Kysucká nemocnica s poliklinikou Čadca"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:fe5086ba-7423-4584-b459-d48ae3478ef3",
+      "resource": {
+        "resourceType": "Specimen",
+        "id": "fe5086ba-7423-4584-b459-d48ae3478ef3",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Specimen-eu-lab"
+          ]
+        },
+        "collection": {
+          "collectedDateTime": "2004-09-13"
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Specimen</th><th>Collection Date</th></tr><tr><td>Blood specimen</td><td><span class=\"nb\">13-Sep-2004</span></td></tr></table></div>"
+        },
+        "type": {
+          "coding": [
+            {
+              "code": "119297000",
+              "system": "http://snomed.info/sct",
+              "display": "Blood specimen"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:28f5ec28-7c66-45a1-bede-b8817baec282",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "28f5ec28-7c66-45a1-bede-b8817baec282",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Observation-resultslab-eu-lab"
+          ]
+        },
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "laboratory",
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category"
+              }
+            ]
+          }
+        ],
+        "performer": [
+          {
+            "display": "The Central European Laboratory"
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "code": "98979-8",
+              "system": "http://loinc.org",
+              "display": "Glomerular filtration rate [Volume Rate/Area] in Serum, Plasma or Blood by Creatinine-based formula (CKD-EPI 2021)/1.73 sq M"
+            }
+          ],
+          "text": "Glomerular filtration rate [Volume Rate/Area] in Serum, Plasma or Blood by Creatinine-based formula (CKD-EPI 2021)/1.73 sq M"
+        },
+        "valueQuantity": {
+          "value": 62,
+          "unit": "mL/min/{1.73_m2}",
+          "code": "mL/min/{1.73_m2}",
+          "system": "http://unitsofmeasure.org"
+        },
+        "referenceRange": [
+          {
+            "low": {
+              "value": 60,
+              "code": "mL/min/{1.73_m2}",
+              "system": "http://unitsofmeasure.org"
+            },
+            "high": {
+              "value": 89,
+              "code": "mL/min/{1.73_m2}",
+              "system": "http://unitsofmeasure.org"
+            }
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Test</th><th>13-Sep-2004</th><th>Reference&#xA0;Range</th><th>Flag</th><th>Unit</th></tr><tr><td>Glomerular filtration rate [Volume Rate/Area] in Serum, Plasma or Blood by Creatinine-based formula (CKD-EPI 2021)/1.73 sq M</td><td>62.0</td><td>60 - 89</td><td></td><td>mL/min/{1.73_m2}</td></tr></table></div>"
+        },
+        "status": "final",
+        "effectiveDateTime": "2004-09-13T06:37:36Z",
+        "subject": {
+          "reference": "urn:uuid:081175ff-95ba-49bd-b508-5f36ca9246de",
+          "display": "Arpád Dudik"
+        },
+        "specimen": {
+          "reference": "urn:uuid:fe5086ba-7423-4584-b459-d48ae3478ef3"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:73c7614c-1e00-4af1-9685-ffc10debc382",
+      "resource": {
+        "resourceType": "Device",
+        "id": "73c7614c-1e00-4af1-9685-ffc10debc382",
+        "deviceName": [
+          {
+            "name": "SYNDERAI Synthetic Generator",
+            "type": "manufacturer-name"
+          }
+        ],
+        "version": [
+          {
+            "value": "5.0"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">SYNDERAI Synthetic Generator v5.0</div>"
+        },
+        "status": "active",
+        "distinctIdentifier": "synderai-generator-50",
+        "manufacturer": "SYNDERAI Project"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:7f3b21a0-33f8-49a8-b1b7-4d5c0e17e17a",
+      "resource": {
+        "resourceType": "Provenance",
+        "id": "7f3b21a0-33f8-49a8-b1b7-4d5c0e17e17a",
+        "target": [
+          {
+            "reference": "urn:uuid:081175ff-95ba-49bd-b508-5f36ca9246de"
+          },
+          {
+            "reference": "urn:uuid:5c98b1d6-2291-4590-a294-e57c2d2555b7"
+          },
+          {
+            "reference": "urn:uuid:4a32fda2-ed7a-449a-b1a0-f5b9b3805761"
+          },
+          {
+            "reference": "urn:uuid:ff9be2fe-4cb2-4d54-96ed-5c5cac1cbb44"
+          },
+          {
+            "reference": "urn:uuid:c639d371-7ec6-4e63-8613-97965bc4a86f"
+          },
+          {
+            "reference": "urn:uuid:20fa161a-9932-4f4a-bf6d-12a9170c577f"
+          }
+        ],
+        "activity": {
+          "coding": [
+            {
+              "code": "CREATE",
+              "system": "http://terminology.hl7.org/CodeSystem/v3-DataOperation",
+              "display": "create"
+            }
+          ],
+          "text": "Synthetic Example Data Generation"
+        },
+        "policy": [
+          "https://synderai.net/synderai-synthetic-data-policy"
+        ],
+        "agent": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "author",
+                  "system": "http://terminology.hl7.org/CodeSystem/provenance-participant-type",
+                  "display": "Author"
+                }
+              ],
+              "text": "author"
+            },
+            "who": {
+              "reference": "urn:uuid:73c7614c-1e00-4af1-9685-ffc10debc382"
+            }
+          }
+        ],
+        "reason": [
+          {
+            "coding": [
+              {
+                "code": "TRAIN",
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+                "display": "training"
+              }
+            ],
+            "text": "Interoperability Testing and Training (non-clinical use)"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provenance for SYNDERAI Synthetic Example Data Resource</div>"
+        },
+        "recorded": "2004-09-13T10:37:36Z"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:4a32fda2-ed7a-449a-b1a0-f5b9b3805761",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "4a32fda2-ed7a-449a-b1a0-f5b9b3805761",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory Role Id: 4a32fda2-ed7a-449a-b1a0-f5b9b3805761</div>"
+        },
+        "practitioner": {
+          "reference": "urn:uuid:ff9be2fe-4cb2-4d54-96ed-5c5cac1cbb44"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:ff9be2fe-4cb2-4d54-96ed-5c5cac1cbb44",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "ff9be2fe-4cb2-4d54-96ed-5c5cac1cbb44",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitioner-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "6e92afaa-b503-4082-bcd9-183a4ea5b836"
+          }
+        ],
+        "name": [
+          {
+            "prefix": [
+              "dr"
+            ],
+            "given": [
+              "Ex"
+            ],
+            "family": "Ample"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Laboratoire Central Européenne",
+              "Boulevard du Jardin Botanique 32"
+            ],
+            "postalCode": "1000",
+            "city": "Brussels",
+            "country": "Belgium"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory: Laboratoire Central Européenne, 1000 Brussels, Belgium</div>"
+        }
+      }
+    }
+  ],
+  "type": "document",
+  "timestamp": "2004-09-13T10:37:36Z"
+}

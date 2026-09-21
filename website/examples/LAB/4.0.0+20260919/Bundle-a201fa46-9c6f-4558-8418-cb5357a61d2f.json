@@ -1,0 +1,700 @@
+{
+  "resourceType": "Bundle",
+  "id": "a201fa46-9c6f-4558-8418-cb5357a61d2f",
+  "meta": {
+    "profile": [
+      "http://hl7.eu/fhir/laboratory/StructureDefinition/Bundle-eu-lab"
+    ]
+  },
+  "identifier": {
+    "assigner": {
+      "display": "HL7 Europe"
+    },
+    "system": "urn:oid:2.16.840.1.113883.2.51.999",
+    "value": "1be2ee92-8d37-491d-b9fb-a48345886ff2"
+  },
+  "entry": [
+    {
+      "fullUrl": "urn:uuid:b734a253-1bb1-49d8-9c2f-1dd6ead4fd8f",
+      "resource": {
+        "resourceType": "Composition",
+        "id": "b734a253-1bb1-49d8-9c2f-1dd6ead4fd8f",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Composition-eu-lab"
+          ]
+        },
+        "extension": [
+          {
+            "url": "http://hl7.eu/fhir/extensions/StructureDefinition/composition-diagnosticReportReference",
+            "valueReference": {
+              "reference": "urn:uuid:faadc5fb-4e62-4b13-80d1-868deb04b1e7"
+            }
+          }
+        ],
+        "identifier": {
+          "assigner": {
+            "display": "HL7 Europe"
+          },
+          "system": "urn:oid:2.16.840.1.113883.2.51.999",
+          "value": "6b553581-1b34-4319-b750-f37eefddc2f6"
+        },
+        "author": [
+          {
+            "reference": "urn:uuid:34047312-42f9-4fb5-a1a6-b32b9b8f82e3"
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "type": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ],
+          "text": "Laboratory Report"
+        },
+        "section": [
+          {
+            "code": {
+              "coding": [
+                {
+                  "code": "18719-5",
+                  "system": "http://loinc.org",
+                  "display": "Chemistry studies (set)"
+                }
+              ],
+              "text": "CHEM"
+            },
+            "entry": [
+              {
+                "reference": "urn:uuid:9140f42b-a92f-43fb-9d05-5af5d8a210fa"
+              }
+            ],
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>CHEM</h3><table class=\"hl7__eu__lab__report\"><thead><tr><th>Test</th><th>02-DEC-2020</th><th>Reference&#xA0;Range</th><th>Unit</th></tr></thead><tbody><tr><td></td><td><strong>81.9 L</strong></td><td>95 - 100</td><td>%</td></tr></tbody></table></div>"
+            },
+            "title": "CHEM"
+          },
+          {
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>Annotation</h3><table class=\"hl7__eu__lab__report\"><tr><th>Conclusion and Recommendations based on this report and previous findings known to us:</th></tr><tr><td>The patient’s arterial oxygen saturation is significantly below the normal range, indicating hypoxemia. This finding suggests impaired oxygenation, which may be due to respiratory or cardiac dysfunction and requires prompt clinical evaluation and intervention.</td></tr></table></div>"
+            },
+            "code": {
+              "coding": [
+                {
+                  "code": "48767-8",
+                  "system": "http://loinc.org",
+                  "display": "Annotation comment [Interpretation] Narrative"
+                }
+              ]
+            },
+            "title": "Annotation comment"
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "final",
+        "subject": {
+          "reference": "urn:uuid:b5908beb-f6a1-4617-85b1-a3085722bc79",
+          "display": "Lucie Widmann"
+        },
+        "date": "2020-12-02T01:36:46Z",
+        "title": "Laboratory Report",
+        "confidentiality": "N"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:faadc5fb-4e62-4b13-80d1-868deb04b1e7",
+      "resource": {
+        "resourceType": "DiagnosticReport",
+        "id": "faadc5fb-4e62-4b13-80d1-868deb04b1e7",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/DiagnosticReport-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "6b553581-1b34-4319-b750-f37eefddc2f6"
+          },
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "a117e19c-967a-454d-8ed0-9352f10edb76"
+          }
+        ],
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-DiagnosticReport.composition",
+            "valueReference": {
+              "reference": "urn:uuid:b734a253-1bb1-49d8-9c2f-1dd6ead4fd8f"
+            }
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:ab73bf04-4852-452c-be09-71b03fa072a8"
+          }
+        ],
+        "result": [
+          {
+            "reference": "urn:uuid:9140f42b-a92f-43fb-9d05-5af5d8a210fa"
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "registered",
+        "code": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:b5908beb-f6a1-4617-85b1-a3085722bc79",
+          "display": "Lucie Widmann"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:b5908beb-f6a1-4617-85b1-a3085722bc79",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "b5908beb-f6a1-4617-85b1-a3085722bc79",
+        "meta": {
+          "security": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "HTEST"
+            },
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "TRAIN"
+            }
+          ],
+          "tag": [
+            {
+              "system": "https://synderai.net/fhir/CodeSystem/tags",
+              "code": "synthetic",
+              "display": "SYNDERAI Synthetic data"
+            }
+          ],
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/patient-eu-core"
+          ]
+        },
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "JHN",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://ec.europa.eu/identifier/eci",
+            "value": "4912-074737-0"
+          },
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "MR",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://local.setting.eu/identifier",
+            "value": "c97a6af4-7d73-5265-2697-0bf6d932bf7a"
+          }
+        ],
+        "name": [
+          {
+            "given": [
+              "Lucie"
+            ],
+            "family": "Widmann",
+            "text": "Lucie Widmann"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Tom-Hinterleitner-Platz 8/4"
+            ],
+            "use": "home",
+            "type": "physical",
+            "postalCode": "4240",
+            "city": "Freistadt",
+            "country": "Austria"
+          }
+        ],
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "+43 3507 84848 683"
+          }
+        ],
+        "extension": [
+          {
+            "extension": [
+              {
+                "url": "code",
+                "valueCodeableConcept": {
+                  "coding": [
+                    {
+                      "code": "AT",
+                      "system": "urn:iso:std:iso:3166"
+                    }
+                  ]
+                }
+              }
+            ],
+            "url": "http://hl7.org/fhir/StructureDefinition/patient-nationality"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__ips\"><tr><td>Lucie Widmann</td><td>female</td><td>10-Jan-1984</td></tr></table></div>"
+        },
+        "gender": "female",
+        "birthDate": "1984-01-10"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:75a14a63-e9d8-4068-af58-a93fe407465c",
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "75a14a63-e9d8-4068-af58-a93fe407465c",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/ServiceRequest-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "system": "http://example.org",
+            "value": "b7d3444e-983e-4620-bbd9-b2728c5d21f3"
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:ab73bf04-4852-452c-be09-71b03fa072a8"
+          }
+        ],
+        "reasonCode": [
+          {
+            "coding": [
+              {
+                "code": "59621000",
+                "system": "http://snomed.info/sct",
+                "display": "Essential hypertension"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "195967001",
+                "system": "http://snomed.info/sct",
+                "display": "Asthma"
+              }
+            ]
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "active",
+        "intent": "order",
+        "code": {
+          "coding": [
+            {
+              "code": "108252007",
+              "system": "http://snomed.info/sct",
+              "display": "Laboratory procedure"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:b5908beb-f6a1-4617-85b1-a3085722bc79",
+          "display": "Lucie Widmann"
+        },
+        "requester": {
+          "reference": "urn:uuid:b51babe4-2f95-45f3-9f76-89d0cf89af57"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:b51babe4-2f95-45f3-9f76-89d0cf89af57",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "b51babe4-2f95-45f3-9f76-89d0cf89af57",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Role Id: b51babe4-2f95-45f3-9f76-89d0cf89af57</div>"
+        },
+        "organization": {
+          "reference": "urn:uuid:9d72d9d9-c794-4abb-9b60-e36a5967442c"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:9d72d9d9-c794-4abb-9b60-e36a5967442c",
+      "resource": {
+        "resourceType": "Organization",
+        "id": "9d72d9d9-c794-4abb-9b60-e36a5967442c",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/organization-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "3272f5ae-be32-4340-862b-dfce07dea312"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Birkenfeld 4"
+            ],
+            "city": "Sankt Oswald bei Freistadt",
+            "postalCode": "4271",
+            "country": "Austria"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Organization: Etzelsdorfer Roland</div>"
+        },
+        "name": "Etzelsdorfer Roland"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:ab73bf04-4852-452c-be09-71b03fa072a8",
+      "resource": {
+        "resourceType": "Specimen",
+        "id": "ab73bf04-4852-452c-be09-71b03fa072a8",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Specimen-eu-lab"
+          ]
+        },
+        "collection": {
+          "collectedDateTime": "2020-12-02"
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Specimen</th><th>Collection Date</th></tr><tr><td>Arterial blood specimen</td><td><span class=\"nb\">02-Dec-2020</span></td></tr></table></div>"
+        },
+        "type": {
+          "coding": [
+            {
+              "code": "122552005",
+              "system": "http://snomed.info/sct",
+              "display": "Arterial blood specimen"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:9140f42b-a92f-43fb-9d05-5af5d8a210fa",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "9140f42b-a92f-43fb-9d05-5af5d8a210fa",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Observation-resultslab-eu-lab"
+          ]
+        },
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "laboratory",
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category"
+              }
+            ]
+          }
+        ],
+        "performer": [
+          {
+            "display": "The Central European Laboratory"
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "code": "2708-6",
+              "system": "http://loinc.org",
+              "display": "Oxygen saturation in Arterial blood"
+            }
+          ],
+          "text": "Oxygen saturation in Arterial blood"
+        },
+        "valueQuantity": {
+          "value": 81.9,
+          "unit": "%",
+          "code": "%",
+          "system": "http://unitsofmeasure.org"
+        },
+        "referenceRange": [
+          {
+            "low": {
+              "value": 95,
+              "code": "%",
+              "system": "http://unitsofmeasure.org"
+            },
+            "high": {
+              "value": 100,
+              "code": "%",
+              "system": "http://unitsofmeasure.org"
+            }
+          }
+        ],
+        "interpretation": [
+          {
+            "coding": [
+              {
+                "code": "L",
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                "display": "Low"
+              }
+            ]
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Test</th><th>02-Dec-2020</th><th>Reference&#xA0;Range</th><th>Flag</th><th>Unit</th></tr><tr><td>Oxygen saturation in Arterial blood</td><td>81.9</td><td>95 - 100</td><td>L</td><td>%</td></tr></table></div>"
+        },
+        "status": "final",
+        "effectiveDateTime": "2020-12-02T00:36:46Z",
+        "subject": {
+          "reference": "urn:uuid:b5908beb-f6a1-4617-85b1-a3085722bc79",
+          "display": "Lucie Widmann"
+        },
+        "specimen": {
+          "reference": "urn:uuid:ab73bf04-4852-452c-be09-71b03fa072a8"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:59e9006c-fb63-4bce-be43-4f2698001500",
+      "resource": {
+        "resourceType": "Device",
+        "id": "59e9006c-fb63-4bce-be43-4f2698001500",
+        "deviceName": [
+          {
+            "name": "SYNDERAI Synthetic Generator",
+            "type": "manufacturer-name"
+          }
+        ],
+        "version": [
+          {
+            "value": "5.0"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">SYNDERAI Synthetic Generator v5.0</div>"
+        },
+        "status": "active",
+        "distinctIdentifier": "synderai-generator-50",
+        "manufacturer": "SYNDERAI Project"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:26f0c01f-75d6-4e74-827c-14b2ce5dbd29",
+      "resource": {
+        "resourceType": "Provenance",
+        "id": "26f0c01f-75d6-4e74-827c-14b2ce5dbd29",
+        "target": [
+          {
+            "reference": "urn:uuid:b5908beb-f6a1-4617-85b1-a3085722bc79"
+          },
+          {
+            "reference": "urn:uuid:b734a253-1bb1-49d8-9c2f-1dd6ead4fd8f"
+          },
+          {
+            "reference": "urn:uuid:34047312-42f9-4fb5-a1a6-b32b9b8f82e3"
+          },
+          {
+            "reference": "urn:uuid:b6fdbb62-a865-4b6f-bb08-f0b1d1740bb9"
+          },
+          {
+            "reference": "urn:uuid:b51babe4-2f95-45f3-9f76-89d0cf89af57"
+          },
+          {
+            "reference": "urn:uuid:9d72d9d9-c794-4abb-9b60-e36a5967442c"
+          }
+        ],
+        "activity": {
+          "coding": [
+            {
+              "code": "CREATE",
+              "system": "http://terminology.hl7.org/CodeSystem/v3-DataOperation",
+              "display": "create"
+            }
+          ],
+          "text": "Synthetic Example Data Generation"
+        },
+        "policy": [
+          "https://synderai.net/synderai-synthetic-data-policy"
+        ],
+        "agent": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "author",
+                  "system": "http://terminology.hl7.org/CodeSystem/provenance-participant-type",
+                  "display": "Author"
+                }
+              ],
+              "text": "author"
+            },
+            "who": {
+              "reference": "urn:uuid:59e9006c-fb63-4bce-be43-4f2698001500"
+            }
+          }
+        ],
+        "reason": [
+          {
+            "coding": [
+              {
+                "code": "TRAIN",
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+                "display": "training"
+              }
+            ],
+            "text": "Interoperability Testing and Training (non-clinical use)"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provenance for SYNDERAI Synthetic Example Data Resource</div>"
+        },
+        "recorded": "2020-12-02T02:36:46Z"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:34047312-42f9-4fb5-a1a6-b32b9b8f82e3",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "34047312-42f9-4fb5-a1a6-b32b9b8f82e3",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory Role Id: 34047312-42f9-4fb5-a1a6-b32b9b8f82e3</div>"
+        },
+        "practitioner": {
+          "reference": "urn:uuid:b6fdbb62-a865-4b6f-bb08-f0b1d1740bb9"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:b6fdbb62-a865-4b6f-bb08-f0b1d1740bb9",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "b6fdbb62-a865-4b6f-bb08-f0b1d1740bb9",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitioner-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "de7bc2fd-ae41-4216-987f-1ff6e96616bc"
+          }
+        ],
+        "name": [
+          {
+            "prefix": [
+              "dr"
+            ],
+            "given": [
+              "Ex"
+            ],
+            "family": "Ample"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Laboratoire Central Européenne",
+              "Boulevard du Jardin Botanique 32"
+            ],
+            "postalCode": "1000",
+            "city": "Brussels",
+            "country": "Belgium"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory: Laboratoire Central Européenne, 1000 Brussels, Belgium</div>"
+        }
+      }
+    }
+  ],
+  "type": "document",
+  "timestamp": "2020-12-02T02:36:46Z"
+}

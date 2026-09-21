@@ -1,0 +1,740 @@
+{
+  "resourceType": "Bundle",
+  "id": "2a7732d7-0e62-4390-b8d2-ce75b735affa",
+  "meta": {
+    "profile": [
+      "http://hl7.eu/fhir/laboratory/StructureDefinition/Bundle-eu-lab"
+    ]
+  },
+  "identifier": {
+    "assigner": {
+      "display": "HL7 Europe"
+    },
+    "system": "urn:oid:2.16.840.1.113883.2.51.999",
+    "value": "272bdc1f-0b1f-4ade-970f-4b045b9af71d"
+  },
+  "entry": [
+    {
+      "fullUrl": "urn:uuid:bdea522a-d394-4b0b-949b-6b27598329c0",
+      "resource": {
+        "resourceType": "Composition",
+        "id": "bdea522a-d394-4b0b-949b-6b27598329c0",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Composition-eu-lab"
+          ]
+        },
+        "extension": [
+          {
+            "url": "http://hl7.eu/fhir/extensions/StructureDefinition/composition-diagnosticReportReference",
+            "valueReference": {
+              "reference": "urn:uuid:c05b9018-9a03-44a8-ac8a-05b31c9ad2f6"
+            }
+          }
+        ],
+        "identifier": {
+          "assigner": {
+            "display": "HL7 Europe"
+          },
+          "system": "urn:oid:2.16.840.1.113883.2.51.999",
+          "value": "0d68a43f-652a-4ade-85d4-52f32c1b75ed"
+        },
+        "author": [
+          {
+            "reference": "urn:uuid:c037d576-e344-4aab-a043-62613662c06f"
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "type": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ],
+          "text": "Laboratory Report"
+        },
+        "section": [
+          {
+            "code": {
+              "coding": [
+                {
+                  "code": "18719-5",
+                  "system": "http://loinc.org",
+                  "display": "Chemistry studies (set)"
+                }
+              ],
+              "text": "CHEM"
+            },
+            "entry": [
+              {
+                "reference": "urn:uuid:dda7d0ae-20d7-4c05-96c7-cd80ae1d609d"
+              }
+            ],
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>CHEM</h3><table class=\"hl7__eu__lab__report\"><thead><tr><th>Test</th><th>22-JAN-1995</th><th>Reference&#xA0;Range</th><th>Unit</th></tr></thead><tbody><tr><td></td><td>1.5</td><td>0.05 - 1.8</td><td>mIU/L</td></tr></tbody></table></div>"
+            },
+            "title": "CHEM"
+          },
+          {
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>Annotation</h3><table class=\"hl7__eu__lab__report\"><tr><th>Conclusion and Recommendations based on this report and previous findings known to us:</th></tr><tr><td>Thyrotropin (TSH) is within the normal reference range, indicating euthyroid status from a laboratory perspective. No evidence of hypo- or hyperthyroidism based on this result. No further action required regarding thyroid function at this time.</td></tr></table></div>"
+            },
+            "code": {
+              "coding": [
+                {
+                  "code": "48767-8",
+                  "system": "http://loinc.org",
+                  "display": "Annotation comment [Interpretation] Narrative"
+                }
+              ]
+            },
+            "title": "Annotation comment"
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "final",
+        "subject": {
+          "reference": "urn:uuid:5aac7bb6-17dd-41a3-ab6c-de1877be5842",
+          "display": "Alix Ruiz"
+        },
+        "date": "1995-01-22T05:25:45Z",
+        "title": "Laboratory Report",
+        "confidentiality": "N"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:c05b9018-9a03-44a8-ac8a-05b31c9ad2f6",
+      "resource": {
+        "resourceType": "DiagnosticReport",
+        "id": "c05b9018-9a03-44a8-ac8a-05b31c9ad2f6",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/DiagnosticReport-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "0d68a43f-652a-4ade-85d4-52f32c1b75ed"
+          },
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "bf38a2de-fca5-4eea-83db-5e08132289ae"
+          }
+        ],
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-DiagnosticReport.composition",
+            "valueReference": {
+              "reference": "urn:uuid:bdea522a-d394-4b0b-949b-6b27598329c0"
+            }
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:af89c9e7-fd08-4bee-9170-87c3684ae996"
+          }
+        ],
+        "result": [
+          {
+            "reference": "urn:uuid:dda7d0ae-20d7-4c05-96c7-cd80ae1d609d"
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "registered",
+        "code": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:5aac7bb6-17dd-41a3-ab6c-de1877be5842",
+          "display": "Alix Ruiz"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:5aac7bb6-17dd-41a3-ab6c-de1877be5842",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "5aac7bb6-17dd-41a3-ab6c-de1877be5842",
+        "meta": {
+          "security": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "HTEST"
+            },
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "TRAIN"
+            }
+          ],
+          "tag": [
+            {
+              "system": "https://synderai.net/fhir/CodeSystem/tags",
+              "code": "synthetic",
+              "display": "SYNDERAI Synthetic data"
+            }
+          ],
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/patient-eu-core"
+          ]
+        },
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "JHN",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://ec.europa.eu/identifier/eci",
+            "value": "4903-570543-0"
+          },
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "MR",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://local.setting.eu/identifier",
+            "value": "87558946-5ae8-95a9-7ed0-ecd67fbb9fac"
+          }
+        ],
+        "name": [
+          {
+            "given": [
+              "Alix"
+            ],
+            "family": "Ruiz",
+            "text": "Alix Ruiz"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "13, rue Albert"
+            ],
+            "use": "home",
+            "type": "physical",
+            "postalCode": "75001",
+            "city": "Paris",
+            "country": "France"
+          }
+        ],
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "05 96 97 84 86"
+          }
+        ],
+        "extension": [
+          {
+            "extension": [
+              {
+                "url": "code",
+                "valueCodeableConcept": {
+                  "coding": [
+                    {
+                      "code": "FR",
+                      "system": "urn:iso:std:iso:3166"
+                    }
+                  ]
+                }
+              }
+            ],
+            "url": "http://hl7.org/fhir/StructureDefinition/patient-nationality"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__ips\"><tr><td>Alix Ruiz</td><td>female</td><td>17-Nov-1946</td></tr></table></div>"
+        },
+        "gender": "female",
+        "birthDate": "1946-11-17"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:5560d1b3-eb3a-451b-b758-17ca15c7cc00",
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "5560d1b3-eb3a-451b-b758-17ca15c7cc00",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/ServiceRequest-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "system": "http://example.org",
+            "value": "f0be3961-176e-4b15-aeba-2bff3ef6cd3b"
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:af89c9e7-fd08-4bee-9170-87c3684ae996"
+          }
+        ],
+        "reasonCode": [
+          {
+            "coding": [
+              {
+                "code": "59621000",
+                "system": "http://snomed.info/sct",
+                "display": "Essential hypertension"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "40930008",
+                "system": "http://snomed.info/sct",
+                "display": "Hypothyroidism"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "237602007",
+                "system": "http://snomed.info/sct",
+                "display": "Metabolic syndrome X"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "13645005",
+                "system": "http://snomed.info/sct",
+                "display": "Chronic obstructive pulmonary disease"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "118601006",
+                "system": "http://snomed.info/sct",
+                "display": "Non-Hodgkin's lymphoma (clinical)"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "64859006",
+                "system": "http://snomed.info/sct",
+                "display": "Osteoporosis"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "414545008",
+                "system": "http://snomed.info/sct",
+                "display": "Ischemic heart disease"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "55822004",
+                "system": "http://snomed.info/sct",
+                "display": "Hyperlipidemia"
+              }
+            ]
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "active",
+        "intent": "order",
+        "code": {
+          "coding": [
+            {
+              "code": "108252007",
+              "system": "http://snomed.info/sct",
+              "display": "Laboratory procedure"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:5aac7bb6-17dd-41a3-ab6c-de1877be5842",
+          "display": "Alix Ruiz"
+        },
+        "requester": {
+          "reference": "urn:uuid:890161ae-85f3-4322-ad7f-4afab2c66e12"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:890161ae-85f3-4322-ad7f-4afab2c66e12",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "890161ae-85f3-4322-ad7f-4afab2c66e12",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Role Id: 890161ae-85f3-4322-ad7f-4afab2c66e12</div>"
+        },
+        "organization": {
+          "reference": "urn:uuid:77fb8cde-d1c0-47c7-9663-e4bc249b425a"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:77fb8cde-d1c0-47c7-9663-e4bc249b425a",
+      "resource": {
+        "resourceType": "Organization",
+        "id": "77fb8cde-d1c0-47c7-9663-e4bc249b425a",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/organization-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "83832088-00e7-4999-a5d6-a8068196ff00"
+          }
+        ],
+        "address": [
+          {
+            "city": "Paris",
+            "postalCode": "75001",
+            "country": "France"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Organization: Hôtel-Dieu</div>"
+        },
+        "name": "Hôtel-Dieu"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:af89c9e7-fd08-4bee-9170-87c3684ae996",
+      "resource": {
+        "resourceType": "Specimen",
+        "id": "af89c9e7-fd08-4bee-9170-87c3684ae996",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Specimen-eu-lab"
+          ]
+        },
+        "collection": {
+          "collectedDateTime": "1995-01-22"
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Specimen</th><th>Collection Date</th></tr><tr><td>Acellular blood (serum or plasma) specimen</td><td><span class=\"nb\">22-Jan-1995</span></td></tr></table></div>"
+        },
+        "type": {
+          "coding": [
+            {
+              "code": "122592007",
+              "system": "http://snomed.info/sct",
+              "display": "Acellular blood (serum or plasma) specimen"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:dda7d0ae-20d7-4c05-96c7-cd80ae1d609d",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "dda7d0ae-20d7-4c05-96c7-cd80ae1d609d",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Observation-resultslab-eu-lab"
+          ]
+        },
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "laboratory",
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category"
+              }
+            ]
+          }
+        ],
+        "performer": [
+          {
+            "display": "The Central European Laboratory"
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "code": "11579-0",
+              "system": "http://loinc.org",
+              "display": "Thyrotropin [Units/volume] in Serum or Plasma by Detection limit <= 0.05 mIU/L"
+            }
+          ],
+          "text": "Thyrotropin [Units/volume] in Serum or Plasma by Detection limit <= 0.05 mIU/L"
+        },
+        "valueQuantity": {
+          "value": 1.5,
+          "unit": "m[iU]/L",
+          "code": "mIU/L",
+          "system": "http://unitsofmeasure.org"
+        },
+        "referenceRange": [
+          {
+            "low": {
+              "value": 0.05,
+              "code": "mIU/L",
+              "system": "http://unitsofmeasure.org"
+            },
+            "high": {
+              "value": 1.8,
+              "code": "mIU/L",
+              "system": "http://unitsofmeasure.org"
+            }
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Test</th><th>22-Jan-1995</th><th>Reference&#xA0;Range</th><th>Flag</th><th>Unit</th></tr><tr><td>Thyrotropin [Units/volume] in Serum or Plasma by Detection limit &lt;= 0.05 mIU/L</td><td>1.5</td><td>0.05 - 1.8</td><td></td><td>mIU/L</td></tr></table></div>"
+        },
+        "status": "final",
+        "effectiveDateTime": "1995-01-22T04:25:45Z",
+        "subject": {
+          "reference": "urn:uuid:5aac7bb6-17dd-41a3-ab6c-de1877be5842",
+          "display": "Alix Ruiz"
+        },
+        "specimen": {
+          "reference": "urn:uuid:af89c9e7-fd08-4bee-9170-87c3684ae996"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:cc9b4a83-2d5f-4d56-8f1a-5a3803937d9b",
+      "resource": {
+        "resourceType": "Device",
+        "id": "cc9b4a83-2d5f-4d56-8f1a-5a3803937d9b",
+        "deviceName": [
+          {
+            "name": "SYNDERAI Synthetic Generator",
+            "type": "manufacturer-name"
+          }
+        ],
+        "version": [
+          {
+            "value": "5.0"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">SYNDERAI Synthetic Generator v5.0</div>"
+        },
+        "status": "active",
+        "distinctIdentifier": "synderai-generator-50",
+        "manufacturer": "SYNDERAI Project"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:5082569e-09c9-427e-bee1-d23c631b9863",
+      "resource": {
+        "resourceType": "Provenance",
+        "id": "5082569e-09c9-427e-bee1-d23c631b9863",
+        "target": [
+          {
+            "reference": "urn:uuid:5aac7bb6-17dd-41a3-ab6c-de1877be5842"
+          },
+          {
+            "reference": "urn:uuid:bdea522a-d394-4b0b-949b-6b27598329c0"
+          },
+          {
+            "reference": "urn:uuid:c037d576-e344-4aab-a043-62613662c06f"
+          },
+          {
+            "reference": "urn:uuid:a768a41b-eb0a-4eaa-87e1-5f554b4c23c0"
+          },
+          {
+            "reference": "urn:uuid:890161ae-85f3-4322-ad7f-4afab2c66e12"
+          },
+          {
+            "reference": "urn:uuid:77fb8cde-d1c0-47c7-9663-e4bc249b425a"
+          }
+        ],
+        "activity": {
+          "coding": [
+            {
+              "code": "CREATE",
+              "system": "http://terminology.hl7.org/CodeSystem/v3-DataOperation",
+              "display": "create"
+            }
+          ],
+          "text": "Synthetic Example Data Generation"
+        },
+        "policy": [
+          "https://synderai.net/synderai-synthetic-data-policy"
+        ],
+        "agent": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "author",
+                  "system": "http://terminology.hl7.org/CodeSystem/provenance-participant-type",
+                  "display": "Author"
+                }
+              ],
+              "text": "author"
+            },
+            "who": {
+              "reference": "urn:uuid:cc9b4a83-2d5f-4d56-8f1a-5a3803937d9b"
+            }
+          }
+        ],
+        "reason": [
+          {
+            "coding": [
+              {
+                "code": "TRAIN",
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+                "display": "training"
+              }
+            ],
+            "text": "Interoperability Testing and Training (non-clinical use)"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provenance for SYNDERAI Synthetic Example Data Resource</div>"
+        },
+        "recorded": "1995-01-22T06:25:45Z"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:c037d576-e344-4aab-a043-62613662c06f",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "c037d576-e344-4aab-a043-62613662c06f",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory Role Id: c037d576-e344-4aab-a043-62613662c06f</div>"
+        },
+        "practitioner": {
+          "reference": "urn:uuid:a768a41b-eb0a-4eaa-87e1-5f554b4c23c0"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:a768a41b-eb0a-4eaa-87e1-5f554b4c23c0",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "a768a41b-eb0a-4eaa-87e1-5f554b4c23c0",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitioner-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "4f3787b5-3a20-4b22-b525-848b00bfcab4"
+          }
+        ],
+        "name": [
+          {
+            "prefix": [
+              "dr"
+            ],
+            "given": [
+              "Ex"
+            ],
+            "family": "Ample"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Laboratoire Central Européenne",
+              "Boulevard du Jardin Botanique 32"
+            ],
+            "postalCode": "1000",
+            "city": "Brussels",
+            "country": "Belgium"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory: Laboratoire Central Européenne, 1000 Brussels, Belgium</div>"
+        }
+      }
+    }
+  ],
+  "type": "document",
+  "timestamp": "1995-01-22T06:25:45Z"
+}

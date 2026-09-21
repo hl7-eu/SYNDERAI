@@ -1,0 +1,841 @@
+{
+  "resourceType": "Bundle",
+  "id": "9989ff13-9714-47a0-98b2-d796d4b94137",
+  "meta": {
+    "profile": [
+      "http://hl7.eu/fhir/laboratory/StructureDefinition/Bundle-eu-lab"
+    ]
+  },
+  "identifier": {
+    "assigner": {
+      "display": "HL7 Europe"
+    },
+    "system": "urn:oid:2.16.840.1.113883.2.51.999",
+    "value": "55538923-ca83-48ec-9ba9-ffb6424384f1"
+  },
+  "entry": [
+    {
+      "fullUrl": "urn:uuid:1759e1bb-80fb-4279-b34b-654dc502a3b5",
+      "resource": {
+        "resourceType": "Composition",
+        "id": "1759e1bb-80fb-4279-b34b-654dc502a3b5",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Composition-eu-lab"
+          ]
+        },
+        "extension": [
+          {
+            "url": "http://hl7.eu/fhir/extensions/StructureDefinition/composition-diagnosticReportReference",
+            "valueReference": {
+              "reference": "urn:uuid:ede9a3d6-6d57-4c91-9e04-c25c67072259"
+            }
+          }
+        ],
+        "identifier": {
+          "assigner": {
+            "display": "HL7 Europe"
+          },
+          "system": "urn:oid:2.16.840.1.113883.2.51.999",
+          "value": "2e08030d-0633-423b-adfc-fb39d2189e12"
+        },
+        "author": [
+          {
+            "reference": "urn:uuid:d82ae982-5f08-47e5-a28f-b020bba63b67"
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "type": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ],
+          "text": "Laboratory Report"
+        },
+        "section": [
+          {
+            "code": {
+              "coding": [
+                {
+                  "code": "18719-5",
+                  "system": "http://loinc.org",
+                  "display": "Chemistry studies (set)"
+                }
+              ],
+              "text": "CHEM"
+            },
+            "entry": [
+              {
+                "reference": "urn:uuid:ca90b582-d1a5-4089-94f2-d374804177b5"
+              },
+              {
+                "reference": "urn:uuid:c67bb380-7827-424b-b15d-69324f4150d1"
+              }
+            ],
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>CHEM</h3><table class=\"hl7__eu__lab__report\"><thead><tr><th>Test</th><th>17-JAN-2020</th><th>Reference&#xA0;Range</th><th>Unit</th></tr></thead><tbody><tr><td></td><td><strong>10.3 H</strong></td><td>0.05 - 2.9</td><td>mIU/L</td></tr><tr><td></td><td><strong>5.4 L</strong></td><td>9 - 19</td><td>pmol/L</td></tr></tbody></table></div>"
+            },
+            "title": "CHEM"
+          },
+          {
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>Annotation</h3><table class=\"hl7__eu__lab__report\"><tr><th>Conclusion and Recommendations based on this report and previous findings known to us:</th></tr><tr><td>The results indicate significant hypothyroidism, with markedly elevated TSH and low free T4. This suggests primary thyroid insufficiency, and clinical correlation is recommended. Consider evaluation for underlying causes and initiation or adjustment of thyroid hormone replacement therapy.</td></tr></table></div>"
+            },
+            "code": {
+              "coding": [
+                {
+                  "code": "48767-8",
+                  "system": "http://loinc.org",
+                  "display": "Annotation comment [Interpretation] Narrative"
+                }
+              ]
+            },
+            "title": "Annotation comment"
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "final",
+        "subject": {
+          "reference": "urn:uuid:71a29db2-489a-4d61-a041-f7d060580bb3",
+          "display": "Nicole Ragus"
+        },
+        "date": "2020-01-17T18:02:12Z",
+        "title": "Laboratory Report",
+        "confidentiality": "N"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:ede9a3d6-6d57-4c91-9e04-c25c67072259",
+      "resource": {
+        "resourceType": "DiagnosticReport",
+        "id": "ede9a3d6-6d57-4c91-9e04-c25c67072259",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/DiagnosticReport-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "2e08030d-0633-423b-adfc-fb39d2189e12"
+          },
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "bb90d9b8-b7ec-4213-9f8f-d5a3d900a13c"
+          }
+        ],
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-DiagnosticReport.composition",
+            "valueReference": {
+              "reference": "urn:uuid:1759e1bb-80fb-4279-b34b-654dc502a3b5"
+            }
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:5e167f0e-e088-45d6-89cf-2afe863ca884"
+          }
+        ],
+        "result": [
+          {
+            "reference": "urn:uuid:ca90b582-d1a5-4089-94f2-d374804177b5"
+          },
+          {
+            "reference": "urn:uuid:c67bb380-7827-424b-b15d-69324f4150d1"
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "registered",
+        "code": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:71a29db2-489a-4d61-a041-f7d060580bb3",
+          "display": "Nicole Ragus"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:71a29db2-489a-4d61-a041-f7d060580bb3",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "71a29db2-489a-4d61-a041-f7d060580bb3",
+        "meta": {
+          "security": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "HTEST"
+            },
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "TRAIN"
+            }
+          ],
+          "tag": [
+            {
+              "system": "https://synderai.net/fhir/CodeSystem/tags",
+              "code": "synthetic",
+              "display": "SYNDERAI Synthetic data"
+            }
+          ],
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/patient-eu-core"
+          ]
+        },
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "JHN",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://ec.europa.eu/identifier/eci",
+            "value": "3990-634067-2"
+          },
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "MR",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://local.setting.eu/identifier",
+            "value": "4959d3a7-385b-45d3-e180-5b1fac3849a3"
+          }
+        ],
+        "name": [
+          {
+            "given": [
+              "Nicole"
+            ],
+            "family": "Ragus",
+            "text": "Nicole Ragus"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "pl. Poprzeczna 5"
+            ],
+            "use": "home",
+            "type": "physical",
+            "postalCode": "21-500",
+            "city": "Biała Podlaska",
+            "country": "Poland"
+          }
+        ],
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "+48 722 213 335"
+          }
+        ],
+        "extension": [
+          {
+            "extension": [
+              {
+                "url": "code",
+                "valueCodeableConcept": {
+                  "coding": [
+                    {
+                      "code": "PL",
+                      "system": "urn:iso:std:iso:3166"
+                    }
+                  ]
+                }
+              }
+            ],
+            "url": "http://hl7.org/fhir/StructureDefinition/patient-nationality"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__ips\"><tr><td>Nicole Ragus</td><td>female</td><td>13-Aug-1961</td></tr></table></div>"
+        },
+        "gender": "female",
+        "birthDate": "1961-08-13"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:d225e253-60bc-4c81-b7c0-afa46735b7ba",
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "d225e253-60bc-4c81-b7c0-afa46735b7ba",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/ServiceRequest-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "system": "http://example.org",
+            "value": "08105c45-c021-4b8b-ad70-7608c14cbea6"
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:5e167f0e-e088-45d6-89cf-2afe863ca884"
+          }
+        ],
+        "reasonCode": [
+          {
+            "coding": [
+              {
+                "code": "237602007",
+                "system": "http://snomed.info/sct",
+                "display": "Metabolic syndrome X"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "59621000",
+                "system": "http://snomed.info/sct",
+                "display": "Essential hypertension"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "118601006",
+                "system": "http://snomed.info/sct",
+                "display": "Non-Hodgkin's lymphoma (clinical)"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "386810004",
+                "system": "http://snomed.info/sct",
+                "display": "Phobic disorder"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "35489007",
+                "system": "http://snomed.info/sct",
+                "display": "Depressive disorder"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "239873007",
+                "system": "http://snomed.info/sct",
+                "display": "Osteoarthritis of knee"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "40930008",
+                "system": "http://snomed.info/sct",
+                "display": "Hypothyroidism"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "55822004",
+                "system": "http://snomed.info/sct",
+                "display": "Hyperlipidemia"
+              }
+            ]
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "active",
+        "intent": "order",
+        "code": {
+          "coding": [
+            {
+              "code": "108252007",
+              "system": "http://snomed.info/sct",
+              "display": "Laboratory procedure"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:71a29db2-489a-4d61-a041-f7d060580bb3",
+          "display": "Nicole Ragus"
+        },
+        "requester": {
+          "reference": "urn:uuid:e23dcba6-45c1-4b93-bb33-a80b4d54ffc4"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:e23dcba6-45c1-4b93-bb33-a80b4d54ffc4",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "e23dcba6-45c1-4b93-bb33-a80b4d54ffc4",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Role Id: e23dcba6-45c1-4b93-bb33-a80b4d54ffc4</div>"
+        },
+        "organization": {
+          "reference": "urn:uuid:af535901-7f54-48a6-8d01-4eb362c58026"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:af535901-7f54-48a6-8d01-4eb362c58026",
+      "resource": {
+        "resourceType": "Organization",
+        "id": "af535901-7f54-48a6-8d01-4eb362c58026",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/organization-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "72834b3f-1a5f-4532-9bdd-5077e3fe749e"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Spółdzielcza 5"
+            ],
+            "city": "Biała Podlaska",
+            "postalCode": "21-500",
+            "country": "Poland"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Organization: Domowy Szpital</div>"
+        },
+        "name": "Domowy Szpital"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:5e167f0e-e088-45d6-89cf-2afe863ca884",
+      "resource": {
+        "resourceType": "Specimen",
+        "id": "5e167f0e-e088-45d6-89cf-2afe863ca884",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Specimen-eu-lab"
+          ]
+        },
+        "collection": {
+          "collectedDateTime": "2020-01-17"
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Specimen</th><th>Collection Date</th></tr><tr><td>Acellular blood (serum or plasma) specimen</td><td><span class=\"nb\">17-Jan-2020</span></td></tr></table></div>"
+        },
+        "type": {
+          "coding": [
+            {
+              "code": "122592007",
+              "system": "http://snomed.info/sct",
+              "display": "Acellular blood (serum or plasma) specimen"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:ca90b582-d1a5-4089-94f2-d374804177b5",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "ca90b582-d1a5-4089-94f2-d374804177b5",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Observation-resultslab-eu-lab"
+          ]
+        },
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "laboratory",
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category"
+              }
+            ]
+          }
+        ],
+        "performer": [
+          {
+            "display": "The Central European Laboratory"
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "code": "11579-0",
+              "system": "http://loinc.org",
+              "display": "Thyrotropin [Units/volume] in Serum or Plasma by Detection limit <= 0.05 mIU/L"
+            }
+          ],
+          "text": "Thyrotropin [Units/volume] in Serum or Plasma by Detection limit <= 0.05 mIU/L"
+        },
+        "valueQuantity": {
+          "value": 10.3,
+          "unit": "m[iU]/L",
+          "code": "mIU/L",
+          "system": "http://unitsofmeasure.org"
+        },
+        "referenceRange": [
+          {
+            "low": {
+              "value": 0.05,
+              "code": "mIU/L",
+              "system": "http://unitsofmeasure.org"
+            },
+            "high": {
+              "value": 2.9,
+              "code": "mIU/L",
+              "system": "http://unitsofmeasure.org"
+            }
+          }
+        ],
+        "interpretation": [
+          {
+            "coding": [
+              {
+                "code": "H",
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                "display": "High"
+              }
+            ]
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Test</th><th>17-Jan-2020</th><th>Reference&#xA0;Range</th><th>Flag</th><th>Unit</th></tr><tr><td>Thyrotropin [Units/volume] in Serum or Plasma by Detection limit &lt;= 0.05 mIU/L</td><td>10.3</td><td>0.05 - 2.9</td><td>H</td><td>mIU/L</td></tr></table></div>"
+        },
+        "status": "final",
+        "effectiveDateTime": "2020-01-17T17:02:12Z",
+        "subject": {
+          "reference": "urn:uuid:71a29db2-489a-4d61-a041-f7d060580bb3",
+          "display": "Nicole Ragus"
+        },
+        "specimen": {
+          "reference": "urn:uuid:5e167f0e-e088-45d6-89cf-2afe863ca884"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:c67bb380-7827-424b-b15d-69324f4150d1",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "c67bb380-7827-424b-b15d-69324f4150d1",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Observation-resultslab-eu-lab"
+          ]
+        },
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "laboratory",
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category"
+              }
+            ]
+          }
+        ],
+        "performer": [
+          {
+            "display": "The Central European Laboratory"
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "code": "3024-7",
+              "system": "http://loinc.org",
+              "display": "Thyroxine (T4) free [Mass/volume] in Serum or Plasma"
+            }
+          ],
+          "text": "Thyroxine (T4) free [Mass/volume] in Serum or Plasma"
+        },
+        "valueQuantity": {
+          "value": 5.4,
+          "unit": "pmol/L",
+          "code": "pmol/L",
+          "system": "http://unitsofmeasure.org"
+        },
+        "referenceRange": [
+          {
+            "low": {
+              "value": 9,
+              "code": "pmol/L",
+              "system": "http://unitsofmeasure.org"
+            },
+            "high": {
+              "value": 19,
+              "code": "pmol/L",
+              "system": "http://unitsofmeasure.org"
+            }
+          }
+        ],
+        "interpretation": [
+          {
+            "coding": [
+              {
+                "code": "L",
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                "display": "Low"
+              }
+            ]
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Test</th><th>17-Jan-2020</th><th>Reference&#xA0;Range</th><th>Flag</th><th>Unit</th></tr><tr><td>Thyroxine (T4) free [Mass/volume] in Serum or Plasma</td><td>5.4</td><td>9 - 19</td><td>L</td><td>pmol/L</td></tr></table></div>"
+        },
+        "status": "final",
+        "effectiveDateTime": "2020-01-17T17:02:12Z",
+        "subject": {
+          "reference": "urn:uuid:71a29db2-489a-4d61-a041-f7d060580bb3",
+          "display": "Nicole Ragus"
+        },
+        "specimen": {
+          "reference": "urn:uuid:5e167f0e-e088-45d6-89cf-2afe863ca884"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:379012b5-4852-49fe-a8ec-55125e6aeb54",
+      "resource": {
+        "resourceType": "Device",
+        "id": "379012b5-4852-49fe-a8ec-55125e6aeb54",
+        "deviceName": [
+          {
+            "name": "SYNDERAI Synthetic Generator",
+            "type": "manufacturer-name"
+          }
+        ],
+        "version": [
+          {
+            "value": "5.0"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">SYNDERAI Synthetic Generator v5.0</div>"
+        },
+        "status": "active",
+        "distinctIdentifier": "synderai-generator-50",
+        "manufacturer": "SYNDERAI Project"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:d36abbee-8d66-461a-98b2-a9ac561dd29e",
+      "resource": {
+        "resourceType": "Provenance",
+        "id": "d36abbee-8d66-461a-98b2-a9ac561dd29e",
+        "target": [
+          {
+            "reference": "urn:uuid:71a29db2-489a-4d61-a041-f7d060580bb3"
+          },
+          {
+            "reference": "urn:uuid:1759e1bb-80fb-4279-b34b-654dc502a3b5"
+          },
+          {
+            "reference": "urn:uuid:d82ae982-5f08-47e5-a28f-b020bba63b67"
+          },
+          {
+            "reference": "urn:uuid:a600067e-19aa-4158-852f-3b4c2ea2d9d7"
+          },
+          {
+            "reference": "urn:uuid:e23dcba6-45c1-4b93-bb33-a80b4d54ffc4"
+          },
+          {
+            "reference": "urn:uuid:af535901-7f54-48a6-8d01-4eb362c58026"
+          }
+        ],
+        "activity": {
+          "coding": [
+            {
+              "code": "CREATE",
+              "system": "http://terminology.hl7.org/CodeSystem/v3-DataOperation",
+              "display": "create"
+            }
+          ],
+          "text": "Synthetic Example Data Generation"
+        },
+        "policy": [
+          "https://synderai.net/synderai-synthetic-data-policy"
+        ],
+        "agent": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "author",
+                  "system": "http://terminology.hl7.org/CodeSystem/provenance-participant-type",
+                  "display": "Author"
+                }
+              ],
+              "text": "author"
+            },
+            "who": {
+              "reference": "urn:uuid:379012b5-4852-49fe-a8ec-55125e6aeb54"
+            }
+          }
+        ],
+        "reason": [
+          {
+            "coding": [
+              {
+                "code": "TRAIN",
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+                "display": "training"
+              }
+            ],
+            "text": "Interoperability Testing and Training (non-clinical use)"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provenance for SYNDERAI Synthetic Example Data Resource</div>"
+        },
+        "recorded": "2020-01-17T19:02:12Z"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:d82ae982-5f08-47e5-a28f-b020bba63b67",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "d82ae982-5f08-47e5-a28f-b020bba63b67",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory Role Id: d82ae982-5f08-47e5-a28f-b020bba63b67</div>"
+        },
+        "practitioner": {
+          "reference": "urn:uuid:a600067e-19aa-4158-852f-3b4c2ea2d9d7"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:a600067e-19aa-4158-852f-3b4c2ea2d9d7",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "a600067e-19aa-4158-852f-3b4c2ea2d9d7",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitioner-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "f124b412-0cae-45cb-952b-124c1396644c"
+          }
+        ],
+        "name": [
+          {
+            "prefix": [
+              "dr"
+            ],
+            "given": [
+              "Ex"
+            ],
+            "family": "Ample"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Laboratoire Central Européenne",
+              "Boulevard du Jardin Botanique 32"
+            ],
+            "postalCode": "1000",
+            "city": "Brussels",
+            "country": "Belgium"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory: Laboratoire Central Européenne, 1000 Brussels, Belgium</div>"
+        }
+      }
+    }
+  ],
+  "type": "document",
+  "timestamp": "2020-01-17T19:02:12Z"
+}

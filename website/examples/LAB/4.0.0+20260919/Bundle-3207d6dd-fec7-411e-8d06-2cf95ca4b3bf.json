@@ -1,0 +1,727 @@
+{
+  "resourceType": "Bundle",
+  "id": "3207d6dd-fec7-411e-8d06-2cf95ca4b3bf",
+  "meta": {
+    "profile": [
+      "http://hl7.eu/fhir/laboratory/StructureDefinition/Bundle-eu-lab"
+    ]
+  },
+  "identifier": {
+    "assigner": {
+      "display": "HL7 Europe"
+    },
+    "system": "urn:oid:2.16.840.1.113883.2.51.999",
+    "value": "a80bed30-2875-47c7-ab3b-3ee8196e15d4"
+  },
+  "entry": [
+    {
+      "fullUrl": "urn:uuid:29a0ac39-6826-40c7-8c20-cc42c80589ad",
+      "resource": {
+        "resourceType": "Composition",
+        "id": "29a0ac39-6826-40c7-8c20-cc42c80589ad",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Composition-eu-lab"
+          ]
+        },
+        "extension": [
+          {
+            "url": "http://hl7.eu/fhir/extensions/StructureDefinition/composition-diagnosticReportReference",
+            "valueReference": {
+              "reference": "urn:uuid:86849ef0-9df0-483e-bd52-ff4e3575eb20"
+            }
+          }
+        ],
+        "identifier": {
+          "assigner": {
+            "display": "HL7 Europe"
+          },
+          "system": "urn:oid:2.16.840.1.113883.2.51.999",
+          "value": "ef832d3d-6f7f-4943-95b5-a83e10957dec"
+        },
+        "author": [
+          {
+            "reference": "urn:uuid:75a5641f-8a6c-4426-b0db-499ea7038bbe"
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "type": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ],
+          "text": "Laboratory Report"
+        },
+        "section": [
+          {
+            "code": {
+              "coding": [
+                {
+                  "code": "18719-5",
+                  "system": "http://loinc.org",
+                  "display": "Chemistry studies (set)"
+                }
+              ],
+              "text": "CHEM"
+            },
+            "entry": [
+              {
+                "reference": "urn:uuid:f293fc93-aa43-4d04-b887-8bb79946e2d5"
+              }
+            ],
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>CHEM</h3><table class=\"hl7__eu__lab__report\"><thead><tr><th>Test</th><th>15-APR-2025</th><th>Reference&#xA0;Range</th><th>Unit</th></tr></thead><tbody><tr><td></td><td><strong>14.6 H</strong></td><td>0 - 4</td><td>ng/mL</td></tr></tbody></table></div>"
+            },
+            "title": "CHEM"
+          },
+          {
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>Annotation</h3><table class=\"hl7__eu__lab__report\"><tr><th>Conclusion and Recommendations based on this report and previous findings known to us:</th></tr><tr><td>The patient shows a significantly elevated PSA level (14.6 ng/mL; normal 0–4 ng/mL), which is unexpected in a 62-year-old female, as PSA is typically associated with prostate tissue. This result may indicate a preanalytical or clerical error, or rare ectopic PSA production. Recommend verification of patient identity, sample labeling, and clinical correlation.</td></tr></table></div>"
+            },
+            "code": {
+              "coding": [
+                {
+                  "code": "48767-8",
+                  "system": "http://loinc.org",
+                  "display": "Annotation comment [Interpretation] Narrative"
+                }
+              ]
+            },
+            "title": "Annotation comment"
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "final",
+        "subject": {
+          "reference": "urn:uuid:71b495ce-0f0d-477b-90fb-575120f21027",
+          "display": "Claude Reynaud"
+        },
+        "date": "2025-04-15T02:12:28Z",
+        "title": "Laboratory Report",
+        "confidentiality": "N"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:86849ef0-9df0-483e-bd52-ff4e3575eb20",
+      "resource": {
+        "resourceType": "DiagnosticReport",
+        "id": "86849ef0-9df0-483e-bd52-ff4e3575eb20",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/DiagnosticReport-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "ef832d3d-6f7f-4943-95b5-a83e10957dec"
+          },
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "e5fe0020-e5d4-4a8a-aa6d-9ab77abe82a6"
+          }
+        ],
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-DiagnosticReport.composition",
+            "valueReference": {
+              "reference": "urn:uuid:29a0ac39-6826-40c7-8c20-cc42c80589ad"
+            }
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:b66795a5-59c1-43c8-98f0-640da241b0aa"
+          }
+        ],
+        "result": [
+          {
+            "reference": "urn:uuid:f293fc93-aa43-4d04-b887-8bb79946e2d5"
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "registered",
+        "code": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:71b495ce-0f0d-477b-90fb-575120f21027",
+          "display": "Claude Reynaud"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:71b495ce-0f0d-477b-90fb-575120f21027",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "71b495ce-0f0d-477b-90fb-575120f21027",
+        "meta": {
+          "security": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "HTEST"
+            },
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "TRAIN"
+            }
+          ],
+          "tag": [
+            {
+              "system": "https://synderai.net/fhir/CodeSystem/tags",
+              "code": "synthetic",
+              "display": "SYNDERAI Synthetic data"
+            }
+          ],
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/patient-eu-core"
+          ]
+        },
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "JHN",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://ec.europa.eu/identifier/eci",
+            "value": "8807-049085-4"
+          },
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "MR",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://local.setting.eu/identifier",
+            "value": "92b7b1cc-084d-d27e-8085-1966a8102535"
+          }
+        ],
+        "name": [
+          {
+            "given": [
+              "Claude"
+            ],
+            "family": "Reynaud",
+            "text": "Claude Reynaud"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "15, rue Jourdan"
+            ],
+            "use": "home",
+            "type": "physical",
+            "postalCode": "74190",
+            "city": "Mace-les-Bains",
+            "country": "France"
+          }
+        ],
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "0229614631"
+          }
+        ],
+        "extension": [
+          {
+            "extension": [
+              {
+                "url": "code",
+                "valueCodeableConcept": {
+                  "coding": [
+                    {
+                      "code": "FR",
+                      "system": "urn:iso:std:iso:3166"
+                    }
+                  ]
+                }
+              }
+            ],
+            "url": "http://hl7.org/fhir/StructureDefinition/patient-nationality"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__ips\"><tr><td>Claude Reynaud</td><td>female</td><td>18-Apr-1963</td></tr></table></div>"
+        },
+        "gender": "female",
+        "birthDate": "1963-04-18"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:97ae76b1-b3a1-4b06-86a6-567f5449d55d",
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "97ae76b1-b3a1-4b06-86a6-567f5449d55d",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/ServiceRequest-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "system": "http://example.org",
+            "value": "7ac71f3e-dce8-42d2-8529-7c785274bac0"
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:b66795a5-59c1-43c8-98f0-640da241b0aa"
+          }
+        ],
+        "reasonCode": [
+          {
+            "coding": [
+              {
+                "code": "59621000",
+                "system": "http://snomed.info/sct",
+                "display": "Essential hypertension"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "95417003",
+                "system": "http://snomed.info/sct",
+                "display": "Primary fibromyalgia syndrome"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "237602007",
+                "system": "http://snomed.info/sct",
+                "display": "Metabolic syndrome X"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "363351006",
+                "system": "http://snomed.info/sct",
+                "display": "Malignant neoplasm of rectum"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "55822004",
+                "system": "http://snomed.info/sct",
+                "display": "Hyperlipidemia"
+              }
+            ]
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "active",
+        "intent": "order",
+        "code": {
+          "coding": [
+            {
+              "code": "108252007",
+              "system": "http://snomed.info/sct",
+              "display": "Laboratory procedure"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:71b495ce-0f0d-477b-90fb-575120f21027",
+          "display": "Claude Reynaud"
+        },
+        "requester": {
+          "reference": "urn:uuid:b97c7dc5-f6b4-479a-a2e3-42b88564b5b2"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:b97c7dc5-f6b4-479a-a2e3-42b88564b5b2",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "b97c7dc5-f6b4-479a-a2e3-42b88564b5b2",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Role Id: b97c7dc5-f6b4-479a-a2e3-42b88564b5b2</div>"
+        },
+        "organization": {
+          "reference": "urn:uuid:8f0a0752-0cf2-4e6c-8686-514c70c94a4f"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:8f0a0752-0cf2-4e6c-8686-514c70c94a4f",
+      "resource": {
+        "resourceType": "Organization",
+        "id": "8f0a0752-0cf2-4e6c-8686-514c70c94a4f",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/organization-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "7f072edd-1020-4803-9f17-94fabd83f340"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Rue de la Menoge 44"
+            ],
+            "city": "Boëge",
+            "postalCode": "74420",
+            "country": "France"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Organization: Centre médical de Boëge</div>"
+        },
+        "name": "Centre médical de Boëge"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:b66795a5-59c1-43c8-98f0-640da241b0aa",
+      "resource": {
+        "resourceType": "Specimen",
+        "id": "b66795a5-59c1-43c8-98f0-640da241b0aa",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Specimen-eu-lab"
+          ]
+        },
+        "collection": {
+          "collectedDateTime": "2025-04-15"
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Specimen</th><th>Collection Date</th></tr><tr><td>Acellular blood (serum or plasma) specimen</td><td><span class=\"nb\">15-Apr-2025</span></td></tr></table></div>"
+        },
+        "type": {
+          "coding": [
+            {
+              "code": "122592007",
+              "system": "http://snomed.info/sct",
+              "display": "Acellular blood (serum or plasma) specimen"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:f293fc93-aa43-4d04-b887-8bb79946e2d5",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "f293fc93-aa43-4d04-b887-8bb79946e2d5",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Observation-resultslab-eu-lab"
+          ]
+        },
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "laboratory",
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category"
+              }
+            ]
+          }
+        ],
+        "performer": [
+          {
+            "display": "The Central European Laboratory"
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "code": "2857-1",
+              "system": "http://loinc.org",
+              "display": "Prostate specific Ag [Mass/volume] in Serum or Plasma"
+            }
+          ],
+          "text": "Prostate specific Ag [Mass/volume] in Serum or Plasma"
+        },
+        "valueQuantity": {
+          "value": 14.6,
+          "unit": "ng/mL",
+          "code": "ng/mL",
+          "system": "http://unitsofmeasure.org"
+        },
+        "referenceRange": [
+          {
+            "low": {
+              "value": 0,
+              "code": "ng/mL",
+              "system": "http://unitsofmeasure.org"
+            },
+            "high": {
+              "value": 4,
+              "code": "ng/mL",
+              "system": "http://unitsofmeasure.org"
+            }
+          }
+        ],
+        "interpretation": [
+          {
+            "coding": [
+              {
+                "code": "H",
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                "display": "High"
+              }
+            ]
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Test</th><th>15-Apr-2025</th><th>Reference&#xA0;Range</th><th>Flag</th><th>Unit</th></tr><tr><td>Prostate specific Ag [Mass/volume] in Serum or Plasma</td><td>14.6</td><td>0 - 4</td><td>H</td><td>ng/mL</td></tr></table></div>"
+        },
+        "status": "final",
+        "effectiveDateTime": "2025-04-15T00:12:28Z",
+        "subject": {
+          "reference": "urn:uuid:71b495ce-0f0d-477b-90fb-575120f21027",
+          "display": "Claude Reynaud"
+        },
+        "specimen": {
+          "reference": "urn:uuid:b66795a5-59c1-43c8-98f0-640da241b0aa"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:4062af6f-dac3-49f9-8af2-a9f647c8a537",
+      "resource": {
+        "resourceType": "Device",
+        "id": "4062af6f-dac3-49f9-8af2-a9f647c8a537",
+        "deviceName": [
+          {
+            "name": "SYNDERAI Synthetic Generator",
+            "type": "manufacturer-name"
+          }
+        ],
+        "version": [
+          {
+            "value": "5.0"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">SYNDERAI Synthetic Generator v5.0</div>"
+        },
+        "status": "active",
+        "distinctIdentifier": "synderai-generator-50",
+        "manufacturer": "SYNDERAI Project"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:a764c37c-9d25-4b22-af7a-229037717dc5",
+      "resource": {
+        "resourceType": "Provenance",
+        "id": "a764c37c-9d25-4b22-af7a-229037717dc5",
+        "target": [
+          {
+            "reference": "urn:uuid:71b495ce-0f0d-477b-90fb-575120f21027"
+          },
+          {
+            "reference": "urn:uuid:29a0ac39-6826-40c7-8c20-cc42c80589ad"
+          },
+          {
+            "reference": "urn:uuid:75a5641f-8a6c-4426-b0db-499ea7038bbe"
+          },
+          {
+            "reference": "urn:uuid:7079155b-39e6-412a-86a9-c6b8e6e4b0c5"
+          },
+          {
+            "reference": "urn:uuid:b97c7dc5-f6b4-479a-a2e3-42b88564b5b2"
+          },
+          {
+            "reference": "urn:uuid:8f0a0752-0cf2-4e6c-8686-514c70c94a4f"
+          }
+        ],
+        "activity": {
+          "coding": [
+            {
+              "code": "CREATE",
+              "system": "http://terminology.hl7.org/CodeSystem/v3-DataOperation",
+              "display": "create"
+            }
+          ],
+          "text": "Synthetic Example Data Generation"
+        },
+        "policy": [
+          "https://synderai.net/synderai-synthetic-data-policy"
+        ],
+        "agent": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "author",
+                  "system": "http://terminology.hl7.org/CodeSystem/provenance-participant-type",
+                  "display": "Author"
+                }
+              ],
+              "text": "author"
+            },
+            "who": {
+              "reference": "urn:uuid:4062af6f-dac3-49f9-8af2-a9f647c8a537"
+            }
+          }
+        ],
+        "reason": [
+          {
+            "coding": [
+              {
+                "code": "TRAIN",
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+                "display": "training"
+              }
+            ],
+            "text": "Interoperability Testing and Training (non-clinical use)"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provenance for SYNDERAI Synthetic Example Data Resource</div>"
+        },
+        "recorded": "2025-04-15T04:12:28Z"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:75a5641f-8a6c-4426-b0db-499ea7038bbe",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "75a5641f-8a6c-4426-b0db-499ea7038bbe",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory Role Id: 75a5641f-8a6c-4426-b0db-499ea7038bbe</div>"
+        },
+        "practitioner": {
+          "reference": "urn:uuid:7079155b-39e6-412a-86a9-c6b8e6e4b0c5"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:7079155b-39e6-412a-86a9-c6b8e6e4b0c5",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "7079155b-39e6-412a-86a9-c6b8e6e4b0c5",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitioner-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "3cdc165a-b2ba-4fa7-a592-53a5f1333017"
+          }
+        ],
+        "name": [
+          {
+            "prefix": [
+              "dr"
+            ],
+            "given": [
+              "Ex"
+            ],
+            "family": "Ample"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Laboratoire Central Européenne",
+              "Boulevard du Jardin Botanique 32"
+            ],
+            "postalCode": "1000",
+            "city": "Brussels",
+            "country": "Belgium"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory: Laboratoire Central Européenne, 1000 Brussels, Belgium</div>"
+        }
+      }
+    }
+  ],
+  "type": "document",
+  "timestamp": "2025-04-15T04:12:28Z"
+}

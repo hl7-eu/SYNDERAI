@@ -1,0 +1,704 @@
+{
+  "resourceType": "Bundle",
+  "id": "df6303df-ef86-480c-a6fd-f83dca56b007",
+  "meta": {
+    "profile": [
+      "http://hl7.eu/fhir/laboratory/StructureDefinition/Bundle-eu-lab"
+    ]
+  },
+  "identifier": {
+    "assigner": {
+      "display": "HL7 Europe"
+    },
+    "system": "urn:oid:2.16.840.1.113883.2.51.999",
+    "value": "ece2f0f1-4d88-49ea-8367-f147975d2cc9"
+  },
+  "entry": [
+    {
+      "fullUrl": "urn:uuid:16774d32-e4b7-41f2-b6c1-6a8cafdac651",
+      "resource": {
+        "resourceType": "Composition",
+        "id": "16774d32-e4b7-41f2-b6c1-6a8cafdac651",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Composition-eu-lab"
+          ]
+        },
+        "extension": [
+          {
+            "url": "http://hl7.eu/fhir/extensions/StructureDefinition/composition-diagnosticReportReference",
+            "valueReference": {
+              "reference": "urn:uuid:3d6662cd-ae1c-49c7-9b19-73088f43a353"
+            }
+          }
+        ],
+        "identifier": {
+          "assigner": {
+            "display": "HL7 Europe"
+          },
+          "system": "urn:oid:2.16.840.1.113883.2.51.999",
+          "value": "36561ae4-ca76-4cbc-bfdf-b21fd4aa6706"
+        },
+        "author": [
+          {
+            "reference": "urn:uuid:c4c7794d-25ba-4efd-b042-469e4635cf34"
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "type": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ],
+          "text": "Laboratory Report"
+        },
+        "section": [
+          {
+            "code": {
+              "coding": [
+                {
+                  "code": "18719-5",
+                  "system": "http://loinc.org",
+                  "display": "Chemistry studies (set)"
+                }
+              ],
+              "text": "CHEM"
+            },
+            "entry": [
+              {
+                "reference": "urn:uuid:a76d45eb-605d-446d-8c89-d148ee2e3793"
+              }
+            ],
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>CHEM</h3><table class=\"hl7__eu__lab__report\"><thead><tr><th>Test</th><th>04-NOV-2019</th><th>Reference&#xA0;Range</th><th>Unit</th></tr></thead><tbody><tr><td></td><td>88.0</td><td>60 - 120</td><td>mL/min/{1.73_m2}</td></tr></tbody></table></div>"
+            },
+            "title": "CHEM"
+          },
+          {
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>Annotation</h3><table class=\"hl7__eu__lab__report\"><tr><th>Conclusion and Recommendations based on this report and previous findings known to us:</th></tr><tr><td>Glomerular filtration rate is within the normal range, indicating preserved kidney function. No laboratory abnormalities detected; no evidence of renal impairment at this time.</td></tr></table></div>"
+            },
+            "code": {
+              "coding": [
+                {
+                  "code": "48767-8",
+                  "system": "http://loinc.org",
+                  "display": "Annotation comment [Interpretation] Narrative"
+                }
+              ]
+            },
+            "title": "Annotation comment"
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "final",
+        "subject": {
+          "reference": "urn:uuid:4c922965-304b-4546-99ec-63a14258c7c8",
+          "display": "Camilla Mazzanti"
+        },
+        "date": "2019-11-04T09:21:15Z",
+        "title": "Laboratory Report",
+        "confidentiality": "N"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:3d6662cd-ae1c-49c7-9b19-73088f43a353",
+      "resource": {
+        "resourceType": "DiagnosticReport",
+        "id": "3d6662cd-ae1c-49c7-9b19-73088f43a353",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/DiagnosticReport-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "36561ae4-ca76-4cbc-bfdf-b21fd4aa6706"
+          },
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "62742634-8107-40a6-b0d4-fa25e79d7220"
+          }
+        ],
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-DiagnosticReport.composition",
+            "valueReference": {
+              "reference": "urn:uuid:16774d32-e4b7-41f2-b6c1-6a8cafdac651"
+            }
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:52d7b569-575d-45bd-aa44-1f5371e3dd6c"
+          }
+        ],
+        "result": [
+          {
+            "reference": "urn:uuid:a76d45eb-605d-446d-8c89-d148ee2e3793"
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "registered",
+        "code": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:4c922965-304b-4546-99ec-63a14258c7c8",
+          "display": "Camilla Mazzanti"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:4c922965-304b-4546-99ec-63a14258c7c8",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "4c922965-304b-4546-99ec-63a14258c7c8",
+        "meta": {
+          "security": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "HTEST"
+            },
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "TRAIN"
+            }
+          ],
+          "tag": [
+            {
+              "system": "https://synderai.net/fhir/CodeSystem/tags",
+              "code": "synthetic",
+              "display": "SYNDERAI Synthetic data"
+            }
+          ],
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/patient-eu-core"
+          ]
+        },
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "JHN",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://ec.europa.eu/identifier/eci",
+            "value": "8384-317858-9"
+          },
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "MR",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://local.setting.eu/identifier",
+            "value": "20a27dbb-8ae6-8587-365b-7bdbef3f1c3e"
+          }
+        ],
+        "name": [
+          {
+            "given": [
+              "Camilla"
+            ],
+            "family": "Mazzanti",
+            "text": "Camilla Mazzanti"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Rotonda Michelangeli, 2"
+            ],
+            "use": "home",
+            "type": "physical",
+            "postalCode": "56048",
+            "city": "Staffoli",
+            "country": "Italy"
+          }
+        ],
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "+39 36885010947"
+          }
+        ],
+        "extension": [
+          {
+            "extension": [
+              {
+                "url": "code",
+                "valueCodeableConcept": {
+                  "coding": [
+                    {
+                      "code": "IT",
+                      "system": "urn:iso:std:iso:3166"
+                    }
+                  ]
+                }
+              }
+            ],
+            "url": "http://hl7.org/fhir/StructureDefinition/patient-nationality"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__ips\"><tr><td>Camilla Mazzanti</td><td>female</td><td>04-Feb-1968</td></tr></table></div>"
+        },
+        "gender": "female",
+        "birthDate": "1968-02-04"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:f6fc9a4e-7c07-45aa-b88e-840b756f1aa6",
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "f6fc9a4e-7c07-45aa-b88e-840b756f1aa6",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/ServiceRequest-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "system": "http://example.org",
+            "value": "088fd3ca-7c75-4d2d-bc20-0900688fe118"
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:52d7b569-575d-45bd-aa44-1f5371e3dd6c"
+          }
+        ],
+        "reasonCode": [
+          {
+            "coding": [
+              {
+                "code": "25501002",
+                "system": "http://snomed.info/sct",
+                "display": "Social phobia"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "59621000",
+                "system": "http://snomed.info/sct",
+                "display": "Essential hypertension"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "700378005",
+                "system": "http://snomed.info/sct",
+                "display": "Chronic kidney disease stage 3A"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "237602007",
+                "system": "http://snomed.info/sct",
+                "display": "Metabolic syndrome X"
+              }
+            ]
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "active",
+        "intent": "order",
+        "code": {
+          "coding": [
+            {
+              "code": "108252007",
+              "system": "http://snomed.info/sct",
+              "display": "Laboratory procedure"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:4c922965-304b-4546-99ec-63a14258c7c8",
+          "display": "Camilla Mazzanti"
+        },
+        "requester": {
+          "reference": "urn:uuid:e4891c35-6111-4c42-88c2-96258ad86777"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:e4891c35-6111-4c42-88c2-96258ad86777",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "e4891c35-6111-4c42-88c2-96258ad86777",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Role Id: e4891c35-6111-4c42-88c2-96258ad86777</div>"
+        },
+        "organization": {
+          "reference": "urn:uuid:4e6373b4-2bdd-403b-8e49-3cd9839e874c"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:4e6373b4-2bdd-403b-8e49-3cd9839e874c",
+      "resource": {
+        "resourceType": "Organization",
+        "id": "4e6373b4-2bdd-403b-8e49-3cd9839e874c",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/organization-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "ee23462b-77be-44d6-8f1c-2b080ec9c0fb"
+          }
+        ],
+        "address": [
+          {
+            "city": "Fucecchio",
+            "postalCode": "50054",
+            "country": "Italy"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Organization: Ospedale San Pietro Igneo</div>"
+        },
+        "name": "Ospedale San Pietro Igneo"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:52d7b569-575d-45bd-aa44-1f5371e3dd6c",
+      "resource": {
+        "resourceType": "Specimen",
+        "id": "52d7b569-575d-45bd-aa44-1f5371e3dd6c",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Specimen-eu-lab"
+          ]
+        },
+        "collection": {
+          "collectedDateTime": "2019-11-04"
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Specimen</th><th>Collection Date</th></tr><tr><td>Blood specimen</td><td><span class=\"nb\">04-Nov-2019</span></td></tr></table></div>"
+        },
+        "type": {
+          "coding": [
+            {
+              "code": "119297000",
+              "system": "http://snomed.info/sct",
+              "display": "Blood specimen"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:a76d45eb-605d-446d-8c89-d148ee2e3793",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "a76d45eb-605d-446d-8c89-d148ee2e3793",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Observation-resultslab-eu-lab"
+          ]
+        },
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "laboratory",
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category"
+              }
+            ]
+          }
+        ],
+        "performer": [
+          {
+            "display": "The Central European Laboratory"
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "code": "98979-8",
+              "system": "http://loinc.org",
+              "display": "Glomerular filtration rate [Volume Rate/Area] in Serum, Plasma or Blood by Creatinine-based formula (CKD-EPI 2021)/1.73 sq M"
+            }
+          ],
+          "text": "Glomerular filtration rate [Volume Rate/Area] in Serum, Plasma or Blood by Creatinine-based formula (CKD-EPI 2021)/1.73 sq M"
+        },
+        "valueQuantity": {
+          "value": 88,
+          "unit": "mL/min/{1.73_m2}",
+          "code": "mL/min/{1.73_m2}",
+          "system": "http://unitsofmeasure.org"
+        },
+        "referenceRange": [
+          {
+            "low": {
+              "value": 60,
+              "code": "mL/min/{1.73_m2}",
+              "system": "http://unitsofmeasure.org"
+            },
+            "high": {
+              "value": 120,
+              "code": "mL/min/{1.73_m2}",
+              "system": "http://unitsofmeasure.org"
+            }
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Test</th><th>04-Nov-2019</th><th>Reference&#xA0;Range</th><th>Flag</th><th>Unit</th></tr><tr><td>Glomerular filtration rate [Volume Rate/Area] in Serum, Plasma or Blood by Creatinine-based formula (CKD-EPI 2021)/1.73 sq M</td><td>88.0</td><td>60 - 120</td><td></td><td>mL/min/{1.73_m2}</td></tr></table></div>"
+        },
+        "status": "final",
+        "effectiveDateTime": "2019-11-04T08:21:15Z",
+        "subject": {
+          "reference": "urn:uuid:4c922965-304b-4546-99ec-63a14258c7c8",
+          "display": "Camilla Mazzanti"
+        },
+        "specimen": {
+          "reference": "urn:uuid:52d7b569-575d-45bd-aa44-1f5371e3dd6c"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:1c0cfca2-e0e5-4edd-8e5d-2f152122bc36",
+      "resource": {
+        "resourceType": "Device",
+        "id": "1c0cfca2-e0e5-4edd-8e5d-2f152122bc36",
+        "deviceName": [
+          {
+            "name": "SYNDERAI Synthetic Generator",
+            "type": "manufacturer-name"
+          }
+        ],
+        "version": [
+          {
+            "value": "5.0"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">SYNDERAI Synthetic Generator v5.0</div>"
+        },
+        "status": "active",
+        "distinctIdentifier": "synderai-generator-50",
+        "manufacturer": "SYNDERAI Project"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:22c3d50d-fe6a-4a3a-897c-11e066477ff0",
+      "resource": {
+        "resourceType": "Provenance",
+        "id": "22c3d50d-fe6a-4a3a-897c-11e066477ff0",
+        "target": [
+          {
+            "reference": "urn:uuid:4c922965-304b-4546-99ec-63a14258c7c8"
+          },
+          {
+            "reference": "urn:uuid:16774d32-e4b7-41f2-b6c1-6a8cafdac651"
+          },
+          {
+            "reference": "urn:uuid:c4c7794d-25ba-4efd-b042-469e4635cf34"
+          },
+          {
+            "reference": "urn:uuid:fc9dc914-43af-41a9-91b6-b66e886e2fed"
+          },
+          {
+            "reference": "urn:uuid:e4891c35-6111-4c42-88c2-96258ad86777"
+          },
+          {
+            "reference": "urn:uuid:4e6373b4-2bdd-403b-8e49-3cd9839e874c"
+          }
+        ],
+        "activity": {
+          "coding": [
+            {
+              "code": "CREATE",
+              "system": "http://terminology.hl7.org/CodeSystem/v3-DataOperation",
+              "display": "create"
+            }
+          ],
+          "text": "Synthetic Example Data Generation"
+        },
+        "policy": [
+          "https://synderai.net/synderai-synthetic-data-policy"
+        ],
+        "agent": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "author",
+                  "system": "http://terminology.hl7.org/CodeSystem/provenance-participant-type",
+                  "display": "Author"
+                }
+              ],
+              "text": "author"
+            },
+            "who": {
+              "reference": "urn:uuid:1c0cfca2-e0e5-4edd-8e5d-2f152122bc36"
+            }
+          }
+        ],
+        "reason": [
+          {
+            "coding": [
+              {
+                "code": "TRAIN",
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+                "display": "training"
+              }
+            ],
+            "text": "Interoperability Testing and Training (non-clinical use)"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provenance for SYNDERAI Synthetic Example Data Resource</div>"
+        },
+        "recorded": "2019-11-04T10:21:15Z"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:c4c7794d-25ba-4efd-b042-469e4635cf34",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "c4c7794d-25ba-4efd-b042-469e4635cf34",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory Role Id: c4c7794d-25ba-4efd-b042-469e4635cf34</div>"
+        },
+        "practitioner": {
+          "reference": "urn:uuid:fc9dc914-43af-41a9-91b6-b66e886e2fed"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:fc9dc914-43af-41a9-91b6-b66e886e2fed",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "fc9dc914-43af-41a9-91b6-b66e886e2fed",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitioner-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "8da65f78-39bd-493a-a2a6-3b259b5f3663"
+          }
+        ],
+        "name": [
+          {
+            "prefix": [
+              "dr"
+            ],
+            "given": [
+              "Ex"
+            ],
+            "family": "Ample"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Laboratoire Central Européenne",
+              "Boulevard du Jardin Botanique 32"
+            ],
+            "postalCode": "1000",
+            "city": "Brussels",
+            "country": "Belgium"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory: Laboratoire Central Européenne, 1000 Brussels, Belgium</div>"
+        }
+      }
+    }
+  ],
+  "type": "document",
+  "timestamp": "2019-11-04T10:21:15Z"
+}

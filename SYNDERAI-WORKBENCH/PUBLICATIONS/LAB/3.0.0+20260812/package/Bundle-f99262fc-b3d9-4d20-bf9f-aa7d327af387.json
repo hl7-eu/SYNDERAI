@@ -1,0 +1,750 @@
+{
+  "resourceType": "Bundle",
+  "id": "f99262fc-b3d9-4d20-bf9f-aa7d327af387",
+  "meta": {
+    "profile": [
+      "http://hl7.eu/fhir/laboratory/StructureDefinition/Bundle-eu-lab"
+    ]
+  },
+  "identifier": {
+    "assigner": {
+      "display": "HL7 Europe"
+    },
+    "system": "urn:oid:2.16.840.1.113883.2.51.999",
+    "value": "0d296dd0-0a10-45e8-917a-f1c26f914df4"
+  },
+  "entry": [
+    {
+      "fullUrl": "urn:uuid:7ea67388-e874-4e79-8450-089f14cd45c3",
+      "resource": {
+        "resourceType": "Composition",
+        "id": "7ea67388-e874-4e79-8450-089f14cd45c3",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Composition-eu-lab"
+          ]
+        },
+        "extension": [
+          {
+            "url": "http://hl7.eu/fhir/extensions/StructureDefinition/composition-diagnosticReportReference",
+            "valueReference": {
+              "reference": "urn:uuid:64030ae2-a8d4-423e-9ca0-51507172503e"
+            }
+          }
+        ],
+        "identifier": {
+          "assigner": {
+            "display": "HL7 Europe"
+          },
+          "system": "urn:oid:2.16.840.1.113883.2.51.999",
+          "value": "43e8dd22-0971-4d7e-807d-3fdcc4fd4069"
+        },
+        "author": [
+          {
+            "reference": "urn:uuid:a86fb4a0-0ae6-4e42-b4db-46f83a409aa6"
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "type": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ],
+          "text": "Laboratory Report"
+        },
+        "section": [
+          {
+            "code": {
+              "coding": [
+                {
+                  "code": "18719-5",
+                  "system": "http://loinc.org",
+                  "display": "Chemistry studies (set)"
+                }
+              ],
+              "text": "CHEM"
+            },
+            "entry": [
+              {
+                "reference": "urn:uuid:9a131b18-f9bd-42e5-b4e4-5afffda440f0"
+              }
+            ],
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>CHEM</h3><table class=\"hl7__eu__lab__report\"><thead><tr><th>Test</th><th>28-APR-2013</th><th>Reference&#xA0;Range</th><th>Unit</th></tr></thead><tbody><tr><td></td><td>65.0</td><td>60 - 89</td><td>mL/min/{1.73_m2}</td></tr></tbody></table></div>"
+            },
+            "title": "CHEM"
+          },
+          {
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>Annotation</h3><table class=\"hl7__eu__lab__report\"><tr><th>Conclusion and Recommendations based on this report and previous findings known to us</th></tr><tr><td>The patient’s estimated glomerular filtration rate (eGFR) is 65 mL/min/1.73m², which is mildly decreased and consistent with stage 2 chronic kidney disease, commonly seen in elderly individuals. No acute kidney dysfunction is indicated. Regular monitoring of renal function is recommended.</td></tr></table></div>"
+            },
+            "code": {
+              "coding": [
+                {
+                  "code": "48767-8",
+                  "system": "http://loinc.org",
+                  "display": "Annotation comment [Interpretation] Narrative"
+                }
+              ]
+            },
+            "title": "Annotation comment"
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "final",
+        "subject": {
+          "reference": "urn:uuid:0ac30ade-cf97-41ee-86c6-a8fc3cfbfd60",
+          "display": "Mohammed Day"
+        },
+        "date": "2013-04-28T15:21:53Z",
+        "title": "Laboratory Report",
+        "confidentiality": "N"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:64030ae2-a8d4-423e-9ca0-51507172503e",
+      "resource": {
+        "resourceType": "DiagnosticReport",
+        "id": "64030ae2-a8d4-423e-9ca0-51507172503e",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/DiagnosticReport-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "43e8dd22-0971-4d7e-807d-3fdcc4fd4069"
+          },
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "9a2b2039-eb9e-46d0-9143-38b2e7a68ec2"
+          }
+        ],
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-DiagnosticReport.composition",
+            "valueReference": {
+              "reference": "urn:uuid:7ea67388-e874-4e79-8450-089f14cd45c3"
+            }
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:4f8ce704-3589-4e68-87e3-a74cf4199394"
+          }
+        ],
+        "result": [
+          {
+            "reference": "urn:uuid:9a131b18-f9bd-42e5-b4e4-5afffda440f0"
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "registered",
+        "code": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:0ac30ade-cf97-41ee-86c6-a8fc3cfbfd60",
+          "display": "Mohammed Day"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:0ac30ade-cf97-41ee-86c6-a8fc3cfbfd60",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "0ac30ade-cf97-41ee-86c6-a8fc3cfbfd60",
+        "meta": {
+          "security": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "HTEST"
+            },
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "TRAIN"
+            }
+          ],
+          "tag": [
+            {
+              "system": "https://synderai.net/fhir/CodeSystem/tags",
+              "code": "synthetic",
+              "display": "SYNDERAI Synthetic data"
+            }
+          ],
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/patient-eu-core"
+          ]
+        },
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "JHN",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://ec.europa.eu/identifier/eci",
+            "value": "4259-292071-6"
+          },
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "MR",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://local.setting.eu/identifier",
+            "value": "06564f1d-8298-7f94-cee4-d0b6a3841fc6"
+          }
+        ],
+        "name": [
+          {
+            "given": [
+              "Mohammed"
+            ],
+            "family": "Day",
+            "text": "Mohammed Day"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Lane highway",
+              "Studio 64"
+            ],
+            "use": "home",
+            "type": "physical",
+            "postalCode": "BH19",
+            "city": "Townsendhaven",
+            "country": "United Kingdom"
+          }
+        ],
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "0151 496 0862"
+          }
+        ],
+        "extension": [
+          {
+            "extension": [
+              {
+                "url": "code",
+                "valueCodeableConcept": {
+                  "coding": [
+                    {
+                      "code": "GB",
+                      "system": "urn:iso:std:iso:3166"
+                    }
+                  ]
+                }
+              }
+            ],
+            "url": "http://hl7.org/fhir/StructureDefinition/patient-nationality"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__ips\"><tr><td>Mohammed Day</td><td>male</td><td>25-Apr-1949</td></tr></table></div>"
+        },
+        "gender": "male",
+        "birthDate": "1949-04-25"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:f9a66221-2c20-45dc-bee7-b1e299eff314",
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "f9a66221-2c20-45dc-bee7-b1e299eff314",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/ServiceRequest-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "system": "http://example.org",
+            "value": "f57c5d53-40f0-4145-abd2-4b12b593c7fb"
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:4f8ce704-3589-4e68-87e3-a74cf4199394"
+          }
+        ],
+        "reasonCode": [
+          {
+            "coding": [
+              {
+                "code": "59621000",
+                "system": "http://snomed.info/sct",
+                "display": "Essential hypertension"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "55822004",
+                "system": "http://snomed.info/sct",
+                "display": "Hyperlipidemia"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "239872002",
+                "system": "http://snomed.info/sct",
+                "display": "Osteoarthritis of hip"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "431855005",
+                "system": "http://snomed.info/sct",
+                "display": "Chronic kidney disease stage 1"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "44054006",
+                "system": "http://snomed.info/sct",
+                "display": "Type 2 diabetes mellitus"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "386805003",
+                "system": "http://snomed.info/sct",
+                "display": "Mild neurocognitive disorder"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "49436004",
+                "system": "http://snomed.info/sct",
+                "display": "Atrial fibrillation"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "64859006",
+                "system": "http://snomed.info/sct",
+                "display": "Osteoporosis"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "230572002",
+                "system": "http://snomed.info/sct",
+                "display": "Neuropathy due to diabetes mellitus"
+              }
+            ]
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "active",
+        "intent": "order",
+        "code": {
+          "coding": [
+            {
+              "code": "108252007",
+              "system": "http://snomed.info/sct",
+              "display": "Laboratory procedure"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:0ac30ade-cf97-41ee-86c6-a8fc3cfbfd60",
+          "display": "Mohammed Day"
+        },
+        "requester": {
+          "reference": "urn:uuid:d4da9e0b-8330-44e1-b518-a7bd455c50f4"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:d4da9e0b-8330-44e1-b518-a7bd455c50f4",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "d4da9e0b-8330-44e1-b518-a7bd455c50f4",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Role Id: d4da9e0b-8330-44e1-b518-a7bd455c50f4</div>"
+        },
+        "organization": {
+          "reference": "urn:uuid:7130c3d0-4885-4528-9006-0a069b1ee12a"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:7130c3d0-4885-4528-9006-0a069b1ee12a",
+      "resource": {
+        "resourceType": "Organization",
+        "id": "7130c3d0-4885-4528-9006-0a069b1ee12a",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/organization-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "7911d958-917d-46b2-ba96-14c4decadb29"
+          }
+        ],
+        "address": [
+          {
+            "city": "Poole",
+            "postalCode": "BH15 1",
+            "country": "United Kingdom"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Organization: Carlisle House Surgery</div>"
+        },
+        "name": "Carlisle House Surgery"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:4f8ce704-3589-4e68-87e3-a74cf4199394",
+      "resource": {
+        "resourceType": "Specimen",
+        "id": "4f8ce704-3589-4e68-87e3-a74cf4199394",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Specimen-eu-lab"
+          ]
+        },
+        "collection": {
+          "collectedDateTime": "2013-04-28"
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Specimen</th><th>Collection Date</th></tr><tr><td>Blood specimen</td><td><span class=\"nb\">28-Apr-2013</span></td></tr></table></div>"
+        },
+        "type": {
+          "coding": [
+            {
+              "code": "119297000",
+              "system": "http://snomed.info/sct",
+              "display": "Blood specimen"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:9a131b18-f9bd-42e5-b4e4-5afffda440f0",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "9a131b18-f9bd-42e5-b4e4-5afffda440f0",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Observation-resultslab-eu-lab"
+          ]
+        },
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "laboratory",
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category"
+              }
+            ]
+          }
+        ],
+        "performer": [
+          {
+            "display": "The Central European Laboratory"
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "code": "98979-8",
+              "system": "http://loinc.org",
+              "display": "Glomerular filtration rate [Volume Rate/Area] in Serum, Plasma or Blood by Creatinine-based formula (CKD-EPI 2021)/1.73 sq M"
+            }
+          ],
+          "text": "Glomerular filtration rate [Volume Rate/Area] in Serum, Plasma or Blood by Creatinine-based formula (CKD-EPI 2021)/1.73 sq M"
+        },
+        "valueQuantity": {
+          "value": 65,
+          "unit": "mL/min/{1.73_m2}",
+          "code": "mL/min/{1.73_m2}",
+          "system": "http://unitsofmeasure.org"
+        },
+        "referenceRange": [
+          {
+            "low": {
+              "value": 60,
+              "code": "mL/min/{1.73_m2}",
+              "system": "http://unitsofmeasure.org"
+            },
+            "high": {
+              "value": 89,
+              "code": "mL/min/{1.73_m2}",
+              "system": "http://unitsofmeasure.org"
+            }
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Test</th><th>28-Apr-2013</th><th>Reference&#xA0;Range</th><th>Flag</th><th>Unit</th></tr><tr><td>Glomerular filtration rate [Volume Rate/Area] in Serum, Plasma or Blood by Creatinine-based formula (CKD-EPI 2021)/1.73 sq M</td><td>65.0</td><td>60 - 89</td><td></td><td>mL/min/{1.73_m2}</td></tr></table></div>"
+        },
+        "status": "final",
+        "effectiveDateTime": "2013-04-28T13:21:53Z",
+        "subject": {
+          "reference": "urn:uuid:0ac30ade-cf97-41ee-86c6-a8fc3cfbfd60",
+          "display": "Mohammed Day"
+        },
+        "specimen": {
+          "reference": "urn:uuid:4f8ce704-3589-4e68-87e3-a74cf4199394"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:b96d17b7-609d-4eea-9374-7fb219de0494",
+      "resource": {
+        "resourceType": "Device",
+        "id": "b96d17b7-609d-4eea-9374-7fb219de0494",
+        "deviceName": [
+          {
+            "name": "SYNDERAI Synthetic Generator",
+            "type": "manufacturer-name"
+          }
+        ],
+        "version": [
+          {
+            "value": "5.0"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">SYNDERAI Synthetic Generator v5.0</div>"
+        },
+        "status": "active",
+        "distinctIdentifier": "synderai-generator-50",
+        "manufacturer": "SYNDERAI Project"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:4cf8bb5a-b929-47af-af9d-8e2be79185de",
+      "resource": {
+        "resourceType": "Provenance",
+        "id": "4cf8bb5a-b929-47af-af9d-8e2be79185de",
+        "target": [
+          {
+            "reference": "urn:uuid:0ac30ade-cf97-41ee-86c6-a8fc3cfbfd60"
+          },
+          {
+            "reference": "urn:uuid:7ea67388-e874-4e79-8450-089f14cd45c3"
+          },
+          {
+            "reference": "urn:uuid:a86fb4a0-0ae6-4e42-b4db-46f83a409aa6"
+          },
+          {
+            "reference": "urn:uuid:e04229da-bea5-4c5b-8065-e262d6e6e9a8"
+          },
+          {
+            "reference": "urn:uuid:d4da9e0b-8330-44e1-b518-a7bd455c50f4"
+          },
+          {
+            "reference": "urn:uuid:7130c3d0-4885-4528-9006-0a069b1ee12a"
+          }
+        ],
+        "activity": {
+          "coding": [
+            {
+              "code": "CREATE",
+              "system": "http://terminology.hl7.org/CodeSystem/v3-DataOperation",
+              "display": "create"
+            }
+          ],
+          "text": "Synthetic Example Data Generation"
+        },
+        "policy": [
+          "https://synderai.net/synderai-synthetic-data-policy"
+        ],
+        "agent": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "author",
+                  "system": "http://terminology.hl7.org/CodeSystem/provenance-participant-type",
+                  "display": "Author"
+                }
+              ],
+              "text": "author"
+            },
+            "who": {
+              "reference": "urn:uuid:b96d17b7-609d-4eea-9374-7fb219de0494"
+            }
+          }
+        ],
+        "reason": [
+          {
+            "coding": [
+              {
+                "code": "TRAIN",
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+                "display": "training"
+              }
+            ],
+            "text": "Interoperability Testing and Training (non-clinical use)"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provenance for SYNDERAI Synthetic Example Data Resource</div>"
+        },
+        "recorded": "2013-04-28T17:21:53Z"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:a86fb4a0-0ae6-4e42-b4db-46f83a409aa6",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "a86fb4a0-0ae6-4e42-b4db-46f83a409aa6",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory Role Id: a86fb4a0-0ae6-4e42-b4db-46f83a409aa6</div>"
+        },
+        "practitioner": {
+          "reference": "urn:uuid:e04229da-bea5-4c5b-8065-e262d6e6e9a8"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:e04229da-bea5-4c5b-8065-e262d6e6e9a8",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "e04229da-bea5-4c5b-8065-e262d6e6e9a8",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitioner-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "ee2f0786-ef7d-4920-8b17-3c22567ce856"
+          }
+        ],
+        "name": [
+          {
+            "prefix": [
+              "dr"
+            ],
+            "given": [
+              "Ex"
+            ],
+            "family": "Ample"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Laboratoire Central Européenne",
+              "Boulevard du Jardin Botanique 32"
+            ],
+            "postalCode": "1000",
+            "city": "Brussels",
+            "country": "Belgium"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory: Laboratoire Central Européenne, 1000 Brussels, Belgium</div>"
+        }
+      }
+    }
+  ],
+  "type": "document",
+  "timestamp": "2013-04-28T17:21:53Z"
+}

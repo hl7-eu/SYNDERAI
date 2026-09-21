@@ -1,0 +1,701 @@
+{
+  "resourceType": "Bundle",
+  "id": "5de1b7ce-f5c2-4546-ba77-eefa0351d76d",
+  "meta": {
+    "profile": [
+      "http://hl7.eu/fhir/laboratory/StructureDefinition/Bundle-eu-lab"
+    ]
+  },
+  "identifier": {
+    "assigner": {
+      "display": "HL7 Europe"
+    },
+    "system": "urn:oid:2.16.840.1.113883.2.51.999",
+    "value": "7fabbe5e-0cbf-4d84-b4a8-c986852d48d7"
+  },
+  "entry": [
+    {
+      "fullUrl": "urn:uuid:6ef1947d-2152-475d-96b9-9a11a1242e2a",
+      "resource": {
+        "resourceType": "Composition",
+        "id": "6ef1947d-2152-475d-96b9-9a11a1242e2a",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Composition-eu-lab"
+          ]
+        },
+        "extension": [
+          {
+            "url": "http://hl7.eu/fhir/extensions/StructureDefinition/composition-diagnosticReportReference",
+            "valueReference": {
+              "reference": "urn:uuid:16218b08-ee99-44ce-a553-7cf512ca10ce"
+            }
+          }
+        ],
+        "identifier": {
+          "assigner": {
+            "display": "HL7 Europe"
+          },
+          "system": "urn:oid:2.16.840.1.113883.2.51.999",
+          "value": "c711e703-c206-4be2-b57f-f595ad4fa9c1"
+        },
+        "author": [
+          {
+            "reference": "urn:uuid:11259f2d-6055-4652-aa10-13b908600bff"
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "type": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ],
+          "text": "Laboratory Report"
+        },
+        "section": [
+          {
+            "code": {
+              "coding": [
+                {
+                  "code": "18725-2",
+                  "system": "http://loinc.org",
+                  "display": "Microbiology studies (set)"
+                }
+              ],
+              "text": "PANEL.MICRO"
+            },
+            "entry": [
+              {
+                "reference": "urn:uuid:627a46c4-7aef-46eb-8a66-c4014b63a383"
+              }
+            ],
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>PANEL.MICRO</h3><table class=\"hl7__eu__lab__report\"><thead><tr><th>Test</th><th>16-JAN-2021</th><th>Reference&#xA0;Range</th><th>Unit</th></tr></thead><tbody><tr><td></td><td>Detected</td><td></td><td></td></tr></tbody></table></div>"
+            },
+            "title": "PANEL.MICRO"
+          },
+          {
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>Annotation</h3><table class=\"hl7__eu__lab__report\"><tr><th>Conclusion and Recommendations based on this report and previous findings known to us:</th></tr><tr><td>SARS-CoV-2 RNA is detected in the respiratory specimen, indicating an active COVID-19 infection. Clinical correlation and appropriate infection control measures are recommended. No other laboratory abnormalities are reported in this result.</td></tr></table></div>"
+            },
+            "code": {
+              "coding": [
+                {
+                  "code": "48767-8",
+                  "system": "http://loinc.org",
+                  "display": "Annotation comment [Interpretation] Narrative"
+                }
+              ]
+            },
+            "title": "Annotation comment"
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "final",
+        "subject": {
+          "reference": "urn:uuid:92f019e8-f003-4756-b397-c65aa83b5d70",
+          "display": "Kvetoslav Roháčová"
+        },
+        "date": "2021-01-16T01:32:20Z",
+        "title": "Laboratory Report",
+        "confidentiality": "N"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:16218b08-ee99-44ce-a553-7cf512ca10ce",
+      "resource": {
+        "resourceType": "DiagnosticReport",
+        "id": "16218b08-ee99-44ce-a553-7cf512ca10ce",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/DiagnosticReport-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "c711e703-c206-4be2-b57f-f595ad4fa9c1"
+          },
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "60ee50e5-18d0-4510-a03f-f723c14fc87d"
+          }
+        ],
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-DiagnosticReport.composition",
+            "valueReference": {
+              "reference": "urn:uuid:6ef1947d-2152-475d-96b9-9a11a1242e2a"
+            }
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:cfb6a8e5-f319-4584-9de4-1443d5669b8d"
+          }
+        ],
+        "result": [
+          {
+            "reference": "urn:uuid:627a46c4-7aef-46eb-8a66-c4014b63a383"
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "registered",
+        "code": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:92f019e8-f003-4756-b397-c65aa83b5d70",
+          "display": "Kvetoslav Roháčová"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:92f019e8-f003-4756-b397-c65aa83b5d70",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "92f019e8-f003-4756-b397-c65aa83b5d70",
+        "meta": {
+          "security": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "HTEST"
+            },
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "TRAIN"
+            }
+          ],
+          "tag": [
+            {
+              "system": "https://synderai.net/fhir/CodeSystem/tags",
+              "code": "synthetic",
+              "display": "SYNDERAI Synthetic data"
+            }
+          ],
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/patient-eu-core"
+          ]
+        },
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "JHN",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://ec.europa.eu/identifier/eci",
+            "value": "5761-113471-9"
+          },
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "MR",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://local.setting.eu/identifier",
+            "value": "16780684-bef3-49ec-d8de-8cecb29b4ac4"
+          }
+        ],
+        "name": [
+          {
+            "given": [
+              "Kvetoslav"
+            ],
+            "family": "Roháčová",
+            "text": "Kvetoslav Roháčová"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Štepná 40"
+            ],
+            "use": "home",
+            "type": "physical",
+            "postalCode": "076 31",
+            "city": "Ruská Voľa",
+            "country": "Slovakia"
+          }
+        ],
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "+421 41 478 7106"
+          }
+        ],
+        "extension": [
+          {
+            "extension": [
+              {
+                "url": "code",
+                "valueCodeableConcept": {
+                  "coding": [
+                    {
+                      "code": "SK",
+                      "system": "urn:iso:std:iso:3166"
+                    }
+                  ]
+                }
+              }
+            ],
+            "url": "http://hl7.org/fhir/StructureDefinition/patient-nationality"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__ips\"><tr><td>Kvetoslav Roháčová</td><td>male</td><td>27-Nov-1976</td></tr></table></div>"
+        },
+        "gender": "male",
+        "birthDate": "1976-11-27"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:48eba2e1-f604-43a3-b882-462202e52755",
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "48eba2e1-f604-43a3-b882-462202e52755",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/ServiceRequest-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "system": "http://example.org",
+            "value": "5e45adef-50a5-4d50-9a01-a270e71b5e67"
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:cfb6a8e5-f319-4584-9de4-1443d5669b8d"
+          }
+        ],
+        "reasonCode": [
+          {
+            "coding": [
+              {
+                "code": "59621000",
+                "system": "http://snomed.info/sct",
+                "display": "Essential hypertension"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "237602007",
+                "system": "http://snomed.info/sct",
+                "display": "Metabolic syndrome X"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "44054006",
+                "system": "http://snomed.info/sct",
+                "display": "Type 2 diabetes mellitus"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "4855003",
+                "system": "http://snomed.info/sct",
+                "display": "Retinopathy due to diabetes mellitus"
+              }
+            ]
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "active",
+        "intent": "order",
+        "code": {
+          "coding": [
+            {
+              "code": "108252007",
+              "system": "http://snomed.info/sct",
+              "display": "Laboratory procedure"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:92f019e8-f003-4756-b397-c65aa83b5d70",
+          "display": "Kvetoslav Roháčová"
+        },
+        "requester": {
+          "reference": "urn:uuid:40eb9c19-a07c-4e0e-a7ea-61120135dc70"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:40eb9c19-a07c-4e0e-a7ea-61120135dc70",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "40eb9c19-a07c-4e0e-a7ea-61120135dc70",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Role Id: 40eb9c19-a07c-4e0e-a7ea-61120135dc70</div>"
+        },
+        "organization": {
+          "reference": "urn:uuid:43e3b859-cef6-4eac-a30d-7271760b0b58"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:43e3b859-cef6-4eac-a30d-7271760b0b58",
+      "resource": {
+        "resourceType": "Organization",
+        "id": "43e3b859-cef6-4eac-a30d-7271760b0b58",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/organization-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "f3bd2f27-1bd1-476d-8354-7a7cac9968cf"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Kukorelliho 337/16"
+            ],
+            "city": "Giraltovce",
+            "postalCode": "087 01",
+            "country": "Slovakia"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Organization: Mestská poliklinika Dr. Jozefa Goldbergera</div>"
+        },
+        "name": "Mestská poliklinika Dr. Jozefa Goldbergera"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:cfb6a8e5-f319-4584-9de4-1443d5669b8d",
+      "resource": {
+        "resourceType": "Specimen",
+        "id": "cfb6a8e5-f319-4584-9de4-1443d5669b8d",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Specimen-eu-lab"
+          ]
+        },
+        "collection": {
+          "collectedDateTime": "2021-01-16"
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Specimen</th><th>Collection Date</th></tr><tr><td>Specimen from respiratory system</td><td><span class=\"nb\">16-Jan-2021</span></td></tr></table></div>"
+        },
+        "type": {
+          "coding": [
+            {
+              "code": "258603007",
+              "system": "http://snomed.info/sct",
+              "display": "Specimen from respiratory system"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:627a46c4-7aef-46eb-8a66-c4014b63a383",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "627a46c4-7aef-46eb-8a66-c4014b63a383",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Observation-resultslab-eu-lab"
+          ]
+        },
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "laboratory",
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category"
+              }
+            ]
+          }
+        ],
+        "performer": [
+          {
+            "display": "The Central European Laboratory"
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "code": "94531-1",
+              "system": "http://loinc.org",
+              "display": "SARS-CoV-2 (COVID-19) RNA panel - Respiratory system specimen by NAA with probe detection"
+            }
+          ],
+          "text": "SARS-CoV-2 (COVID-19) RNA panel - Respiratory system specimen by NAA with probe detection"
+        },
+        "referenceRange": [
+          {
+            "text": "Detected"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Test</th><th>16-Jan-2021</th><th>Reference&#xA0;Range</th><th>Flag</th><th>Unit</th></tr><tr><td>SARS-CoV-2 (COVID-19) RNA panel - Respiratory system specimen by NAA with probe detection</td><td>Detected</td><td>Detected</td><td></td><td>-</td></tr></table></div>"
+        },
+        "status": "final",
+        "effectiveDateTime": "2021-01-16T00:32:20Z",
+        "subject": {
+          "reference": "urn:uuid:92f019e8-f003-4756-b397-c65aa83b5d70",
+          "display": "Kvetoslav Roháčová"
+        },
+        "valueCodeableConcept": {
+          "coding": [
+            {
+              "code": "260373001",
+              "system": "http://snomed.info/sct",
+              "display": "Detected"
+            }
+          ]
+        },
+        "specimen": {
+          "reference": "urn:uuid:cfb6a8e5-f319-4584-9de4-1443d5669b8d"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:ec7b4547-747c-4ea0-8b20-2f33e5c77090",
+      "resource": {
+        "resourceType": "Device",
+        "id": "ec7b4547-747c-4ea0-8b20-2f33e5c77090",
+        "deviceName": [
+          {
+            "name": "SYNDERAI Synthetic Generator",
+            "type": "manufacturer-name"
+          }
+        ],
+        "version": [
+          {
+            "value": "5.0"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">SYNDERAI Synthetic Generator v5.0</div>"
+        },
+        "status": "active",
+        "distinctIdentifier": "synderai-generator-50",
+        "manufacturer": "SYNDERAI Project"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:a4c1463d-30fb-4466-ac08-9e24f669d9bf",
+      "resource": {
+        "resourceType": "Provenance",
+        "id": "a4c1463d-30fb-4466-ac08-9e24f669d9bf",
+        "target": [
+          {
+            "reference": "urn:uuid:92f019e8-f003-4756-b397-c65aa83b5d70"
+          },
+          {
+            "reference": "urn:uuid:6ef1947d-2152-475d-96b9-9a11a1242e2a"
+          },
+          {
+            "reference": "urn:uuid:11259f2d-6055-4652-aa10-13b908600bff"
+          },
+          {
+            "reference": "urn:uuid:925dce75-093c-444e-84e9-7196e1a26f67"
+          },
+          {
+            "reference": "urn:uuid:40eb9c19-a07c-4e0e-a7ea-61120135dc70"
+          },
+          {
+            "reference": "urn:uuid:43e3b859-cef6-4eac-a30d-7271760b0b58"
+          }
+        ],
+        "activity": {
+          "coding": [
+            {
+              "code": "CREATE",
+              "system": "http://terminology.hl7.org/CodeSystem/v3-DataOperation",
+              "display": "create"
+            }
+          ],
+          "text": "Synthetic Example Data Generation"
+        },
+        "policy": [
+          "https://synderai.net/synderai-synthetic-data-policy"
+        ],
+        "agent": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "author",
+                  "system": "http://terminology.hl7.org/CodeSystem/provenance-participant-type",
+                  "display": "Author"
+                }
+              ],
+              "text": "author"
+            },
+            "who": {
+              "reference": "urn:uuid:ec7b4547-747c-4ea0-8b20-2f33e5c77090"
+            }
+          }
+        ],
+        "reason": [
+          {
+            "coding": [
+              {
+                "code": "TRAIN",
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+                "display": "training"
+              }
+            ],
+            "text": "Interoperability Testing and Training (non-clinical use)"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provenance for SYNDERAI Synthetic Example Data Resource</div>"
+        },
+        "recorded": "2021-01-16T02:32:20Z"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:11259f2d-6055-4652-aa10-13b908600bff",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "11259f2d-6055-4652-aa10-13b908600bff",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory Role Id: 11259f2d-6055-4652-aa10-13b908600bff</div>"
+        },
+        "practitioner": {
+          "reference": "urn:uuid:925dce75-093c-444e-84e9-7196e1a26f67"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:925dce75-093c-444e-84e9-7196e1a26f67",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "925dce75-093c-444e-84e9-7196e1a26f67",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitioner-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "cf83dd2d-762e-4276-81e8-21899512f461"
+          }
+        ],
+        "name": [
+          {
+            "prefix": [
+              "dr"
+            ],
+            "given": [
+              "Ex"
+            ],
+            "family": "Ample"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Laboratoire Central Européenne",
+              "Boulevard du Jardin Botanique 32"
+            ],
+            "postalCode": "1000",
+            "city": "Brussels",
+            "country": "Belgium"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory: Laboratoire Central Européenne, 1000 Brussels, Belgium</div>"
+        }
+      }
+    }
+  ],
+  "type": "document",
+  "timestamp": "2021-01-16T02:32:20Z"
+}

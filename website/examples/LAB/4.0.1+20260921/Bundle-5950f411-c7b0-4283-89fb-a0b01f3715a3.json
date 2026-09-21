@@ -1,0 +1,745 @@
+{
+  "resourceType": "Bundle",
+  "id": "5950f411-c7b0-4283-89fb-a0b01f3715a3",
+  "meta": {
+    "profile": [
+      "http://hl7.eu/fhir/laboratory/StructureDefinition/Bundle-eu-lab"
+    ]
+  },
+  "identifier": {
+    "assigner": {
+      "display": "HL7 Europe"
+    },
+    "system": "urn:oid:2.16.840.1.113883.2.51.999",
+    "value": "f4d078e1-97b2-4ea8-8806-83454bd0d6da"
+  },
+  "entry": [
+    {
+      "fullUrl": "urn:uuid:c1d2d969-77c8-424b-b640-774f2617a79c",
+      "resource": {
+        "resourceType": "Composition",
+        "id": "c1d2d969-77c8-424b-b640-774f2617a79c",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Composition-eu-lab"
+          ]
+        },
+        "extension": [
+          {
+            "url": "http://hl7.eu/fhir/extensions/StructureDefinition/composition-diagnosticReportReference",
+            "valueReference": {
+              "reference": "urn:uuid:90f9c1a5-e740-402e-9b57-90c07724f499"
+            }
+          }
+        ],
+        "identifier": {
+          "assigner": {
+            "display": "HL7 Europe"
+          },
+          "system": "urn:oid:2.16.840.1.113883.2.51.999",
+          "value": "3d489f58-fd98-4b19-b913-91356839924a"
+        },
+        "author": [
+          {
+            "reference": "urn:uuid:bdd0783a-b840-4af4-b84a-a6eb1d2a60c7"
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "type": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ],
+          "text": "Laboratory Report"
+        },
+        "section": [
+          {
+            "code": {
+              "coding": [
+                {
+                  "code": "18719-5",
+                  "system": "http://loinc.org",
+                  "display": "Chemistry studies (set)"
+                }
+              ],
+              "text": "CHEM"
+            },
+            "entry": [
+              {
+                "reference": "urn:uuid:e9509786-6680-439e-959f-7fff34bc32e2"
+              }
+            ],
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>CHEM</h3><table class=\"hl7__eu__lab__report\"><thead><tr><th>Test</th><th>19-APR-2025</th><th>Reference&#xA0;Range</th><th>Unit</th></tr></thead><tbody><tr><td></td><td><strong>27.6 H</strong></td><td>0 - 4</td><td>ng/mL</td></tr></tbody></table></div>"
+            },
+            "title": "CHEM"
+          },
+          {
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>Annotation</h3><table class=\"hl7__eu__lab__report\"><tr><th>Conclusion and Recommendations based on this report and previous findings known to us:</th></tr><tr><td>Markedly elevated PSA (27.6 ng/mL; normal 0–4 ng/mL) suggests significant prostatic pathology, such as prostate cancer, prostatitis, or benign prostatic hyperplasia. Clinical correlation and further urological evaluation, including possible imaging and biopsy, are strongly recommended.</td></tr></table></div>"
+            },
+            "code": {
+              "coding": [
+                {
+                  "code": "48767-8",
+                  "system": "http://loinc.org",
+                  "display": "Annotation comment [Interpretation] Narrative"
+                }
+              ]
+            },
+            "title": "Annotation comment"
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "final",
+        "subject": {
+          "reference": "urn:uuid:6260e5a7-3442-4be4-a888-bfde11f9ae25",
+          "display": "Olaf Gruszczyk"
+        },
+        "date": "2025-04-19T00:47:41Z",
+        "title": "Laboratory Report",
+        "confidentiality": "N"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:90f9c1a5-e740-402e-9b57-90c07724f499",
+      "resource": {
+        "resourceType": "DiagnosticReport",
+        "id": "90f9c1a5-e740-402e-9b57-90c07724f499",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/DiagnosticReport-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "3d489f58-fd98-4b19-b913-91356839924a"
+          },
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "07521e6c-223e-4e25-bfed-6f33ddd134fc"
+          }
+        ],
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-DiagnosticReport.composition",
+            "valueReference": {
+              "reference": "urn:uuid:c1d2d969-77c8-424b-b640-774f2617a79c"
+            }
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:f516943d-f9ce-489f-af6f-f0f686d5fe67"
+          }
+        ],
+        "result": [
+          {
+            "reference": "urn:uuid:e9509786-6680-439e-959f-7fff34bc32e2"
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "registered",
+        "code": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:6260e5a7-3442-4be4-a888-bfde11f9ae25",
+          "display": "Olaf Gruszczyk"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:6260e5a7-3442-4be4-a888-bfde11f9ae25",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "6260e5a7-3442-4be4-a888-bfde11f9ae25",
+        "meta": {
+          "security": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "HTEST"
+            },
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "TRAIN"
+            }
+          ],
+          "tag": [
+            {
+              "system": "https://synderai.net/fhir/CodeSystem/tags",
+              "code": "synthetic",
+              "display": "SYNDERAI Synthetic data"
+            }
+          ],
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/patient-eu-core"
+          ]
+        },
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "JHN",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://ec.europa.eu/identifier/eci",
+            "value": "2475-934262-9"
+          },
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "MR",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://local.setting.eu/identifier",
+            "value": "df2ae271-39b7-e057-a415-9cac23c7d40e"
+          }
+        ],
+        "name": [
+          {
+            "given": [
+              "Olaf"
+            ],
+            "family": "Gruszczyk",
+            "text": "Olaf Gruszczyk"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "plac Stawowa 8"
+            ],
+            "use": "home",
+            "type": "physical",
+            "postalCode": "90-001",
+            "city": "Łódź",
+            "country": "Poland"
+          }
+        ],
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "+48 505 767 203"
+          }
+        ],
+        "extension": [
+          {
+            "extension": [
+              {
+                "url": "code",
+                "valueCodeableConcept": {
+                  "coding": [
+                    {
+                      "code": "PL",
+                      "system": "urn:iso:std:iso:3166"
+                    }
+                  ]
+                }
+              }
+            ],
+            "url": "http://hl7.org/fhir/StructureDefinition/patient-nationality"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__ips\"><tr><td>Olaf Gruszczyk</td><td>male</td><td>02-Oct-1956</td></tr></table></div>"
+        },
+        "gender": "male",
+        "birthDate": "1956-10-02"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:001aa328-e6bf-45eb-8602-13281189bd52",
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "001aa328-e6bf-45eb-8602-13281189bd52",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/ServiceRequest-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "system": "http://example.org",
+            "value": "9180b91f-2fbb-4795-9462-f9097574485c"
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:f516943d-f9ce-489f-af6f-f0f686d5fe67"
+          }
+        ],
+        "reasonCode": [
+          {
+            "coding": [
+              {
+                "code": "203646004",
+                "system": "http://snomed.info/sct",
+                "display": "Adolescent idiopathic scoliosis"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "414916001",
+                "system": "http://snomed.info/sct",
+                "display": "Obesity"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "237602007",
+                "system": "http://snomed.info/sct",
+                "display": "Metabolic syndrome X"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "55822004",
+                "system": "http://snomed.info/sct",
+                "display": "Hyperlipidemia"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "13645005",
+                "system": "http://snomed.info/sct",
+                "display": "Chronic obstructive pulmonary disease"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "59621000",
+                "system": "http://snomed.info/sct",
+                "display": "Essential hypertension"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "126906006",
+                "system": "http://snomed.info/sct",
+                "display": "Neoplasm of prostate"
+              }
+            ]
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "active",
+        "intent": "order",
+        "code": {
+          "coding": [
+            {
+              "code": "108252007",
+              "system": "http://snomed.info/sct",
+              "display": "Laboratory procedure"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:6260e5a7-3442-4be4-a888-bfde11f9ae25",
+          "display": "Olaf Gruszczyk"
+        },
+        "requester": {
+          "reference": "urn:uuid:8bb0a3c1-dd3f-4761-bde8-0e6766b11bdf"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:8bb0a3c1-dd3f-4761-bde8-0e6766b11bdf",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "8bb0a3c1-dd3f-4761-bde8-0e6766b11bdf",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Role Id: 8bb0a3c1-dd3f-4761-bde8-0e6766b11bdf</div>"
+        },
+        "organization": {
+          "reference": "urn:uuid:3b85f2bd-57cb-43ee-a14c-62a98afc2abd"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:3b85f2bd-57cb-43ee-a14c-62a98afc2abd",
+      "resource": {
+        "resourceType": "Organization",
+        "id": "3b85f2bd-57cb-43ee-a14c-62a98afc2abd",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/organization-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "dca91374-e42c-406c-893a-999ac7ffeb56"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Stefana Żeromskiego 113"
+            ],
+            "city": "Łódź",
+            "postalCode": "90-549",
+            "country": "Poland"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Organization: Uniwersytecki Szpital Kliniczny im. Wojskowej Akademii Medycznej</div>"
+        },
+        "name": "Uniwersytecki Szpital Kliniczny im. Wojskowej Akademii Medycznej"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:f516943d-f9ce-489f-af6f-f0f686d5fe67",
+      "resource": {
+        "resourceType": "Specimen",
+        "id": "f516943d-f9ce-489f-af6f-f0f686d5fe67",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Specimen-eu-lab"
+          ]
+        },
+        "collection": {
+          "collectedDateTime": "2025-04-18"
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Specimen</th><th>Collection Date</th></tr><tr><td>Acellular blood (serum or plasma) specimen</td><td><span class=\"nb\">18-Apr-2025</span></td></tr></table></div>"
+        },
+        "type": {
+          "coding": [
+            {
+              "code": "122592007",
+              "system": "http://snomed.info/sct",
+              "display": "Acellular blood (serum or plasma) specimen"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:e9509786-6680-439e-959f-7fff34bc32e2",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "e9509786-6680-439e-959f-7fff34bc32e2",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Observation-resultslab-eu-lab"
+          ]
+        },
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "laboratory",
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category"
+              }
+            ]
+          }
+        ],
+        "performer": [
+          {
+            "display": "The Central European Laboratory"
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "code": "2857-1",
+              "system": "http://loinc.org",
+              "display": "Prostate specific Ag [Mass/volume] in Serum or Plasma"
+            }
+          ],
+          "text": "Prostate specific Ag [Mass/volume] in Serum or Plasma"
+        },
+        "valueQuantity": {
+          "value": 27.6,
+          "unit": "ng/mL",
+          "code": "ng/mL",
+          "system": "http://unitsofmeasure.org"
+        },
+        "referenceRange": [
+          {
+            "low": {
+              "value": 0,
+              "code": "ng/mL",
+              "system": "http://unitsofmeasure.org"
+            },
+            "high": {
+              "value": 4,
+              "code": "ng/mL",
+              "system": "http://unitsofmeasure.org"
+            }
+          }
+        ],
+        "interpretation": [
+          {
+            "coding": [
+              {
+                "code": "H",
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                "display": "High"
+              }
+            ]
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Test</th><th>19-Apr-2025</th><th>Reference&#xA0;Range</th><th>Flag</th><th>Unit</th></tr><tr><td>Prostate specific Ag [Mass/volume] in Serum or Plasma</td><td>27.6</td><td>0 - 4</td><td>H</td><td>ng/mL</td></tr></table></div>"
+        },
+        "status": "final",
+        "effectiveDateTime": "2025-04-18T22:47:41Z",
+        "subject": {
+          "reference": "urn:uuid:6260e5a7-3442-4be4-a888-bfde11f9ae25",
+          "display": "Olaf Gruszczyk"
+        },
+        "specimen": {
+          "reference": "urn:uuid:f516943d-f9ce-489f-af6f-f0f686d5fe67"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:fb21676b-da9a-4ea0-9570-43b55f4a591d",
+      "resource": {
+        "resourceType": "Device",
+        "id": "fb21676b-da9a-4ea0-9570-43b55f4a591d",
+        "deviceName": [
+          {
+            "name": "SYNDERAI Synthetic Generator",
+            "type": "manufacturer-name"
+          }
+        ],
+        "version": [
+          {
+            "value": "5.0"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">SYNDERAI Synthetic Generator v5.0</div>"
+        },
+        "status": "active",
+        "distinctIdentifier": "synderai-generator-50",
+        "manufacturer": "SYNDERAI Project"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:4d57d0c1-fa3e-4e0b-8b12-eff097a49055",
+      "resource": {
+        "resourceType": "Provenance",
+        "id": "4d57d0c1-fa3e-4e0b-8b12-eff097a49055",
+        "target": [
+          {
+            "reference": "urn:uuid:6260e5a7-3442-4be4-a888-bfde11f9ae25"
+          },
+          {
+            "reference": "urn:uuid:c1d2d969-77c8-424b-b640-774f2617a79c"
+          },
+          {
+            "reference": "urn:uuid:bdd0783a-b840-4af4-b84a-a6eb1d2a60c7"
+          },
+          {
+            "reference": "urn:uuid:e72fa927-aa80-409a-b143-22470f04ad70"
+          },
+          {
+            "reference": "urn:uuid:8bb0a3c1-dd3f-4761-bde8-0e6766b11bdf"
+          },
+          {
+            "reference": "urn:uuid:3b85f2bd-57cb-43ee-a14c-62a98afc2abd"
+          }
+        ],
+        "activity": {
+          "coding": [
+            {
+              "code": "CREATE",
+              "system": "http://terminology.hl7.org/CodeSystem/v3-DataOperation",
+              "display": "create"
+            }
+          ],
+          "text": "Synthetic Example Data Generation"
+        },
+        "policy": [
+          "https://synderai.net/synderai-synthetic-data-policy"
+        ],
+        "agent": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "author",
+                  "system": "http://terminology.hl7.org/CodeSystem/provenance-participant-type",
+                  "display": "Author"
+                }
+              ],
+              "text": "author"
+            },
+            "who": {
+              "reference": "urn:uuid:fb21676b-da9a-4ea0-9570-43b55f4a591d"
+            }
+          }
+        ],
+        "reason": [
+          {
+            "coding": [
+              {
+                "code": "TRAIN",
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+                "display": "training"
+              }
+            ],
+            "text": "Interoperability Testing and Training (non-clinical use)"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provenance for SYNDERAI Synthetic Example Data Resource</div>"
+        },
+        "recorded": "2025-04-19T02:47:41Z"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:bdd0783a-b840-4af4-b84a-a6eb1d2a60c7",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "bdd0783a-b840-4af4-b84a-a6eb1d2a60c7",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory Role Id: bdd0783a-b840-4af4-b84a-a6eb1d2a60c7</div>"
+        },
+        "practitioner": {
+          "reference": "urn:uuid:e72fa927-aa80-409a-b143-22470f04ad70"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:e72fa927-aa80-409a-b143-22470f04ad70",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "e72fa927-aa80-409a-b143-22470f04ad70",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitioner-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "a38de456-b6cf-4ab2-89da-5e33cffc2c1e"
+          }
+        ],
+        "name": [
+          {
+            "prefix": [
+              "dr"
+            ],
+            "given": [
+              "Ex"
+            ],
+            "family": "Ample"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Laboratoire Central Européenne",
+              "Boulevard du Jardin Botanique 32"
+            ],
+            "postalCode": "1000",
+            "city": "Brussels",
+            "country": "Belgium"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory: Laboratoire Central Européenne, 1000 Brussels, Belgium</div>"
+        }
+      }
+    }
+  ],
+  "type": "document",
+  "timestamp": "2025-04-19T02:47:41Z"
+}

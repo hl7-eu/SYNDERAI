@@ -109,9 +109,11 @@ InstanceOf: PractitionerEu
 Usage: #inline
 * id = "{{ laboratory.instancepractitioner }}"
 
+{# Generate ephemeral UUID for this identifier #}
+{% set practitioneridentifier = getUUID() %}
+
 {# Practitioner identifier under the HL7 Europe OID namespace #}
 * identifier.system = "urn:oid:{{ HL7EUROPEEXAMPLESOID }}"
-{% set practitioneridentifier = getUUID() %} {# Generate ephemeral UUID for this identifier #}
 * identifier.value = "{{ practitioneridentifier }}"
 * identifier.assigner.display = "HL7 Europe"
 

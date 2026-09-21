@@ -1,0 +1,751 @@
+{
+  "resourceType": "Bundle",
+  "id": "52413b15-9027-464f-a5f6-5b7a12bf92a5",
+  "meta": {
+    "profile": [
+      "http://hl7.eu/fhir/laboratory/StructureDefinition/Bundle-eu-lab"
+    ]
+  },
+  "identifier": {
+    "assigner": {
+      "display": "HL7 Europe"
+    },
+    "system": "urn:oid:2.16.840.1.113883.2.51.999",
+    "value": "757a0962-0b40-461c-918d-46e2e7812ef6"
+  },
+  "entry": [
+    {
+      "fullUrl": "urn:uuid:87c083bd-f551-4580-b1d3-c20eb380b131",
+      "resource": {
+        "resourceType": "Composition",
+        "id": "87c083bd-f551-4580-b1d3-c20eb380b131",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Composition-eu-lab"
+          ]
+        },
+        "extension": [
+          {
+            "url": "http://hl7.eu/fhir/extensions/StructureDefinition/composition-diagnosticReportReference",
+            "valueReference": {
+              "reference": "urn:uuid:0889811a-4a8e-4127-aba3-cd29448aae7c"
+            }
+          }
+        ],
+        "identifier": {
+          "assigner": {
+            "display": "HL7 Europe"
+          },
+          "system": "urn:oid:2.16.840.1.113883.2.51.999",
+          "value": "7744df6d-de91-47f1-a82f-6e5746843943"
+        },
+        "author": [
+          {
+            "reference": "urn:uuid:65861f67-ac78-40bb-b1f9-3e5f8c26977a"
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "type": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ],
+          "text": "Laboratory Report"
+        },
+        "section": [
+          {
+            "code": {
+              "coding": [
+                {
+                  "code": "18719-5",
+                  "system": "http://loinc.org",
+                  "display": "Chemistry studies (set)"
+                }
+              ],
+              "text": "CHEM"
+            },
+            "entry": [
+              {
+                "reference": "urn:uuid:d63747ab-1cf1-4ad4-a64e-cf34bf49c678"
+              }
+            ],
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>CHEM</h3><table class=\"hl7__eu__lab__report\"><thead><tr><th>Test</th><th>20-MAY-2026</th><th>Reference&#xA0;Range</th><th>Unit</th></tr></thead><tbody><tr><td></td><td><strong>52.0 L</strong></td><td>60 - 89</td><td>mL/min/{1.73_m2}</td></tr></tbody></table></div>"
+            },
+            "title": "CHEM"
+          },
+          {
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>Annotation</h3><table class=\"hl7__eu__lab__report\"><tr><th>Conclusion and Recommendations based on this report and previous findings known to us:</th></tr><tr><td>The patient shows a mildly decreased glomerular filtration rate (GFR) at 52 mL/min/1.73 m², indicating stage 3a chronic kidney disease. This suggests moderate reduction in kidney function. Clinical correlation and monitoring of renal function, as well as assessment for underlying causes and potential complications, are recommended.</td></tr></table></div>"
+            },
+            "code": {
+              "coding": [
+                {
+                  "code": "48767-8",
+                  "system": "http://loinc.org",
+                  "display": "Annotation comment [Interpretation] Narrative"
+                }
+              ]
+            },
+            "title": "Annotation comment"
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "final",
+        "subject": {
+          "reference": "urn:uuid:a0c371b9-6bd9-42cf-9d47-04f05d539df2",
+          "display": "Kristýna Kopecký"
+        },
+        "date": "2026-05-20T23:32:45Z",
+        "title": "Laboratory Report",
+        "confidentiality": "N"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:0889811a-4a8e-4127-aba3-cd29448aae7c",
+      "resource": {
+        "resourceType": "DiagnosticReport",
+        "id": "0889811a-4a8e-4127-aba3-cd29448aae7c",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/DiagnosticReport-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "7744df6d-de91-47f1-a82f-6e5746843943"
+          },
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "65b5c1c9-c16c-44cf-b8b6-e4603d33c777"
+          }
+        ],
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-DiagnosticReport.composition",
+            "valueReference": {
+              "reference": "urn:uuid:87c083bd-f551-4580-b1d3-c20eb380b131"
+            }
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:4ebf3731-408d-42eb-8049-c01669c41f17"
+          }
+        ],
+        "result": [
+          {
+            "reference": "urn:uuid:d63747ab-1cf1-4ad4-a64e-cf34bf49c678"
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "registered",
+        "code": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:a0c371b9-6bd9-42cf-9d47-04f05d539df2",
+          "display": "Kristýna Kopecký"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:a0c371b9-6bd9-42cf-9d47-04f05d539df2",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "a0c371b9-6bd9-42cf-9d47-04f05d539df2",
+        "meta": {
+          "security": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "HTEST"
+            },
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "TRAIN"
+            }
+          ],
+          "tag": [
+            {
+              "system": "https://synderai.net/fhir/CodeSystem/tags",
+              "code": "synthetic",
+              "display": "SYNDERAI Synthetic data"
+            }
+          ],
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/patient-eu-core"
+          ]
+        },
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "JHN",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://ec.europa.eu/identifier/eci",
+            "value": "3805-272424-2"
+          },
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "MR",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://local.setting.eu/identifier",
+            "value": "76cc71a6-a002-abca-da24-8b28f21df91f"
+          }
+        ],
+        "name": [
+          {
+            "given": [
+              "Kristýna"
+            ],
+            "family": "Kopecký",
+            "text": "Kristýna Kopecký"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Jírova 300"
+            ],
+            "use": "home",
+            "type": "physical",
+            "postalCode": "50351",
+            "city": "Chlumec nad Cidlinou",
+            "country": "Czechia"
+          }
+        ],
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "+420 703 976 639"
+          }
+        ],
+        "extension": [
+          {
+            "extension": [
+              {
+                "url": "code",
+                "valueCodeableConcept": {
+                  "coding": [
+                    {
+                      "code": "CZ",
+                      "system": "urn:iso:std:iso:3166"
+                    }
+                  ]
+                }
+              }
+            ],
+            "url": "http://hl7.org/fhir/StructureDefinition/patient-nationality"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__ips\"><tr><td>Kristýna Kopecký</td><td>female</td><td>06-Nov-1954</td></tr></table></div>"
+        },
+        "gender": "female",
+        "birthDate": "1954-11-06"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:5fd45ce2-1469-4562-b636-a99f81155396",
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "5fd45ce2-1469-4562-b636-a99f81155396",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/ServiceRequest-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "system": "http://example.org",
+            "value": "9d696c4b-9012-44a2-9754-f3727805e102"
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:4ebf3731-408d-42eb-8049-c01669c41f17"
+          }
+        ],
+        "reasonCode": [
+          {
+            "coding": [
+              {
+                "code": "64859006",
+                "system": "http://snomed.info/sct",
+                "display": "Osteoporosis"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "44054006",
+                "system": "http://snomed.info/sct",
+                "display": "Type 2 diabetes mellitus"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "59621000",
+                "system": "http://snomed.info/sct",
+                "display": "Essential hypertension"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "414545008",
+                "system": "http://snomed.info/sct",
+                "display": "Ischemic heart disease"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "239873007",
+                "system": "http://snomed.info/sct",
+                "display": "Osteoarthritis of knee"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "55822004",
+                "system": "http://snomed.info/sct",
+                "display": "Hyperlipidemia"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "237602007",
+                "system": "http://snomed.info/sct",
+                "display": "Metabolic syndrome X"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "431856006",
+                "system": "http://snomed.info/sct",
+                "display": "Chronic kidney disease stage 2"
+              }
+            ]
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "active",
+        "intent": "order",
+        "code": {
+          "coding": [
+            {
+              "code": "108252007",
+              "system": "http://snomed.info/sct",
+              "display": "Laboratory procedure"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:a0c371b9-6bd9-42cf-9d47-04f05d539df2",
+          "display": "Kristýna Kopecký"
+        },
+        "requester": {
+          "reference": "urn:uuid:2a7764c2-a0ee-4a82-b258-fbbe50dca919"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:2a7764c2-a0ee-4a82-b258-fbbe50dca919",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "2a7764c2-a0ee-4a82-b258-fbbe50dca919",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Role Id: 2a7764c2-a0ee-4a82-b258-fbbe50dca919</div>"
+        },
+        "organization": {
+          "reference": "urn:uuid:eff9daa6-8d97-4a1c-b33b-88a9dc3d6c4d"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:eff9daa6-8d97-4a1c-b33b-88a9dc3d6c4d",
+      "resource": {
+        "resourceType": "Organization",
+        "id": "eff9daa6-8d97-4a1c-b33b-88a9dc3d6c4d",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/organization-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "ab788b77-de7e-43b0-b0d7-b92cd59ee428"
+          }
+        ],
+        "address": [
+          {
+            "city": "Nový Bydžov",
+            "postalCode": "504 01",
+            "country": "Czechia"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Organization: Nemocnice Nový Bydžov</div>"
+        },
+        "name": "Nemocnice Nový Bydžov"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:4ebf3731-408d-42eb-8049-c01669c41f17",
+      "resource": {
+        "resourceType": "Specimen",
+        "id": "4ebf3731-408d-42eb-8049-c01669c41f17",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Specimen-eu-lab"
+          ]
+        },
+        "collection": {
+          "collectedDateTime": "2026-05-20"
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Specimen</th><th>Collection Date</th></tr><tr><td>Blood specimen</td><td><span class=\"nb\">20-May-2026</span></td></tr></table></div>"
+        },
+        "type": {
+          "coding": [
+            {
+              "code": "119297000",
+              "system": "http://snomed.info/sct",
+              "display": "Blood specimen"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:d63747ab-1cf1-4ad4-a64e-cf34bf49c678",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "d63747ab-1cf1-4ad4-a64e-cf34bf49c678",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Observation-resultslab-eu-lab"
+          ]
+        },
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "laboratory",
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category"
+              }
+            ]
+          }
+        ],
+        "performer": [
+          {
+            "display": "The Central European Laboratory"
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "code": "98979-8",
+              "system": "http://loinc.org",
+              "display": "Glomerular filtration rate [Volume Rate/Area] in Serum, Plasma or Blood by Creatinine-based formula (CKD-EPI 2021)/1.73 sq M"
+            }
+          ],
+          "text": "Glomerular filtration rate [Volume Rate/Area] in Serum, Plasma or Blood by Creatinine-based formula (CKD-EPI 2021)/1.73 sq M"
+        },
+        "valueQuantity": {
+          "value": 52,
+          "unit": "mL/min/{1.73_m2}",
+          "code": "mL/min/{1.73_m2}",
+          "system": "http://unitsofmeasure.org"
+        },
+        "referenceRange": [
+          {
+            "low": {
+              "value": 60,
+              "code": "mL/min/{1.73_m2}",
+              "system": "http://unitsofmeasure.org"
+            },
+            "high": {
+              "value": 89,
+              "code": "mL/min/{1.73_m2}",
+              "system": "http://unitsofmeasure.org"
+            }
+          }
+        ],
+        "interpretation": [
+          {
+            "coding": [
+              {
+                "code": "L",
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                "display": "Low"
+              }
+            ]
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Test</th><th>20-May-2026</th><th>Reference&#xA0;Range</th><th>Flag</th><th>Unit</th></tr><tr><td>Glomerular filtration rate [Volume Rate/Area] in Serum, Plasma or Blood by Creatinine-based formula (CKD-EPI 2021)/1.73 sq M</td><td>52.0</td><td>60 - 89</td><td>L</td><td>mL/min/{1.73_m2}</td></tr></table></div>"
+        },
+        "status": "final",
+        "effectiveDateTime": "2026-05-20T21:32:45Z",
+        "subject": {
+          "reference": "urn:uuid:a0c371b9-6bd9-42cf-9d47-04f05d539df2",
+          "display": "Kristýna Kopecký"
+        },
+        "specimen": {
+          "reference": "urn:uuid:4ebf3731-408d-42eb-8049-c01669c41f17"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:5e382e14-15d2-46a6-9154-08204854eb66",
+      "resource": {
+        "resourceType": "Device",
+        "id": "5e382e14-15d2-46a6-9154-08204854eb66",
+        "deviceName": [
+          {
+            "name": "SYNDERAI Synthetic Generator",
+            "type": "manufacturer-name"
+          }
+        ],
+        "version": [
+          {
+            "value": "5.0"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">SYNDERAI Synthetic Generator v5.0</div>"
+        },
+        "status": "active",
+        "distinctIdentifier": "synderai-generator-50",
+        "manufacturer": "SYNDERAI Project"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:9f1348fd-a91e-4a71-b297-4446fe044841",
+      "resource": {
+        "resourceType": "Provenance",
+        "id": "9f1348fd-a91e-4a71-b297-4446fe044841",
+        "target": [
+          {
+            "reference": "urn:uuid:a0c371b9-6bd9-42cf-9d47-04f05d539df2"
+          },
+          {
+            "reference": "urn:uuid:87c083bd-f551-4580-b1d3-c20eb380b131"
+          },
+          {
+            "reference": "urn:uuid:65861f67-ac78-40bb-b1f9-3e5f8c26977a"
+          },
+          {
+            "reference": "urn:uuid:94c6032c-cf2c-4d59-aac1-c635a6417d38"
+          },
+          {
+            "reference": "urn:uuid:2a7764c2-a0ee-4a82-b258-fbbe50dca919"
+          },
+          {
+            "reference": "urn:uuid:eff9daa6-8d97-4a1c-b33b-88a9dc3d6c4d"
+          }
+        ],
+        "activity": {
+          "coding": [
+            {
+              "code": "CREATE",
+              "system": "http://terminology.hl7.org/CodeSystem/v3-DataOperation",
+              "display": "create"
+            }
+          ],
+          "text": "Synthetic Example Data Generation"
+        },
+        "policy": [
+          "https://synderai.net/synderai-synthetic-data-policy"
+        ],
+        "agent": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "author",
+                  "system": "http://terminology.hl7.org/CodeSystem/provenance-participant-type",
+                  "display": "Author"
+                }
+              ],
+              "text": "author"
+            },
+            "who": {
+              "reference": "urn:uuid:5e382e14-15d2-46a6-9154-08204854eb66"
+            }
+          }
+        ],
+        "reason": [
+          {
+            "coding": [
+              {
+                "code": "TRAIN",
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+                "display": "training"
+              }
+            ],
+            "text": "Interoperability Testing and Training (non-clinical use)"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provenance for SYNDERAI Synthetic Example Data Resource</div>"
+        },
+        "recorded": "2026-05-21T01:32:45Z"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:65861f67-ac78-40bb-b1f9-3e5f8c26977a",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "65861f67-ac78-40bb-b1f9-3e5f8c26977a",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory Role Id: 65861f67-ac78-40bb-b1f9-3e5f8c26977a</div>"
+        },
+        "practitioner": {
+          "reference": "urn:uuid:94c6032c-cf2c-4d59-aac1-c635a6417d38"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:94c6032c-cf2c-4d59-aac1-c635a6417d38",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "94c6032c-cf2c-4d59-aac1-c635a6417d38",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitioner-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "bb41b018-7c17-47a9-bd7a-a269cf00d502"
+          }
+        ],
+        "name": [
+          {
+            "prefix": [
+              "dr"
+            ],
+            "given": [
+              "Ex"
+            ],
+            "family": "Ample"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Laboratoire Central Européenne",
+              "Boulevard du Jardin Botanique 32"
+            ],
+            "postalCode": "1000",
+            "city": "Brussels",
+            "country": "Belgium"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory: Laboratoire Central Européenne, 1000 Brussels, Belgium</div>"
+        }
+      }
+    }
+  ],
+  "type": "document",
+  "timestamp": "2026-05-21T01:32:45Z"
+}

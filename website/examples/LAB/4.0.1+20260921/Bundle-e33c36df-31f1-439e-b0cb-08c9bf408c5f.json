@@ -1,0 +1,698 @@
+{
+  "resourceType": "Bundle",
+  "id": "e33c36df-31f1-439e-b0cb-08c9bf408c5f",
+  "meta": {
+    "profile": [
+      "http://hl7.eu/fhir/laboratory/StructureDefinition/Bundle-eu-lab"
+    ]
+  },
+  "identifier": {
+    "assigner": {
+      "display": "HL7 Europe"
+    },
+    "system": "urn:oid:2.16.840.1.113883.2.51.999",
+    "value": "1c1a8c89-8cc5-4747-8999-3992a64f1eb7"
+  },
+  "entry": [
+    {
+      "fullUrl": "urn:uuid:28ccabac-fc58-4397-ab83-7cb1e1e262f2",
+      "resource": {
+        "resourceType": "Composition",
+        "id": "28ccabac-fc58-4397-ab83-7cb1e1e262f2",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Composition-eu-lab"
+          ]
+        },
+        "extension": [
+          {
+            "url": "http://hl7.eu/fhir/extensions/StructureDefinition/composition-diagnosticReportReference",
+            "valueReference": {
+              "reference": "urn:uuid:94f84c3f-13db-415a-a444-362a7ea2721a"
+            }
+          }
+        ],
+        "identifier": {
+          "assigner": {
+            "display": "HL7 Europe"
+          },
+          "system": "urn:oid:2.16.840.1.113883.2.51.999",
+          "value": "db8be3df-e53b-4521-bdfe-66ed92fb86df"
+        },
+        "author": [
+          {
+            "reference": "urn:uuid:04694ab5-9077-4532-a2d8-4d4439e2cddc"
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "type": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ],
+          "text": "Laboratory Report"
+        },
+        "section": [
+          {
+            "code": {
+              "coding": [
+                {
+                  "code": "18719-5",
+                  "system": "http://loinc.org",
+                  "display": "Chemistry studies (set)"
+                }
+              ],
+              "text": "CHEM"
+            },
+            "entry": [
+              {
+                "reference": "urn:uuid:4dee6c11-081f-4556-adf2-81992d68ceca"
+              }
+            ],
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>CHEM</h3><table class=\"hl7__eu__lab__report\"><thead><tr><th>Test</th><th>09-JUL-2003</th><th>Reference&#xA0;Range</th><th>Unit</th></tr></thead><tbody><tr><td></td><td>99.6</td><td>95 - 100</td><td>%</td></tr></tbody></table></div>"
+            },
+            "title": "CHEM"
+          },
+          {
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>Annotation</h3><table class=\"hl7__eu__lab__report\"><tr><th>Conclusion and Recommendations based on this report and previous findings known to us:</th></tr><tr><td>Oxygen saturation is within the normal range, indicating adequate arterial oxygenation. No abnormalities detected from the laboratory perspective at this time.</td></tr></table></div>"
+            },
+            "code": {
+              "coding": [
+                {
+                  "code": "48767-8",
+                  "system": "http://loinc.org",
+                  "display": "Annotation comment [Interpretation] Narrative"
+                }
+              ]
+            },
+            "title": "Annotation comment"
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "final",
+        "subject": {
+          "reference": "urn:uuid:27697634-cf18-40f4-9d57-ce810c4aa31b",
+          "display": "Silvio Lindau"
+        },
+        "date": "2003-07-09T09:26:03Z",
+        "title": "Laboratory Report",
+        "confidentiality": "N"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:94f84c3f-13db-415a-a444-362a7ea2721a",
+      "resource": {
+        "resourceType": "DiagnosticReport",
+        "id": "94f84c3f-13db-415a-a444-362a7ea2721a",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/DiagnosticReport-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "db8be3df-e53b-4521-bdfe-66ed92fb86df"
+          },
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "89d89b09-263a-474a-b067-826b80ae8b6f"
+          }
+        ],
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-DiagnosticReport.composition",
+            "valueReference": {
+              "reference": "urn:uuid:28ccabac-fc58-4397-ab83-7cb1e1e262f2"
+            }
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:638ce932-2288-4b4d-9ade-68d9b00c8240"
+          }
+        ],
+        "result": [
+          {
+            "reference": "urn:uuid:4dee6c11-081f-4556-adf2-81992d68ceca"
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "registered",
+        "code": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:27697634-cf18-40f4-9d57-ce810c4aa31b",
+          "display": "Silvio Lindau"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:27697634-cf18-40f4-9d57-ce810c4aa31b",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "27697634-cf18-40f4-9d57-ce810c4aa31b",
+        "meta": {
+          "security": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "HTEST"
+            },
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "TRAIN"
+            }
+          ],
+          "tag": [
+            {
+              "system": "https://synderai.net/fhir/CodeSystem/tags",
+              "code": "synthetic",
+              "display": "SYNDERAI Synthetic data"
+            }
+          ],
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/patient-eu-core"
+          ]
+        },
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "JHN",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://ec.europa.eu/identifier/eci",
+            "value": "5637-952654-6"
+          },
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "MR",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://local.setting.eu/identifier",
+            "value": "1cebcdcc-8c3d-5a71-45a4-c43327ba12fe"
+          }
+        ],
+        "name": [
+          {
+            "given": [
+              "Silvio"
+            ],
+            "family": "Lindau",
+            "text": "Silvio Lindau"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Heidemarie-Johann-Ring 32/31"
+            ],
+            "use": "home",
+            "type": "physical",
+            "postalCode": "87629",
+            "city": "Füssen",
+            "country": "Germany"
+          }
+        ],
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "+49(0) 549981949"
+          }
+        ],
+        "extension": [
+          {
+            "extension": [
+              {
+                "url": "code",
+                "valueCodeableConcept": {
+                  "coding": [
+                    {
+                      "code": "DE",
+                      "system": "urn:iso:std:iso:3166"
+                    }
+                  ]
+                }
+              }
+            ],
+            "url": "http://hl7.org/fhir/StructureDefinition/patient-nationality"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__ips\"><tr><td>Silvio Lindau</td><td>male</td><td>16-Mar-1968</td></tr></table></div>"
+        },
+        "gender": "male",
+        "birthDate": "1968-03-16"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:2f5ca694-80a6-423f-ba90-e2ed25f9a905",
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "2f5ca694-80a6-423f-ba90-e2ed25f9a905",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/ServiceRequest-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "system": "http://example.org",
+            "value": "4855d59a-1d52-4980-99bf-26da14c4f81a"
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:638ce932-2288-4b4d-9ade-68d9b00c8240"
+          }
+        ],
+        "reasonCode": [
+          {
+            "coding": [
+              {
+                "code": "414916001",
+                "system": "http://snomed.info/sct",
+                "display": "Obesity"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "13645005",
+                "system": "http://snomed.info/sct",
+                "display": "Chronic obstructive pulmonary disease"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "44054006",
+                "system": "http://snomed.info/sct",
+                "display": "Type 2 diabetes mellitus"
+              }
+            ]
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "active",
+        "intent": "order",
+        "code": {
+          "coding": [
+            {
+              "code": "108252007",
+              "system": "http://snomed.info/sct",
+              "display": "Laboratory procedure"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:27697634-cf18-40f4-9d57-ce810c4aa31b",
+          "display": "Silvio Lindau"
+        },
+        "requester": {
+          "reference": "urn:uuid:518dfc0a-5844-4306-8510-6ac46737ef0f"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:518dfc0a-5844-4306-8510-6ac46737ef0f",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "518dfc0a-5844-4306-8510-6ac46737ef0f",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Role Id: 518dfc0a-5844-4306-8510-6ac46737ef0f</div>"
+        },
+        "organization": {
+          "reference": "urn:uuid:2d0d07ee-da9f-4f53-bd9e-805160d87090"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:2d0d07ee-da9f-4f53-bd9e-805160d87090",
+      "resource": {
+        "resourceType": "Organization",
+        "id": "2d0d07ee-da9f-4f53-bd9e-805160d87090",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/organization-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "95b6a8ee-8062-4510-807f-b52dcf29d4f9"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Feistlestraße 2"
+            ],
+            "city": "Füssen",
+            "postalCode": "87629",
+            "country": "Germany"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Organization: hier ist kein Ärztehaus</div>"
+        },
+        "name": "hier ist kein Ärztehaus"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:638ce932-2288-4b4d-9ade-68d9b00c8240",
+      "resource": {
+        "resourceType": "Specimen",
+        "id": "638ce932-2288-4b4d-9ade-68d9b00c8240",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Specimen-eu-lab"
+          ]
+        },
+        "collection": {
+          "collectedDateTime": "2003-07-09"
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Specimen</th><th>Collection Date</th></tr><tr><td>Arterial blood specimen</td><td><span class=\"nb\">09-Jul-2003</span></td></tr></table></div>"
+        },
+        "type": {
+          "coding": [
+            {
+              "code": "122552005",
+              "system": "http://snomed.info/sct",
+              "display": "Arterial blood specimen"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:4dee6c11-081f-4556-adf2-81992d68ceca",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "4dee6c11-081f-4556-adf2-81992d68ceca",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Observation-resultslab-eu-lab"
+          ]
+        },
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "laboratory",
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category"
+              }
+            ]
+          }
+        ],
+        "performer": [
+          {
+            "display": "The Central European Laboratory"
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "code": "2708-6",
+              "system": "http://loinc.org",
+              "display": "Oxygen saturation in Arterial blood"
+            }
+          ],
+          "text": "Oxygen saturation in Arterial blood"
+        },
+        "valueQuantity": {
+          "value": 99.6,
+          "unit": "%",
+          "code": "%",
+          "system": "http://unitsofmeasure.org"
+        },
+        "referenceRange": [
+          {
+            "low": {
+              "value": 95,
+              "code": "%",
+              "system": "http://unitsofmeasure.org"
+            },
+            "high": {
+              "value": 100,
+              "code": "%",
+              "system": "http://unitsofmeasure.org"
+            }
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Test</th><th>09-Jul-2003</th><th>Reference&#xA0;Range</th><th>Flag</th><th>Unit</th></tr><tr><td>Oxygen saturation in Arterial blood</td><td>99.6</td><td>95 - 100</td><td></td><td>%</td></tr></table></div>"
+        },
+        "status": "final",
+        "effectiveDateTime": "2003-07-09T07:26:03Z",
+        "subject": {
+          "reference": "urn:uuid:27697634-cf18-40f4-9d57-ce810c4aa31b",
+          "display": "Silvio Lindau"
+        },
+        "specimen": {
+          "reference": "urn:uuid:638ce932-2288-4b4d-9ade-68d9b00c8240"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:48137825-81ff-4c52-b2f5-45c12d066b48",
+      "resource": {
+        "resourceType": "Device",
+        "id": "48137825-81ff-4c52-b2f5-45c12d066b48",
+        "deviceName": [
+          {
+            "name": "SYNDERAI Synthetic Generator",
+            "type": "manufacturer-name"
+          }
+        ],
+        "version": [
+          {
+            "value": "5.0"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">SYNDERAI Synthetic Generator v5.0</div>"
+        },
+        "status": "active",
+        "distinctIdentifier": "synderai-generator-50",
+        "manufacturer": "SYNDERAI Project"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:3bf9ffbb-0f96-4a1d-bbec-849c07b2b86c",
+      "resource": {
+        "resourceType": "Provenance",
+        "id": "3bf9ffbb-0f96-4a1d-bbec-849c07b2b86c",
+        "target": [
+          {
+            "reference": "urn:uuid:27697634-cf18-40f4-9d57-ce810c4aa31b"
+          },
+          {
+            "reference": "urn:uuid:28ccabac-fc58-4397-ab83-7cb1e1e262f2"
+          },
+          {
+            "reference": "urn:uuid:04694ab5-9077-4532-a2d8-4d4439e2cddc"
+          },
+          {
+            "reference": "urn:uuid:e18d1043-7b60-49e4-8522-4c90081ce524"
+          },
+          {
+            "reference": "urn:uuid:518dfc0a-5844-4306-8510-6ac46737ef0f"
+          },
+          {
+            "reference": "urn:uuid:2d0d07ee-da9f-4f53-bd9e-805160d87090"
+          }
+        ],
+        "activity": {
+          "coding": [
+            {
+              "code": "CREATE",
+              "system": "http://terminology.hl7.org/CodeSystem/v3-DataOperation",
+              "display": "create"
+            }
+          ],
+          "text": "Synthetic Example Data Generation"
+        },
+        "policy": [
+          "https://synderai.net/synderai-synthetic-data-policy"
+        ],
+        "agent": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "author",
+                  "system": "http://terminology.hl7.org/CodeSystem/provenance-participant-type",
+                  "display": "Author"
+                }
+              ],
+              "text": "author"
+            },
+            "who": {
+              "reference": "urn:uuid:48137825-81ff-4c52-b2f5-45c12d066b48"
+            }
+          }
+        ],
+        "reason": [
+          {
+            "coding": [
+              {
+                "code": "TRAIN",
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+                "display": "training"
+              }
+            ],
+            "text": "Interoperability Testing and Training (non-clinical use)"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provenance for SYNDERAI Synthetic Example Data Resource</div>"
+        },
+        "recorded": "2003-07-09T11:26:03Z"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:04694ab5-9077-4532-a2d8-4d4439e2cddc",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "04694ab5-9077-4532-a2d8-4d4439e2cddc",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory Role Id: 04694ab5-9077-4532-a2d8-4d4439e2cddc</div>"
+        },
+        "practitioner": {
+          "reference": "urn:uuid:e18d1043-7b60-49e4-8522-4c90081ce524"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:e18d1043-7b60-49e4-8522-4c90081ce524",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "e18d1043-7b60-49e4-8522-4c90081ce524",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitioner-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "9eb33a67-5657-4e6a-8733-c53ac17528e5"
+          }
+        ],
+        "name": [
+          {
+            "prefix": [
+              "dr"
+            ],
+            "given": [
+              "Ex"
+            ],
+            "family": "Ample"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Laboratoire Central Européenne",
+              "Boulevard du Jardin Botanique 32"
+            ],
+            "postalCode": "1000",
+            "city": "Brussels",
+            "country": "Belgium"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory: Laboratoire Central Européenne, 1000 Brussels, Belgium</div>"
+        }
+      }
+    }
+  ],
+  "type": "document",
+  "timestamp": "2003-07-09T11:26:03Z"
+}

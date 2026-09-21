@@ -1,0 +1,715 @@
+{
+  "resourceType": "Bundle",
+  "id": "7d30bbe6-28a6-43c8-b0e7-5d707b49ab35",
+  "meta": {
+    "profile": [
+      "http://hl7.eu/fhir/laboratory/StructureDefinition/Bundle-eu-lab"
+    ]
+  },
+  "identifier": {
+    "assigner": {
+      "display": "HL7 Europe"
+    },
+    "system": "urn:oid:2.16.840.1.113883.2.51.999",
+    "value": "b390c05f-6785-4c9b-a896-db922a85be67"
+  },
+  "entry": [
+    {
+      "fullUrl": "urn:uuid:001f240e-8540-4b23-aa2a-576e02656bdf",
+      "resource": {
+        "resourceType": "Composition",
+        "id": "001f240e-8540-4b23-aa2a-576e02656bdf",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Composition-eu-lab"
+          ]
+        },
+        "extension": [
+          {
+            "url": "http://hl7.eu/fhir/extensions/StructureDefinition/composition-diagnosticReportReference",
+            "valueReference": {
+              "reference": "urn:uuid:8a7056eb-6db4-490b-9e5e-17a1728efec1"
+            }
+          }
+        ],
+        "identifier": {
+          "assigner": {
+            "display": "HL7 Europe"
+          },
+          "system": "urn:oid:2.16.840.1.113883.2.51.999",
+          "value": "8eabb9c9-c53a-4677-9f22-deccdd1b02a3"
+        },
+        "author": [
+          {
+            "reference": "urn:uuid:1ced8301-8afb-4dad-9f9d-b913daf08e8d"
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "type": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ],
+          "text": "Laboratory Report"
+        },
+        "section": [
+          {
+            "code": {
+              "coding": [
+                {
+                  "code": "18719-5",
+                  "system": "http://loinc.org",
+                  "display": "Chemistry studies (set)"
+                }
+              ],
+              "text": "CHEM"
+            },
+            "entry": [
+              {
+                "reference": "urn:uuid:5879ac82-154e-4c27-8231-1449b603e8db"
+              }
+            ],
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>CHEM</h3><table class=\"hl7__eu__lab__report\"><thead><tr><th>Test</th><th>08-MAY-2023</th><th>Reference&#xA0;Range</th><th>Unit</th></tr></thead><tbody><tr><td></td><td>74.0</td><td>60 - 120</td><td>mL/min/{1.73_m2}</td></tr></tbody></table></div>"
+            },
+            "title": "CHEM"
+          },
+          {
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>Annotation</h3><table class=\"hl7__eu__lab__report\"><tr><th>Conclusion and Recommendations based on this report and previous findings known to us</th></tr><tr><td>The patient’s estimated glomerular filtration rate (eGFR) is within the normal range, indicating preserved kidney function. No laboratory evidence of renal impairment is present at this time. Continued routine monitoring is recommended.</td></tr></table></div>"
+            },
+            "code": {
+              "coding": [
+                {
+                  "code": "48767-8",
+                  "system": "http://loinc.org",
+                  "display": "Annotation comment [Interpretation] Narrative"
+                }
+              ]
+            },
+            "title": "Annotation comment"
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "final",
+        "subject": {
+          "reference": "urn:uuid:0f0397d0-dab7-4da1-8489-49ef2bbab7d8",
+          "display": "Dylan van Rossum"
+        },
+        "date": "2023-05-08T11:57:08Z",
+        "title": "Laboratory Report",
+        "confidentiality": "N"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:8a7056eb-6db4-490b-9e5e-17a1728efec1",
+      "resource": {
+        "resourceType": "DiagnosticReport",
+        "id": "8a7056eb-6db4-490b-9e5e-17a1728efec1",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/DiagnosticReport-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "8eabb9c9-c53a-4677-9f22-deccdd1b02a3"
+          },
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "83b39fa7-996d-4aff-a421-083ca2706ff5"
+          }
+        ],
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-DiagnosticReport.composition",
+            "valueReference": {
+              "reference": "urn:uuid:001f240e-8540-4b23-aa2a-576e02656bdf"
+            }
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:57c71fa7-bcee-4c67-934b-4d267f2b5a12"
+          }
+        ],
+        "result": [
+          {
+            "reference": "urn:uuid:5879ac82-154e-4c27-8231-1449b603e8db"
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "registered",
+        "code": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:0f0397d0-dab7-4da1-8489-49ef2bbab7d8",
+          "display": "Dylan van Rossum"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:0f0397d0-dab7-4da1-8489-49ef2bbab7d8",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "0f0397d0-dab7-4da1-8489-49ef2bbab7d8",
+        "meta": {
+          "security": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "HTEST"
+            },
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "TRAIN"
+            }
+          ],
+          "tag": [
+            {
+              "system": "https://synderai.net/fhir/CodeSystem/tags",
+              "code": "synthetic",
+              "display": "SYNDERAI Synthetic data"
+            }
+          ],
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/patient-eu-core"
+          ]
+        },
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "JHN",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://ec.europa.eu/identifier/eci",
+            "value": "4603-796394-2"
+          },
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "MR",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://local.setting.eu/identifier",
+            "value": "00594328-2147-cc35-f491-b2c6d4ad0f4d"
+          }
+        ],
+        "name": [
+          {
+            "given": [
+              "Dylan"
+            ],
+            "family": "van Rossum",
+            "text": "Dylan van Rossum"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "1e Tieflaarsestraat 31"
+            ],
+            "use": "home",
+            "type": "physical",
+            "postalCode": "4182 PC",
+            "city": "Neerijnen",
+            "country": "Netherlands"
+          }
+        ],
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "+31682 692089"
+          }
+        ],
+        "extension": [
+          {
+            "extension": [
+              {
+                "url": "code",
+                "valueCodeableConcept": {
+                  "coding": [
+                    {
+                      "code": "NL",
+                      "system": "urn:iso:std:iso:3166"
+                    }
+                  ]
+                }
+              }
+            ],
+            "url": "http://hl7.org/fhir/StructureDefinition/patient-nationality"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__ips\"><tr><td>Dylan van Rossum</td><td>male</td><td>05-Mar-1970</td></tr></table></div>"
+        },
+        "gender": "male",
+        "birthDate": "1970-03-05"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:d5876ae4-ccf0-4bd1-b7a0-5096b9069639",
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "d5876ae4-ccf0-4bd1-b7a0-5096b9069639",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/ServiceRequest-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "system": "http://example.org",
+            "value": "e7c9aa4f-8cae-476c-a0d9-b2bc616eca20"
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:57c71fa7-bcee-4c67-934b-4d267f2b5a12"
+          }
+        ],
+        "reasonCode": [
+          {
+            "coding": [
+              {
+                "code": "59621000",
+                "system": "http://snomed.info/sct",
+                "display": "Essential hypertension"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "237602007",
+                "system": "http://snomed.info/sct",
+                "display": "Metabolic syndrome X"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "13645005",
+                "system": "http://snomed.info/sct",
+                "display": "Chronic obstructive pulmonary disease"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "197927001",
+                "system": "http://snomed.info/sct",
+                "display": "Recurrent urinary tract infection"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "431855005",
+                "system": "http://snomed.info/sct",
+                "display": "Chronic kidney disease stage 1"
+              }
+            ]
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "active",
+        "intent": "order",
+        "code": {
+          "coding": [
+            {
+              "code": "108252007",
+              "system": "http://snomed.info/sct",
+              "display": "Laboratory procedure"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:0f0397d0-dab7-4da1-8489-49ef2bbab7d8",
+          "display": "Dylan van Rossum"
+        },
+        "requester": {
+          "reference": "urn:uuid:b37a30be-d1f7-4c41-a26a-bad783461e93"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:b37a30be-d1f7-4c41-a26a-bad783461e93",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "b37a30be-d1f7-4c41-a26a-bad783461e93",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Role Id: b37a30be-d1f7-4c41-a26a-bad783461e93</div>"
+        },
+        "organization": {
+          "reference": "urn:uuid:c331043f-bc33-4c29-b6ab-376c2dfd942a"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:c331043f-bc33-4c29-b6ab-376c2dfd942a",
+      "resource": {
+        "resourceType": "Organization",
+        "id": "c331043f-bc33-4c29-b6ab-376c2dfd942a",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/organization-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "fd67257c-ce0a-4688-8f95-56eae037beb7"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Groeneweg 44bis"
+            ],
+            "postalCode": "4191 SE",
+            "country": "Netherlands"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Organization: Huisartsenpraktijk Buurmalsen-Tricht</div>"
+        },
+        "name": "Huisartsenpraktijk Buurmalsen-Tricht"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:57c71fa7-bcee-4c67-934b-4d267f2b5a12",
+      "resource": {
+        "resourceType": "Specimen",
+        "id": "57c71fa7-bcee-4c67-934b-4d267f2b5a12",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Specimen-eu-lab"
+          ]
+        },
+        "collection": {
+          "collectedDateTime": "2023-05-08"
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Specimen</th><th>Collection Date</th></tr><tr><td>Blood specimen</td><td><span class=\"nb\">08-May-2023</span></td></tr></table></div>"
+        },
+        "type": {
+          "coding": [
+            {
+              "code": "119297000",
+              "system": "http://snomed.info/sct",
+              "display": "Blood specimen"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:5879ac82-154e-4c27-8231-1449b603e8db",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "5879ac82-154e-4c27-8231-1449b603e8db",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Observation-resultslab-eu-lab"
+          ]
+        },
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "laboratory",
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category"
+              }
+            ]
+          }
+        ],
+        "performer": [
+          {
+            "display": "The Central European Laboratory"
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "code": "98979-8",
+              "system": "http://loinc.org",
+              "display": "Glomerular filtration rate [Volume Rate/Area] in Serum, Plasma or Blood by Creatinine-based formula (CKD-EPI 2021)/1.73 sq M"
+            }
+          ],
+          "text": "Glomerular filtration rate [Volume Rate/Area] in Serum, Plasma or Blood by Creatinine-based formula (CKD-EPI 2021)/1.73 sq M"
+        },
+        "valueQuantity": {
+          "value": 74,
+          "unit": "mL/min/{1.73_m2}",
+          "code": "mL/min/{1.73_m2}",
+          "system": "http://unitsofmeasure.org"
+        },
+        "referenceRange": [
+          {
+            "low": {
+              "value": 60,
+              "code": "mL/min/{1.73_m2}",
+              "system": "http://unitsofmeasure.org"
+            },
+            "high": {
+              "value": 120,
+              "code": "mL/min/{1.73_m2}",
+              "system": "http://unitsofmeasure.org"
+            }
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Test</th><th>08-May-2023</th><th>Reference&#xA0;Range</th><th>Flag</th><th>Unit</th></tr><tr><td>Glomerular filtration rate [Volume Rate/Area] in Serum, Plasma or Blood by Creatinine-based formula (CKD-EPI 2021)/1.73 sq M</td><td>74.0</td><td>60 - 120</td><td></td><td>mL/min/{1.73_m2}</td></tr></table></div>"
+        },
+        "status": "final",
+        "effectiveDateTime": "2023-05-08T09:57:08Z",
+        "subject": {
+          "reference": "urn:uuid:0f0397d0-dab7-4da1-8489-49ef2bbab7d8",
+          "display": "Dylan van Rossum"
+        },
+        "specimen": {
+          "reference": "urn:uuid:57c71fa7-bcee-4c67-934b-4d267f2b5a12"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:8ad00343-731a-43f7-a5a2-ef9fbe66dcc6",
+      "resource": {
+        "resourceType": "Device",
+        "id": "8ad00343-731a-43f7-a5a2-ef9fbe66dcc6",
+        "deviceName": [
+          {
+            "name": "SYNDERAI Synthetic Generator",
+            "type": "manufacturer-name"
+          }
+        ],
+        "version": [
+          {
+            "value": "5.0"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">SYNDERAI Synthetic Generator v5.0</div>"
+        },
+        "status": "active",
+        "distinctIdentifier": "synderai-generator-50",
+        "manufacturer": "SYNDERAI Project"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:1136c697-99e7-4191-bff1-1c7969948a10",
+      "resource": {
+        "resourceType": "Provenance",
+        "id": "1136c697-99e7-4191-bff1-1c7969948a10",
+        "target": [
+          {
+            "reference": "urn:uuid:0f0397d0-dab7-4da1-8489-49ef2bbab7d8"
+          },
+          {
+            "reference": "urn:uuid:001f240e-8540-4b23-aa2a-576e02656bdf"
+          },
+          {
+            "reference": "urn:uuid:1ced8301-8afb-4dad-9f9d-b913daf08e8d"
+          },
+          {
+            "reference": "urn:uuid:bbf24867-2204-47c0-b5b9-3712a5022903"
+          },
+          {
+            "reference": "urn:uuid:b37a30be-d1f7-4c41-a26a-bad783461e93"
+          },
+          {
+            "reference": "urn:uuid:c331043f-bc33-4c29-b6ab-376c2dfd942a"
+          }
+        ],
+        "activity": {
+          "coding": [
+            {
+              "code": "CREATE",
+              "system": "http://terminology.hl7.org/CodeSystem/v3-DataOperation",
+              "display": "create"
+            }
+          ],
+          "text": "Synthetic Example Data Generation"
+        },
+        "policy": [
+          "https://synderai.net/synderai-synthetic-data-policy"
+        ],
+        "agent": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "author",
+                  "system": "http://terminology.hl7.org/CodeSystem/provenance-participant-type",
+                  "display": "Author"
+                }
+              ],
+              "text": "author"
+            },
+            "who": {
+              "reference": "urn:uuid:8ad00343-731a-43f7-a5a2-ef9fbe66dcc6"
+            }
+          }
+        ],
+        "reason": [
+          {
+            "coding": [
+              {
+                "code": "TRAIN",
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+                "display": "training"
+              }
+            ],
+            "text": "Interoperability Testing and Training (non-clinical use)"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provenance for SYNDERAI Synthetic Example Data Resource</div>"
+        },
+        "recorded": "2023-05-08T13:57:08Z"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:1ced8301-8afb-4dad-9f9d-b913daf08e8d",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "1ced8301-8afb-4dad-9f9d-b913daf08e8d",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory Role Id: 1ced8301-8afb-4dad-9f9d-b913daf08e8d</div>"
+        },
+        "practitioner": {
+          "reference": "urn:uuid:bbf24867-2204-47c0-b5b9-3712a5022903"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:bbf24867-2204-47c0-b5b9-3712a5022903",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "bbf24867-2204-47c0-b5b9-3712a5022903",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitioner-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "e2b968af-ac84-4c82-9b1b-44bebbea3e7f"
+          }
+        ],
+        "name": [
+          {
+            "prefix": [
+              "dr"
+            ],
+            "given": [
+              "Ex"
+            ],
+            "family": "Ample"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Laboratoire Central Européenne",
+              "Boulevard du Jardin Botanique 32"
+            ],
+            "postalCode": "1000",
+            "city": "Brussels",
+            "country": "Belgium"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory: Laboratoire Central Européenne, 1000 Brussels, Belgium</div>"
+        }
+      }
+    }
+  ],
+  "type": "document",
+  "timestamp": "2023-05-08T13:57:08Z"
+}

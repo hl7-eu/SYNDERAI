@@ -1,0 +1,724 @@
+{
+  "resourceType": "Bundle",
+  "id": "58e1bff3-47ac-420d-a162-416181dc320c",
+  "meta": {
+    "profile": [
+      "http://hl7.eu/fhir/laboratory/StructureDefinition/Bundle-eu-lab"
+    ]
+  },
+  "identifier": {
+    "assigner": {
+      "display": "HL7 Europe"
+    },
+    "system": "urn:oid:2.16.840.1.113883.2.51.999",
+    "value": "5fb18167-5eca-49b3-9d98-c80758f8c259"
+  },
+  "entry": [
+    {
+      "fullUrl": "urn:uuid:ada4120f-b8d0-4243-abb0-f5662a3d1819",
+      "resource": {
+        "resourceType": "Composition",
+        "id": "ada4120f-b8d0-4243-abb0-f5662a3d1819",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Composition-eu-lab"
+          ]
+        },
+        "extension": [
+          {
+            "url": "http://hl7.eu/fhir/extensions/StructureDefinition/composition-diagnosticReportReference",
+            "valueReference": {
+              "reference": "urn:uuid:adf91e4f-e6ee-46e5-a4f0-433423df3cd4"
+            }
+          }
+        ],
+        "identifier": {
+          "assigner": {
+            "display": "HL7 Europe"
+          },
+          "system": "urn:oid:2.16.840.1.113883.2.51.999",
+          "value": "5138128c-72dc-4c6a-8661-4f0d0b65a8a6"
+        },
+        "author": [
+          {
+            "reference": "urn:uuid:fabf3e0f-9f60-4c9f-bdbf-944fbf3e12f3"
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "type": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ],
+          "text": "Laboratory Report"
+        },
+        "section": [
+          {
+            "code": {
+              "coding": [
+                {
+                  "code": "18719-5",
+                  "system": "http://loinc.org",
+                  "display": "Chemistry studies (set)"
+                }
+              ],
+              "text": "CHEM"
+            },
+            "entry": [
+              {
+                "reference": "urn:uuid:6f6df746-c667-4d4f-858f-c5cc104a51fd"
+              }
+            ],
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>CHEM</h3><table class=\"hl7__eu__lab__report\"><thead><tr><th>Test</th><th>22-APR-2023</th><th>Reference&#xA0;Range</th><th>Unit</th></tr></thead><tbody><tr><td></td><td><strong>58.0 L</strong></td><td>59 - 59</td><td>mL/min/{1.73_m2}</td></tr></tbody></table></div>"
+            },
+            "title": "CHEM"
+          },
+          {
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>Annotation</h3><table class=\"hl7__eu__lab__report\"><tr><th>Conclusion and Recommendations based on this report and previous findings known to us:</th></tr><tr><td>The patient’s estimated glomerular filtration rate (eGFR) is slightly below the lower limit of normal, indicating mildly decreased kidney function (CKD stage 2-3a). Recommend monitoring renal function and assessing for risk factors or comorbidities that may contribute to chronic kidney disease.</td></tr></table></div>"
+            },
+            "code": {
+              "coding": [
+                {
+                  "code": "48767-8",
+                  "system": "http://loinc.org",
+                  "display": "Annotation comment [Interpretation] Narrative"
+                }
+              ]
+            },
+            "title": "Annotation comment"
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "final",
+        "subject": {
+          "reference": "urn:uuid:b9039077-6559-4eaf-86bc-03dc6910b405",
+          "display": "Bettina Barzini"
+        },
+        "date": "2023-04-22T18:44:32Z",
+        "title": "Laboratory Report",
+        "confidentiality": "N"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:adf91e4f-e6ee-46e5-a4f0-433423df3cd4",
+      "resource": {
+        "resourceType": "DiagnosticReport",
+        "id": "adf91e4f-e6ee-46e5-a4f0-433423df3cd4",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/DiagnosticReport-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "5138128c-72dc-4c6a-8661-4f0d0b65a8a6"
+          },
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "ce50ca69-4d46-402a-9eb1-d9aa5406d6ce"
+          }
+        ],
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-DiagnosticReport.composition",
+            "valueReference": {
+              "reference": "urn:uuid:ada4120f-b8d0-4243-abb0-f5662a3d1819"
+            }
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:48759ffb-88b2-4583-8238-e99aac03f290"
+          }
+        ],
+        "result": [
+          {
+            "reference": "urn:uuid:6f6df746-c667-4d4f-858f-c5cc104a51fd"
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "registered",
+        "code": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:b9039077-6559-4eaf-86bc-03dc6910b405",
+          "display": "Bettina Barzini"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:b9039077-6559-4eaf-86bc-03dc6910b405",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "b9039077-6559-4eaf-86bc-03dc6910b405",
+        "meta": {
+          "security": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "HTEST"
+            },
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "TRAIN"
+            }
+          ],
+          "tag": [
+            {
+              "system": "https://synderai.net/fhir/CodeSystem/tags",
+              "code": "synthetic",
+              "display": "SYNDERAI Synthetic data"
+            }
+          ],
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/patient-eu-core"
+          ]
+        },
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "JHN",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://ec.europa.eu/identifier/eci",
+            "value": "7700-405989-3"
+          },
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "MR",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://local.setting.eu/identifier",
+            "value": "1b41d797-4c46-e7da-95ed-21405f1c25d9"
+          }
+        ],
+        "name": [
+          {
+            "given": [
+              "Bettina"
+            ],
+            "family": "Barzini",
+            "text": "Bettina Barzini"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Incrocio Camillo, 35"
+            ],
+            "use": "home",
+            "type": "physical",
+            "postalCode": "55042",
+            "city": "Forte Dei Marmi",
+            "country": "Italy"
+          }
+        ],
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "+39 04212311896"
+          }
+        ],
+        "extension": [
+          {
+            "extension": [
+              {
+                "url": "code",
+                "valueCodeableConcept": {
+                  "coding": [
+                    {
+                      "code": "IT",
+                      "system": "urn:iso:std:iso:3166"
+                    }
+                  ]
+                }
+              }
+            ],
+            "url": "http://hl7.org/fhir/StructureDefinition/patient-nationality"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__ips\"><tr><td>Bettina Barzini</td><td>female</td><td>27-Nov-1955</td></tr></table></div>"
+        },
+        "gender": "female",
+        "birthDate": "1955-11-27"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:bade4f29-0b93-42d0-8cab-3b6ba2613f28",
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "bade4f29-0b93-42d0-8cab-3b6ba2613f28",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/ServiceRequest-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "system": "http://example.org",
+            "value": "ba53852e-bc7c-4115-8476-35c0eeab6e97"
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:48759ffb-88b2-4583-8238-e99aac03f290"
+          }
+        ],
+        "reasonCode": [
+          {
+            "coding": [
+              {
+                "code": "59621000",
+                "system": "http://snomed.info/sct",
+                "display": "Essential hypertension"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "237602007",
+                "system": "http://snomed.info/sct",
+                "display": "Metabolic syndrome X"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "78275009",
+                "system": "http://snomed.info/sct",
+                "display": "Obstructive sleep apnea syndrome"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "55822004",
+                "system": "http://snomed.info/sct",
+                "display": "Hyperlipidemia"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "700378005",
+                "system": "http://snomed.info/sct",
+                "display": "Chronic kidney disease stage 3A"
+              }
+            ]
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "active",
+        "intent": "order",
+        "code": {
+          "coding": [
+            {
+              "code": "108252007",
+              "system": "http://snomed.info/sct",
+              "display": "Laboratory procedure"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:b9039077-6559-4eaf-86bc-03dc6910b405",
+          "display": "Bettina Barzini"
+        },
+        "requester": {
+          "reference": "urn:uuid:72578deb-a494-4467-9a11-1446ec3f0cd8"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:72578deb-a494-4467-9a11-1446ec3f0cd8",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "72578deb-a494-4467-9a11-1446ec3f0cd8",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Role Id: 72578deb-a494-4467-9a11-1446ec3f0cd8</div>"
+        },
+        "organization": {
+          "reference": "urn:uuid:31c763ff-4707-4f03-8499-16c2d83aece6"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:31c763ff-4707-4f03-8499-16c2d83aece6",
+      "resource": {
+        "resourceType": "Organization",
+        "id": "31c763ff-4707-4f03-8499-16c2d83aece6",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/organization-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "3b7d67a1-2e1b-46a1-b3ef-99c330e6074a"
+          }
+        ],
+        "address": [
+          {
+            "city": "Forte dei Marmi",
+            "postalCode": "55042",
+            "country": "Italy"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Organization: San Camillo</div>"
+        },
+        "name": "San Camillo"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:48759ffb-88b2-4583-8238-e99aac03f290",
+      "resource": {
+        "resourceType": "Specimen",
+        "id": "48759ffb-88b2-4583-8238-e99aac03f290",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Specimen-eu-lab"
+          ]
+        },
+        "collection": {
+          "collectedDateTime": "2023-04-22"
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Specimen</th><th>Collection Date</th></tr><tr><td>Blood specimen</td><td><span class=\"nb\">22-Apr-2023</span></td></tr></table></div>"
+        },
+        "type": {
+          "coding": [
+            {
+              "code": "119297000",
+              "system": "http://snomed.info/sct",
+              "display": "Blood specimen"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:6f6df746-c667-4d4f-858f-c5cc104a51fd",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "6f6df746-c667-4d4f-858f-c5cc104a51fd",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Observation-resultslab-eu-lab"
+          ]
+        },
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "laboratory",
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category"
+              }
+            ]
+          }
+        ],
+        "performer": [
+          {
+            "display": "The Central European Laboratory"
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "code": "98979-8",
+              "system": "http://loinc.org",
+              "display": "Glomerular filtration rate [Volume Rate/Area] in Serum, Plasma or Blood by Creatinine-based formula (CKD-EPI 2021)/1.73 sq M"
+            }
+          ],
+          "text": "Glomerular filtration rate [Volume Rate/Area] in Serum, Plasma or Blood by Creatinine-based formula (CKD-EPI 2021)/1.73 sq M"
+        },
+        "valueQuantity": {
+          "value": 58,
+          "unit": "mL/min/{1.73_m2}",
+          "code": "mL/min/{1.73_m2}",
+          "system": "http://unitsofmeasure.org"
+        },
+        "referenceRange": [
+          {
+            "low": {
+              "value": 59,
+              "code": "mL/min/{1.73_m2}",
+              "system": "http://unitsofmeasure.org"
+            },
+            "high": {
+              "value": 59,
+              "code": "mL/min/{1.73_m2}",
+              "system": "http://unitsofmeasure.org"
+            }
+          }
+        ],
+        "interpretation": [
+          {
+            "coding": [
+              {
+                "code": "L",
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                "display": "Low"
+              }
+            ]
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Test</th><th>22-Apr-2023</th><th>Reference&#xA0;Range</th><th>Flag</th><th>Unit</th></tr><tr><td>Glomerular filtration rate [Volume Rate/Area] in Serum, Plasma or Blood by Creatinine-based formula (CKD-EPI 2021)/1.73 sq M</td><td>58.0</td><td>59 - 59</td><td>L</td><td>mL/min/{1.73_m2}</td></tr></table></div>"
+        },
+        "status": "final",
+        "effectiveDateTime": "2023-04-22T16:44:32Z",
+        "subject": {
+          "reference": "urn:uuid:b9039077-6559-4eaf-86bc-03dc6910b405",
+          "display": "Bettina Barzini"
+        },
+        "specimen": {
+          "reference": "urn:uuid:48759ffb-88b2-4583-8238-e99aac03f290"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:b3452fb3-87f6-4a51-90c1-6935bc1fb0c1",
+      "resource": {
+        "resourceType": "Device",
+        "id": "b3452fb3-87f6-4a51-90c1-6935bc1fb0c1",
+        "deviceName": [
+          {
+            "name": "SYNDERAI Synthetic Generator",
+            "type": "manufacturer-name"
+          }
+        ],
+        "version": [
+          {
+            "value": "5.0"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">SYNDERAI Synthetic Generator v5.0</div>"
+        },
+        "status": "active",
+        "distinctIdentifier": "synderai-generator-50",
+        "manufacturer": "SYNDERAI Project"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:c3c52937-a2e0-47f2-8afa-5b4022cc5adb",
+      "resource": {
+        "resourceType": "Provenance",
+        "id": "c3c52937-a2e0-47f2-8afa-5b4022cc5adb",
+        "target": [
+          {
+            "reference": "urn:uuid:b9039077-6559-4eaf-86bc-03dc6910b405"
+          },
+          {
+            "reference": "urn:uuid:ada4120f-b8d0-4243-abb0-f5662a3d1819"
+          },
+          {
+            "reference": "urn:uuid:fabf3e0f-9f60-4c9f-bdbf-944fbf3e12f3"
+          },
+          {
+            "reference": "urn:uuid:413dfa89-bc72-4f17-bba0-bc8f93ceca5f"
+          },
+          {
+            "reference": "urn:uuid:72578deb-a494-4467-9a11-1446ec3f0cd8"
+          },
+          {
+            "reference": "urn:uuid:31c763ff-4707-4f03-8499-16c2d83aece6"
+          }
+        ],
+        "activity": {
+          "coding": [
+            {
+              "code": "CREATE",
+              "system": "http://terminology.hl7.org/CodeSystem/v3-DataOperation",
+              "display": "create"
+            }
+          ],
+          "text": "Synthetic Example Data Generation"
+        },
+        "policy": [
+          "https://synderai.net/synderai-synthetic-data-policy"
+        ],
+        "agent": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "author",
+                  "system": "http://terminology.hl7.org/CodeSystem/provenance-participant-type",
+                  "display": "Author"
+                }
+              ],
+              "text": "author"
+            },
+            "who": {
+              "reference": "urn:uuid:b3452fb3-87f6-4a51-90c1-6935bc1fb0c1"
+            }
+          }
+        ],
+        "reason": [
+          {
+            "coding": [
+              {
+                "code": "TRAIN",
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+                "display": "training"
+              }
+            ],
+            "text": "Interoperability Testing and Training (non-clinical use)"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provenance for SYNDERAI Synthetic Example Data Resource</div>"
+        },
+        "recorded": "2023-04-22T20:44:32Z"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:fabf3e0f-9f60-4c9f-bdbf-944fbf3e12f3",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "fabf3e0f-9f60-4c9f-bdbf-944fbf3e12f3",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory Role Id: fabf3e0f-9f60-4c9f-bdbf-944fbf3e12f3</div>"
+        },
+        "practitioner": {
+          "reference": "urn:uuid:413dfa89-bc72-4f17-bba0-bc8f93ceca5f"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:413dfa89-bc72-4f17-bba0-bc8f93ceca5f",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "413dfa89-bc72-4f17-bba0-bc8f93ceca5f",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitioner-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "a431e0fe-1d39-4c92-af24-db9e7837362f"
+          }
+        ],
+        "name": [
+          {
+            "prefix": [
+              "dr"
+            ],
+            "given": [
+              "Ex"
+            ],
+            "family": "Ample"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Laboratoire Central Européenne",
+              "Boulevard du Jardin Botanique 32"
+            ],
+            "postalCode": "1000",
+            "city": "Brussels",
+            "country": "Belgium"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory: Laboratoire Central Européenne, 1000 Brussels, Belgium</div>"
+        }
+      }
+    }
+  ],
+  "type": "document",
+  "timestamp": "2023-04-22T20:44:32Z"
+}

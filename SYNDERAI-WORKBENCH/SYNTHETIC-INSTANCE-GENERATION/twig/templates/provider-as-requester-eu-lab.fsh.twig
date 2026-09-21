@@ -10,9 +10,9 @@
       2. Organization      — the organisation on behalf of which the request
                              is made.
 
-    A third instance (Practitioner) is defined in the template source but is
-    **commented out** and produces no output. See "Commented-out Practitioner"
-    section below.
+    There is no Practitioner instance. A third block used to emit one; it was
+    removed on 2026-09-11. See "Removed Practitioner block" below before
+    reinstating it.
 
   PROFILE CONFORMANCE
     PractitionerRole : PractitionerRoleEu   (EU lab profile variant; not EuCore)
@@ -31,36 +31,53 @@
     The Organization instance uses direct `{{ }}` interpolation and is NOT
     registered in the `twigit()` return array.
 
-  ⚠  ADDRESS VARIABLE MISMATCH
-    The Organisation's address sub-elements are gated on `provider.*` variables
-    rather than `requester.*` variables:
-      {% if provider.address is not empty %}  ← uses `provider`, not `requester`
-      {% if provider.city    is not empty %}
-      …
-    This appears to be a copy-paste carry-over from
-    provider-as-primarycarephysician-eps_fsh.twig. If the `provider` context
-    object is populated alongside `requester` in the calling PHP code this will
-    work, but may produce unexpected results or empty address blocks if only
-    `requester.*` is supplied. This should be reviewed and potentially changed
-    to `requester.address`, `requester.city`, etc. if a separate address is
-    needed for the requesting organisation.
+  ADDRESS VARIABLES — `provider.*` IS CORRECT HERE
+    The Organisation's address sub-elements read `provider.*`, not
+    `requester.*`. That is deliberate and it works: the caller passes
+    `$pdat->provider` alongside `$requester`, and `$pdat->provider` is the
+    primary-care FACILITY from getClosestProvider() — name, address, city,
+    postcode, country. Run 2 confirms it: all 230 requesting Organizations
+    carry an address.
 
-  COMMENTED-OUT PRACTITIONER BLOCK
-    A Practitioner instance block is present in the source but fully suppressed
-    by wrapping it in Twig block comments (`{ # … # }`). The block is split across
-    two separate comment segments due to the presence of an inner `{ # … # }` tag
-    (Twig comments cannot be nested — the inner tag terminates the first outer
-    comment, so a second outer comment is opened immediately to continue the
-    suppression through to the closing `# }`):
+    An earlier note here warned this "may produce empty address blocks". It
+    does not. What it does produce is a naming trap, and the removed
+    Practitioner block fell straight into it.
 
-      Segment 1: {# } … { # populate .text # }   ← closed by inner tag's # }
-      Segment 2: {# } … # }                      ← closes remainder of block
+  REMOVED PRACTITIONER BLOCK
+    Until 2026-09-11 this template ended with a third instance reading
+    `provider.instanceprovider`, `provider.providernameprefix` and the other
+    name fields.
 
-    The net effect is that the entire Practitioner block produces no output.
-    The commented-out block references `provider.*` variables (not `requester.*`)
-    and would need variable-name alignment before activation.
-    To reinstate the Practitioner instance, remove the outer comment delimiters
-    and verify all variable references.
+    The old header claimed that block was commented out and produced no
+    output, and described a two-segment comment construction keeping it
+    suppressed. None of that was true: the opening comment tag closed before
+    the `Instance:` line, so the block was live code and rendered into every
+    file. (Deliberately not spelled out here — writing a closing comment tag
+    inside a comment ends it, which is the same trap.)
+
+    It rendered empty. Those `provider.*` fields are assigned in
+    synderai-v7.php inside `if ($thisartifact === "EPS")`, so the LAB path
+    never has them. The output was an instance literally named
+    `Instance-Practitioner-` with every field an empty string — one per file,
+    which SUSHI rejected as an invalid id once and as a duplicate name 518
+    times in run 1 (520 errors, issue #108).
+
+    BEFORE REINSTATING IT, two independent blockers:
+      1. The LAB path supplies no requesting clinician. `$pdat->provider` is a
+         facility, not a person. The EPS path enriches it with a nearest-
+         practitioner lookup; the LAB path does not.
+      2. bundle-lab-report-eu.fsh.twig has no `entry[practitioner]` slice for
+         the requester — only for the laboratory
+         (`laboratory.instancepractitioner`). A requester Practitioner would
+         be unreferenced in the bundle even if populated.
+    Neither the role nor the bundle referenced it, which is why removing it
+    changes no reference anywhere.
+
+    A requesting clinician is legitimate FHIR — `PractitionerRole.practitioner`
+    is 0..1, so a role with only an organization is conformant, and so would a
+    role with both. If the LAB path ever gains a named requester: emit the
+    Practitioner, reference it from the role, AND add the bundle slice. All
+    three, or none.
 
   NO HTML OUTPUT
     Both %%HEAD%% and %%HTML%% sections are intentionally left empty.
@@ -83,12 +100,12 @@
   │                                  │          │ HL7EUROPEEXAMPLESOID).                   │
   │ requester.orgname                │ string   │ Display name of the requesting           │
   │                                  │          │ organisation.                            │
-  │ provider.address                 │ string?  │ Optional address line — note: address    │
-  │                                  │          │ fields use `provider.*` not `requester.*`│
-  │                                  │          │ (see Address Variable Mismatch above).   │
-  │ provider.city                    │ string?  │ Optional city name (same note).          │
-  │ provider.postcode                │ string?  │ Optional postal code (same note).        │
-  │ provider.country                 │ string?  │ Optional country (same note).            │
+  │ provider.address                 │ string?  │ Street address of the requesting         │
+  │                                  │          │ FACILITY, not of a person. By design —   │
+  │                                  │          │ see "Address variables" above.           │
+  │ provider.city                    │ string?  │ City of the requesting facility.         │
+  │ provider.postcode                │ string?  │ Postal code of the requesting facility.  │
+  │ provider.country                 │ string?  │ Country of the requesting facility.      │
   └──────────────────────────────────┴──────────┴──────────────────────────────────────────┘
 
   GLOBAL VARIABLES USED
@@ -96,6 +113,8 @@
 
   AUTHOR   KH
   SINCE    2025-09-07
+  CHANGED  2026-09-11 — removed the Practitioner block (#108); corrected the
+           header, which described that block as commented out when it was not
   ============================================================================
 #}
 
@@ -103,8 +122,9 @@
 
 {#
   ── Instance 1: PractitionerRole ────────────────────────────────────────────
-  The requester's role, linked to their organisation. No Practitioner reference
-  is included (the Practitioner instance is commented out; see file header).
+  The requester's role, linked to their organisation. No `practitioner`
+  element: the LAB path has no requesting clinician, only a facility.
+  PractitionerRole.practitioner is 0..1, so this is conformant.
   Registered via setInstance() — the only tracked instance in this template.
 #}
 Instance: {{ setInstance("Instance-PractitionerRole-" ~ requester.instancerole) }}
@@ -129,9 +149,8 @@ Provider Role Id: {{ requester.instancerole }}
   UUID) under the HL7 Europe OID namespace.
   Note: Instance id interpolated directly — NOT registered via setInstance().
 
-  ⚠ Address fields use `provider.*` variables — see "Address Variable Mismatch"
-    in the file header. Verify the calling context populates `provider.*` as
-    expected, or update to `requester.*` if separate address data is required.
+  Address fields read `provider.*` by design — `$pdat->provider` is the
+  requesting facility. See "Address variables" in the file header.
 #}
 Instance: Instance-Organization-{{ requester.instanceorg }}
 InstanceOf: OrganizationEu
@@ -147,7 +166,7 @@ Usage: #inline
 
 * name = "{{ requester.orgname }}"
 
-{# ⚠ Address gated on provider.* — see Address Variable Mismatch note #}
+{# Address comes from $pdat->provider, the requesting facility #}
 {% if provider.address is not empty %}
 * address.line = "{{ provider.address }}"
 {% endif %}
@@ -170,25 +189,11 @@ Provider Organization: {{ requester.orgname }}
 """
 
 {#
-  ── Instance 3: Practitioner (COMMENTED OUT) ────────────────────────────────
-  The block generates a PractitionerEu instance for the requesting physician.
+  ── No third instance ───────────────────────────────────────────────────────
+  A Practitioner block stood here until 2026-09-11 and rendered empty into
+  every file. See "Removed Practitioner block" in the file header for why it
+  is gone and what would have to change before one belongs here again.
 #}
-Instance: {{ setInstance("Instance-Practitioner-" ~ provider.instanceprovider) }}
-InstanceOf: PractitionerEu
-Title: "Practitioner Requester"
-Description: "Practitioner Requester"
-Usage: #inline
-* id = "{{ provider.instanceprovider }}"
-* name.prefix = "{{ provider.providernameprefix }}"
-* name.given[+] = "{{ provider.providernamegiven }}"
-* name.family = "{{ provider.providernamefamily }}"
-{# populate .text #}
-* text.status = #generated
-* text.div = """
-<div xmlns="http://www.w3.org/1999/xhtml">
-<table class="hl7__ips">{{ provider.providernameprefix ~ " " ~ provider.providernamegiven ~ " " ~ provider.providernamefamily }}</table>
-</div>
-"""
 
 %%HEAD%% {# ── Section marker required by the FSH pre-processor ─────────────── #}
 {# No HEAD output — this template produces no HTML table. #}

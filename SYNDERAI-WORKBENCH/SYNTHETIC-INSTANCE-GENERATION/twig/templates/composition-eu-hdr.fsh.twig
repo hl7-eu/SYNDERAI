@@ -144,6 +144,13 @@ Usage: #inline
 
 * subject = Reference(urn:uuid:{{ patient.instanceid }}) "{{ patient.name }}"
 
+{#
+  CompositionEuHdr requires encounter 1..1 — the hospital stay this report
+  documents. The Encounter instance is already in the bundle under
+  entry[encounter]; this is the Composition's reference to it.
+#}
+* encounter = Reference(urn:uuid:{{ encounter.instanceid }})
+
 {# Author: PractitionerRole (same variable as EPS) #}
 * author[+] = Reference(urn:uuid:{{ provider.instancerole }})
 

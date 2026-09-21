@@ -1,0 +1,752 @@
+{
+  "resourceType": "Bundle",
+  "id": "f9035e01-491c-4b09-a1fc-66746c87aae0",
+  "meta": {
+    "profile": [
+      "http://hl7.eu/fhir/laboratory/StructureDefinition/Bundle-eu-lab"
+    ]
+  },
+  "identifier": {
+    "assigner": {
+      "display": "HL7 Europe"
+    },
+    "system": "urn:oid:2.16.840.1.113883.2.51.999",
+    "value": "c89bfffa-7210-4c6f-b013-27586c3fa269"
+  },
+  "entry": [
+    {
+      "fullUrl": "urn:uuid:aeabf60b-7117-461a-b523-8bf94e3bdd78",
+      "resource": {
+        "resourceType": "Composition",
+        "id": "aeabf60b-7117-461a-b523-8bf94e3bdd78",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Composition-eu-lab"
+          ]
+        },
+        "extension": [
+          {
+            "url": "http://hl7.eu/fhir/extensions/StructureDefinition/composition-diagnosticReportReference",
+            "valueReference": {
+              "reference": "urn:uuid:9ec62153-3bd4-4fc6-acd0-bdfc1b30c9ac"
+            }
+          }
+        ],
+        "identifier": {
+          "assigner": {
+            "display": "HL7 Europe"
+          },
+          "system": "urn:oid:2.16.840.1.113883.2.51.999",
+          "value": "d455c50f-a9a3-495b-9b78-ae1176448292"
+        },
+        "author": [
+          {
+            "reference": "urn:uuid:ac8ad9ab-30d3-4483-b58f-60c854988fdd"
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "type": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ],
+          "text": "Laboratory Report"
+        },
+        "section": [
+          {
+            "code": {
+              "coding": [
+                {
+                  "code": "18719-5",
+                  "system": "http://loinc.org",
+                  "display": "Chemistry studies (set)"
+                }
+              ],
+              "text": "CHEM"
+            },
+            "entry": [
+              {
+                "reference": "urn:uuid:5de07f12-d8cf-456e-b43d-07d8cf17b626"
+              }
+            ],
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>CHEM</h3><table class=\"hl7__eu__lab__report\"><thead><tr><th>Test</th><th>11-SEP-2023</th><th>Reference&#xA0;Range</th><th>Unit</th></tr></thead><tbody><tr><td></td><td>63.0</td><td>60 - 89</td><td>mL/min/{1.73_m2}</td></tr></tbody></table></div>"
+            },
+            "title": "CHEM"
+          },
+          {
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>Annotation</h3><table class=\"hl7__eu__lab__report\"><tr><th>Conclusion and Recommendations based on this report and previous findings known to us:</th></tr><tr><td>The patient’s estimated glomerular filtration rate (eGFR) is mildly decreased, consistent with stage 2 chronic kidney disease, which may be age-related. No acute kidney injury is indicated. Recommend monitoring renal function and considering comorbidities and medications that may impact kidney health.</td></tr></table></div>"
+            },
+            "code": {
+              "coding": [
+                {
+                  "code": "48767-8",
+                  "system": "http://loinc.org",
+                  "display": "Annotation comment [Interpretation] Narrative"
+                }
+              ]
+            },
+            "title": "Annotation comment"
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "final",
+        "subject": {
+          "reference": "urn:uuid:77bdd8fa-5e24-4150-b4e0-e10013358d90",
+          "display": "Osvaldo Zaguri"
+        },
+        "date": "2023-09-11T04:53:31Z",
+        "title": "Laboratory Report",
+        "confidentiality": "N"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:9ec62153-3bd4-4fc6-acd0-bdfc1b30c9ac",
+      "resource": {
+        "resourceType": "DiagnosticReport",
+        "id": "9ec62153-3bd4-4fc6-acd0-bdfc1b30c9ac",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/DiagnosticReport-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "d455c50f-a9a3-495b-9b78-ae1176448292"
+          },
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "4e062813-7d52-427b-a972-3004f707a9b9"
+          }
+        ],
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-DiagnosticReport.composition",
+            "valueReference": {
+              "reference": "urn:uuid:aeabf60b-7117-461a-b523-8bf94e3bdd78"
+            }
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:4c60303d-6872-44af-8eae-d7837a4793e4"
+          }
+        ],
+        "result": [
+          {
+            "reference": "urn:uuid:5de07f12-d8cf-456e-b43d-07d8cf17b626"
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "registered",
+        "code": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:77bdd8fa-5e24-4150-b4e0-e10013358d90",
+          "display": "Osvaldo Zaguri"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:77bdd8fa-5e24-4150-b4e0-e10013358d90",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "77bdd8fa-5e24-4150-b4e0-e10013358d90",
+        "meta": {
+          "security": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "HTEST"
+            },
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "TRAIN"
+            }
+          ],
+          "tag": [
+            {
+              "system": "https://synderai.net/fhir/CodeSystem/tags",
+              "code": "synthetic",
+              "display": "SYNDERAI Synthetic data"
+            }
+          ],
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/patient-eu-core"
+          ]
+        },
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "JHN",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://ec.europa.eu/identifier/eci",
+            "value": "4744-190874-7"
+          },
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "MR",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://local.setting.eu/identifier",
+            "value": "8ef6c589-154b-1e07-76af-50090fe8860f"
+          }
+        ],
+        "name": [
+          {
+            "given": [
+              "Osvaldo"
+            ],
+            "family": "Zaguri",
+            "text": "Osvaldo Zaguri"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Rotonda Bulzoni, 15"
+            ],
+            "use": "home",
+            "type": "physical",
+            "postalCode": "74024",
+            "city": "Le Cozze",
+            "country": "Italy"
+          }
+        ],
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "+39 0544419529"
+          }
+        ],
+        "extension": [
+          {
+            "extension": [
+              {
+                "url": "code",
+                "valueCodeableConcept": {
+                  "coding": [
+                    {
+                      "code": "IT",
+                      "system": "urn:iso:std:iso:3166"
+                    }
+                  ]
+                }
+              }
+            ],
+            "url": "http://hl7.org/fhir/StructureDefinition/patient-nationality"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__ips\"><tr><td>Osvaldo Zaguri</td><td>male</td><td>18-Oct-1943</td></tr></table></div>"
+        },
+        "gender": "male",
+        "birthDate": "1943-10-18"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:4a5e4286-29de-4dc6-a416-6816ec2d6310",
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "4a5e4286-29de-4dc6-a416-6816ec2d6310",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/ServiceRequest-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "system": "http://example.org",
+            "value": "2152cee5-8dfb-4223-8b77-c6a69ced1a59"
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:4c60303d-6872-44af-8eae-d7837a4793e4"
+          }
+        ],
+        "reasonCode": [
+          {
+            "coding": [
+              {
+                "code": "371631005",
+                "system": "http://snomed.info/sct",
+                "display": "Panic disorder"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "55822004",
+                "system": "http://snomed.info/sct",
+                "display": "Hyperlipidemia"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "13645005",
+                "system": "http://snomed.info/sct",
+                "display": "Chronic obstructive pulmonary disease"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "59621000",
+                "system": "http://snomed.info/sct",
+                "display": "Essential hypertension"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "237602007",
+                "system": "http://snomed.info/sct",
+                "display": "Metabolic syndrome X"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "64859006",
+                "system": "http://snomed.info/sct",
+                "display": "Osteoporosis"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "201834006",
+                "system": "http://snomed.info/sct",
+                "display": "Localized, primary osteoarthritis of the hand"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "431856006",
+                "system": "http://snomed.info/sct",
+                "display": "Chronic kidney disease stage 2"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "126906006",
+                "system": "http://snomed.info/sct",
+                "display": "Neoplasm of prostate"
+              }
+            ]
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "active",
+        "intent": "order",
+        "code": {
+          "coding": [
+            {
+              "code": "108252007",
+              "system": "http://snomed.info/sct",
+              "display": "Laboratory procedure"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:77bdd8fa-5e24-4150-b4e0-e10013358d90",
+          "display": "Osvaldo Zaguri"
+        },
+        "requester": {
+          "reference": "urn:uuid:04853b68-7bf5-41ea-b7b0-c52618c2bc30"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:04853b68-7bf5-41ea-b7b0-c52618c2bc30",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "04853b68-7bf5-41ea-b7b0-c52618c2bc30",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Role Id: 04853b68-7bf5-41ea-b7b0-c52618c2bc30</div>"
+        },
+        "organization": {
+          "reference": "urn:uuid:d659dcf7-9c1d-4126-a726-1c294ad86637"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:d659dcf7-9c1d-4126-a726-1c294ad86637",
+      "resource": {
+        "resourceType": "Organization",
+        "id": "d659dcf7-9c1d-4126-a726-1c294ad86637",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/organization-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "63c336b0-6ce3-4040-a1ce-8d27c96375bf"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Via Consolazione 12"
+            ],
+            "city": "Brindisi",
+            "postalCode": "72100",
+            "country": "Italy"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Organization: Ospedale Di Summa</div>"
+        },
+        "name": "Ospedale Di Summa"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:4c60303d-6872-44af-8eae-d7837a4793e4",
+      "resource": {
+        "resourceType": "Specimen",
+        "id": "4c60303d-6872-44af-8eae-d7837a4793e4",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Specimen-eu-lab"
+          ]
+        },
+        "collection": {
+          "collectedDateTime": "2023-09-11"
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Specimen</th><th>Collection Date</th></tr><tr><td>Blood specimen</td><td><span class=\"nb\">11-Sep-2023</span></td></tr></table></div>"
+        },
+        "type": {
+          "coding": [
+            {
+              "code": "119297000",
+              "system": "http://snomed.info/sct",
+              "display": "Blood specimen"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:5de07f12-d8cf-456e-b43d-07d8cf17b626",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "5de07f12-d8cf-456e-b43d-07d8cf17b626",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Observation-resultslab-eu-lab"
+          ]
+        },
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "laboratory",
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category"
+              }
+            ]
+          }
+        ],
+        "performer": [
+          {
+            "display": "The Central European Laboratory"
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "code": "98979-8",
+              "system": "http://loinc.org",
+              "display": "Glomerular filtration rate [Volume Rate/Area] in Serum, Plasma or Blood by Creatinine-based formula (CKD-EPI 2021)/1.73 sq M"
+            }
+          ],
+          "text": "Glomerular filtration rate [Volume Rate/Area] in Serum, Plasma or Blood by Creatinine-based formula (CKD-EPI 2021)/1.73 sq M"
+        },
+        "valueQuantity": {
+          "value": 63,
+          "unit": "mL/min/{1.73_m2}",
+          "code": "mL/min/{1.73_m2}",
+          "system": "http://unitsofmeasure.org"
+        },
+        "referenceRange": [
+          {
+            "low": {
+              "value": 60,
+              "code": "mL/min/{1.73_m2}",
+              "system": "http://unitsofmeasure.org"
+            },
+            "high": {
+              "value": 89,
+              "code": "mL/min/{1.73_m2}",
+              "system": "http://unitsofmeasure.org"
+            }
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Test</th><th>11-Sep-2023</th><th>Reference&#xA0;Range</th><th>Flag</th><th>Unit</th></tr><tr><td>Glomerular filtration rate [Volume Rate/Area] in Serum, Plasma or Blood by Creatinine-based formula (CKD-EPI 2021)/1.73 sq M</td><td>63.0</td><td>60 - 89</td><td></td><td>mL/min/{1.73_m2}</td></tr></table></div>"
+        },
+        "status": "final",
+        "effectiveDateTime": "2023-09-11T02:53:31Z",
+        "subject": {
+          "reference": "urn:uuid:77bdd8fa-5e24-4150-b4e0-e10013358d90",
+          "display": "Osvaldo Zaguri"
+        },
+        "specimen": {
+          "reference": "urn:uuid:4c60303d-6872-44af-8eae-d7837a4793e4"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:e745d028-cc2b-45cf-86ec-b7c4e053695e",
+      "resource": {
+        "resourceType": "Device",
+        "id": "e745d028-cc2b-45cf-86ec-b7c4e053695e",
+        "deviceName": [
+          {
+            "name": "SYNDERAI Synthetic Generator",
+            "type": "manufacturer-name"
+          }
+        ],
+        "version": [
+          {
+            "value": "5.0"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">SYNDERAI Synthetic Generator v5.0</div>"
+        },
+        "status": "active",
+        "distinctIdentifier": "synderai-generator-50",
+        "manufacturer": "SYNDERAI Project"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:8ebe46b1-a225-41c5-b526-d16a92f6278f",
+      "resource": {
+        "resourceType": "Provenance",
+        "id": "8ebe46b1-a225-41c5-b526-d16a92f6278f",
+        "target": [
+          {
+            "reference": "urn:uuid:77bdd8fa-5e24-4150-b4e0-e10013358d90"
+          },
+          {
+            "reference": "urn:uuid:aeabf60b-7117-461a-b523-8bf94e3bdd78"
+          },
+          {
+            "reference": "urn:uuid:ac8ad9ab-30d3-4483-b58f-60c854988fdd"
+          },
+          {
+            "reference": "urn:uuid:1190ece2-5840-44c9-9797-50984ba1ec40"
+          },
+          {
+            "reference": "urn:uuid:04853b68-7bf5-41ea-b7b0-c52618c2bc30"
+          },
+          {
+            "reference": "urn:uuid:d659dcf7-9c1d-4126-a726-1c294ad86637"
+          }
+        ],
+        "activity": {
+          "coding": [
+            {
+              "code": "CREATE",
+              "system": "http://terminology.hl7.org/CodeSystem/v3-DataOperation",
+              "display": "create"
+            }
+          ],
+          "text": "Synthetic Example Data Generation"
+        },
+        "policy": [
+          "https://synderai.net/synderai-synthetic-data-policy"
+        ],
+        "agent": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "author",
+                  "system": "http://terminology.hl7.org/CodeSystem/provenance-participant-type",
+                  "display": "Author"
+                }
+              ],
+              "text": "author"
+            },
+            "who": {
+              "reference": "urn:uuid:e745d028-cc2b-45cf-86ec-b7c4e053695e"
+            }
+          }
+        ],
+        "reason": [
+          {
+            "coding": [
+              {
+                "code": "TRAIN",
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+                "display": "training"
+              }
+            ],
+            "text": "Interoperability Testing and Training (non-clinical use)"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provenance for SYNDERAI Synthetic Example Data Resource</div>"
+        },
+        "recorded": "2023-09-11T06:53:31Z"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:ac8ad9ab-30d3-4483-b58f-60c854988fdd",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "ac8ad9ab-30d3-4483-b58f-60c854988fdd",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory Role Id: ac8ad9ab-30d3-4483-b58f-60c854988fdd</div>"
+        },
+        "practitioner": {
+          "reference": "urn:uuid:1190ece2-5840-44c9-9797-50984ba1ec40"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:1190ece2-5840-44c9-9797-50984ba1ec40",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "1190ece2-5840-44c9-9797-50984ba1ec40",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitioner-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "b856b192-c256-402b-a1d4-6c62e352e76d"
+          }
+        ],
+        "name": [
+          {
+            "prefix": [
+              "dr"
+            ],
+            "given": [
+              "Ex"
+            ],
+            "family": "Ample"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Laboratoire Central Européenne",
+              "Boulevard du Jardin Botanique 32"
+            ],
+            "postalCode": "1000",
+            "city": "Brussels",
+            "country": "Belgium"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory: Laboratoire Central Européenne, 1000 Brussels, Belgium</div>"
+        }
+      }
+    }
+  ],
+  "type": "document",
+  "timestamp": "2023-09-11T06:53:31Z"
+}

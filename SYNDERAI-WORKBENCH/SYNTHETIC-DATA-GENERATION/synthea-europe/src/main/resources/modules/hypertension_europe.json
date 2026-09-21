@@ -274,26 +274,58 @@
       "direct_transition": "Record_Blood_Pressure"
     },
     "Record_Blood_Pressure": {
-      "type": "Observation",
+      "type": "MultiObservation",
       "remarks": [
-        "Systolic BP observation at diagnosis.",
-        "ESC/ESH Grade 1 hypertension: 140–159 / 90–99 mmHg.",
+        "Blood pressure at diagnosis, recorded as a panel with both components.",
+        "ESC/ESH Grade 1 hypertension: 140-159 / 90-99 mmHg; Grade 2: 160-179 / 100-109.",
         "European threshold for treatment initiation: >= 140/90 (ESC/ESH 2018).",
-        "LOINC 8480-6: Systolic blood pressure."
+        "The systolic range 140-175 spans Grade 1 into Grade 2, so the diastolic",
+        "range spans the same two grades.",
+        "LOINC 85354-9 panel with 8480-6 systolic and 8462-4 diastolic.",
+        "Was a lone 8480-6 Observation with the non-UCUM unit 'mmHg' and no",
+        "diastolic component at all - see issue on orphaned systolic readings."
       ],
       "category": "vital-signs",
-      "unit": "mmHg",
+      "number_of_observations": 2,
       "codes": [
         {
           "system": "LOINC",
-          "code": "8480-6",
-          "display": "Systolic Blood Pressure"
+          "code": "85354-9",
+          "display": "Blood pressure panel with all children optional"
         }
       ],
-      "range": {
-        "low": 140,
-        "high": 175
-      },
+      "observations": [
+        {
+          "category": "vital-signs",
+          "unit": "mm[Hg]",
+          "codes": [
+            {
+              "system": "LOINC",
+              "code": "8480-6",
+              "display": "Systolic Blood Pressure"
+            }
+          ],
+          "range": {
+            "low": 140,
+            "high": 175
+          }
+        },
+        {
+          "category": "vital-signs",
+          "unit": "mm[Hg]",
+          "codes": [
+            {
+              "system": "LOINC",
+              "code": "8462-4",
+              "display": "Diastolic Blood Pressure"
+            }
+          ],
+          "range": {
+            "low": 90,
+            "high": 109
+          }
+        }
+      ],
       "direct_transition": "Lifestyle_Advice"
     },
     "Lifestyle_Advice": {
@@ -446,21 +478,20 @@
       "direct_transition": "Check_BP_Control"
     },
     "Check_BP_Control": {
-      "type": "Observation",
+      "type": "Simple",
       "remarks": [
-        "Follow-up blood pressure measurement.",
-        "ESC/ESH target: < 130/80 mmHg if tolerated; strict minimum < 140/90.",
-        "European BP control rates: ~45-55% achieve target (EURIKA Study 2011).",
-        "LOINC 55284-4: Blood pressure panel."
-      ],
-      "category": "vital-signs",
-      "unit": "mmHg",
-      "codes": [
-        {
-          "system": "LOINC",
-          "code": "55284-4",
-          "display": "Blood pressure systolic and diastolic"
-        }
+        "Branch point for the follow-up blood pressure result.",
+        "This was an Observation state coded 55284-4 'Blood pressure systolic and",
+        "diastolic' with no value source - no range, no exact, no vital_sign - so it",
+        "recorded nothing at all: the generated corpus contains zero 55284-4 rows.",
+        "55284-4 is a panel code and was used here as a scalar besides.",
+        "A single Observation state cannot carry branch-dependent values anyway,",
+        "because it records before the transition is taken. The measurement",
+        "therefore belongs in the outcome states, which is where BP_Controlled",
+        "already records it.",
+        "OPEN: Intensify_Therapy and Add_Second_Agent still record no blood",
+        "pressure, so only the controlled arm produces a reading at follow-up.",
+        "European BP control rates: ~45-55% achieve target (EURIKA Study 2011)."
       ],
       "distributed_transition": [
         {
@@ -481,20 +512,54 @@
       ]
     },
     "BP_Controlled": {
-      "type": "Observation",
+      "type": "MultiObservation",
+      "remarks": [
+        "Blood pressure at follow-up in the controlled arm.",
+        "ESC/ESH target: < 130/80 if tolerated; strict minimum < 140/90.",
+        "Diastolic 75-89 is the parallel range to systolic 120-139.",
+        "Was a lone 8480-6 Observation with the non-UCUM unit 'mmHg'."
+      ],
       "category": "vital-signs",
-      "unit": "mmHg",
+      "number_of_observations": 2,
       "codes": [
         {
           "system": "LOINC",
-          "code": "8480-6",
-          "display": "Systolic Blood Pressure"
+          "code": "85354-9",
+          "display": "Blood pressure panel with all children optional"
         }
       ],
-      "range": {
-        "low": 120,
-        "high": 139
-      },
+      "observations": [
+        {
+          "category": "vital-signs",
+          "unit": "mm[Hg]",
+          "codes": [
+            {
+              "system": "LOINC",
+              "code": "8480-6",
+              "display": "Systolic Blood Pressure"
+            }
+          ],
+          "range": {
+            "low": 120,
+            "high": 139
+          }
+        },
+        {
+          "category": "vital-signs",
+          "unit": "mm[Hg]",
+          "codes": [
+            {
+              "system": "LOINC",
+              "code": "8462-4",
+              "display": "Diastolic Blood Pressure"
+            }
+          ],
+          "range": {
+            "low": 75,
+            "high": 89
+          }
+        }
+      ],
       "direct_transition": "End_Followup_Encounter"
     },
     "Intensify_Therapy": {

@@ -209,6 +209,7 @@ include_once("lib/snomed.php");
 include_once("lib/loinc.php");
 include_once("lib/atc.php");
 include_once("lib/ish-parser.php");
+include_once("lib/hdr-vitalsigns.php");
 include_once("lib/clinical-story-matcher.php");
 include_once("lib/bsn.php");
 include_once("lib/filter-and-adapt-conditions.php");
@@ -1055,12 +1056,43 @@ foreach ($PATIENTS as $pdat) {
                         $theProcedureLines = trim(after("%%PROCEDURES%%", before_last("%%PROCEDURES%%", $tmp["text"])));
                         $theProcedures = array();
                         foreach (explode("\n", $theProcedureLines) as $line) {
+                            $line = trim($line);
+                            if ($line === "") continue;
                             $items = explode("|", $line);
+                            // getAIHospitalCourse() validates every line before it
+                            // returns, so five fields is what arrives. Checking
+                            // anyway costs nothing and turns a format change into
+                            // a log line instead of "Undefined array key 4".
+                            if (count($items) !== 5) {
+                                registerMapMissing("+++ Procedure line has " . count($items)
+                                    . " fields instead of 5: " . substr($line, 0, 80));
+                                continue;
+                            }
                             // correct the codes if needed
                             $snomed = trim($items[3]);
-                            $snomedproperties = get_SNOMED_properties($snomed, trim($items[4]));
-                            if ($snomedproperties["code"] !== $snomed) $snomed = $snomedproperties["code"]; // this is a replacement
-                            $snomeddisplay = strlen($snomedproperties["fullySpecifiedName"]) > 0 ? $snomedproperties["fullySpecifiedName"] : $snomeddisplay;
+                            // The display comes from the procedure value set, not
+                            // from the model and not from a variable that was read
+                            // before it was ever assigned - which is what stood
+                            // here and left the first procedure of every stay with
+                            // an empty display.
+                            $snomeddisplay = procedureDisplay($snomed) ?? trim($items[4]);
+                            $snomedproperties = get_SNOMED_properties($snomed, $snomeddisplay);
+                            if ($snomedproperties["code"] !== $snomed) {
+                                // An inactive concept was replaced. The replacement
+                                // is a different concept and has to clear the same
+                                // gate, otherwise a retired procedure is swapped for
+                                // something that is not a procedure at all.
+                                $replacement = $snomedproperties["code"];
+                                if (strlen($replacement) > 0 && !procedureIsKnown($replacement)) {
+                                    registerMapMissing("+++ SNOMED replacement $replacement for $snomed "
+                                        . "is not in " . PROCEDURE_VALUESET . ", procedure dropped");
+                                    continue;
+                                }
+                                $snomed = $replacement;
+                                $snomeddisplay = procedureDisplay($snomed) ?? $snomeddisplay;
+                            }
+                            if (strlen($snomedproperties["fullySpecifiedName"]) > 0)
+                                $snomeddisplay = $snomedproperties["fullySpecifiedName"];
                             if (strlen($snomed) > 0)
                                 $theProcedures[] = [
                                     "type" => trim($items[0]),
@@ -1238,41 +1270,45 @@ foreach ($PATIENTS as $pdat) {
                     ];    
                 }
             }
-            $thisencountervitalsigns = array();
-            // get the recent vitals from within the stay
-            $lastdayofstay = NULL;  // not yet known
+            // ----------------------------------------------------------------
+            // Vital signs for this stay.
+            //
+            // Collect every reading whose encounter belongs to the stay, then
+            // hand the lot to hdrSelectVitalSigns() in lib/hdr-vitalsigns.php,
+            // which applies what the HDR profile asks of sectionVitalSigns:
+            // only the codes that section is for, and "the most recent" plus
+            // "the baseline" rather than the whole stay.
+            //
+            // What stood here discarded everything unless the stay had more
+            // than 15 readings, which emptied the section in 55 of 61 reports.
+            // The selection rule is in the library, with the profile text it
+            // comes from; this loop only gathers.
+            // ----------------------------------------------------------------
+            $collectedvitalsigns = array();
             $overallvitals = 0;
-            if ($pdat->vitalsigns !== NULL)
-                // echo "*ÜÜÜÜ PDAT\n";var_dump($pdat->vitalsigns);
+            if ($pdat->vitalsigns !== NULL) {
                 foreach ($pdat->vitalsigns as $dkey => $vpd) {
-                    // $m is now a set of vitals of the $dkey day, hush through them
                     foreach ($vpd as $lkey => $n) {
-                        // $n is now a single vital of that $dkey day
-                        if (isset($n["encounter"])) {
-                            foreach ($thisstay["encounters"] as $eeii) {
-                                // hush through all enounters of this stay and see if you find corresponding vitals 
-                                // echo "*ÜÜÜÜ* " . $n["encounter"] . " - " . $eeii["encounterid"] . " DD " . $lastdayofstay . "\n";
-                                if ($n["encounter"] === $eeii["encounterid"]) {
-                                    // $n is an vital sign of $dkey day associated with the $eeii encounter
-                                    // remember it with that day and remember the day as $lastdayofstay
-                                    if ($dkey >= $lastdayofstay) $lastdayofstay = $dkey;
-                                    $thisencountervitalsigns[$dkey][] = $n;
-                                    $overallvitals++;
-                                }
+                        if (!isset($n["encounter"])) continue;
+                        foreach ($thisstay["encounters"] as $eeii) {
+                            if ($n["encounter"] === $eeii["encounterid"]) {
+                                $collectedvitalsigns[$dkey][] = $n;
+                                $overallvitals++;
+                                break;   // one stay encounter is enough; without
+                                         // this the reading is appended once per
+                                         // matching encounter
                             }
-                        }    
+                        }
                     }
                 }
-            // var_dump($lastdayofstay);var_dump($thisencountervitalsigns);exit;
-            // if $lastdayofstay is set and we have more than 15 vital signs ($overallvitals) 
-            // use only the vitals of $lastdayofstay
-            if ($lastdayofstay !== NULL and $overallvitals > 15) {
-                // foreach ($thisencountervitalsigns as $k => $v) { echo "üüüü $k - " . $v["code"]["display"] . "\n";}
-                $thisencountervitalsigns = [$thisencountervitalsigns[$lastdayofstay]];
-            } else {
-                $thisencountervitalsigns = NULL;
             }
-            // var_dump($lastdayofstay);var_dump($thisencountervitalsigns);exit;
+            $thisencountervitalsigns = hdrSelectVitalSigns($collectedvitalsigns);
+            lognl(2, sprintf(
+                "......... vital signs: %d collected, %d day block(s) selected, %d reported",
+                $overallvitals,
+                $thisencountervitalsigns === NULL ? 0 : count($thisencountervitalsigns),
+                $thisencountervitalsigns === NULL ? 0
+                    : array_sum(array_map("count", $thisencountervitalsigns))));
 
             // Find the nearest hospital for this stay
             lognl(2, "......... Finding a close-by provider (hospital) for " . 
@@ -1567,6 +1603,9 @@ function emitFSH($pdat, $thisartifact) {
                 list($FSHCMP) = twigit([
                     "patient" => $pdat,
                     "provider" => $hdrhospital,
+                    // CompositionEuHdr requires encounter 1..1; the template
+                    // could not set it because it never received the encounter
+                    "encounter" => $hdrencounter,
                     "sections" => $sections,
                     "composition" => $composition
                 ], "composition-eu-hdr");
@@ -1804,13 +1843,13 @@ function emitFSH($pdat, $thisartifact) {
 
             // Optionally include an AI-generated lab conclusion as an annotation section
             if (isset($pdat->labconclusion["$thisroundate"])) {
-                $HTMLannotations  = "<tr><th>Conclusion and Recommendations based on this report and previous findings known to us</th></tr>";
+                $HTMLannotations  = "<tr><th>Conclusion and Recommendations based on this report and previous findings known to us: </th></tr>";
                 $HTMLannotations .= "<tr><td>" . $pdat->labconclusion["$thisroundate"] . "</td></tr>";
                 $sections['annotations'] = [
                     'title'   => 'Annotation comment',
                     'code'    => '$loinc#48767-8',
                     'display' => "Annotation comment [Interpretation] Narrative",
-                    'text'    => "<h3>Annotation</h3><table class='hl7__eu__lab__report'>$HTMLannotations</table>",
+                    'text'    => "<h3>Annotation</h3> <table class='hl7__eu__lab__report'>$HTMLannotations</table>",
                     'entries' => array()
                 ];
                 lognl(4, "......... Annotation (" . substr($thisroundate, 0, 10) . "): " .

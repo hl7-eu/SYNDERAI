@@ -1,0 +1,677 @@
+{
+  "resourceType": "Bundle",
+  "id": "b80d97d2-6e2f-4ff8-b573-965378961f2c",
+  "meta": {
+    "profile": [
+      "http://hl7.eu/fhir/laboratory/StructureDefinition/Bundle-eu-lab"
+    ]
+  },
+  "identifier": {
+    "assigner": {
+      "display": "HL7 Europe"
+    },
+    "system": "urn:oid:2.16.840.1.113883.2.51.999",
+    "value": "4dd9861c-9365-4318-934f-634013ac6e18"
+  },
+  "entry": [
+    {
+      "fullUrl": "urn:uuid:d0c74fd6-c36c-4ad1-a63f-d6da0561a6ed",
+      "resource": {
+        "resourceType": "Composition",
+        "id": "d0c74fd6-c36c-4ad1-a63f-d6da0561a6ed",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Composition-eu-lab"
+          ]
+        },
+        "extension": [
+          {
+            "url": "http://hl7.eu/fhir/extensions/StructureDefinition/composition-diagnosticReportReference",
+            "valueReference": {
+              "reference": "urn:uuid:ad014872-b3a3-45c0-a05a-e33de20a4150"
+            }
+          }
+        ],
+        "identifier": {
+          "assigner": {
+            "display": "HL7 Europe"
+          },
+          "system": "urn:oid:2.16.840.1.113883.2.51.999",
+          "value": "4175ea22-ea4d-4aff-8280-4e19bc670759"
+        },
+        "author": [
+          {
+            "reference": "urn:uuid:15a91e69-5faf-4cbd-a6fe-e55206b7080d"
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "type": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ],
+          "text": "Laboratory Report"
+        },
+        "section": [
+          {
+            "code": {
+              "coding": [
+                {
+                  "code": "18719-5",
+                  "system": "http://loinc.org",
+                  "display": "Chemistry studies (set)"
+                }
+              ],
+              "text": "CHEM"
+            },
+            "entry": [
+              {
+                "reference": "urn:uuid:d68618e4-98c9-413d-b324-313c0861f7a4"
+              }
+            ],
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>CHEM</h3><table class=\"hl7__eu__lab__report\"><thead><tr><th>Test</th><th>29-JAN-2021</th><th>Reference&#xA0;Range</th><th>Unit</th></tr></thead><tbody><tr><td></td><td><strong>81.6 L</strong></td><td>95 - 100</td><td>%</td></tr></tbody></table></div>"
+            },
+            "title": "CHEM"
+          },
+          {
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>Annotation</h3><table class=\"hl7__eu__lab__report\"><tr><th>Conclusion and Recommendations based on this report and previous findings known to us:</th></tr><tr><td>The patient’s arterial oxygen saturation is significantly below the normal range, indicating hypoxemia. This finding warrants urgent clinical evaluation to identify and address potential causes such as respiratory or cardiac dysfunction. Immediate medical attention is recommended.</td></tr></table></div>"
+            },
+            "code": {
+              "coding": [
+                {
+                  "code": "48767-8",
+                  "system": "http://loinc.org",
+                  "display": "Annotation comment [Interpretation] Narrative"
+                }
+              ]
+            },
+            "title": "Annotation comment"
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "final",
+        "subject": {
+          "reference": "urn:uuid:8f23088f-07c0-4fb1-b2f9-963edfaa844f",
+          "display": "Julie Blondel"
+        },
+        "date": "2021-01-29T09:12:56Z",
+        "title": "Laboratory Report",
+        "confidentiality": "N"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:ad014872-b3a3-45c0-a05a-e33de20a4150",
+      "resource": {
+        "resourceType": "DiagnosticReport",
+        "id": "ad014872-b3a3-45c0-a05a-e33de20a4150",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/DiagnosticReport-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "4175ea22-ea4d-4aff-8280-4e19bc670759"
+          },
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "f2c712b7-15c7-4182-83ab-b6cd66ae333e"
+          }
+        ],
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-DiagnosticReport.composition",
+            "valueReference": {
+              "reference": "urn:uuid:d0c74fd6-c36c-4ad1-a63f-d6da0561a6ed"
+            }
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:cee757b3-6a9f-4d31-93b3-2c1d02b2c927"
+          }
+        ],
+        "result": [
+          {
+            "reference": "urn:uuid:d68618e4-98c9-413d-b324-313c0861f7a4"
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "registered",
+        "code": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:8f23088f-07c0-4fb1-b2f9-963edfaa844f",
+          "display": "Julie Blondel"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:8f23088f-07c0-4fb1-b2f9-963edfaa844f",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "8f23088f-07c0-4fb1-b2f9-963edfaa844f",
+        "meta": {
+          "security": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "HTEST"
+            },
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "TRAIN"
+            }
+          ],
+          "tag": [
+            {
+              "system": "https://synderai.net/fhir/CodeSystem/tags",
+              "code": "synthetic",
+              "display": "SYNDERAI Synthetic data"
+            }
+          ],
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/patient-eu-core"
+          ]
+        },
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "JHN",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://ec.europa.eu/identifier/eci",
+            "value": "2445-293195-9"
+          },
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "MR",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://local.setting.eu/identifier",
+            "value": "a39b6b31-5807-0c29-6460-95568bc72a41"
+          }
+        ],
+        "name": [
+          {
+            "given": [
+              "Julie"
+            ],
+            "family": "Blondel",
+            "text": "Julie Blondel"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "24, chemin Boulay"
+            ],
+            "use": "home",
+            "type": "physical",
+            "postalCode": "63500",
+            "city": "Perrier",
+            "country": "France"
+          }
+        ],
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "+33 (0)5 08 98 48 52"
+          }
+        ],
+        "extension": [
+          {
+            "extension": [
+              {
+                "url": "code",
+                "valueCodeableConcept": {
+                  "coding": [
+                    {
+                      "code": "FR",
+                      "system": "urn:iso:std:iso:3166"
+                    }
+                  ]
+                }
+              }
+            ],
+            "url": "http://hl7.org/fhir/StructureDefinition/patient-nationality"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__ips\"><tr><td>Julie Blondel</td><td>female</td><td>22-Jul-2005</td></tr></table></div>"
+        },
+        "gender": "female",
+        "birthDate": "2005-07-22"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:85f1376b-000d-4802-b948-e201d51c3be3",
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "85f1376b-000d-4802-b948-e201d51c3be3",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/ServiceRequest-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "system": "http://example.org",
+            "value": "463212b0-a9ab-4c10-bad6-3b40d062b84d"
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:cee757b3-6a9f-4d31-93b3-2c1d02b2c927"
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "active",
+        "intent": "order",
+        "code": {
+          "coding": [
+            {
+              "code": "108252007",
+              "system": "http://snomed.info/sct",
+              "display": "Laboratory procedure"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:8f23088f-07c0-4fb1-b2f9-963edfaa844f",
+          "display": "Julie Blondel"
+        },
+        "requester": {
+          "reference": "urn:uuid:4b5de5e8-1ad9-4759-9fe0-a8bc99ca7c10"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:4b5de5e8-1ad9-4759-9fe0-a8bc99ca7c10",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "4b5de5e8-1ad9-4759-9fe0-a8bc99ca7c10",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Role Id: 4b5de5e8-1ad9-4759-9fe0-a8bc99ca7c10</div>"
+        },
+        "organization": {
+          "reference": "urn:uuid:a77931fe-7067-4c0a-b165-2d08fd1a9bf3"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:a77931fe-7067-4c0a-b165-2d08fd1a9bf3",
+      "resource": {
+        "resourceType": "Organization",
+        "id": "a77931fe-7067-4c0a-b165-2d08fd1a9bf3",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/organization-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "bb62a70d-9943-4bd7-baaf-94e1870a49ac"
+          }
+        ],
+        "address": [
+          {
+            "city": "Issoire",
+            "postalCode": "63500",
+            "country": "France"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Organization: Centre Hospitalier Paul Ardier</div>"
+        },
+        "name": "Centre Hospitalier Paul Ardier"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:cee757b3-6a9f-4d31-93b3-2c1d02b2c927",
+      "resource": {
+        "resourceType": "Specimen",
+        "id": "cee757b3-6a9f-4d31-93b3-2c1d02b2c927",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Specimen-eu-lab"
+          ]
+        },
+        "collection": {
+          "collectedDateTime": "2021-01-29"
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Specimen</th><th>Collection Date</th></tr><tr><td>Arterial blood specimen</td><td><span class=\"nb\">29-Jan-2021</span></td></tr></table></div>"
+        },
+        "type": {
+          "coding": [
+            {
+              "code": "122552005",
+              "system": "http://snomed.info/sct",
+              "display": "Arterial blood specimen"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:d68618e4-98c9-413d-b324-313c0861f7a4",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "d68618e4-98c9-413d-b324-313c0861f7a4",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Observation-resultslab-eu-lab"
+          ]
+        },
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "laboratory",
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category"
+              }
+            ]
+          }
+        ],
+        "performer": [
+          {
+            "display": "The Central European Laboratory"
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "code": "2708-6",
+              "system": "http://loinc.org",
+              "display": "Oxygen saturation in Arterial blood"
+            }
+          ],
+          "text": "Oxygen saturation in Arterial blood"
+        },
+        "valueQuantity": {
+          "value": 81.6,
+          "unit": "%",
+          "code": "%",
+          "system": "http://unitsofmeasure.org"
+        },
+        "referenceRange": [
+          {
+            "low": {
+              "value": 95,
+              "code": "%",
+              "system": "http://unitsofmeasure.org"
+            },
+            "high": {
+              "value": 100,
+              "code": "%",
+              "system": "http://unitsofmeasure.org"
+            }
+          }
+        ],
+        "interpretation": [
+          {
+            "coding": [
+              {
+                "code": "L",
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                "display": "Low"
+              }
+            ]
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Test</th><th>29-Jan-2021</th><th>Reference&#xA0;Range</th><th>Flag</th><th>Unit</th></tr><tr><td>Oxygen saturation in Arterial blood</td><td>81.6</td><td>95 - 100</td><td>L</td><td>%</td></tr></table></div>"
+        },
+        "status": "final",
+        "effectiveDateTime": "2021-01-29T08:12:56Z",
+        "subject": {
+          "reference": "urn:uuid:8f23088f-07c0-4fb1-b2f9-963edfaa844f",
+          "display": "Julie Blondel"
+        },
+        "specimen": {
+          "reference": "urn:uuid:cee757b3-6a9f-4d31-93b3-2c1d02b2c927"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:81d00b5e-347f-49ab-9bd8-a122c0423ebd",
+      "resource": {
+        "resourceType": "Device",
+        "id": "81d00b5e-347f-49ab-9bd8-a122c0423ebd",
+        "deviceName": [
+          {
+            "name": "SYNDERAI Synthetic Generator",
+            "type": "manufacturer-name"
+          }
+        ],
+        "version": [
+          {
+            "value": "5.0"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">SYNDERAI Synthetic Generator v5.0</div>"
+        },
+        "status": "active",
+        "distinctIdentifier": "synderai-generator-50",
+        "manufacturer": "SYNDERAI Project"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:4e39223d-007b-456e-84f4-09b6ad5c9766",
+      "resource": {
+        "resourceType": "Provenance",
+        "id": "4e39223d-007b-456e-84f4-09b6ad5c9766",
+        "target": [
+          {
+            "reference": "urn:uuid:8f23088f-07c0-4fb1-b2f9-963edfaa844f"
+          },
+          {
+            "reference": "urn:uuid:d0c74fd6-c36c-4ad1-a63f-d6da0561a6ed"
+          },
+          {
+            "reference": "urn:uuid:15a91e69-5faf-4cbd-a6fe-e55206b7080d"
+          },
+          {
+            "reference": "urn:uuid:40672c46-69c4-4cd4-a24f-84611e32181c"
+          },
+          {
+            "reference": "urn:uuid:4b5de5e8-1ad9-4759-9fe0-a8bc99ca7c10"
+          },
+          {
+            "reference": "urn:uuid:a77931fe-7067-4c0a-b165-2d08fd1a9bf3"
+          }
+        ],
+        "activity": {
+          "coding": [
+            {
+              "code": "CREATE",
+              "system": "http://terminology.hl7.org/CodeSystem/v3-DataOperation",
+              "display": "create"
+            }
+          ],
+          "text": "Synthetic Example Data Generation"
+        },
+        "policy": [
+          "https://synderai.net/synderai-synthetic-data-policy"
+        ],
+        "agent": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "author",
+                  "system": "http://terminology.hl7.org/CodeSystem/provenance-participant-type",
+                  "display": "Author"
+                }
+              ],
+              "text": "author"
+            },
+            "who": {
+              "reference": "urn:uuid:81d00b5e-347f-49ab-9bd8-a122c0423ebd"
+            }
+          }
+        ],
+        "reason": [
+          {
+            "coding": [
+              {
+                "code": "TRAIN",
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+                "display": "training"
+              }
+            ],
+            "text": "Interoperability Testing and Training (non-clinical use)"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provenance for SYNDERAI Synthetic Example Data Resource</div>"
+        },
+        "recorded": "2021-01-29T10:12:56Z"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:15a91e69-5faf-4cbd-a6fe-e55206b7080d",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "15a91e69-5faf-4cbd-a6fe-e55206b7080d",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory Role Id: 15a91e69-5faf-4cbd-a6fe-e55206b7080d</div>"
+        },
+        "practitioner": {
+          "reference": "urn:uuid:40672c46-69c4-4cd4-a24f-84611e32181c"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:40672c46-69c4-4cd4-a24f-84611e32181c",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "40672c46-69c4-4cd4-a24f-84611e32181c",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitioner-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "27beb914-2141-45ff-9a0e-bcbce79e0bb9"
+          }
+        ],
+        "name": [
+          {
+            "prefix": [
+              "dr"
+            ],
+            "given": [
+              "Ex"
+            ],
+            "family": "Ample"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Laboratoire Central Européenne",
+              "Boulevard du Jardin Botanique 32"
+            ],
+            "postalCode": "1000",
+            "city": "Brussels",
+            "country": "Belgium"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory: Laboratoire Central Européenne, 1000 Brussels, Belgium</div>"
+        }
+      }
+    }
+  ],
+  "type": "document",
+  "timestamp": "2021-01-29T10:12:56Z"
+}

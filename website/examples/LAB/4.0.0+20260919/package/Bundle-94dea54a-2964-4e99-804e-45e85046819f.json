@@ -1,0 +1,763 @@
+{
+  "resourceType": "Bundle",
+  "id": "94dea54a-2964-4e99-804e-45e85046819f",
+  "meta": {
+    "profile": [
+      "http://hl7.eu/fhir/laboratory/StructureDefinition/Bundle-eu-lab"
+    ]
+  },
+  "identifier": {
+    "assigner": {
+      "display": "HL7 Europe"
+    },
+    "system": "urn:oid:2.16.840.1.113883.2.51.999",
+    "value": "541d9fc0-adfd-4b5c-acc7-57effb953d66"
+  },
+  "entry": [
+    {
+      "fullUrl": "urn:uuid:3207e10b-42d5-4202-a89d-3189b989c778",
+      "resource": {
+        "resourceType": "Composition",
+        "id": "3207e10b-42d5-4202-a89d-3189b989c778",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Composition-eu-lab"
+          ]
+        },
+        "extension": [
+          {
+            "url": "http://hl7.eu/fhir/extensions/StructureDefinition/composition-diagnosticReportReference",
+            "valueReference": {
+              "reference": "urn:uuid:4ca3de3a-7afa-44af-ac63-10dee6584f88"
+            }
+          }
+        ],
+        "identifier": {
+          "assigner": {
+            "display": "HL7 Europe"
+          },
+          "system": "urn:oid:2.16.840.1.113883.2.51.999",
+          "value": "71fe9390-b0ea-497d-8885-dfc9fc1109b1"
+        },
+        "author": [
+          {
+            "reference": "urn:uuid:67769a08-2d7a-42e2-92ac-6c0fb3adcc1d"
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "type": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ],
+          "text": "Laboratory Report"
+        },
+        "section": [
+          {
+            "code": {
+              "coding": [
+                {
+                  "code": "18719-5",
+                  "system": "http://loinc.org",
+                  "display": "Chemistry studies (set)"
+                }
+              ],
+              "text": "CHEM"
+            },
+            "entry": [
+              {
+                "reference": "urn:uuid:34e09444-7f8d-4f68-8194-818f8575b64e"
+              }
+            ],
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>CHEM</h3><table class=\"hl7__eu__lab__report\"><thead><tr><th>Test</th><th>17-JUL-2016</th><th>Reference&#xA0;Range</th><th>Unit</th></tr></thead><tbody><tr><td></td><td><strong>51.0 L</strong></td><td>60 - 89</td><td>mL/min/{1.73_m2}</td></tr></tbody></table></div>"
+            },
+            "title": "CHEM"
+          },
+          {
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>Annotation</h3><table class=\"hl7__eu__lab__report\"><tr><th>Conclusion and Recommendations based on this report and previous findings known to us:</th></tr><tr><td>The patient shows mildly decreased kidney function (GFR 51 mL/min/1.73 m²), consistent with stage 3a chronic kidney disease. This is common in elderly patients but warrants monitoring for progression and assessment of risk factors or complications. No other abnormalities reported.</td></tr></table></div>"
+            },
+            "code": {
+              "coding": [
+                {
+                  "code": "48767-8",
+                  "system": "http://loinc.org",
+                  "display": "Annotation comment [Interpretation] Narrative"
+                }
+              ]
+            },
+            "title": "Annotation comment"
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "final",
+        "subject": {
+          "reference": "urn:uuid:84e58a30-3e91-47bf-829f-8076b7636876",
+          "display": "Padraic Hely"
+        },
+        "date": "2016-07-17T06:39:11Z",
+        "title": "Laboratory Report",
+        "confidentiality": "N"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:4ca3de3a-7afa-44af-ac63-10dee6584f88",
+      "resource": {
+        "resourceType": "DiagnosticReport",
+        "id": "4ca3de3a-7afa-44af-ac63-10dee6584f88",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/DiagnosticReport-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "71fe9390-b0ea-497d-8885-dfc9fc1109b1"
+          },
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "3a9dd26f-d212-43d4-8d6d-05dbb7fd1406"
+          }
+        ],
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-DiagnosticReport.composition",
+            "valueReference": {
+              "reference": "urn:uuid:3207e10b-42d5-4202-a89d-3189b989c778"
+            }
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:219ce6db-9e21-48a0-be26-78bc622f0c6b"
+          }
+        ],
+        "result": [
+          {
+            "reference": "urn:uuid:34e09444-7f8d-4f68-8194-818f8575b64e"
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "registered",
+        "code": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:84e58a30-3e91-47bf-829f-8076b7636876",
+          "display": "Padraic Hely"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:84e58a30-3e91-47bf-829f-8076b7636876",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "84e58a30-3e91-47bf-829f-8076b7636876",
+        "meta": {
+          "security": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "HTEST"
+            },
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "TRAIN"
+            }
+          ],
+          "tag": [
+            {
+              "system": "https://synderai.net/fhir/CodeSystem/tags",
+              "code": "synthetic",
+              "display": "SYNDERAI Synthetic data"
+            }
+          ],
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/patient-eu-core"
+          ]
+        },
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "JHN",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://ec.europa.eu/identifier/eci",
+            "value": "8812-310171-4"
+          },
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "MR",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://local.setting.eu/identifier",
+            "value": "436933cc-c410-41fb-0d4f-c24315907538"
+          }
+        ],
+        "name": [
+          {
+            "given": [
+              "Padraic"
+            ],
+            "family": "Hely",
+            "text": "Padraic Hely"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "4 Lanigan Street"
+            ],
+            "use": "home",
+            "type": "physical",
+            "postalCode": "D01 K2E2",
+            "city": "Dublin",
+            "country": "Ireland"
+          }
+        ],
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "(556)414-5588x2120"
+          }
+        ],
+        "extension": [
+          {
+            "extension": [
+              {
+                "url": "code",
+                "valueCodeableConcept": {
+                  "coding": [
+                    {
+                      "code": "IE",
+                      "system": "urn:iso:std:iso:3166"
+                    }
+                  ]
+                }
+              }
+            ],
+            "url": "http://hl7.org/fhir/StructureDefinition/patient-nationality"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__ips\"><tr><td>Padraic Hely</td><td>male</td><td>03-Jul-1935</td></tr></table></div>"
+        },
+        "gender": "male",
+        "birthDate": "1935-07-03"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:29a035d2-1568-42ba-92fe-67a82ff51ae3",
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "29a035d2-1568-42ba-92fe-67a82ff51ae3",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/ServiceRequest-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "system": "http://example.org",
+            "value": "4d3617cb-e84d-459c-af31-db39efac80b3"
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:219ce6db-9e21-48a0-be26-78bc622f0c6b"
+          }
+        ],
+        "reasonCode": [
+          {
+            "coding": [
+              {
+                "code": "195967001",
+                "system": "http://snomed.info/sct",
+                "display": "Asthma"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "55822004",
+                "system": "http://snomed.info/sct",
+                "display": "Hyperlipidemia"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "7200002",
+                "system": "http://snomed.info/sct",
+                "display": "Alcoholism"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "59621000",
+                "system": "http://snomed.info/sct",
+                "display": "Essential hypertension"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "237602007",
+                "system": "http://snomed.info/sct",
+                "display": "Metabolic syndrome X"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "414545008",
+                "system": "http://snomed.info/sct",
+                "display": "Ischemic heart disease"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "433144002",
+                "system": "http://snomed.info/sct",
+                "display": "Chronic kidney disease stage 3"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "13645005",
+                "system": "http://snomed.info/sct",
+                "display": "Chronic obstructive pulmonary disease"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "1755008",
+                "system": "http://snomed.info/sct",
+                "display": "Old myocardial infarction"
+              }
+            ]
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "active",
+        "intent": "order",
+        "code": {
+          "coding": [
+            {
+              "code": "108252007",
+              "system": "http://snomed.info/sct",
+              "display": "Laboratory procedure"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:84e58a30-3e91-47bf-829f-8076b7636876",
+          "display": "Padraic Hely"
+        },
+        "requester": {
+          "reference": "urn:uuid:772fcafd-82e0-47a0-91e0-894c258681c7"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:772fcafd-82e0-47a0-91e0-894c258681c7",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "772fcafd-82e0-47a0-91e0-894c258681c7",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Role Id: 772fcafd-82e0-47a0-91e0-894c258681c7</div>"
+        },
+        "organization": {
+          "reference": "urn:uuid:dbc39b32-b844-47c4-94c8-a0969a68a529"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:dbc39b32-b844-47c4-94c8-a0969a68a529",
+      "resource": {
+        "resourceType": "Organization",
+        "id": "dbc39b32-b844-47c4-94c8-a0969a68a529",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/organization-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "d2182ef7-23b3-4847-8860-3fc32ab5e222"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Parnell Square West nan"
+            ],
+            "city": "Dublin",
+            "postalCode": "D01",
+            "country": "Ireland"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Organization: Rotunda Hospital</div>"
+        },
+        "name": "Rotunda Hospital"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:219ce6db-9e21-48a0-be26-78bc622f0c6b",
+      "resource": {
+        "resourceType": "Specimen",
+        "id": "219ce6db-9e21-48a0-be26-78bc622f0c6b",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Specimen-eu-lab"
+          ]
+        },
+        "collection": {
+          "collectedDateTime": "2016-07-17"
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Specimen</th><th>Collection Date</th></tr><tr><td>Blood specimen</td><td><span class=\"nb\">17-Jul-2016</span></td></tr></table></div>"
+        },
+        "type": {
+          "coding": [
+            {
+              "code": "119297000",
+              "system": "http://snomed.info/sct",
+              "display": "Blood specimen"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:34e09444-7f8d-4f68-8194-818f8575b64e",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "34e09444-7f8d-4f68-8194-818f8575b64e",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Observation-resultslab-eu-lab"
+          ]
+        },
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "laboratory",
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category"
+              }
+            ]
+          }
+        ],
+        "performer": [
+          {
+            "display": "The Central European Laboratory"
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "code": "98979-8",
+              "system": "http://loinc.org",
+              "display": "Glomerular filtration rate [Volume Rate/Area] in Serum, Plasma or Blood by Creatinine-based formula (CKD-EPI 2021)/1.73 sq M"
+            }
+          ],
+          "text": "Glomerular filtration rate [Volume Rate/Area] in Serum, Plasma or Blood by Creatinine-based formula (CKD-EPI 2021)/1.73 sq M"
+        },
+        "valueQuantity": {
+          "value": 51,
+          "unit": "mL/min/{1.73_m2}",
+          "code": "mL/min/{1.73_m2}",
+          "system": "http://unitsofmeasure.org"
+        },
+        "referenceRange": [
+          {
+            "low": {
+              "value": 60,
+              "code": "mL/min/{1.73_m2}",
+              "system": "http://unitsofmeasure.org"
+            },
+            "high": {
+              "value": 89,
+              "code": "mL/min/{1.73_m2}",
+              "system": "http://unitsofmeasure.org"
+            }
+          }
+        ],
+        "interpretation": [
+          {
+            "coding": [
+              {
+                "code": "L",
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                "display": "Low"
+              }
+            ]
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Test</th><th>17-Jul-2016</th><th>Reference&#xA0;Range</th><th>Flag</th><th>Unit</th></tr><tr><td>Glomerular filtration rate [Volume Rate/Area] in Serum, Plasma or Blood by Creatinine-based formula (CKD-EPI 2021)/1.73 sq M</td><td>51.0</td><td>60 - 89</td><td>L</td><td>mL/min/{1.73_m2}</td></tr></table></div>"
+        },
+        "status": "final",
+        "effectiveDateTime": "2016-07-17T04:39:11Z",
+        "subject": {
+          "reference": "urn:uuid:84e58a30-3e91-47bf-829f-8076b7636876",
+          "display": "Padraic Hely"
+        },
+        "specimen": {
+          "reference": "urn:uuid:219ce6db-9e21-48a0-be26-78bc622f0c6b"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:0b2bf6c1-a74d-4ad9-9428-488215c19d19",
+      "resource": {
+        "resourceType": "Device",
+        "id": "0b2bf6c1-a74d-4ad9-9428-488215c19d19",
+        "deviceName": [
+          {
+            "name": "SYNDERAI Synthetic Generator",
+            "type": "manufacturer-name"
+          }
+        ],
+        "version": [
+          {
+            "value": "5.0"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">SYNDERAI Synthetic Generator v5.0</div>"
+        },
+        "status": "active",
+        "distinctIdentifier": "synderai-generator-50",
+        "manufacturer": "SYNDERAI Project"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:b45b7966-21a1-4830-a60e-aa6e05a3b668",
+      "resource": {
+        "resourceType": "Provenance",
+        "id": "b45b7966-21a1-4830-a60e-aa6e05a3b668",
+        "target": [
+          {
+            "reference": "urn:uuid:84e58a30-3e91-47bf-829f-8076b7636876"
+          },
+          {
+            "reference": "urn:uuid:3207e10b-42d5-4202-a89d-3189b989c778"
+          },
+          {
+            "reference": "urn:uuid:67769a08-2d7a-42e2-92ac-6c0fb3adcc1d"
+          },
+          {
+            "reference": "urn:uuid:931d4320-8074-4f44-a080-b8d4331c1991"
+          },
+          {
+            "reference": "urn:uuid:772fcafd-82e0-47a0-91e0-894c258681c7"
+          },
+          {
+            "reference": "urn:uuid:dbc39b32-b844-47c4-94c8-a0969a68a529"
+          }
+        ],
+        "activity": {
+          "coding": [
+            {
+              "code": "CREATE",
+              "system": "http://terminology.hl7.org/CodeSystem/v3-DataOperation",
+              "display": "create"
+            }
+          ],
+          "text": "Synthetic Example Data Generation"
+        },
+        "policy": [
+          "https://synderai.net/synderai-synthetic-data-policy"
+        ],
+        "agent": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "author",
+                  "system": "http://terminology.hl7.org/CodeSystem/provenance-participant-type",
+                  "display": "Author"
+                }
+              ],
+              "text": "author"
+            },
+            "who": {
+              "reference": "urn:uuid:0b2bf6c1-a74d-4ad9-9428-488215c19d19"
+            }
+          }
+        ],
+        "reason": [
+          {
+            "coding": [
+              {
+                "code": "TRAIN",
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+                "display": "training"
+              }
+            ],
+            "text": "Interoperability Testing and Training (non-clinical use)"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provenance for SYNDERAI Synthetic Example Data Resource</div>"
+        },
+        "recorded": "2016-07-17T08:39:11Z"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:67769a08-2d7a-42e2-92ac-6c0fb3adcc1d",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "67769a08-2d7a-42e2-92ac-6c0fb3adcc1d",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory Role Id: 67769a08-2d7a-42e2-92ac-6c0fb3adcc1d</div>"
+        },
+        "practitioner": {
+          "reference": "urn:uuid:931d4320-8074-4f44-a080-b8d4331c1991"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:931d4320-8074-4f44-a080-b8d4331c1991",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "931d4320-8074-4f44-a080-b8d4331c1991",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitioner-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "2abf4f0d-1404-4c0f-9fe7-e9087f9b468a"
+          }
+        ],
+        "name": [
+          {
+            "prefix": [
+              "dr"
+            ],
+            "given": [
+              "Ex"
+            ],
+            "family": "Ample"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Laboratoire Central Européenne",
+              "Boulevard du Jardin Botanique 32"
+            ],
+            "postalCode": "1000",
+            "city": "Brussels",
+            "country": "Belgium"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory: Laboratoire Central Européenne, 1000 Brussels, Belgium</div>"
+        }
+      }
+    }
+  ],
+  "type": "document",
+  "timestamp": "2016-07-17T08:39:11Z"
+}

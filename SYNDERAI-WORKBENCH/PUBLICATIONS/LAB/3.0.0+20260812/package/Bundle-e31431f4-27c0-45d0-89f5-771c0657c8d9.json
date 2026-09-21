@@ -1,0 +1,677 @@
+{
+  "resourceType": "Bundle",
+  "id": "e31431f4-27c0-45d0-89f5-771c0657c8d9",
+  "meta": {
+    "profile": [
+      "http://hl7.eu/fhir/laboratory/StructureDefinition/Bundle-eu-lab"
+    ]
+  },
+  "identifier": {
+    "assigner": {
+      "display": "HL7 Europe"
+    },
+    "system": "urn:oid:2.16.840.1.113883.2.51.999",
+    "value": "577dcd96-1ae1-472f-8f48-8b1309c7d216"
+  },
+  "entry": [
+    {
+      "fullUrl": "urn:uuid:096f1e15-a29a-431a-8738-7faa8fb15e73",
+      "resource": {
+        "resourceType": "Composition",
+        "id": "096f1e15-a29a-431a-8738-7faa8fb15e73",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Composition-eu-lab"
+          ]
+        },
+        "extension": [
+          {
+            "url": "http://hl7.eu/fhir/extensions/StructureDefinition/composition-diagnosticReportReference",
+            "valueReference": {
+              "reference": "urn:uuid:66286b2d-0170-4d20-97d5-2e7796d661f4"
+            }
+          }
+        ],
+        "identifier": {
+          "assigner": {
+            "display": "HL7 Europe"
+          },
+          "system": "urn:oid:2.16.840.1.113883.2.51.999",
+          "value": "8765ff49-8e1d-4de1-98ce-76bc56bf1d4d"
+        },
+        "author": [
+          {
+            "reference": "urn:uuid:993195d2-1107-494e-8008-2451f11ebc79"
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "type": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ],
+          "text": "Laboratory Report"
+        },
+        "section": [
+          {
+            "code": {
+              "coding": [
+                {
+                  "code": "18723-7",
+                  "system": "http://loinc.org",
+                  "display": "Hematology studies (set)"
+                }
+              ],
+              "text": "HEM/BC"
+            },
+            "entry": [
+              {
+                "reference": "urn:uuid:72899bd2-c988-424f-8033-80df2c573de7"
+              }
+            ],
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>HEM/BC</h3><table class=\"hl7__eu__lab__report\"><thead><tr><th>Test</th><th>30-AUG-1987</th><th>Reference&#xA0;Range</th><th>Unit</th></tr></thead><tbody><tr><td></td><td><strong>333.8 H</strong></td><td>1.8 - 7.8</td><td>10*3/uL</td></tr></tbody></table></div>"
+            },
+            "title": "HEM/BC"
+          },
+          {
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>Annotation</h3><table class=\"hl7__eu__lab__report\"><tr><th>Conclusion and Recommendations based on this report and previous findings known to us</th></tr><tr><td>Marked neutrophilia is present, with neutrophil count significantly above the reference range. This may indicate an acute bacterial infection, inflammation, stress response, or other causes such as corticosteroid use or myeloproliferative disorders. Clinical correlation and further investigation are recommended to determine the underlying cause.</td></tr></table></div>"
+            },
+            "code": {
+              "coding": [
+                {
+                  "code": "48767-8",
+                  "system": "http://loinc.org",
+                  "display": "Annotation comment [Interpretation] Narrative"
+                }
+              ]
+            },
+            "title": "Annotation comment"
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "final",
+        "subject": {
+          "reference": "urn:uuid:5fbb3f8b-9d60-40b2-8f57-8916091e0b69",
+          "display": "Aleksandar Weller"
+        },
+        "date": "1987-08-30T17:02:19Z",
+        "title": "Laboratory Report",
+        "confidentiality": "N"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:66286b2d-0170-4d20-97d5-2e7796d661f4",
+      "resource": {
+        "resourceType": "DiagnosticReport",
+        "id": "66286b2d-0170-4d20-97d5-2e7796d661f4",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/DiagnosticReport-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "8765ff49-8e1d-4de1-98ce-76bc56bf1d4d"
+          },
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "ced06e73-e9ab-4f8f-8d90-cd49a4b32659"
+          }
+        ],
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-DiagnosticReport.composition",
+            "valueReference": {
+              "reference": "urn:uuid:096f1e15-a29a-431a-8738-7faa8fb15e73"
+            }
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:9f39b063-b262-4b95-98b2-29e80538086b"
+          }
+        ],
+        "result": [
+          {
+            "reference": "urn:uuid:72899bd2-c988-424f-8033-80df2c573de7"
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "registered",
+        "code": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:5fbb3f8b-9d60-40b2-8f57-8916091e0b69",
+          "display": "Aleksandar Weller"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:5fbb3f8b-9d60-40b2-8f57-8916091e0b69",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "5fbb3f8b-9d60-40b2-8f57-8916091e0b69",
+        "meta": {
+          "security": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "HTEST"
+            },
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "TRAIN"
+            }
+          ],
+          "tag": [
+            {
+              "system": "https://synderai.net/fhir/CodeSystem/tags",
+              "code": "synthetic",
+              "display": "SYNDERAI Synthetic data"
+            }
+          ],
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/patient-eu-core"
+          ]
+        },
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "JHN",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://ec.europa.eu/identifier/eci",
+            "value": "9797-585346-2"
+          },
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "MR",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://local.setting.eu/identifier",
+            "value": "a966d371-eb74-c48a-a636-927b8e4792e5"
+          }
+        ],
+        "name": [
+          {
+            "given": [
+              "Aleksandar"
+            ],
+            "family": "Weller",
+            "text": "Aleksandar Weller"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Gierschnerstraße 11"
+            ],
+            "use": "home",
+            "type": "physical",
+            "postalCode": "78166",
+            "city": "Donaueschingen",
+            "country": "Germany"
+          }
+        ],
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "09372988140"
+          }
+        ],
+        "extension": [
+          {
+            "extension": [
+              {
+                "url": "code",
+                "valueCodeableConcept": {
+                  "coding": [
+                    {
+                      "code": "DE",
+                      "system": "urn:iso:std:iso:3166"
+                    }
+                  ]
+                }
+              }
+            ],
+            "url": "http://hl7.org/fhir/StructureDefinition/patient-nationality"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__ips\"><tr><td>Aleksandar Weller</td><td>male</td><td>26-Jan-1985</td></tr></table></div>"
+        },
+        "gender": "male",
+        "birthDate": "1985-01-26"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:7c9b490d-493f-4061-8939-dc4eafc3fc92",
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "7c9b490d-493f-4061-8939-dc4eafc3fc92",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/ServiceRequest-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "system": "http://example.org",
+            "value": "b1ad7307-5cda-452b-aa82-5e64ea3e5f3c"
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:9f39b063-b262-4b95-98b2-29e80538086b"
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "active",
+        "intent": "order",
+        "code": {
+          "coding": [
+            {
+              "code": "108252007",
+              "system": "http://snomed.info/sct",
+              "display": "Laboratory procedure"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:5fbb3f8b-9d60-40b2-8f57-8916091e0b69",
+          "display": "Aleksandar Weller"
+        },
+        "requester": {
+          "reference": "urn:uuid:9e284dbc-e3e5-4614-a842-980a52ecaabd"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:9e284dbc-e3e5-4614-a842-980a52ecaabd",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "9e284dbc-e3e5-4614-a842-980a52ecaabd",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Role Id: 9e284dbc-e3e5-4614-a842-980a52ecaabd</div>"
+        },
+        "organization": {
+          "reference": "urn:uuid:253b6e10-aded-40ef-84ac-caf9dfa6ca65"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:253b6e10-aded-40ef-84ac-caf9dfa6ca65",
+      "resource": {
+        "resourceType": "Organization",
+        "id": "253b6e10-aded-40ef-84ac-caf9dfa6ca65",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/organization-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "355cb10c-56db-4cea-9ca7-10588b180c63"
+          }
+        ],
+        "address": [
+          {
+            "city": "Donaueschingen",
+            "postalCode": "78166",
+            "country": "Germany"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Organization: Schwarzwald-Baar-Kliniken Donaueschingen</div>"
+        },
+        "name": "Schwarzwald-Baar-Kliniken Donaueschingen"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:9f39b063-b262-4b95-98b2-29e80538086b",
+      "resource": {
+        "resourceType": "Specimen",
+        "id": "9f39b063-b262-4b95-98b2-29e80538086b",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Specimen-eu-lab"
+          ]
+        },
+        "collection": {
+          "collectedDateTime": "1987-08-30"
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Specimen</th><th>Collection Date</th></tr><tr><td>Blood specimen</td><td><span class=\"nb\">30-Aug-1987</span></td></tr></table></div>"
+        },
+        "type": {
+          "coding": [
+            {
+              "code": "119297000",
+              "system": "http://snomed.info/sct",
+              "display": "Blood specimen"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:72899bd2-c988-424f-8033-80df2c573de7",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "72899bd2-c988-424f-8033-80df2c573de7",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Observation-resultslab-eu-lab"
+          ]
+        },
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "laboratory",
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category"
+              }
+            ]
+          }
+        ],
+        "performer": [
+          {
+            "display": "The Central European Laboratory"
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "code": "751-8",
+              "system": "http://loinc.org",
+              "display": "Neutrophils [#/volume] in Blood by Automated count"
+            }
+          ],
+          "text": "Neutrophils [#/volume] in Blood by Automated count"
+        },
+        "valueQuantity": {
+          "value": 333.8,
+          "unit": "10*3/uL",
+          "code": "10*3/uL",
+          "system": "http://unitsofmeasure.org"
+        },
+        "referenceRange": [
+          {
+            "low": {
+              "value": 1.8,
+              "code": "10*3/uL",
+              "system": "http://unitsofmeasure.org"
+            },
+            "high": {
+              "value": 7.8,
+              "code": "10*3/uL",
+              "system": "http://unitsofmeasure.org"
+            }
+          }
+        ],
+        "interpretation": [
+          {
+            "coding": [
+              {
+                "code": "H",
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                "display": "High"
+              }
+            ]
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Test</th><th>30-Aug-1987</th><th>Reference&#xA0;Range</th><th>Flag</th><th>Unit</th></tr><tr><td>Neutrophils [#/volume] in Blood by Automated count</td><td>333.8</td><td>1.8 - 7.8</td><td>H</td><td>10*3/uL</td></tr></table></div>"
+        },
+        "status": "final",
+        "effectiveDateTime": "1987-08-30T15:02:19Z",
+        "subject": {
+          "reference": "urn:uuid:5fbb3f8b-9d60-40b2-8f57-8916091e0b69",
+          "display": "Aleksandar Weller"
+        },
+        "specimen": {
+          "reference": "urn:uuid:9f39b063-b262-4b95-98b2-29e80538086b"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:ec8189d5-2e99-4105-893b-c98b5735091c",
+      "resource": {
+        "resourceType": "Device",
+        "id": "ec8189d5-2e99-4105-893b-c98b5735091c",
+        "deviceName": [
+          {
+            "name": "SYNDERAI Synthetic Generator",
+            "type": "manufacturer-name"
+          }
+        ],
+        "version": [
+          {
+            "value": "5.0"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">SYNDERAI Synthetic Generator v5.0</div>"
+        },
+        "status": "active",
+        "distinctIdentifier": "synderai-generator-50",
+        "manufacturer": "SYNDERAI Project"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:6b156863-ad51-4a98-8613-48b7fc6ac453",
+      "resource": {
+        "resourceType": "Provenance",
+        "id": "6b156863-ad51-4a98-8613-48b7fc6ac453",
+        "target": [
+          {
+            "reference": "urn:uuid:5fbb3f8b-9d60-40b2-8f57-8916091e0b69"
+          },
+          {
+            "reference": "urn:uuid:096f1e15-a29a-431a-8738-7faa8fb15e73"
+          },
+          {
+            "reference": "urn:uuid:993195d2-1107-494e-8008-2451f11ebc79"
+          },
+          {
+            "reference": "urn:uuid:bd48d277-65e9-4a38-b6c4-b579b057daf5"
+          },
+          {
+            "reference": "urn:uuid:9e284dbc-e3e5-4614-a842-980a52ecaabd"
+          },
+          {
+            "reference": "urn:uuid:253b6e10-aded-40ef-84ac-caf9dfa6ca65"
+          }
+        ],
+        "activity": {
+          "coding": [
+            {
+              "code": "CREATE",
+              "system": "http://terminology.hl7.org/CodeSystem/v3-DataOperation",
+              "display": "create"
+            }
+          ],
+          "text": "Synthetic Example Data Generation"
+        },
+        "policy": [
+          "https://synderai.net/synderai-synthetic-data-policy"
+        ],
+        "agent": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "author",
+                  "system": "http://terminology.hl7.org/CodeSystem/provenance-participant-type",
+                  "display": "Author"
+                }
+              ],
+              "text": "author"
+            },
+            "who": {
+              "reference": "urn:uuid:ec8189d5-2e99-4105-893b-c98b5735091c"
+            }
+          }
+        ],
+        "reason": [
+          {
+            "coding": [
+              {
+                "code": "TRAIN",
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+                "display": "training"
+              }
+            ],
+            "text": "Interoperability Testing and Training (non-clinical use)"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provenance for SYNDERAI Synthetic Example Data Resource</div>"
+        },
+        "recorded": "1987-08-30T19:02:19Z"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:993195d2-1107-494e-8008-2451f11ebc79",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "993195d2-1107-494e-8008-2451f11ebc79",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory Role Id: 993195d2-1107-494e-8008-2451f11ebc79</div>"
+        },
+        "practitioner": {
+          "reference": "urn:uuid:bd48d277-65e9-4a38-b6c4-b579b057daf5"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:bd48d277-65e9-4a38-b6c4-b579b057daf5",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "bd48d277-65e9-4a38-b6c4-b579b057daf5",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitioner-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "9083dfbf-6d97-4f85-bca7-c9ddb0d01392"
+          }
+        ],
+        "name": [
+          {
+            "prefix": [
+              "dr"
+            ],
+            "given": [
+              "Ex"
+            ],
+            "family": "Ample"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Laboratoire Central Européenne",
+              "Boulevard du Jardin Botanique 32"
+            ],
+            "postalCode": "1000",
+            "city": "Brussels",
+            "country": "Belgium"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory: Laboratoire Central Européenne, 1000 Brussels, Belgium</div>"
+        }
+      }
+    }
+  ],
+  "type": "document",
+  "timestamp": "1987-08-30T19:02:19Z"
+}

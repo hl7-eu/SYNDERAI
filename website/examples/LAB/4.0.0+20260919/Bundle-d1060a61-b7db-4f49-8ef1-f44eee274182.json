@@ -1,0 +1,742 @@
+{
+  "resourceType": "Bundle",
+  "id": "d1060a61-b7db-4f49-8ef1-f44eee274182",
+  "meta": {
+    "profile": [
+      "http://hl7.eu/fhir/laboratory/StructureDefinition/Bundle-eu-lab"
+    ]
+  },
+  "identifier": {
+    "assigner": {
+      "display": "HL7 Europe"
+    },
+    "system": "urn:oid:2.16.840.1.113883.2.51.999",
+    "value": "d7f08e66-09b8-4a3a-8fc7-4a4285924b14"
+  },
+  "entry": [
+    {
+      "fullUrl": "urn:uuid:beb03267-7a02-43e2-ac11-21cd21482423",
+      "resource": {
+        "resourceType": "Composition",
+        "id": "beb03267-7a02-43e2-ac11-21cd21482423",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Composition-eu-lab"
+          ]
+        },
+        "extension": [
+          {
+            "url": "http://hl7.eu/fhir/extensions/StructureDefinition/composition-diagnosticReportReference",
+            "valueReference": {
+              "reference": "urn:uuid:f1335a6b-f098-4067-9df0-e968e08a4000"
+            }
+          }
+        ],
+        "identifier": {
+          "assigner": {
+            "display": "HL7 Europe"
+          },
+          "system": "urn:oid:2.16.840.1.113883.2.51.999",
+          "value": "07051455-dfd9-4eb7-9e23-e5175818fd49"
+        },
+        "author": [
+          {
+            "reference": "urn:uuid:1fdb6993-81e5-48ee-9dc7-fd1f4d0b54c8"
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "type": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ],
+          "text": "Laboratory Report"
+        },
+        "section": [
+          {
+            "code": {
+              "coding": [
+                {
+                  "code": "18719-5",
+                  "system": "http://loinc.org",
+                  "display": "Chemistry studies (set)"
+                }
+              ],
+              "text": "CHEM"
+            },
+            "entry": [
+              {
+                "reference": "urn:uuid:bfe82c74-f225-473a-a54d-11044e2e3b06"
+              }
+            ],
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>CHEM</h3><table class=\"hl7__eu__lab__report\"><thead><tr><th>Test</th><th>08-AUG-2005</th><th>Reference&#xA0;Range</th><th>Unit</th></tr></thead><tbody><tr><td></td><td><strong>3.0 H</strong></td><td>0.05 - 1.6</td><td>mIU/L</td></tr></tbody></table></div>"
+            },
+            "title": "CHEM"
+          },
+          {
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>Annotation</h3><table class=\"hl7__eu__lab__report\"><tr><th>Conclusion and Recommendations based on this report and previous findings known to us:</th></tr><tr><td>The patient’s TSH is elevated above the reference range, indicating possible subclinical or overt hypothyroidism. This finding should be correlated with clinical symptoms and, if not already done, free T4 and T3 levels should be assessed to further evaluate thyroid function. Consideration of age-related reference ranges and comorbidities is recommended.</td></tr></table></div>"
+            },
+            "code": {
+              "coding": [
+                {
+                  "code": "48767-8",
+                  "system": "http://loinc.org",
+                  "display": "Annotation comment [Interpretation] Narrative"
+                }
+              ]
+            },
+            "title": "Annotation comment"
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "final",
+        "subject": {
+          "reference": "urn:uuid:85b6cec1-e044-45f9-bdda-0e2d58abd65c",
+          "display": "Elisa Villena"
+        },
+        "date": "2005-08-08T21:58:38Z",
+        "title": "Laboratory Report",
+        "confidentiality": "N"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:f1335a6b-f098-4067-9df0-e968e08a4000",
+      "resource": {
+        "resourceType": "DiagnosticReport",
+        "id": "f1335a6b-f098-4067-9df0-e968e08a4000",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/DiagnosticReport-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "07051455-dfd9-4eb7-9e23-e5175818fd49"
+          },
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "01fff2b7-cffe-4a04-9cf3-db4edd334484"
+          }
+        ],
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-DiagnosticReport.composition",
+            "valueReference": {
+              "reference": "urn:uuid:beb03267-7a02-43e2-ac11-21cd21482423"
+            }
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:37c1f45f-b343-4e3e-a240-f5e182fd785e"
+          }
+        ],
+        "result": [
+          {
+            "reference": "urn:uuid:bfe82c74-f225-473a-a54d-11044e2e3b06"
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "registered",
+        "code": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:85b6cec1-e044-45f9-bdda-0e2d58abd65c",
+          "display": "Elisa Villena"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:85b6cec1-e044-45f9-bdda-0e2d58abd65c",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "85b6cec1-e044-45f9-bdda-0e2d58abd65c",
+        "meta": {
+          "security": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "HTEST"
+            },
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "TRAIN"
+            }
+          ],
+          "tag": [
+            {
+              "system": "https://synderai.net/fhir/CodeSystem/tags",
+              "code": "synthetic",
+              "display": "SYNDERAI Synthetic data"
+            }
+          ],
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/patient-eu-core"
+          ]
+        },
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "JHN",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://ec.europa.eu/identifier/eci",
+            "value": "7311-983604-4"
+          },
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "MR",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://local.setting.eu/identifier",
+            "value": "e3db9e31-3fa3-ca93-708d-2997e7f06628"
+          }
+        ],
+        "name": [
+          {
+            "given": [
+              "Elisa"
+            ],
+            "family": "Villena",
+            "text": "Elisa Villena"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Urbanización Hugo Estevez 252"
+            ],
+            "use": "home",
+            "type": "physical",
+            "postalCode": "14001",
+            "city": "Córdoba",
+            "country": "Spain"
+          }
+        ],
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "+34981 12 69 80"
+          }
+        ],
+        "extension": [
+          {
+            "extension": [
+              {
+                "url": "code",
+                "valueCodeableConcept": {
+                  "coding": [
+                    {
+                      "code": "ES",
+                      "system": "urn:iso:std:iso:3166"
+                    }
+                  ]
+                }
+              }
+            ],
+            "url": "http://hl7.org/fhir/StructureDefinition/patient-nationality"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__ips\"><tr><td>Elisa Villena</td><td>female</td><td>18-Nov-1934</td></tr></table></div>"
+        },
+        "gender": "female",
+        "birthDate": "1934-11-18"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:949d1b74-afac-44f2-9ba6-56911d1c1f88",
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "949d1b74-afac-44f2-9ba6-56911d1c1f88",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/ServiceRequest-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "system": "http://example.org",
+            "value": "be343291-4ae0-4d74-b1a5-216ecdc8ee3c"
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:37c1f45f-b343-4e3e-a240-f5e182fd785e"
+          }
+        ],
+        "reasonCode": [
+          {
+            "coding": [
+              {
+                "code": "40930008",
+                "system": "http://snomed.info/sct",
+                "display": "Hypothyroidism"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "55822004",
+                "system": "http://snomed.info/sct",
+                "display": "Hyperlipidemia"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "239873007",
+                "system": "http://snomed.info/sct",
+                "display": "Osteoarthritis of knee"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "59621000",
+                "system": "http://snomed.info/sct",
+                "display": "Essential hypertension"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "64859006",
+                "system": "http://snomed.info/sct",
+                "display": "Osteoporosis"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "13645005",
+                "system": "http://snomed.info/sct",
+                "display": "Chronic obstructive pulmonary disease"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "386805003",
+                "system": "http://snomed.info/sct",
+                "display": "Mild neurocognitive disorder"
+              }
+            ]
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "active",
+        "intent": "order",
+        "code": {
+          "coding": [
+            {
+              "code": "108252007",
+              "system": "http://snomed.info/sct",
+              "display": "Laboratory procedure"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:85b6cec1-e044-45f9-bdda-0e2d58abd65c",
+          "display": "Elisa Villena"
+        },
+        "requester": {
+          "reference": "urn:uuid:42e1e577-484b-4526-a036-d1d3aa13a9bf"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:42e1e577-484b-4526-a036-d1d3aa13a9bf",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "42e1e577-484b-4526-a036-d1d3aa13a9bf",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Role Id: 42e1e577-484b-4526-a036-d1d3aa13a9bf</div>"
+        },
+        "organization": {
+          "reference": "urn:uuid:83fce76e-d94e-4e75-8aec-6eaaafe5515a"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:83fce76e-d94e-4e75-8aec-6eaaafe5515a",
+      "resource": {
+        "resourceType": "Organization",
+        "id": "83fce76e-d94e-4e75-8aec-6eaaafe5515a",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/organization-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "4378e231-1383-46c3-96de-5a979e82a7e9"
+          }
+        ],
+        "address": [
+          {
+            "city": "Córdoba",
+            "postalCode": "14007",
+            "country": "Spain"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Organization: Levante Sur</div>"
+        },
+        "name": "Levante Sur"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:37c1f45f-b343-4e3e-a240-f5e182fd785e",
+      "resource": {
+        "resourceType": "Specimen",
+        "id": "37c1f45f-b343-4e3e-a240-f5e182fd785e",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Specimen-eu-lab"
+          ]
+        },
+        "collection": {
+          "collectedDateTime": "2005-08-08"
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Specimen</th><th>Collection Date</th></tr><tr><td>Acellular blood (serum or plasma) specimen</td><td><span class=\"nb\">08-Aug-2005</span></td></tr></table></div>"
+        },
+        "type": {
+          "coding": [
+            {
+              "code": "122592007",
+              "system": "http://snomed.info/sct",
+              "display": "Acellular blood (serum or plasma) specimen"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:bfe82c74-f225-473a-a54d-11044e2e3b06",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "bfe82c74-f225-473a-a54d-11044e2e3b06",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Observation-resultslab-eu-lab"
+          ]
+        },
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "laboratory",
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category"
+              }
+            ]
+          }
+        ],
+        "performer": [
+          {
+            "display": "The Central European Laboratory"
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "code": "11579-0",
+              "system": "http://loinc.org",
+              "display": "Thyrotropin [Units/volume] in Serum or Plasma by Detection limit <= 0.05 mIU/L"
+            }
+          ],
+          "text": "Thyrotropin [Units/volume] in Serum or Plasma by Detection limit <= 0.05 mIU/L"
+        },
+        "valueQuantity": {
+          "value": 3,
+          "unit": "m[iU]/L",
+          "code": "mIU/L",
+          "system": "http://unitsofmeasure.org"
+        },
+        "referenceRange": [
+          {
+            "low": {
+              "value": 0.05,
+              "code": "mIU/L",
+              "system": "http://unitsofmeasure.org"
+            },
+            "high": {
+              "value": 1.6,
+              "code": "mIU/L",
+              "system": "http://unitsofmeasure.org"
+            }
+          }
+        ],
+        "interpretation": [
+          {
+            "coding": [
+              {
+                "code": "H",
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                "display": "High"
+              }
+            ]
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Test</th><th>08-Aug-2005</th><th>Reference&#xA0;Range</th><th>Flag</th><th>Unit</th></tr><tr><td>Thyrotropin [Units/volume] in Serum or Plasma by Detection limit &lt;= 0.05 mIU/L</td><td>3.0</td><td>0.05 - 1.6</td><td>H</td><td>mIU/L</td></tr></table></div>"
+        },
+        "status": "final",
+        "effectiveDateTime": "2005-08-08T19:58:38Z",
+        "subject": {
+          "reference": "urn:uuid:85b6cec1-e044-45f9-bdda-0e2d58abd65c",
+          "display": "Elisa Villena"
+        },
+        "specimen": {
+          "reference": "urn:uuid:37c1f45f-b343-4e3e-a240-f5e182fd785e"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:cacae4bc-ab95-4566-8ea3-5a3f73f3c2b2",
+      "resource": {
+        "resourceType": "Device",
+        "id": "cacae4bc-ab95-4566-8ea3-5a3f73f3c2b2",
+        "deviceName": [
+          {
+            "name": "SYNDERAI Synthetic Generator",
+            "type": "manufacturer-name"
+          }
+        ],
+        "version": [
+          {
+            "value": "5.0"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">SYNDERAI Synthetic Generator v5.0</div>"
+        },
+        "status": "active",
+        "distinctIdentifier": "synderai-generator-50",
+        "manufacturer": "SYNDERAI Project"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:8fa30f6f-e63c-4691-b8f5-a5904a989d53",
+      "resource": {
+        "resourceType": "Provenance",
+        "id": "8fa30f6f-e63c-4691-b8f5-a5904a989d53",
+        "target": [
+          {
+            "reference": "urn:uuid:85b6cec1-e044-45f9-bdda-0e2d58abd65c"
+          },
+          {
+            "reference": "urn:uuid:beb03267-7a02-43e2-ac11-21cd21482423"
+          },
+          {
+            "reference": "urn:uuid:1fdb6993-81e5-48ee-9dc7-fd1f4d0b54c8"
+          },
+          {
+            "reference": "urn:uuid:60289723-3973-481e-bacb-ada8b4dfa566"
+          },
+          {
+            "reference": "urn:uuid:42e1e577-484b-4526-a036-d1d3aa13a9bf"
+          },
+          {
+            "reference": "urn:uuid:83fce76e-d94e-4e75-8aec-6eaaafe5515a"
+          }
+        ],
+        "activity": {
+          "coding": [
+            {
+              "code": "CREATE",
+              "system": "http://terminology.hl7.org/CodeSystem/v3-DataOperation",
+              "display": "create"
+            }
+          ],
+          "text": "Synthetic Example Data Generation"
+        },
+        "policy": [
+          "https://synderai.net/synderai-synthetic-data-policy"
+        ],
+        "agent": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "author",
+                  "system": "http://terminology.hl7.org/CodeSystem/provenance-participant-type",
+                  "display": "Author"
+                }
+              ],
+              "text": "author"
+            },
+            "who": {
+              "reference": "urn:uuid:cacae4bc-ab95-4566-8ea3-5a3f73f3c2b2"
+            }
+          }
+        ],
+        "reason": [
+          {
+            "coding": [
+              {
+                "code": "TRAIN",
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+                "display": "training"
+              }
+            ],
+            "text": "Interoperability Testing and Training (non-clinical use)"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provenance for SYNDERAI Synthetic Example Data Resource</div>"
+        },
+        "recorded": "2005-08-08T23:58:38Z"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:1fdb6993-81e5-48ee-9dc7-fd1f4d0b54c8",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "1fdb6993-81e5-48ee-9dc7-fd1f4d0b54c8",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory Role Id: 1fdb6993-81e5-48ee-9dc7-fd1f4d0b54c8</div>"
+        },
+        "practitioner": {
+          "reference": "urn:uuid:60289723-3973-481e-bacb-ada8b4dfa566"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:60289723-3973-481e-bacb-ada8b4dfa566",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "60289723-3973-481e-bacb-ada8b4dfa566",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitioner-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "3881b597-a953-4f13-bbb0-a2226563edcf"
+          }
+        ],
+        "name": [
+          {
+            "prefix": [
+              "dr"
+            ],
+            "given": [
+              "Ex"
+            ],
+            "family": "Ample"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Laboratoire Central Européenne",
+              "Boulevard du Jardin Botanique 32"
+            ],
+            "postalCode": "1000",
+            "city": "Brussels",
+            "country": "Belgium"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory: Laboratoire Central Européenne, 1000 Brussels, Belgium</div>"
+        }
+      }
+    }
+  ],
+  "type": "document",
+  "timestamp": "2005-08-08T23:58:38Z"
+}

@@ -1,0 +1,787 @@
+{
+  "resourceType": "Bundle",
+  "id": "5e549a2b-8c1e-4194-b4a6-86a3a00f5962",
+  "meta": {
+    "profile": [
+      "http://hl7.eu/fhir/laboratory/StructureDefinition/Bundle-eu-lab"
+    ]
+  },
+  "identifier": {
+    "assigner": {
+      "display": "HL7 Europe"
+    },
+    "system": "urn:oid:2.16.840.1.113883.2.51.999",
+    "value": "a9f4a2c7-367f-4909-8081-f1e41c581b29"
+  },
+  "entry": [
+    {
+      "fullUrl": "urn:uuid:d0fa7b50-fb9f-4c87-b338-ac976cccc8f1",
+      "resource": {
+        "resourceType": "Composition",
+        "id": "d0fa7b50-fb9f-4c87-b338-ac976cccc8f1",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Composition-eu-lab"
+          ]
+        },
+        "extension": [
+          {
+            "url": "http://hl7.eu/fhir/extensions/StructureDefinition/composition-diagnosticReportReference",
+            "valueReference": {
+              "reference": "urn:uuid:856cd7c1-b532-4a08-8095-1d9fa3f2e849"
+            }
+          }
+        ],
+        "identifier": {
+          "assigner": {
+            "display": "HL7 Europe"
+          },
+          "system": "urn:oid:2.16.840.1.113883.2.51.999",
+          "value": "a9afbd83-2c5f-4976-aa56-61d17da45180"
+        },
+        "author": [
+          {
+            "reference": "urn:uuid:e6fd1c8b-8ce8-418f-a0d2-c0ad0159d7b7"
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "type": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ],
+          "text": "Laboratory Report"
+        },
+        "section": [
+          {
+            "code": {
+              "coding": [
+                {
+                  "code": "18719-5",
+                  "system": "http://loinc.org",
+                  "display": "Chemistry studies (set)"
+                }
+              ],
+              "text": "CHEM"
+            },
+            "entry": [
+              {
+                "reference": "urn:uuid:c1037322-fd7a-43b2-9fab-b0d93098ebaa"
+              }
+            ],
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>CHEM</h3><table class=\"hl7__eu__lab__report\"><thead><tr><th>Test</th><th>27-JUL-1977</th><th>Reference&#xA0;Range</th><th>Unit</th></tr></thead><tbody><tr><td></td><td><strong>50.2 H</strong></td><td>20 - 42</td><td>mmol/mol</td></tr></tbody></table></div>"
+            },
+            "title": "CHEM"
+          },
+          {
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>Annotation</h3><table class=\"hl7__eu__lab__report\"><tr><th>Conclusion and Recommendations based on this report and previous findings known to us</th></tr><tr><td>The patient’s HbA1c is significantly elevated, indicating poor long-term glycemic control and likely uncontrolled diabetes mellitus. This increases the risk for microvascular and macrovascular complications. Clinical correlation and review of diabetes management are strongly recommended.</td></tr></table></div>"
+            },
+            "code": {
+              "coding": [
+                {
+                  "code": "48767-8",
+                  "system": "http://loinc.org",
+                  "display": "Annotation comment [Interpretation] Narrative"
+                }
+              ]
+            },
+            "title": "Annotation comment"
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "final",
+        "subject": {
+          "reference": "urn:uuid:a2bf6c8d-b64a-4c02-a612-18362cf33ce7",
+          "display": "Romana Bellini"
+        },
+        "date": "1977-07-27T04:32:09Z",
+        "title": "Laboratory Report",
+        "confidentiality": "N"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:856cd7c1-b532-4a08-8095-1d9fa3f2e849",
+      "resource": {
+        "resourceType": "DiagnosticReport",
+        "id": "856cd7c1-b532-4a08-8095-1d9fa3f2e849",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/DiagnosticReport-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "a9afbd83-2c5f-4976-aa56-61d17da45180"
+          },
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "e80df95f-46e2-4182-a814-639cfb0c3072"
+          }
+        ],
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-DiagnosticReport.composition",
+            "valueReference": {
+              "reference": "urn:uuid:d0fa7b50-fb9f-4c87-b338-ac976cccc8f1"
+            }
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:9b9e060f-16ca-4a53-be10-ea927598bcb2"
+          }
+        ],
+        "result": [
+          {
+            "reference": "urn:uuid:c1037322-fd7a-43b2-9fab-b0d93098ebaa"
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "registered",
+        "code": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:a2bf6c8d-b64a-4c02-a612-18362cf33ce7",
+          "display": "Romana Bellini"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:a2bf6c8d-b64a-4c02-a612-18362cf33ce7",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "a2bf6c8d-b64a-4c02-a612-18362cf33ce7",
+        "meta": {
+          "security": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "HTEST"
+            },
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "TRAIN"
+            }
+          ],
+          "tag": [
+            {
+              "system": "https://synderai.net/fhir/CodeSystem/tags",
+              "code": "synthetic",
+              "display": "SYNDERAI Synthetic data"
+            }
+          ],
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/patient-eu-core"
+          ]
+        },
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "JHN",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://ec.europa.eu/identifier/eci",
+            "value": "7503-878739-8"
+          },
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "MR",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://local.setting.eu/identifier",
+            "value": "68d12b88-f1a3-1710-e753-7c1c14c2b7bd"
+          }
+        ],
+        "name": [
+          {
+            "given": [
+              "Romana"
+            ],
+            "family": "Bellini",
+            "text": "Romana Bellini"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Incrocio Borgia, 143"
+            ],
+            "use": "home",
+            "type": "physical",
+            "postalCode": "16030",
+            "city": "Croce Valanidi",
+            "country": "Italy"
+          }
+        ],
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "0141667458"
+          }
+        ],
+        "extension": [
+          {
+            "extension": [
+              {
+                "url": "code",
+                "valueCodeableConcept": {
+                  "coding": [
+                    {
+                      "code": "IT",
+                      "system": "urn:iso:std:iso:3166"
+                    }
+                  ]
+                }
+              }
+            ],
+            "url": "http://hl7.org/fhir/StructureDefinition/patient-nationality"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__ips\"><tr><td>Romana Bellini</td><td>female</td><td>10-Dec-1943</td></tr></table></div>"
+        },
+        "gender": "female",
+        "birthDate": "1943-12-10"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:7d11a203-6c82-42eb-bf8a-a7b051a743a8",
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "7d11a203-6c82-42eb-bf8a-a7b051a743a8",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/ServiceRequest-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "system": "http://example.org",
+            "value": "0eb0832e-1b35-44fb-a700-bb3e9d6f2f1b"
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:9b9e060f-16ca-4a53-be10-ea927598bcb2"
+          }
+        ],
+        "reasonCode": [
+          {
+            "coding": [
+              {
+                "code": "44054006",
+                "system": "http://snomed.info/sct",
+                "display": "Type 2 diabetes mellitus"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "127013003",
+                "system": "http://snomed.info/sct",
+                "display": "Disorder of kidney due to diabetes mellitus"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "7200002",
+                "system": "http://snomed.info/sct",
+                "display": "Alcoholism"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "237602007",
+                "system": "http://snomed.info/sct",
+                "display": "Metabolic syndrome X"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "414545008",
+                "system": "http://snomed.info/sct",
+                "display": "Ischemic heart disease"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "55822004",
+                "system": "http://snomed.info/sct",
+                "display": "Hyperlipidemia"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "64859006",
+                "system": "http://snomed.info/sct",
+                "display": "Osteoporosis"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "230572002",
+                "system": "http://snomed.info/sct",
+                "display": "Neuropathy due to diabetes mellitus"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "363354003",
+                "system": "http://snomed.info/sct",
+                "display": "Malignant neoplasm of cervix uteri"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "239872002",
+                "system": "http://snomed.info/sct",
+                "display": "Osteoarthritis of hip"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "59621000",
+                "system": "http://snomed.info/sct",
+                "display": "Essential hypertension"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "4855003",
+                "system": "http://snomed.info/sct",
+                "display": "Retinopathy due to diabetes mellitus"
+              }
+            ]
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "active",
+        "intent": "order",
+        "code": {
+          "coding": [
+            {
+              "code": "108252007",
+              "system": "http://snomed.info/sct",
+              "display": "Laboratory procedure"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:a2bf6c8d-b64a-4c02-a612-18362cf33ce7",
+          "display": "Romana Bellini"
+        },
+        "requester": {
+          "reference": "urn:uuid:75347849-1017-4b86-844c-fbcf9ca54133"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:75347849-1017-4b86-844c-fbcf9ca54133",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "75347849-1017-4b86-844c-fbcf9ca54133",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Role Id: 75347849-1017-4b86-844c-fbcf9ca54133</div>"
+        },
+        "organization": {
+          "reference": "urn:uuid:f0d38dbe-a3ee-48fe-bc1c-e318f5957790"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:f0d38dbe-a3ee-48fe-bc1c-e318f5957790",
+      "resource": {
+        "resourceType": "Organization",
+        "id": "f0d38dbe-a3ee-48fe-bc1c-e318f5957790",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/organization-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "f3263268-0827-4059-867f-00ada8ebf777"
+          }
+        ],
+        "address": [
+          {
+            "city": "Genova",
+            "postalCode": "16128",
+            "country": "Italy"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Organization: Ospedale Galliera</div>"
+        },
+        "name": "Ospedale Galliera"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:9b9e060f-16ca-4a53-be10-ea927598bcb2",
+      "resource": {
+        "resourceType": "Specimen",
+        "id": "9b9e060f-16ca-4a53-be10-ea927598bcb2",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Specimen-eu-lab"
+          ]
+        },
+        "collection": {
+          "collectedDateTime": "1977-07-27"
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Specimen</th><th>Collection Date</th></tr><tr><td>Blood specimen</td><td><span class=\"nb\">27-Jul-1977</span></td></tr></table></div>"
+        },
+        "type": {
+          "coding": [
+            {
+              "code": "119297000",
+              "system": "http://snomed.info/sct",
+              "display": "Blood specimen"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:c1037322-fd7a-43b2-9fab-b0d93098ebaa",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "c1037322-fd7a-43b2-9fab-b0d93098ebaa",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Observation-resultslab-eu-lab"
+          ]
+        },
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "laboratory",
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category"
+              }
+            ]
+          }
+        ],
+        "performer": [
+          {
+            "display": "The Central European Laboratory"
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "code": "59261-8",
+              "system": "http://loinc.org",
+              "display": "Hemoglobin A1c/Hemoglobin.total standardized per IFCC-RMP for CDT in Blood"
+            }
+          ],
+          "text": "Hemoglobin A1c/Hemoglobin.total standardized per IFCC-RMP for CDT in Blood"
+        },
+        "valueQuantity": {
+          "value": 50.2,
+          "unit": "mmol/mol",
+          "code": "mmol/mol",
+          "system": "http://unitsofmeasure.org"
+        },
+        "referenceRange": [
+          {
+            "low": {
+              "value": 20,
+              "code": "mmol/mol",
+              "system": "http://unitsofmeasure.org"
+            },
+            "high": {
+              "value": 42,
+              "code": "mmol/mol",
+              "system": "http://unitsofmeasure.org"
+            }
+          }
+        ],
+        "interpretation": [
+          {
+            "coding": [
+              {
+                "code": "H",
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                "display": "High"
+              }
+            ]
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Test</th><th>27-Jul-1977</th><th>Reference&#xA0;Range</th><th>Flag</th><th>Unit</th></tr><tr><td>Hemoglobin A1c/Hemoglobin.total standardized per IFCC-RMP for CDT in Blood</td><td>50.2</td><td>20 - 42</td><td>H</td><td>mmol/mol</td></tr></table></div>"
+        },
+        "status": "final",
+        "effectiveDateTime": "1977-07-27T03:32:09Z",
+        "subject": {
+          "reference": "urn:uuid:a2bf6c8d-b64a-4c02-a612-18362cf33ce7",
+          "display": "Romana Bellini"
+        },
+        "specimen": {
+          "reference": "urn:uuid:9b9e060f-16ca-4a53-be10-ea927598bcb2"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:8900273f-a069-4afe-9983-d1e3c257e540",
+      "resource": {
+        "resourceType": "Device",
+        "id": "8900273f-a069-4afe-9983-d1e3c257e540",
+        "deviceName": [
+          {
+            "name": "SYNDERAI Synthetic Generator",
+            "type": "manufacturer-name"
+          }
+        ],
+        "version": [
+          {
+            "value": "5.0"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">SYNDERAI Synthetic Generator v5.0</div>"
+        },
+        "status": "active",
+        "distinctIdentifier": "synderai-generator-50",
+        "manufacturer": "SYNDERAI Project"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:dc850977-58cd-4c9f-adf4-f687b0c7c79f",
+      "resource": {
+        "resourceType": "Provenance",
+        "id": "dc850977-58cd-4c9f-adf4-f687b0c7c79f",
+        "target": [
+          {
+            "reference": "urn:uuid:a2bf6c8d-b64a-4c02-a612-18362cf33ce7"
+          },
+          {
+            "reference": "urn:uuid:d0fa7b50-fb9f-4c87-b338-ac976cccc8f1"
+          },
+          {
+            "reference": "urn:uuid:e6fd1c8b-8ce8-418f-a0d2-c0ad0159d7b7"
+          },
+          {
+            "reference": "urn:uuid:15cdd05c-9477-4d16-bdae-3766250e7e69"
+          },
+          {
+            "reference": "urn:uuid:75347849-1017-4b86-844c-fbcf9ca54133"
+          },
+          {
+            "reference": "urn:uuid:f0d38dbe-a3ee-48fe-bc1c-e318f5957790"
+          }
+        ],
+        "activity": {
+          "coding": [
+            {
+              "code": "CREATE",
+              "system": "http://terminology.hl7.org/CodeSystem/v3-DataOperation",
+              "display": "create"
+            }
+          ],
+          "text": "Synthetic Example Data Generation"
+        },
+        "policy": [
+          "https://synderai.net/synderai-synthetic-data-policy"
+        ],
+        "agent": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "author",
+                  "system": "http://terminology.hl7.org/CodeSystem/provenance-participant-type",
+                  "display": "Author"
+                }
+              ],
+              "text": "author"
+            },
+            "who": {
+              "reference": "urn:uuid:8900273f-a069-4afe-9983-d1e3c257e540"
+            }
+          }
+        ],
+        "reason": [
+          {
+            "coding": [
+              {
+                "code": "TRAIN",
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+                "display": "training"
+              }
+            ],
+            "text": "Interoperability Testing and Training (non-clinical use)"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provenance for SYNDERAI Synthetic Example Data Resource</div>"
+        },
+        "recorded": "1977-07-27T05:32:09Z"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:e6fd1c8b-8ce8-418f-a0d2-c0ad0159d7b7",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "e6fd1c8b-8ce8-418f-a0d2-c0ad0159d7b7",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory Role Id: e6fd1c8b-8ce8-418f-a0d2-c0ad0159d7b7</div>"
+        },
+        "practitioner": {
+          "reference": "urn:uuid:15cdd05c-9477-4d16-bdae-3766250e7e69"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:15cdd05c-9477-4d16-bdae-3766250e7e69",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "15cdd05c-9477-4d16-bdae-3766250e7e69",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitioner-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "4eedc768-42ee-4e0a-9524-48b25487d5c9"
+          }
+        ],
+        "name": [
+          {
+            "prefix": [
+              "dr"
+            ],
+            "given": [
+              "Ex"
+            ],
+            "family": "Ample"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Laboratoire Central Européenne",
+              "Boulevard du Jardin Botanique 32"
+            ],
+            "postalCode": "1000",
+            "city": "Brussels",
+            "country": "Belgium"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory: Laboratoire Central Européenne, 1000 Brussels, Belgium</div>"
+        }
+      }
+    }
+  ],
+  "type": "document",
+  "timestamp": "1977-07-27T05:32:09Z"
+}

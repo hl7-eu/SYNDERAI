@@ -59,28 +59,32 @@ foreach ($pdat->labobservations as $ldate => $lbspd) {
     // for AI conclusion we create a human :-) readable table
     $overalllabtesttable =  "";
     foreach ($lbspd as $labi) {
-      $code = array();
+      // Normalise a code system alias: drop any leading '$' and map the
+      // "snomed" short alias to "sct". Full URIs and URNs pass through
+      // untouched. The templates add exactly one '$' where an alias is used,
+      // so carrying the sigil in the data is what produced "$$sct" in run 1.
+      $normsys = function ($s) {
+        $s = (string) $s;
+        if ($s === "" or strpos($s, ":") !== FALSE) return $s;  // URI / URN
+        $s = ltrim($s, '$');
+        return $s === "snomed" ? "sct" : $s;
+      };
+
       $code = [
         "code" => $labi["code"]["code"],
         "display" => $labi["code"]["display"],
-        // must tweak system snomed short alias "snomed" to "sct"
-        "system" => $labi["code"]["system"] === "snomed" ? "\$sct" : $labi["code"]["system"]
+        "system" => $normsys($labi["code"]["system"])
       ];
       $lnsystem = $labi["lnsystem"];
-      $value = array();
       $value = [
         'type' => $labi["valuetype"],
         'value' => $labi["value"],
         'code' => $labi["valuecode"],
         'unit' => $labi["valueunit"],
-        // must tweak system snomed short alias "snomed" to "sct"
-        'system' => $labi["valuesystem"] === "snomed" ? "\$sct" :$labi["valuesystem"],
+        'human' => $labi["valuehuman"],
+        'system' => $normsys($labi["valuesystem"]),
         'display' => $labi["valuedisplay"]
       ];
-      if ($labi["valuetype"] === "CodeableConcept") {
-        var_dump($labi);
-        // var_dump($value);
-      }
       if (USE_AI) {
         $labtestai = $labi["code"]["display"] . " " . $labi["value"] . " " . $labi["valueunit"];
         $labtestmd5 = $pdat->age . $pdat->gender . $labi["code"]["display"] . $labi["valueunit"];
@@ -108,65 +112,66 @@ foreach ($pdat->labobservations as $ldate => $lbspd) {
             $rr1 = NULL;
           }
         }
-        // check / process reference range
+        // ---- normalise the reference range -----------------------------
+        // RULE: the reference range never decides the value type. It used to:
+        // $isnumeric started at TRUE, so a range that carried no numeric
+        // bounds at all still fell into the else arm and retyped the
+        // observation as "Quantity". That is how coded results reached the
+        // valueQuantity branch of the template and broke the FSH parser.
+        // A range is numeric only when BOTH bounds are present and numeric.
         if ($rr1 === NULL) {  // still no ref range, add the "placeholder reference range"
-            $rr1 = [
-              "low" => NULL,
-              "high" => NULL,
-              "unit" => $labi["valueunit"],
-              "display" => NULL,
-              "text" => NULL
-            ];
-        } else {
-          // if set check whether low and high are real numbers (hich is ok)
-          // or characters like "Negative" coming from faulty AI. 
-          // if the latter correct it.
-          // if it is numeric change value['type'] to 'Quantity'
-          $isnumeric = TRUE;  // assume all is numeric
-          $thetext = array(); // to record non-numeric ranges like "Negative-Trace".
-          if (isset($rr1["low"])) {
-            if (is_numeric($rr1["low"])) {
-              $rr1["low"] = (0 + $rr1["low"]);   // make it really a int/float
-            } else {
-              $isnumeric = FALSE;
-              $thetext[] = $rr1["low"];
-            }
-          }
-          if (isset($rr1["high"])) {
-            if (is_numeric($rr1["high"])) {
-              $rr1["high"] = (0 + $rr1["high"]);  // make it really a int/float
-            } else {
-              $isnumeric = FALSE;
-              $thetext[] = $rr1["high"];
-            }
-          }
-          if (!$isnumeric) {
-            // the low or high field contains "non-numeric" values, reset $rr1 reference range to be used as text
-            if (isset($rr1["display"])) {
-              // if display is already set use it...
-              $rr1 = [
-               "text" => $rr1["display"]
-              ];
-            } else {
-              // ... otherwise try to compile something usefull out of the text(s)
-              if (count($thetext) == 2) {
-                $rr1 = [
-                  "text" => $thetext[0] . " - " . $thetext[0]
-                  ];
-              } else if (count($thetext) == 1) {
-                 $rr1 = [
-                  "text" => $thetext[0] . $thetext[0]
-                  ];
-              } else {
-                $rr1 = [];  // no reference range at all
-              }
-            } 
-          } else {
-            // this is numeric, overwrite value['type'] with 'Quantity'
-            $value['type'] = "Quantity";
-          }
-          $rr1["isNumeric"] = $isnumeric;
+          $rr1 = [
+            "low" => NULL,
+            "high" => NULL,
+            "unit" => $labi["valueunit"],
+            "display" => NULL,
+            "text" => NULL
+          ];
         }
+        $rawlow  = isset($rr1["low"])  ? $rr1["low"]  : NULL;
+        $rawhigh = isset($rr1["high"]) ? $rr1["high"] : NULL;
+        // record non-numeric bounds like "Negative" / "Trace" coming from the AI
+        $thetext = array();
+        foreach (array($rawlow, $rawhigh) as $bound)
+          if (isset($bound) and !is_numeric($bound)) $thetext[] = (string) $bound;
+
+        $isnumeric = (isset($rawlow) and is_numeric($rawlow)
+                  and isset($rawhigh) and is_numeric($rawhigh));
+
+        if ($isnumeric) {
+          $rr1["low"]  = (0 + $rawlow);   // make it really an int/float
+          $rr1["high"] = (0 + $rawhigh);
+          if (!isset($rr1["unit"]) or $rr1["unit"] === "")
+            $rr1["unit"] = $labi["valueunit"];
+          $rr1["text"] = NULL;
+        } else {
+          // Qualitative or incomplete range -> carry it as text.
+          $astext = NULL;
+          if (isset($rr1["text"]) and $rr1["text"] !== "") {
+            $astext = $rr1["text"];
+          } else if (isset($rr1["display"]) and $rr1["display"] !== "") {
+            $astext = $rr1["display"];
+          } else if (count($thetext) === 2) {
+            $astext = $thetext[0] . " - " . $thetext[1];  // was: [0] twice
+          } else if (count($thetext) === 1) {
+            $astext = $thetext[0];                        // was: [0] . [0]
+          }
+          $rr1 = [
+            "low" => NULL,
+            "high" => NULL,
+            "unit" => $labi["valueunit"],
+            "display" => isset($rr1["display"]) ? $rr1["display"] : NULL,
+            "text" => $astext
+          ];
+        }
+        $rr1["isNumeric"] = $isnumeric;
+
+        // A numeric range next to a non-quantitative value is a data smell
+        // worth seeing, but it is not a reason to change the value type.
+        if ($isnumeric and $value['type'] !== "Quantity")
+          lognlsev(3, WARNING, "......... ~~~ Numeric reference range on a "
+            . $value['type'] . " result '" . $labi["code"]["display"]
+            . "', value type kept\n");
       } else {
         // no AI but add the "placeholder reference range"
         $rr1 = [
@@ -216,8 +221,9 @@ foreach ($pdat->labobservations as $ldate => $lbspd) {
 
       // build string for log
       $logtext = substr($data->effective, 0, 10) . ": " . $data->code[0]->display . " (" . $data->code[0]->code . ") ";
-      if ($labi["valuetype"] === 'Quantity')
-        if ( ! ( ((float) $labi["value"]) || (float) $labi["value"] > 0 || $labi["value"] === '0.0' ) ) echo "+++ Cannot cast as float/decimal: " . $labi["value"] . "\n";
+      if ($labi["valuetype"] === 'Quantity' and !is_numeric($labi["value"]))
+        lognlsev(1, ERROR, "......... +++ Quantity result is not numeric: '"
+          . $labi["value"] . "' for " . $labi["code"]["display"] . "\n");
       
       // build a table row with the results for AI conclusion
       $overalllabtesttable .=
@@ -242,6 +248,9 @@ foreach ($pdat->labobservations as $ldate => $lbspd) {
         }
       } else $overalllabtesttable .= " | | ";
       $overalllabtesttable .= " |\n";
+      // one log line per result -- this used to sit outside the loop, so only
+      // the last result of the day ever reached the log
+      if (DEBUGLEVEL >= 4) lognl (4, "......... " . $logtext);
       // store all lab data of this date, the generated fsh and IDs + the AI table for this set of results
       $pdat->labresults[$ldate][] = [
         "instanceid" => $lorecomminstanceid,
@@ -251,8 +260,6 @@ foreach ($pdat->labobservations as $ldate => $lbspd) {
     }
 
     $pdat->labresultsaitable[$ldate] = $overalllabtesttable;
-
-    if (DEBUGLEVEL >= 4) lognl (4, "......... " . $logtext);
 
   }
 }

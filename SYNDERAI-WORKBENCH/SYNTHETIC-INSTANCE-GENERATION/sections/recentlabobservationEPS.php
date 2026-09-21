@@ -6,6 +6,21 @@
 // emit patient's recent lab observations
 // --------------------------------------
 
+if (!function_exists('xmltext')) {
+  /**
+   * Escape a value for insertion into a FHIR XHTML narrative.
+   *
+   * Resource.text.div is parsed as XML, so any "<", ">" or "&" that is part of
+   * the DATA rather than of the markup makes the whole div invalid and SUSHI
+   * rejects the assignment. LOINC 11579-0 carries a literal "<" in its display
+   * ("... by Detection limit <= 0.05 mIU/L") and is the case that surfaced this.
+   * Apply it to every value entering the narrative; never to the markup itself.
+   */
+  function xmltext($s) {
+    return htmlspecialchars((string) $s, ENT_QUOTES | ENT_XML1 | ENT_SUBSTITUTE, 'UTF-8');
+  }
+}
+
 $FSHlab1 = "";
 $HTMLlab1 = "";
 $pdat->labentries = array();
@@ -145,35 +160,37 @@ if ($pdat->labobservations === NULL) {
         "lnsystem" => $labi["lnsystem"]
       ];
 
-      // presets for local HTML
+      // presets for local HTML -- raw values, escaped once further down
       $rvl = "";
       $rvu = "";
       $refr = "";
+      $flag = "";                      // "" | " L" | " H", set when out of range
       $rdp = $code["display"];
       if ($value["type"] === 'Quantity') {
         $rvl = $value["value"];
         $rvu = $value["unit"];
-        if (isset($rr1["low"]) and isset($rr1["high"])) {
-          if ($rr1["low"] !== NULL and $rr1["high"] !== NULL) {
-            $refl = $rr1["low"];
-            $refh = $rr1["high"];
-            $refr = $refl . " - " . $refh;
-            // correct display of value if out of range
-            if ($rvl < $refl) {
-              $rvl = "<strong>$rvl L</strong>";
-            } else if ($rvl > $refh) {
-              $rvl = "<strong>$rvl H</strong>";
-            }
-          }
+        if (isset($rr1["low"]) and isset($rr1["high"])
+            and $rr1["low"] !== NULL and $rr1["high"] !== NULL) {
+          $refr = $rr1["low"] . " - " . $rr1["high"];
+          // mark the value when it falls outside the reference range
+          if ($rvl < $rr1["low"])       $flag = " L";
+          else if ($rvl > $rr1["high"]) $flag = " H";
         }
-
       }
       if ($value["type"] === 'CodeableConcept') {
         $rvl = $value["display"];
       }
 
-      // invent HTML for lab
-      $HTMLlab1 .= "<tr><td>$rdp</td><td>$rvl</td><td>$refr</td><td>$rvu</td></tr>";
+      // Build the row. Everything that is DATA is escaped here, at the single
+      // point where it enters XHTML; <strong> is the only markup this row adds
+      // and is therefore written outside the escaped text. Before 2026-09-11
+      // the values were interpolated raw, and the "<" in the display of LOINC
+      // 11579-0 made the narrative invalid XML.
+      $cell = $flag === ""
+        ? xmltext($rvl)
+        : "<strong>" . xmltext($rvl . $flag) . "</strong>";
+      $HTMLlab1 .= "<tr><td>" . xmltext($rdp) . "</td><td>" . $cell
+                 . "</td><td>" . xmltext($refr) . "</td><td>" . xmltext($rvu) . "</td></tr>";
       // var_dump($data);
       $data = json_decode(json_encode($data));
       // var_dump($data);

@@ -60,7 +60,37 @@ function attach_child(array &$parent, string $base, bool $repeat, array $data): 
 function transform_code(mixed $value): mixed {
     if (!is_string($value)) return $value;
 
-    // Branch 1 — coded concept: "$system#code [display]"
+    // ORDER MATTERS — the quantity branch must be tested FIRST.
+    //
+    // A quantity written with an explicit system, "82 $ucum#kg", contains both
+    // '$' and '#' and therefore also satisfies the coded-concept test. While the
+    // coded-concept branch came first it swallowed every such quantity and
+    // returned ['code' => '', 'system' => '82', 'display' => '$ucum#kg'] — no
+    // 'value', no 'scale'. The vital sign FSH template then took its "no value
+    // available" branch and emitted an Observation without value[x], silently,
+    // with a "-" in the narrative. Only the system-less spelling "400 #ng/l"
+    // ever reached the quantity branch, which is why the docblock example
+    // "145 $ucum#mm[Hg]" above never actually held.
+    //
+    // The quantity pattern is the more specific of the two: it must start with a
+    // number, which no "$system#code" ever does. Testing it first is therefore
+    // safe for coded concepts, including displays that contain digits.
+
+    // Branch 1 — quantity: "<number> [$system]#<unit>", with any trailing text
+    // (a repeated human-readable unit, quoted or not) ignored.
+    if (preg_match('/^(-?\d+(?:\.\d+)?)\s+(?:\$?([A-Za-z0-9_.\-]*))?#(\S+)(?:\s.*)?$/', $value, $m)) {
+        $numeric = strpos($m[1], '.') !== false ? (float) $m[1] : (int) $m[1];
+        $system = strlen($m[2]) == 0 ? "ucum" : $m[2];  // no system given, assume ucum
+        return [
+            'value'  => $numeric,
+            'system' => $system,
+            'unit'   => $m[3],
+            'code'   => $m[3],
+            'scale'  => 'numeric'
+        ];
+    }
+
+    // Branch 2 — coded concept: "$system#code [display]"
     if (strpos($value, '$') !== false && strpos($value, '#') !== false) {
         $pos = strpos($value, ' ');
         if ($pos === false) {
@@ -77,20 +107,6 @@ function transform_code(mixed $value): mixed {
             'code' => $code,
             'system' => $system,
             'display' => $display
-        ];
-    }
-
-    // Branch 2 — quantity: "numeric #unit" or "numeric $system#unit"
-    // Matches an integer or decimal, whitespace, an optional $system, then #unit.
-    if (preg_match('/^(\d+(?:\.\d+)?)\s+(?:\$([^#]*))?#(.+)$/', $value, $m)) {
-        $numeric = strpos($m[1], '.') !== false ? (float) $m[1] : (int) $m[1];
-        $system = strlen($m[2]) == 0 ? "ucum" : $m[2];  // empty string when no system was present, assume $ucum
-        return [
-            'value'  => $numeric,
-            'system' => $system,   
-            'unit'   => $m[3],
-            'code'   => $m[3],
-            'scale'  => 'numeric'
         ];
     }
 

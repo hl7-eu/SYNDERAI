@@ -122,7 +122,13 @@ Usage: #inline
 
 {# Practitioner identifier under the HL7 Europe OID namespace #}
 * identifier.system = "urn:oid:{{ HL7EUROPEEXAMPLESOID }}"
-{% set practitioneridentifier = getUUID() %} {# Generate ephemeral UUID for this identifier #}
+{# Generate an ephemeral UUID for this identifier.
+   The comment sits on its own line on purpose: with trim_blocks active, a
+   comment placed AFTER the set tag leaves the single space between them in the
+   output, and that space lands at the head of the next line — which is an FSH
+   rule. FSH requires indentation in multiples of two, so it was rejected once
+   per file (15 errors in run 6). #}
+{% set practitioneridentifier = getUUID() %}
 * identifier.value = "{{ practitioneridentifier }}"
 * identifier.assigner.display = "HL7 Europe"
 

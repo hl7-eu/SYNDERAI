@@ -147,9 +147,12 @@
                `vblock` is an array of individual readings for that group.
       Level 2: `{% for v in vblock %}` — iterates individual readings.
     Each reading carries: `v.date`, `v.code` (system, code, display), and
-    `v.value` (value, system, code, unit). The value line emits all Quantity
-    sub-fields on a single ISH line:
-      value {{ v.value.value }} {{ v.value.system }}#{{ v.value.code }} "{{ v.value.unit }}"
+    `v.value` (value, system, code, unit). The value line carries the quantity
+    in the ISH form "<number> $system#unit":
+      value {{ v.value.value }} {{ v.value.system }}#{{ v.value.code }}
+    The human-readable unit is NOT repeated in quotes at the end. It was once,
+    and transform_code() captured it into the unit field (kg "kg"). v.value.code
+    already carries the UCUM unit, so there is nothing to repeat.
     Note: `d` (the outer key) is never referenced in the output — see Issue #3.
 
   COMMENTED-OUT ADMISSION EVALUATION SECTION
@@ -479,8 +482,33 @@ section*
   entry*
     type vitalsign
     date {{ v.date }}
-    code* {{ v.code.system }}#{{ v.code.code }} {{ v.code.display }}
-    value {{ v.value.value }} {{ v.value.system }}#{{ v.value.code }} "{{ v.value.unit }}"
+{#
+  `code` is a LIST of codings (getters/vitalsigns.php builds it as
+  [[code, system, display]]), while `value` is a single object. Reading
+  v.code.system on the list yields nothing, so every vital sign came out as
+  "* code = # \"\"" — an Observation without a code, which FSH rejects.
+  |first takes the coding; the FSH template does the same with vital.code|first.
+#}
+{% set vc = v.code|first %}
+    code* {{ vc.system }}#{{ vc.code }} {{ vc.display }}
+{#
+  A reading is EITHER scalar (v.value) OR composite (v.component), never both.
+  A blood pressure panel carries no v.value at all: getters/vitalsigns.php
+  collapses the separate 8480-6 and 8462-4 readings into one 85354-9 entry whose
+  measurements live in `component`. While this template emitted only the scalar
+  line, that panel arrived at the FSH template with neither a value nor a
+  component, took its "no value available" branch, and rendered "-" — issue #105
+  in the HDR path. The scalar line is now guarded, and components are carried.
+#}
+{% if v.value is not empty %}
+    value {{ v.value.value }} {{ v.value.system }}#{{ v.value.code }}
+{% endif %}
+{% for cmp in v.component %}
+{% set cc = cmp.code|first %}
+    component*
+      code* {{ cc.system }}#{{ cc.code }} {{ cc.display }}
+      value {{ cmp.value.value }} {{ cmp.value.system }}#{{ cmp.value.code }}
+{% endfor %}{# component loop: no space before the comment, ISH indentation is semantic #}
 {% endfor %} {# vitalsigns loop #}
 {% endfor %} {# vblock loop #}
 {% endif %}  {# if vitalsigns at all #}

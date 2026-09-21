@@ -1,0 +1,718 @@
+{
+  "resourceType": "Bundle",
+  "id": "49a19ab5-0294-4fe4-886f-4c914a2ac347",
+  "meta": {
+    "profile": [
+      "http://hl7.eu/fhir/laboratory/StructureDefinition/Bundle-eu-lab"
+    ]
+  },
+  "identifier": {
+    "assigner": {
+      "display": "HL7 Europe"
+    },
+    "system": "urn:oid:2.16.840.1.113883.2.51.999",
+    "value": "c519168c-59b7-40c2-b117-3407c52f4c2c"
+  },
+  "entry": [
+    {
+      "fullUrl": "urn:uuid:9545206b-9c83-4129-9a22-cf58ebff234e",
+      "resource": {
+        "resourceType": "Composition",
+        "id": "9545206b-9c83-4129-9a22-cf58ebff234e",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Composition-eu-lab"
+          ]
+        },
+        "extension": [
+          {
+            "url": "http://hl7.eu/fhir/extensions/StructureDefinition/composition-diagnosticReportReference",
+            "valueReference": {
+              "reference": "urn:uuid:76348d41-fe16-4441-acdc-1ede751ef4d3"
+            }
+          }
+        ],
+        "identifier": {
+          "assigner": {
+            "display": "HL7 Europe"
+          },
+          "system": "urn:oid:2.16.840.1.113883.2.51.999",
+          "value": "3ae1a2b8-d9b8-4fc4-a5d7-8be766ca3ad0"
+        },
+        "author": [
+          {
+            "reference": "urn:uuid:6a568206-3205-47ce-b238-df5edc17ad71"
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "type": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ],
+          "text": "Laboratory Report"
+        },
+        "section": [
+          {
+            "code": {
+              "coding": [
+                {
+                  "code": "18719-5",
+                  "system": "http://loinc.org",
+                  "display": "Chemistry studies (set)"
+                }
+              ],
+              "text": "CHEM"
+            },
+            "entry": [
+              {
+                "reference": "urn:uuid:590c0d99-d89e-4ed2-af44-16e7ba81d714"
+              }
+            ],
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>CHEM</h3><table class=\"hl7__eu__lab__report\"><thead><tr><th>Test</th><th>24-SEP-2014</th><th>Reference&#xA0;Range</th><th>Unit</th></tr></thead><tbody><tr><td></td><td><strong>50.2 H</strong></td><td>20 - 42</td><td>mmol/mol</td></tr></tbody></table></div>"
+            },
+            "title": "CHEM"
+          },
+          {
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>Annotation</h3><table class=\"hl7__eu__lab__report\"><tr><th>Conclusion and Recommendations based on this report and previous findings known to us:</th></tr><tr><td>The patient’s HbA1c is significantly elevated, indicating poor long-term glycemic control and likely undiagnosed or poorly managed diabetes mellitus. Clinical correlation and further evaluation for diabetes management are strongly recommended.</td></tr></table></div>"
+            },
+            "code": {
+              "coding": [
+                {
+                  "code": "48767-8",
+                  "system": "http://loinc.org",
+                  "display": "Annotation comment [Interpretation] Narrative"
+                }
+              ]
+            },
+            "title": "Annotation comment"
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "final",
+        "subject": {
+          "reference": "urn:uuid:63b67268-7456-4a85-b8b9-52cac40bfbc1",
+          "display": "Katie Robinson"
+        },
+        "date": "2014-09-24T00:32:20Z",
+        "title": "Laboratory Report",
+        "confidentiality": "N"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:76348d41-fe16-4441-acdc-1ede751ef4d3",
+      "resource": {
+        "resourceType": "DiagnosticReport",
+        "id": "76348d41-fe16-4441-acdc-1ede751ef4d3",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/DiagnosticReport-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "3ae1a2b8-d9b8-4fc4-a5d7-8be766ca3ad0"
+          },
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "f0b92de0-cc57-4c0b-a774-3a6662097083"
+          }
+        ],
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-DiagnosticReport.composition",
+            "valueReference": {
+              "reference": "urn:uuid:9545206b-9c83-4129-9a22-cf58ebff234e"
+            }
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:c9d4db5a-1c4e-4b01-b6f9-984117556771"
+          }
+        ],
+        "result": [
+          {
+            "reference": "urn:uuid:590c0d99-d89e-4ed2-af44-16e7ba81d714"
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "registered",
+        "code": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:63b67268-7456-4a85-b8b9-52cac40bfbc1",
+          "display": "Katie Robinson"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:63b67268-7456-4a85-b8b9-52cac40bfbc1",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "63b67268-7456-4a85-b8b9-52cac40bfbc1",
+        "meta": {
+          "security": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "HTEST"
+            },
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "TRAIN"
+            }
+          ],
+          "tag": [
+            {
+              "system": "https://synderai.net/fhir/CodeSystem/tags",
+              "code": "synthetic",
+              "display": "SYNDERAI Synthetic data"
+            }
+          ],
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/patient-eu-core"
+          ]
+        },
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "JHN",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://ec.europa.eu/identifier/eci",
+            "value": "1359-814263-9"
+          },
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "MR",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://local.setting.eu/identifier",
+            "value": "36cb396e-6b02-9ecc-56a7-692387e8b9c2"
+          }
+        ],
+        "name": [
+          {
+            "given": [
+              "Katie"
+            ],
+            "family": "Robinson",
+            "text": "Katie Robinson"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "78 Newman shore"
+            ],
+            "use": "home",
+            "type": "physical",
+            "postalCode": "MK45",
+            "city": "Ercifurt",
+            "country": "United Kingdom"
+          }
+        ],
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "+44(0)131 4960526"
+          }
+        ],
+        "extension": [
+          {
+            "extension": [
+              {
+                "url": "code",
+                "valueCodeableConcept": {
+                  "coding": [
+                    {
+                      "code": "GB",
+                      "system": "urn:iso:std:iso:3166"
+                    }
+                  ]
+                }
+              }
+            ],
+            "url": "http://hl7.org/fhir/StructureDefinition/patient-nationality"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__ips\"><tr><td>Katie Robinson</td><td>female</td><td>30-Nov-1971</td></tr></table></div>"
+        },
+        "gender": "female",
+        "birthDate": "1971-11-30"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:3525275b-3e1b-497d-9778-8a8e56088a17",
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "3525275b-3e1b-497d-9778-8a8e56088a17",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/ServiceRequest-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "system": "http://example.org",
+            "value": "cfdf637e-4e75-4744-8c29-26858a869c4c"
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:c9d4db5a-1c4e-4b01-b6f9-984117556771"
+          }
+        ],
+        "reasonCode": [
+          {
+            "coding": [
+              {
+                "code": "85005007",
+                "system": "http://snomed.info/sct",
+                "display": "Cannabis dependence"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "44054006",
+                "system": "http://snomed.info/sct",
+                "display": "Type 2 diabetes mellitus"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "127013003",
+                "system": "http://snomed.info/sct",
+                "display": "Disorder of kidney due to diabetes mellitus"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "230572002",
+                "system": "http://snomed.info/sct",
+                "display": "Neuropathy due to diabetes mellitus"
+              }
+            ]
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "active",
+        "intent": "order",
+        "code": {
+          "coding": [
+            {
+              "code": "108252007",
+              "system": "http://snomed.info/sct",
+              "display": "Laboratory procedure"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:63b67268-7456-4a85-b8b9-52cac40bfbc1",
+          "display": "Katie Robinson"
+        },
+        "requester": {
+          "reference": "urn:uuid:0b925339-8157-46fc-bdb9-57c6bf4e7b39"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:0b925339-8157-46fc-bdb9-57c6bf4e7b39",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "0b925339-8157-46fc-bdb9-57c6bf4e7b39",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Role Id: 0b925339-8157-46fc-bdb9-57c6bf4e7b39</div>"
+        },
+        "organization": {
+          "reference": "urn:uuid:58245cd1-5aeb-47ed-8f3f-224f94d3037d"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:58245cd1-5aeb-47ed-8f3f-224f94d3037d",
+      "resource": {
+        "resourceType": "Organization",
+        "id": "58245cd1-5aeb-47ed-8f3f-224f94d3037d",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/organization-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "5d23c15d-0bce-4e38-bee4-b63c28bc3e70"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Standing Way nan"
+            ],
+            "city": "Milton Keynes",
+            "postalCode": "MK6 5",
+            "country": "United Kingdom"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Organization: Milton Keynes Hospital</div>"
+        },
+        "name": "Milton Keynes Hospital"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:c9d4db5a-1c4e-4b01-b6f9-984117556771",
+      "resource": {
+        "resourceType": "Specimen",
+        "id": "c9d4db5a-1c4e-4b01-b6f9-984117556771",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Specimen-eu-lab"
+          ]
+        },
+        "collection": {
+          "collectedDateTime": "2014-09-23"
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Specimen</th><th>Collection Date</th></tr><tr><td>Blood specimen</td><td><span class=\"nb\">23-Sep-2014</span></td></tr></table></div>"
+        },
+        "type": {
+          "coding": [
+            {
+              "code": "119297000",
+              "system": "http://snomed.info/sct",
+              "display": "Blood specimen"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:590c0d99-d89e-4ed2-af44-16e7ba81d714",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "590c0d99-d89e-4ed2-af44-16e7ba81d714",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Observation-resultslab-eu-lab"
+          ]
+        },
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "laboratory",
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category"
+              }
+            ]
+          }
+        ],
+        "performer": [
+          {
+            "display": "The Central European Laboratory"
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "code": "59261-8",
+              "system": "http://loinc.org",
+              "display": "Hemoglobin A1c/Hemoglobin.total standardized per IFCC-RMP for CDT in Blood"
+            }
+          ],
+          "text": "Hemoglobin A1c/Hemoglobin.total standardized per IFCC-RMP for CDT in Blood"
+        },
+        "valueQuantity": {
+          "value": 50.2,
+          "unit": "mmol/mol",
+          "code": "mmol/mol",
+          "system": "http://unitsofmeasure.org"
+        },
+        "referenceRange": [
+          {
+            "low": {
+              "value": 20,
+              "code": "mmol/mol",
+              "system": "http://unitsofmeasure.org"
+            },
+            "high": {
+              "value": 42,
+              "code": "mmol/mol",
+              "system": "http://unitsofmeasure.org"
+            }
+          }
+        ],
+        "interpretation": [
+          {
+            "coding": [
+              {
+                "code": "H",
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                "display": "High"
+              }
+            ]
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Test</th><th>24-Sep-2014</th><th>Reference&#xA0;Range</th><th>Flag</th><th>Unit</th></tr><tr><td>Hemoglobin A1c/Hemoglobin.total standardized per IFCC-RMP for CDT in Blood</td><td>50.2</td><td>20 - 42</td><td>H</td><td>mmol/mol</td></tr></table></div>"
+        },
+        "status": "final",
+        "effectiveDateTime": "2014-09-23T22:32:20Z",
+        "subject": {
+          "reference": "urn:uuid:63b67268-7456-4a85-b8b9-52cac40bfbc1",
+          "display": "Katie Robinson"
+        },
+        "specimen": {
+          "reference": "urn:uuid:c9d4db5a-1c4e-4b01-b6f9-984117556771"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:8c26bbb6-4eac-4534-b8c6-37123a9026ce",
+      "resource": {
+        "resourceType": "Device",
+        "id": "8c26bbb6-4eac-4534-b8c6-37123a9026ce",
+        "deviceName": [
+          {
+            "name": "SYNDERAI Synthetic Generator",
+            "type": "manufacturer-name"
+          }
+        ],
+        "version": [
+          {
+            "value": "5.0"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">SYNDERAI Synthetic Generator v5.0</div>"
+        },
+        "status": "active",
+        "distinctIdentifier": "synderai-generator-50",
+        "manufacturer": "SYNDERAI Project"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:d72726cc-0ba4-4af0-be77-9c8c75c12511",
+      "resource": {
+        "resourceType": "Provenance",
+        "id": "d72726cc-0ba4-4af0-be77-9c8c75c12511",
+        "target": [
+          {
+            "reference": "urn:uuid:63b67268-7456-4a85-b8b9-52cac40bfbc1"
+          },
+          {
+            "reference": "urn:uuid:9545206b-9c83-4129-9a22-cf58ebff234e"
+          },
+          {
+            "reference": "urn:uuid:6a568206-3205-47ce-b238-df5edc17ad71"
+          },
+          {
+            "reference": "urn:uuid:74f29730-1ccc-4166-899a-582243c63a28"
+          },
+          {
+            "reference": "urn:uuid:0b925339-8157-46fc-bdb9-57c6bf4e7b39"
+          },
+          {
+            "reference": "urn:uuid:58245cd1-5aeb-47ed-8f3f-224f94d3037d"
+          }
+        ],
+        "activity": {
+          "coding": [
+            {
+              "code": "CREATE",
+              "system": "http://terminology.hl7.org/CodeSystem/v3-DataOperation",
+              "display": "create"
+            }
+          ],
+          "text": "Synthetic Example Data Generation"
+        },
+        "policy": [
+          "https://synderai.net/synderai-synthetic-data-policy"
+        ],
+        "agent": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "author",
+                  "system": "http://terminology.hl7.org/CodeSystem/provenance-participant-type",
+                  "display": "Author"
+                }
+              ],
+              "text": "author"
+            },
+            "who": {
+              "reference": "urn:uuid:8c26bbb6-4eac-4534-b8c6-37123a9026ce"
+            }
+          }
+        ],
+        "reason": [
+          {
+            "coding": [
+              {
+                "code": "TRAIN",
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+                "display": "training"
+              }
+            ],
+            "text": "Interoperability Testing and Training (non-clinical use)"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provenance for SYNDERAI Synthetic Example Data Resource</div>"
+        },
+        "recorded": "2014-09-24T02:32:20Z"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:6a568206-3205-47ce-b238-df5edc17ad71",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "6a568206-3205-47ce-b238-df5edc17ad71",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory Role Id: 6a568206-3205-47ce-b238-df5edc17ad71</div>"
+        },
+        "practitioner": {
+          "reference": "urn:uuid:74f29730-1ccc-4166-899a-582243c63a28"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:74f29730-1ccc-4166-899a-582243c63a28",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "74f29730-1ccc-4166-899a-582243c63a28",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitioner-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "ba149ccc-2d04-44c6-9a3e-02d5e2d4c83a"
+          }
+        ],
+        "name": [
+          {
+            "prefix": [
+              "dr"
+            ],
+            "given": [
+              "Ex"
+            ],
+            "family": "Ample"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Laboratoire Central Européenne",
+              "Boulevard du Jardin Botanique 32"
+            ],
+            "postalCode": "1000",
+            "city": "Brussels",
+            "country": "Belgium"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory: Laboratoire Central Européenne, 1000 Brussels, Belgium</div>"
+        }
+      }
+    }
+  ],
+  "type": "document",
+  "timestamp": "2014-09-24T02:32:20Z"
+}

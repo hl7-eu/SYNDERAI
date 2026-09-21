@@ -1,5 +1,8 @@
 <?php
 
+require_once __DIR__ . "/../lib/vital-guards.php";
+
+
 // prepare all sections and entries of the HDR parsed from ish (if ish is set) or as prepared sections
 
 // for later correct section slice names following HDR spec
@@ -51,6 +54,17 @@ foreach($thisStayISH->section as $section) {
       $entrytype = $ent->type;
       $entinstanceid = uuid();
       $entinstance = "";
+      // Clear the three per-entry bags HERE, not once before the loop.
+      //
+      // Not every branch below assigns them: the "result" case is guarded by
+      // an inner if with no else, and an unknown entry type reaches the bottom
+      // without calling twigit() at all. Whatever the previous entry left in
+      // $tmpfsh/$tmphtml/$tmphead would then be appended a second time - a
+      // duplicated narrative row, and in the FSH a second Instance carrying an
+      // id that is already in the file.
+      $tmpfsh = "";
+      $tmphtml = "";
+      $tmphead = "";
       // split up by type of entry
 
       /* ------------------------------------ */
@@ -64,7 +78,15 @@ foreach($thisStayISH->section as $section) {
       /* ------------------------------------ */
       if ($entrytype === "vitalsign") {
       /* ------------------------------------ */
-        // var_dump($ent);
+        // Observation.code is 1..1. Without a code the template renders
+        // "* code = # \"\"", which the FSH parser rejects and which drags the
+        // whole Observation down with it. Skip the entry before it is rendered
+        // so that no bundle entry and no section reference is created either.
+        if (!vitalHasCode($ent)) {
+          lognlsev(2, ERROR, "............... +++ Vital sign without an observation code, skipped\n");
+          registerMapMissing("+++ Vital sign without an observation code");
+          continue;
+        }
         list($tmpfsh, $tmphtml, $tmphead, $entinstance) = 
           twigit([
             "instanceid" => $entinstanceid,
@@ -193,9 +215,25 @@ foreach($thisStayISH->section as $section) {
       }
 
       // store tmp fsh, html and header
-      $FSHsec .= $tmpfsh;
-      $HTMLsec = $tmphtml;
-      $HEADsec = $tmphead;
+      //
+      // All three bags belong to ONE section and are reset per section a few
+      // lines above ($FSHsec/$HTMLsec/$HEADsec = "" before the entry loop), so
+      // nothing accumulated here crosses a section boundary.
+      //
+      // $HTMLsec used to be an assignment while $FSHsec was an append. The
+      // entry templates emit one <tr>...</tr> per entry and the surrounding
+      // <table> is added further below, so the assignment threw away every row
+      // but the last: a section with five entries produced five Observations
+      // and a narrative naming one of them. Counted over the last HDR run,
+      // 15 of 15 multi-entry sections showed a single row and 128 entries were
+      // absent from the narrative they belong to. Nothing in the FSH was wrong,
+      // which is why no validator ever said so.
+      $FSHsec  .= $tmpfsh;
+      $HTMLsec .= $tmphtml;
+      // The head bag is the column header of that one table and is identical
+      // for every entry of a section. It stays an assignment on purpose;
+      // appending would repeat the header once per entry.
+      $HEADsec  = $tmphead;
       // prepare entry meta data
       $thisentrymeta = [
         "id" => $entinstanceid,

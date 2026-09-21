@@ -71,6 +71,14 @@ Usage: #example
 * identifier.value = "{{ bundle.identifier }}"
 * identifier.assigner.display = "HL7 Europe"
 
+{#
+  BundleEuHdr requires language 1..1. The generated narratives and section
+  titles are English throughout, so "en" describes the content correctly.
+  Overridable by the caller via bundle.language once the pipeline derives a
+  language from the patient or the country.
+#}
+* language = #{{ bundle.language|default('en') }}
+
 * type = #document
 
 * timestamp = "{{ composition.date|date('Y-m-d\\TH:i:s\\Z') }}"

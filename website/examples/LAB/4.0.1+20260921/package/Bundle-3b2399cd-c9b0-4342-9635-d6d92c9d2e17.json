@@ -1,0 +1,752 @@
+{
+  "resourceType": "Bundle",
+  "id": "3b2399cd-c9b0-4342-9635-d6d92c9d2e17",
+  "meta": {
+    "profile": [
+      "http://hl7.eu/fhir/laboratory/StructureDefinition/Bundle-eu-lab"
+    ]
+  },
+  "identifier": {
+    "assigner": {
+      "display": "HL7 Europe"
+    },
+    "system": "urn:oid:2.16.840.1.113883.2.51.999",
+    "value": "566d1173-babf-4cf1-9f86-a0db6c2c67fc"
+  },
+  "entry": [
+    {
+      "fullUrl": "urn:uuid:525088dd-d538-410e-a63e-471404b3e4ae",
+      "resource": {
+        "resourceType": "Composition",
+        "id": "525088dd-d538-410e-a63e-471404b3e4ae",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Composition-eu-lab"
+          ]
+        },
+        "extension": [
+          {
+            "url": "http://hl7.eu/fhir/extensions/StructureDefinition/composition-diagnosticReportReference",
+            "valueReference": {
+              "reference": "urn:uuid:f10d3ebc-8b28-49ad-9653-bcfc7690ad36"
+            }
+          }
+        ],
+        "identifier": {
+          "assigner": {
+            "display": "HL7 Europe"
+          },
+          "system": "urn:oid:2.16.840.1.113883.2.51.999",
+          "value": "4d8d3c24-641d-4d7a-9359-ef4607978b31"
+        },
+        "author": [
+          {
+            "reference": "urn:uuid:24bc2c07-93a5-47ce-b5cc-3a87321f9356"
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "type": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ],
+          "text": "Laboratory Report"
+        },
+        "section": [
+          {
+            "code": {
+              "coding": [
+                {
+                  "code": "18719-5",
+                  "system": "http://loinc.org",
+                  "display": "Chemistry studies (set)"
+                }
+              ],
+              "text": "CHEM"
+            },
+            "entry": [
+              {
+                "reference": "urn:uuid:5bd7078b-61a1-44ad-a983-728e55501e56"
+              }
+            ],
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>CHEM</h3><table class=\"hl7__eu__lab__report\"><thead><tr><th>Test</th><th>27-DEC-2023</th><th>Reference&#xA0;Range</th><th>Unit</th></tr></thead><tbody><tr><td></td><td>87.0</td><td>60 - 89</td><td>mL/min/{1.73_m2}</td></tr></tbody></table></div>"
+            },
+            "title": "CHEM"
+          },
+          {
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>Annotation</h3><table class=\"hl7__eu__lab__report\"><tr><th>Conclusion and Recommendations based on this report and previous findings known to us:</th></tr><tr><td>The patient’s estimated glomerular filtration rate (eGFR) is within the normal range for age, indicating preserved renal function. No laboratory abnormalities are detected in this result. Continued routine monitoring is recommended.</td></tr></table></div>"
+            },
+            "code": {
+              "coding": [
+                {
+                  "code": "48767-8",
+                  "system": "http://loinc.org",
+                  "display": "Annotation comment [Interpretation] Narrative"
+                }
+              ]
+            },
+            "title": "Annotation comment"
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "final",
+        "subject": {
+          "reference": "urn:uuid:f328d7cc-afce-4e45-8a70-c053a166b722",
+          "display": "Eugène Cousin"
+        },
+        "date": "2023-12-27T05:56:47Z",
+        "title": "Laboratory Report",
+        "confidentiality": "N"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:f10d3ebc-8b28-49ad-9653-bcfc7690ad36",
+      "resource": {
+        "resourceType": "DiagnosticReport",
+        "id": "f10d3ebc-8b28-49ad-9653-bcfc7690ad36",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/DiagnosticReport-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "4d8d3c24-641d-4d7a-9359-ef4607978b31"
+          },
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "e4e26883-d54f-4596-9558-3c8381f5676e"
+          }
+        ],
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-DiagnosticReport.composition",
+            "valueReference": {
+              "reference": "urn:uuid:525088dd-d538-410e-a63e-471404b3e4ae"
+            }
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:610a9946-2ed0-46f2-8087-0d296e3c452d"
+          }
+        ],
+        "result": [
+          {
+            "reference": "urn:uuid:5bd7078b-61a1-44ad-a983-728e55501e56"
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "registered",
+        "code": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:f328d7cc-afce-4e45-8a70-c053a166b722",
+          "display": "Eugène Cousin"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:f328d7cc-afce-4e45-8a70-c053a166b722",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "f328d7cc-afce-4e45-8a70-c053a166b722",
+        "meta": {
+          "security": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "HTEST"
+            },
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "TRAIN"
+            }
+          ],
+          "tag": [
+            {
+              "system": "https://synderai.net/fhir/CodeSystem/tags",
+              "code": "synthetic",
+              "display": "SYNDERAI Synthetic data"
+            }
+          ],
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/patient-eu-core"
+          ]
+        },
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "JHN",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://ec.europa.eu/identifier/eci",
+            "value": "2438-728296-5"
+          },
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "MR",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://local.setting.eu/identifier",
+            "value": "3bd14a0d-c901-f91c-f6ac-7d36e0686089"
+          }
+        ],
+        "name": [
+          {
+            "given": [
+              "Eugène"
+            ],
+            "family": "Cousin",
+            "text": "Eugène Cousin"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "162, avenue Bourdon"
+            ],
+            "use": "home",
+            "type": "physical",
+            "postalCode": "85540",
+            "city": "Hubert",
+            "country": "France"
+          }
+        ],
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "0390220707"
+          }
+        ],
+        "extension": [
+          {
+            "extension": [
+              {
+                "url": "code",
+                "valueCodeableConcept": {
+                  "coding": [
+                    {
+                      "code": "FR",
+                      "system": "urn:iso:std:iso:3166"
+                    }
+                  ]
+                }
+              }
+            ],
+            "url": "http://hl7.org/fhir/StructureDefinition/patient-nationality"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__ips\"><tr><td>Eugène Cousin</td><td>male</td><td>28-Jul-1937</td></tr></table></div>"
+        },
+        "gender": "male",
+        "birthDate": "1937-07-28"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:11aff488-84bb-4482-af70-80c055e05e30",
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "11aff488-84bb-4482-af70-80c055e05e30",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/ServiceRequest-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "system": "http://example.org",
+            "value": "9ab48058-a631-4209-b0e9-ea4eff91fa0b"
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:610a9946-2ed0-46f2-8087-0d296e3c452d"
+          }
+        ],
+        "reasonCode": [
+          {
+            "coding": [
+              {
+                "code": "237602007",
+                "system": "http://snomed.info/sct",
+                "display": "Metabolic syndrome X"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "59621000",
+                "system": "http://snomed.info/sct",
+                "display": "Essential hypertension"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "414916001",
+                "system": "http://snomed.info/sct",
+                "display": "Obesity"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "13645005",
+                "system": "http://snomed.info/sct",
+                "display": "Chronic obstructive pulmonary disease"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "431855005",
+                "system": "http://snomed.info/sct",
+                "display": "Chronic kidney disease stage 1"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "363518003",
+                "system": "http://snomed.info/sct",
+                "display": "Malignant neoplasm of kidney"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "1755008",
+                "system": "http://snomed.info/sct",
+                "display": "Old myocardial infarction"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "60573004",
+                "system": "http://snomed.info/sct",
+                "display": "Aortic valve stenosis"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "56267009",
+                "system": "http://snomed.info/sct",
+                "display": "Multi-infarct dementia"
+              }
+            ]
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "active",
+        "intent": "order",
+        "code": {
+          "coding": [
+            {
+              "code": "108252007",
+              "system": "http://snomed.info/sct",
+              "display": "Laboratory procedure"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:f328d7cc-afce-4e45-8a70-c053a166b722",
+          "display": "Eugène Cousin"
+        },
+        "requester": {
+          "reference": "urn:uuid:898ff24b-6695-4a8e-a8c2-52ecded71b21"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:898ff24b-6695-4a8e-a8c2-52ecded71b21",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "898ff24b-6695-4a8e-a8c2-52ecded71b21",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Role Id: 898ff24b-6695-4a8e-a8c2-52ecded71b21</div>"
+        },
+        "organization": {
+          "reference": "urn:uuid:dad0f007-5900-4078-9b26-e5f14879ffa4"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:dad0f007-5900-4078-9b26-e5f14879ffa4",
+      "resource": {
+        "resourceType": "Organization",
+        "id": "dad0f007-5900-4078-9b26-e5f14879ffa4",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/organization-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "a9e25bf7-4ec3-44b4-b4d5-a6cf3afb6933"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Rue de la Grotte 5"
+            ],
+            "city": "Essarts en Bocage",
+            "postalCode": "85140",
+            "country": "France"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Organization: Clinique de Convalescence Centre Vendée</div>"
+        },
+        "name": "Clinique de Convalescence Centre Vendée"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:610a9946-2ed0-46f2-8087-0d296e3c452d",
+      "resource": {
+        "resourceType": "Specimen",
+        "id": "610a9946-2ed0-46f2-8087-0d296e3c452d",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Specimen-eu-lab"
+          ]
+        },
+        "collection": {
+          "collectedDateTime": "2023-12-27"
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Specimen</th><th>Collection Date</th></tr><tr><td>Blood specimen</td><td><span class=\"nb\">27-Dec-2023</span></td></tr></table></div>"
+        },
+        "type": {
+          "coding": [
+            {
+              "code": "119297000",
+              "system": "http://snomed.info/sct",
+              "display": "Blood specimen"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:5bd7078b-61a1-44ad-a983-728e55501e56",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "5bd7078b-61a1-44ad-a983-728e55501e56",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Observation-resultslab-eu-lab"
+          ]
+        },
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "laboratory",
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category"
+              }
+            ]
+          }
+        ],
+        "performer": [
+          {
+            "display": "The Central European Laboratory"
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "code": "98979-8",
+              "system": "http://loinc.org",
+              "display": "Glomerular filtration rate [Volume Rate/Area] in Serum, Plasma or Blood by Creatinine-based formula (CKD-EPI 2021)/1.73 sq M"
+            }
+          ],
+          "text": "Glomerular filtration rate [Volume Rate/Area] in Serum, Plasma or Blood by Creatinine-based formula (CKD-EPI 2021)/1.73 sq M"
+        },
+        "valueQuantity": {
+          "value": 87,
+          "unit": "mL/min/{1.73_m2}",
+          "code": "mL/min/{1.73_m2}",
+          "system": "http://unitsofmeasure.org"
+        },
+        "referenceRange": [
+          {
+            "low": {
+              "value": 60,
+              "code": "mL/min/{1.73_m2}",
+              "system": "http://unitsofmeasure.org"
+            },
+            "high": {
+              "value": 89,
+              "code": "mL/min/{1.73_m2}",
+              "system": "http://unitsofmeasure.org"
+            }
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Test</th><th>27-Dec-2023</th><th>Reference&#xA0;Range</th><th>Flag</th><th>Unit</th></tr><tr><td>Glomerular filtration rate [Volume Rate/Area] in Serum, Plasma or Blood by Creatinine-based formula (CKD-EPI 2021)/1.73 sq M</td><td>87.0</td><td>60 - 89</td><td></td><td>mL/min/{1.73_m2}</td></tr></table></div>"
+        },
+        "status": "final",
+        "effectiveDateTime": "2023-12-27T04:56:47Z",
+        "subject": {
+          "reference": "urn:uuid:f328d7cc-afce-4e45-8a70-c053a166b722",
+          "display": "Eugène Cousin"
+        },
+        "specimen": {
+          "reference": "urn:uuid:610a9946-2ed0-46f2-8087-0d296e3c452d"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:ba2aebba-1810-42ad-bdf8-7b72d54925df",
+      "resource": {
+        "resourceType": "Device",
+        "id": "ba2aebba-1810-42ad-bdf8-7b72d54925df",
+        "deviceName": [
+          {
+            "name": "SYNDERAI Synthetic Generator",
+            "type": "manufacturer-name"
+          }
+        ],
+        "version": [
+          {
+            "value": "5.0"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">SYNDERAI Synthetic Generator v5.0</div>"
+        },
+        "status": "active",
+        "distinctIdentifier": "synderai-generator-50",
+        "manufacturer": "SYNDERAI Project"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:399337bf-f215-40da-ac93-717e6112ecd9",
+      "resource": {
+        "resourceType": "Provenance",
+        "id": "399337bf-f215-40da-ac93-717e6112ecd9",
+        "target": [
+          {
+            "reference": "urn:uuid:f328d7cc-afce-4e45-8a70-c053a166b722"
+          },
+          {
+            "reference": "urn:uuid:525088dd-d538-410e-a63e-471404b3e4ae"
+          },
+          {
+            "reference": "urn:uuid:24bc2c07-93a5-47ce-b5cc-3a87321f9356"
+          },
+          {
+            "reference": "urn:uuid:f3bcb111-82cd-4979-8fcd-6359f86da7c4"
+          },
+          {
+            "reference": "urn:uuid:898ff24b-6695-4a8e-a8c2-52ecded71b21"
+          },
+          {
+            "reference": "urn:uuid:dad0f007-5900-4078-9b26-e5f14879ffa4"
+          }
+        ],
+        "activity": {
+          "coding": [
+            {
+              "code": "CREATE",
+              "system": "http://terminology.hl7.org/CodeSystem/v3-DataOperation",
+              "display": "create"
+            }
+          ],
+          "text": "Synthetic Example Data Generation"
+        },
+        "policy": [
+          "https://synderai.net/synderai-synthetic-data-policy"
+        ],
+        "agent": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "author",
+                  "system": "http://terminology.hl7.org/CodeSystem/provenance-participant-type",
+                  "display": "Author"
+                }
+              ],
+              "text": "author"
+            },
+            "who": {
+              "reference": "urn:uuid:ba2aebba-1810-42ad-bdf8-7b72d54925df"
+            }
+          }
+        ],
+        "reason": [
+          {
+            "coding": [
+              {
+                "code": "TRAIN",
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+                "display": "training"
+              }
+            ],
+            "text": "Interoperability Testing and Training (non-clinical use)"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provenance for SYNDERAI Synthetic Example Data Resource</div>"
+        },
+        "recorded": "2023-12-27T06:56:47Z"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:24bc2c07-93a5-47ce-b5cc-3a87321f9356",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "24bc2c07-93a5-47ce-b5cc-3a87321f9356",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory Role Id: 24bc2c07-93a5-47ce-b5cc-3a87321f9356</div>"
+        },
+        "practitioner": {
+          "reference": "urn:uuid:f3bcb111-82cd-4979-8fcd-6359f86da7c4"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:f3bcb111-82cd-4979-8fcd-6359f86da7c4",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "f3bcb111-82cd-4979-8fcd-6359f86da7c4",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitioner-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "5815f2b0-0940-4c95-91d8-874b9702a745"
+          }
+        ],
+        "name": [
+          {
+            "prefix": [
+              "dr"
+            ],
+            "given": [
+              "Ex"
+            ],
+            "family": "Ample"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Laboratoire Central Européenne",
+              "Boulevard du Jardin Botanique 32"
+            ],
+            "postalCode": "1000",
+            "city": "Brussels",
+            "country": "Belgium"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory: Laboratoire Central Européenne, 1000 Brussels, Belgium</div>"
+        }
+      }
+    }
+  ],
+  "type": "document",
+  "timestamp": "2023-12-27T06:56:47Z"
+}

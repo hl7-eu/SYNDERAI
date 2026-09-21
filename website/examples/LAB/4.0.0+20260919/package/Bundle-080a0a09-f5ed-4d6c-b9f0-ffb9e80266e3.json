@@ -1,0 +1,779 @@
+{
+  "resourceType": "Bundle",
+  "id": "080a0a09-f5ed-4d6c-b9f0-ffb9e80266e3",
+  "meta": {
+    "profile": [
+      "http://hl7.eu/fhir/laboratory/StructureDefinition/Bundle-eu-lab"
+    ]
+  },
+  "identifier": {
+    "assigner": {
+      "display": "HL7 Europe"
+    },
+    "system": "urn:oid:2.16.840.1.113883.2.51.999",
+    "value": "b0fd0fc4-51ac-404f-adc4-5cf038a326d3"
+  },
+  "entry": [
+    {
+      "fullUrl": "urn:uuid:b9fc3c34-67c9-4184-9bb1-c9a615912d13",
+      "resource": {
+        "resourceType": "Composition",
+        "id": "b9fc3c34-67c9-4184-9bb1-c9a615912d13",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Composition-eu-lab"
+          ]
+        },
+        "extension": [
+          {
+            "url": "http://hl7.eu/fhir/extensions/StructureDefinition/composition-diagnosticReportReference",
+            "valueReference": {
+              "reference": "urn:uuid:8db8b744-3617-4b72-9afa-7fd6d18922cb"
+            }
+          }
+        ],
+        "identifier": {
+          "assigner": {
+            "display": "HL7 Europe"
+          },
+          "system": "urn:oid:2.16.840.1.113883.2.51.999",
+          "value": "d2e887b7-b0d8-4f62-939c-88d0ac209e49"
+        },
+        "author": [
+          {
+            "reference": "urn:uuid:4c46e24b-66f5-4819-9832-fb5db7837640"
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "type": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ],
+          "text": "Laboratory Report"
+        },
+        "section": [
+          {
+            "code": {
+              "coding": [
+                {
+                  "code": "18719-5",
+                  "system": "http://loinc.org",
+                  "display": "Chemistry studies (set)"
+                }
+              ],
+              "text": "CHEM"
+            },
+            "entry": [
+              {
+                "reference": "urn:uuid:b86c21d1-a24d-4a9c-a2ab-51cee2713773"
+              }
+            ],
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>CHEM</h3><table class=\"hl7__eu__lab__report\"><thead><tr><th>Test</th><th>12-APR-2000</th><th>Reference&#xA0;Range</th><th>Unit</th></tr></thead><tbody><tr><td></td><td><strong>15.0 H</strong></td><td>0 - 4</td><td>ng/mL</td></tr></tbody></table></div>"
+            },
+            "title": "CHEM"
+          },
+          {
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>Annotation</h3><table class=\"hl7__eu__lab__report\"><tr><th>Conclusion and Recommendations based on this report and previous findings known to us:</th></tr><tr><td>Markedly elevated PSA (15.0 ng/mL) significantly exceeds the normal range for this age group, suggesting a high likelihood of prostatic pathology such as benign prostatic hyperplasia, prostatitis, or prostate malignancy. Clinical correlation and further urological evaluation are strongly recommended.</td></tr></table></div>"
+            },
+            "code": {
+              "coding": [
+                {
+                  "code": "48767-8",
+                  "system": "http://loinc.org",
+                  "display": "Annotation comment [Interpretation] Narrative"
+                }
+              ]
+            },
+            "title": "Annotation comment"
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "final",
+        "subject": {
+          "reference": "urn:uuid:e6b5c1d2-c4f5-4acb-8f07-8c77d1c00abb",
+          "display": "Jordán Uribe"
+        },
+        "date": "2000-04-12T00:27:04Z",
+        "title": "Laboratory Report",
+        "confidentiality": "N"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:8db8b744-3617-4b72-9afa-7fd6d18922cb",
+      "resource": {
+        "resourceType": "DiagnosticReport",
+        "id": "8db8b744-3617-4b72-9afa-7fd6d18922cb",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/DiagnosticReport-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "d2e887b7-b0d8-4f62-939c-88d0ac209e49"
+          },
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "101a5d4f-a1e9-42bd-835e-7b9602b37c8b"
+          }
+        ],
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-DiagnosticReport.composition",
+            "valueReference": {
+              "reference": "urn:uuid:b9fc3c34-67c9-4184-9bb1-c9a615912d13"
+            }
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:cbce74a6-31ab-4f49-bf6f-bb8d8feac1b3"
+          }
+        ],
+        "result": [
+          {
+            "reference": "urn:uuid:b86c21d1-a24d-4a9c-a2ab-51cee2713773"
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "registered",
+        "code": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:e6b5c1d2-c4f5-4acb-8f07-8c77d1c00abb",
+          "display": "Jordán Uribe"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:e6b5c1d2-c4f5-4acb-8f07-8c77d1c00abb",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "e6b5c1d2-c4f5-4acb-8f07-8c77d1c00abb",
+        "meta": {
+          "security": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "HTEST"
+            },
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "TRAIN"
+            }
+          ],
+          "tag": [
+            {
+              "system": "https://synderai.net/fhir/CodeSystem/tags",
+              "code": "synthetic",
+              "display": "SYNDERAI Synthetic data"
+            }
+          ],
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/patient-eu-core"
+          ]
+        },
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "JHN",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://ec.europa.eu/identifier/eci",
+            "value": "1418-889486-0"
+          },
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "MR",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://local.setting.eu/identifier",
+            "value": "b29f5cfe-8990-9fad-5d23-a97126dd0da2"
+          }
+        ],
+        "name": [
+          {
+            "given": [
+              "Jordán"
+            ],
+            "family": "Uribe",
+            "text": "Jordán Uribe"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Cuesta Enrique Lara 50 Piso 6",
+              "Piso 6"
+            ],
+            "use": "home",
+            "type": "physical",
+            "postalCode": "23001",
+            "city": "Jaén",
+            "country": "Spain"
+          }
+        ],
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "+34871 79 02 98"
+          }
+        ],
+        "extension": [
+          {
+            "extension": [
+              {
+                "url": "code",
+                "valueCodeableConcept": {
+                  "coding": [
+                    {
+                      "code": "ES",
+                      "system": "urn:iso:std:iso:3166"
+                    }
+                  ]
+                }
+              }
+            ],
+            "url": "http://hl7.org/fhir/StructureDefinition/patient-nationality"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__ips\"><tr><td>Jordán Uribe</td><td>male</td><td>15-Oct-1939</td></tr></table></div>"
+        },
+        "gender": "male",
+        "birthDate": "1939-10-15"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:c87c9ede-7591-4f02-9ef5-58bd3571f3eb",
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "c87c9ede-7591-4f02-9ef5-58bd3571f3eb",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/ServiceRequest-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "system": "http://example.org",
+            "value": "8ab7c183-9fbb-4d5a-aea9-79301c6ba872"
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:cbce74a6-31ab-4f49-bf6f-bb8d8feac1b3"
+          }
+        ],
+        "reasonCode": [
+          {
+            "coding": [
+              {
+                "code": "59621000",
+                "system": "http://snomed.info/sct",
+                "display": "Essential hypertension"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "237602007",
+                "system": "http://snomed.info/sct",
+                "display": "Metabolic syndrome X"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "13645005",
+                "system": "http://snomed.info/sct",
+                "display": "Chronic obstructive pulmonary disease"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "68496003",
+                "system": "http://snomed.info/sct",
+                "display": "Polyp of colon"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "1755008",
+                "system": "http://snomed.info/sct",
+                "display": "Old myocardial infarction"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "239873007",
+                "system": "http://snomed.info/sct",
+                "display": "Osteoarthritis of knee"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "363410008",
+                "system": "http://snomed.info/sct",
+                "display": "Malignant neoplasm of sigmoid colon"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "363402007",
+                "system": "http://snomed.info/sct",
+                "display": "Malignant neoplasm of esophagus"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "55822004",
+                "system": "http://snomed.info/sct",
+                "display": "Hyperlipidemia"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "414545008",
+                "system": "http://snomed.info/sct",
+                "display": "Ischemic heart disease"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "126906006",
+                "system": "http://snomed.info/sct",
+                "display": "Neoplasm of prostate"
+              }
+            ]
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "active",
+        "intent": "order",
+        "code": {
+          "coding": [
+            {
+              "code": "108252007",
+              "system": "http://snomed.info/sct",
+              "display": "Laboratory procedure"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:e6b5c1d2-c4f5-4acb-8f07-8c77d1c00abb",
+          "display": "Jordán Uribe"
+        },
+        "requester": {
+          "reference": "urn:uuid:b48ef5c0-06f7-4773-b740-7e5b9dc0f8f0"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:b48ef5c0-06f7-4773-b740-7e5b9dc0f8f0",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "b48ef5c0-06f7-4773-b740-7e5b9dc0f8f0",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Role Id: b48ef5c0-06f7-4773-b740-7e5b9dc0f8f0</div>"
+        },
+        "organization": {
+          "reference": "urn:uuid:8d1955d0-b138-4598-a1c0-36d6f04283dc"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:8d1955d0-b138-4598-a1c0-36d6f04283dc",
+      "resource": {
+        "resourceType": "Organization",
+        "id": "8d1955d0-b138-4598-a1c0-36d6f04283dc",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/organization-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "f2e3f301-6a49-4160-aa22-7a62d0c6ae3a"
+          }
+        ],
+        "address": [
+          {
+            "city": "Jaén",
+            "postalCode": "23003",
+            "country": "Spain"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Organization: Complejo Hospitalario Ciudad de Jaén</div>"
+        },
+        "name": "Complejo Hospitalario Ciudad de Jaén"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:cbce74a6-31ab-4f49-bf6f-bb8d8feac1b3",
+      "resource": {
+        "resourceType": "Specimen",
+        "id": "cbce74a6-31ab-4f49-bf6f-bb8d8feac1b3",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Specimen-eu-lab"
+          ]
+        },
+        "collection": {
+          "collectedDateTime": "2000-04-11"
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Specimen</th><th>Collection Date</th></tr><tr><td>Acellular blood (serum or plasma) specimen</td><td><span class=\"nb\">11-Apr-2000</span></td></tr></table></div>"
+        },
+        "type": {
+          "coding": [
+            {
+              "code": "122592007",
+              "system": "http://snomed.info/sct",
+              "display": "Acellular blood (serum or plasma) specimen"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:b86c21d1-a24d-4a9c-a2ab-51cee2713773",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "b86c21d1-a24d-4a9c-a2ab-51cee2713773",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Observation-resultslab-eu-lab"
+          ]
+        },
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "laboratory",
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category"
+              }
+            ]
+          }
+        ],
+        "performer": [
+          {
+            "display": "The Central European Laboratory"
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "code": "2857-1",
+              "system": "http://loinc.org",
+              "display": "Prostate specific Ag [Mass/volume] in Serum or Plasma"
+            }
+          ],
+          "text": "Prostate specific Ag [Mass/volume] in Serum or Plasma"
+        },
+        "valueQuantity": {
+          "value": 15,
+          "unit": "ng/mL",
+          "code": "ng/mL",
+          "system": "http://unitsofmeasure.org"
+        },
+        "referenceRange": [
+          {
+            "low": {
+              "value": 0,
+              "code": "ng/mL",
+              "system": "http://unitsofmeasure.org"
+            },
+            "high": {
+              "value": 4,
+              "code": "ng/mL",
+              "system": "http://unitsofmeasure.org"
+            }
+          }
+        ],
+        "interpretation": [
+          {
+            "coding": [
+              {
+                "code": "H",
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                "display": "High"
+              }
+            ]
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Test</th><th>12-Apr-2000</th><th>Reference&#xA0;Range</th><th>Flag</th><th>Unit</th></tr><tr><td>Prostate specific Ag [Mass/volume] in Serum or Plasma</td><td>15.0</td><td>0 - 4</td><td>H</td><td>ng/mL</td></tr></table></div>"
+        },
+        "status": "final",
+        "effectiveDateTime": "2000-04-11T22:27:04Z",
+        "subject": {
+          "reference": "urn:uuid:e6b5c1d2-c4f5-4acb-8f07-8c77d1c00abb",
+          "display": "Jordán Uribe"
+        },
+        "specimen": {
+          "reference": "urn:uuid:cbce74a6-31ab-4f49-bf6f-bb8d8feac1b3"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:72df5da1-e0c8-443d-bdf3-9055bd74e15a",
+      "resource": {
+        "resourceType": "Device",
+        "id": "72df5da1-e0c8-443d-bdf3-9055bd74e15a",
+        "deviceName": [
+          {
+            "name": "SYNDERAI Synthetic Generator",
+            "type": "manufacturer-name"
+          }
+        ],
+        "version": [
+          {
+            "value": "5.0"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">SYNDERAI Synthetic Generator v5.0</div>"
+        },
+        "status": "active",
+        "distinctIdentifier": "synderai-generator-50",
+        "manufacturer": "SYNDERAI Project"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:9db092ae-d9c5-44ca-baad-521eecff04b7",
+      "resource": {
+        "resourceType": "Provenance",
+        "id": "9db092ae-d9c5-44ca-baad-521eecff04b7",
+        "target": [
+          {
+            "reference": "urn:uuid:e6b5c1d2-c4f5-4acb-8f07-8c77d1c00abb"
+          },
+          {
+            "reference": "urn:uuid:b9fc3c34-67c9-4184-9bb1-c9a615912d13"
+          },
+          {
+            "reference": "urn:uuid:4c46e24b-66f5-4819-9832-fb5db7837640"
+          },
+          {
+            "reference": "urn:uuid:7e444336-191b-4530-a806-857132d52255"
+          },
+          {
+            "reference": "urn:uuid:b48ef5c0-06f7-4773-b740-7e5b9dc0f8f0"
+          },
+          {
+            "reference": "urn:uuid:8d1955d0-b138-4598-a1c0-36d6f04283dc"
+          }
+        ],
+        "activity": {
+          "coding": [
+            {
+              "code": "CREATE",
+              "system": "http://terminology.hl7.org/CodeSystem/v3-DataOperation",
+              "display": "create"
+            }
+          ],
+          "text": "Synthetic Example Data Generation"
+        },
+        "policy": [
+          "https://synderai.net/synderai-synthetic-data-policy"
+        ],
+        "agent": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "author",
+                  "system": "http://terminology.hl7.org/CodeSystem/provenance-participant-type",
+                  "display": "Author"
+                }
+              ],
+              "text": "author"
+            },
+            "who": {
+              "reference": "urn:uuid:72df5da1-e0c8-443d-bdf3-9055bd74e15a"
+            }
+          }
+        ],
+        "reason": [
+          {
+            "coding": [
+              {
+                "code": "TRAIN",
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+                "display": "training"
+              }
+            ],
+            "text": "Interoperability Testing and Training (non-clinical use)"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provenance for SYNDERAI Synthetic Example Data Resource</div>"
+        },
+        "recorded": "2000-04-12T02:27:04Z"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:4c46e24b-66f5-4819-9832-fb5db7837640",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "4c46e24b-66f5-4819-9832-fb5db7837640",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory Role Id: 4c46e24b-66f5-4819-9832-fb5db7837640</div>"
+        },
+        "practitioner": {
+          "reference": "urn:uuid:7e444336-191b-4530-a806-857132d52255"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:7e444336-191b-4530-a806-857132d52255",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "7e444336-191b-4530-a806-857132d52255",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitioner-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "a57b63de-6c92-48b0-9d97-c48106d83b8b"
+          }
+        ],
+        "name": [
+          {
+            "prefix": [
+              "dr"
+            ],
+            "given": [
+              "Ex"
+            ],
+            "family": "Ample"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Laboratoire Central Européenne",
+              "Boulevard du Jardin Botanique 32"
+            ],
+            "postalCode": "1000",
+            "city": "Brussels",
+            "country": "Belgium"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory: Laboratoire Central Européenne, 1000 Brussels, Belgium</div>"
+        }
+      }
+    }
+  ],
+  "type": "document",
+  "timestamp": "2000-04-12T02:27:04Z"
+}

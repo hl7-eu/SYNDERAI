@@ -1,0 +1,698 @@
+{
+  "resourceType": "Bundle",
+  "id": "195b1c95-71a8-42e3-be12-5141fe0460e5",
+  "meta": {
+    "profile": [
+      "http://hl7.eu/fhir/laboratory/StructureDefinition/Bundle-eu-lab"
+    ]
+  },
+  "identifier": {
+    "assigner": {
+      "display": "HL7 Europe"
+    },
+    "system": "urn:oid:2.16.840.1.113883.2.51.999",
+    "value": "e82d0942-8444-49e5-9631-98fb09128d43"
+  },
+  "entry": [
+    {
+      "fullUrl": "urn:uuid:58ef7cdd-3b62-453e-903e-d0be8511e650",
+      "resource": {
+        "resourceType": "Composition",
+        "id": "58ef7cdd-3b62-453e-903e-d0be8511e650",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Composition-eu-lab"
+          ]
+        },
+        "extension": [
+          {
+            "url": "http://hl7.eu/fhir/extensions/StructureDefinition/composition-diagnosticReportReference",
+            "valueReference": {
+              "reference": "urn:uuid:d176a756-8010-4069-8b88-13ed703e7f23"
+            }
+          }
+        ],
+        "identifier": {
+          "assigner": {
+            "display": "HL7 Europe"
+          },
+          "system": "urn:oid:2.16.840.1.113883.2.51.999",
+          "value": "c8f37e80-f8a4-4708-9253-95a9633755da"
+        },
+        "author": [
+          {
+            "reference": "urn:uuid:302b9f4f-435e-485d-bccb-211dc0d930ba"
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "type": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ],
+          "text": "Laboratory Report"
+        },
+        "section": [
+          {
+            "code": {
+              "coding": [
+                {
+                  "code": "18719-5",
+                  "system": "http://loinc.org",
+                  "display": "Chemistry studies (set)"
+                }
+              ],
+              "text": "CHEM"
+            },
+            "entry": [
+              {
+                "reference": "urn:uuid:068996a3-a366-4f06-9696-edb0e57caddd"
+              }
+            ],
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>CHEM</h3><table class=\"hl7__eu__lab__report\"><thead><tr><th>Test</th><th>30-NOV-1984</th><th>Reference&#xA0;Range</th><th>Unit</th></tr></thead><tbody><tr><td></td><td>99.5</td><td>95 - 100</td><td>%</td></tr></tbody></table></div>"
+            },
+            "title": "CHEM"
+          },
+          {
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>Annotation</h3><table class=\"hl7__eu__lab__report\"><tr><th>Conclusion and Recommendations based on this report and previous findings known to us:</th></tr><tr><td>Oxygen saturation is within the normal range, indicating adequate arterial oxygenation. No abnormalities detected from the laboratory perspective.</td></tr></table></div>"
+            },
+            "code": {
+              "coding": [
+                {
+                  "code": "48767-8",
+                  "system": "http://loinc.org",
+                  "display": "Annotation comment [Interpretation] Narrative"
+                }
+              ]
+            },
+            "title": "Annotation comment"
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "final",
+        "subject": {
+          "reference": "urn:uuid:b219dd29-6383-4722-9f87-63b8c4314e8d",
+          "display": "Leah Griffiths"
+        },
+        "date": "1984-11-30T03:25:58Z",
+        "title": "Laboratory Report",
+        "confidentiality": "N"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:d176a756-8010-4069-8b88-13ed703e7f23",
+      "resource": {
+        "resourceType": "DiagnosticReport",
+        "id": "d176a756-8010-4069-8b88-13ed703e7f23",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/DiagnosticReport-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "c8f37e80-f8a4-4708-9253-95a9633755da"
+          },
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "2180b5d1-9aa6-49c3-957a-900f5c12bc46"
+          }
+        ],
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-DiagnosticReport.composition",
+            "valueReference": {
+              "reference": "urn:uuid:58ef7cdd-3b62-453e-903e-d0be8511e650"
+            }
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:3ff51612-caa5-43be-ba0e-daec8f2e3c07"
+          }
+        ],
+        "result": [
+          {
+            "reference": "urn:uuid:068996a3-a366-4f06-9696-edb0e57caddd"
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "registered",
+        "code": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:b219dd29-6383-4722-9f87-63b8c4314e8d",
+          "display": "Leah Griffiths"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:b219dd29-6383-4722-9f87-63b8c4314e8d",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "b219dd29-6383-4722-9f87-63b8c4314e8d",
+        "meta": {
+          "security": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "HTEST"
+            },
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "TRAIN"
+            }
+          ],
+          "tag": [
+            {
+              "system": "https://synderai.net/fhir/CodeSystem/tags",
+              "code": "synthetic",
+              "display": "SYNDERAI Synthetic data"
+            }
+          ],
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/patient-eu-core"
+          ]
+        },
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "JHN",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://ec.europa.eu/identifier/eci",
+            "value": "1160-646633-9"
+          },
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "MR",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://local.setting.eu/identifier",
+            "value": "d5ba3879-89b4-e973-397f-a0702e6dac96"
+          }
+        ],
+        "name": [
+          {
+            "given": [
+              "Leah"
+            ],
+            "family": "Griffiths",
+            "text": "Leah Griffiths"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "164 Barnes crossing"
+            ],
+            "use": "home",
+            "type": "physical",
+            "postalCode": "LE4 5NU",
+            "city": "United Kingdom",
+            "country": "United Kingdom"
+          }
+        ],
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "(0909) 8790183"
+          }
+        ],
+        "extension": [
+          {
+            "extension": [
+              {
+                "url": "code",
+                "valueCodeableConcept": {
+                  "coding": [
+                    {
+                      "code": "GB",
+                      "system": "urn:iso:std:iso:3166"
+                    }
+                  ]
+                }
+              }
+            ],
+            "url": "http://hl7.org/fhir/StructureDefinition/patient-nationality"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__ips\"><tr><td>Leah Griffiths</td><td>female</td><td>13-Jun-1970</td></tr></table></div>"
+        },
+        "gender": "female",
+        "birthDate": "1970-06-13"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:6dd115d3-6932-44f7-8381-b612de8a33e6",
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "6dd115d3-6932-44f7-8381-b612de8a33e6",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/ServiceRequest-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "system": "http://example.org",
+            "value": "5032fd92-dd13-4052-9d84-8ef686dbd440"
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:3ff51612-caa5-43be-ba0e-daec8f2e3c07"
+          }
+        ],
+        "reasonCode": [
+          {
+            "coding": [
+              {
+                "code": "59621000",
+                "system": "http://snomed.info/sct",
+                "display": "Essential hypertension"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "55822004",
+                "system": "http://snomed.info/sct",
+                "display": "Hyperlipidemia"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "414916001",
+                "system": "http://snomed.info/sct",
+                "display": "Obesity"
+              }
+            ]
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "active",
+        "intent": "order",
+        "code": {
+          "coding": [
+            {
+              "code": "108252007",
+              "system": "http://snomed.info/sct",
+              "display": "Laboratory procedure"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:b219dd29-6383-4722-9f87-63b8c4314e8d",
+          "display": "Leah Griffiths"
+        },
+        "requester": {
+          "reference": "urn:uuid:608f6ad8-690f-4cf8-8b33-c9542e8bbb96"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:608f6ad8-690f-4cf8-8b33-c9542e8bbb96",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "608f6ad8-690f-4cf8-8b33-c9542e8bbb96",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Role Id: 608f6ad8-690f-4cf8-8b33-c9542e8bbb96</div>"
+        },
+        "organization": {
+          "reference": "urn:uuid:4917f3cd-106d-4204-9eef-fcf7b51155ce"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:4917f3cd-106d-4204-9eef-fcf7b51155ce",
+      "resource": {
+        "resourceType": "Organization",
+        "id": "4917f3cd-106d-4204-9eef-fcf7b51155ce",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/organization-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "08b8993e-000b-40be-bc29-6e632dd190c9"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Malabar Road 62-66"
+            ],
+            "city": "Leicester",
+            "postalCode": "LE1 4",
+            "country": "United Kingdom"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Organization: St Matthews Health &amp; Community Centre</div>"
+        },
+        "name": "St Matthews Health &amp; Community Centre"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:3ff51612-caa5-43be-ba0e-daec8f2e3c07",
+      "resource": {
+        "resourceType": "Specimen",
+        "id": "3ff51612-caa5-43be-ba0e-daec8f2e3c07",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Specimen-eu-lab"
+          ]
+        },
+        "collection": {
+          "collectedDateTime": "1984-11-30"
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Specimen</th><th>Collection Date</th></tr><tr><td>Arterial blood specimen</td><td><span class=\"nb\">30-Nov-1984</span></td></tr></table></div>"
+        },
+        "type": {
+          "coding": [
+            {
+              "code": "122552005",
+              "system": "http://snomed.info/sct",
+              "display": "Arterial blood specimen"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:068996a3-a366-4f06-9696-edb0e57caddd",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "068996a3-a366-4f06-9696-edb0e57caddd",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Observation-resultslab-eu-lab"
+          ]
+        },
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "laboratory",
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category"
+              }
+            ]
+          }
+        ],
+        "performer": [
+          {
+            "display": "The Central European Laboratory"
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "code": "2708-6",
+              "system": "http://loinc.org",
+              "display": "Oxygen saturation in Arterial blood"
+            }
+          ],
+          "text": "Oxygen saturation in Arterial blood"
+        },
+        "valueQuantity": {
+          "value": 99.5,
+          "unit": "%",
+          "code": "%",
+          "system": "http://unitsofmeasure.org"
+        },
+        "referenceRange": [
+          {
+            "low": {
+              "value": 95,
+              "code": "%",
+              "system": "http://unitsofmeasure.org"
+            },
+            "high": {
+              "value": 100,
+              "code": "%",
+              "system": "http://unitsofmeasure.org"
+            }
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Test</th><th>30-Nov-1984</th><th>Reference&#xA0;Range</th><th>Flag</th><th>Unit</th></tr><tr><td>Oxygen saturation in Arterial blood</td><td>99.5</td><td>95 - 100</td><td></td><td>%</td></tr></table></div>"
+        },
+        "status": "final",
+        "effectiveDateTime": "1984-11-30T02:25:58Z",
+        "subject": {
+          "reference": "urn:uuid:b219dd29-6383-4722-9f87-63b8c4314e8d",
+          "display": "Leah Griffiths"
+        },
+        "specimen": {
+          "reference": "urn:uuid:3ff51612-caa5-43be-ba0e-daec8f2e3c07"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:e57c5ba3-55cf-4c71-83dc-6d3fd8930a0b",
+      "resource": {
+        "resourceType": "Device",
+        "id": "e57c5ba3-55cf-4c71-83dc-6d3fd8930a0b",
+        "deviceName": [
+          {
+            "name": "SYNDERAI Synthetic Generator",
+            "type": "manufacturer-name"
+          }
+        ],
+        "version": [
+          {
+            "value": "5.0"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">SYNDERAI Synthetic Generator v5.0</div>"
+        },
+        "status": "active",
+        "distinctIdentifier": "synderai-generator-50",
+        "manufacturer": "SYNDERAI Project"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:f3c32dbf-36d8-433d-8f72-aecdc7dd237a",
+      "resource": {
+        "resourceType": "Provenance",
+        "id": "f3c32dbf-36d8-433d-8f72-aecdc7dd237a",
+        "target": [
+          {
+            "reference": "urn:uuid:b219dd29-6383-4722-9f87-63b8c4314e8d"
+          },
+          {
+            "reference": "urn:uuid:58ef7cdd-3b62-453e-903e-d0be8511e650"
+          },
+          {
+            "reference": "urn:uuid:302b9f4f-435e-485d-bccb-211dc0d930ba"
+          },
+          {
+            "reference": "urn:uuid:02f0b5db-33a9-4886-a21d-f0e681fc8398"
+          },
+          {
+            "reference": "urn:uuid:608f6ad8-690f-4cf8-8b33-c9542e8bbb96"
+          },
+          {
+            "reference": "urn:uuid:4917f3cd-106d-4204-9eef-fcf7b51155ce"
+          }
+        ],
+        "activity": {
+          "coding": [
+            {
+              "code": "CREATE",
+              "system": "http://terminology.hl7.org/CodeSystem/v3-DataOperation",
+              "display": "create"
+            }
+          ],
+          "text": "Synthetic Example Data Generation"
+        },
+        "policy": [
+          "https://synderai.net/synderai-synthetic-data-policy"
+        ],
+        "agent": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "author",
+                  "system": "http://terminology.hl7.org/CodeSystem/provenance-participant-type",
+                  "display": "Author"
+                }
+              ],
+              "text": "author"
+            },
+            "who": {
+              "reference": "urn:uuid:e57c5ba3-55cf-4c71-83dc-6d3fd8930a0b"
+            }
+          }
+        ],
+        "reason": [
+          {
+            "coding": [
+              {
+                "code": "TRAIN",
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+                "display": "training"
+              }
+            ],
+            "text": "Interoperability Testing and Training (non-clinical use)"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provenance for SYNDERAI Synthetic Example Data Resource</div>"
+        },
+        "recorded": "1984-11-30T04:25:58Z"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:302b9f4f-435e-485d-bccb-211dc0d930ba",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "302b9f4f-435e-485d-bccb-211dc0d930ba",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory Role Id: 302b9f4f-435e-485d-bccb-211dc0d930ba</div>"
+        },
+        "practitioner": {
+          "reference": "urn:uuid:02f0b5db-33a9-4886-a21d-f0e681fc8398"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:02f0b5db-33a9-4886-a21d-f0e681fc8398",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "02f0b5db-33a9-4886-a21d-f0e681fc8398",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitioner-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "1300b96c-6d6c-4ddf-9229-310af2fec9c6"
+          }
+        ],
+        "name": [
+          {
+            "prefix": [
+              "dr"
+            ],
+            "given": [
+              "Ex"
+            ],
+            "family": "Ample"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Laboratoire Central Européenne",
+              "Boulevard du Jardin Botanique 32"
+            ],
+            "postalCode": "1000",
+            "city": "Brussels",
+            "country": "Belgium"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory: Laboratoire Central Européenne, 1000 Brussels, Belgium</div>"
+        }
+      }
+    }
+  ],
+  "type": "document",
+  "timestamp": "1984-11-30T04:25:58Z"
+}

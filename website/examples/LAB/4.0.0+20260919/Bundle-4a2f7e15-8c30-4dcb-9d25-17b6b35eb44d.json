@@ -1,0 +1,686 @@
+{
+  "resourceType": "Bundle",
+  "id": "4a2f7e15-8c30-4dcb-9d25-17b6b35eb44d",
+  "meta": {
+    "profile": [
+      "http://hl7.eu/fhir/laboratory/StructureDefinition/Bundle-eu-lab"
+    ]
+  },
+  "identifier": {
+    "assigner": {
+      "display": "HL7 Europe"
+    },
+    "system": "urn:oid:2.16.840.1.113883.2.51.999",
+    "value": "887191ea-f9a6-49f2-9f60-dbbfdb120098"
+  },
+  "entry": [
+    {
+      "fullUrl": "urn:uuid:c72120fd-c602-4d3f-b563-db58ef48619b",
+      "resource": {
+        "resourceType": "Composition",
+        "id": "c72120fd-c602-4d3f-b563-db58ef48619b",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Composition-eu-lab"
+          ]
+        },
+        "extension": [
+          {
+            "url": "http://hl7.eu/fhir/extensions/StructureDefinition/composition-diagnosticReportReference",
+            "valueReference": {
+              "reference": "urn:uuid:556a8f71-7828-4009-a316-275393a0ade2"
+            }
+          }
+        ],
+        "identifier": {
+          "assigner": {
+            "display": "HL7 Europe"
+          },
+          "system": "urn:oid:2.16.840.1.113883.2.51.999",
+          "value": "617ae3c5-96e8-4bf1-a2d7-6c9e36f2b3b5"
+        },
+        "author": [
+          {
+            "reference": "urn:uuid:11ede941-36c5-465c-95ae-dc20ecf2957f"
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "type": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ],
+          "text": "Laboratory Report"
+        },
+        "section": [
+          {
+            "code": {
+              "coding": [
+                {
+                  "code": "18719-5",
+                  "system": "http://loinc.org",
+                  "display": "Chemistry studies (set)"
+                }
+              ],
+              "text": "CHEM"
+            },
+            "entry": [
+              {
+                "reference": "urn:uuid:189763ea-3734-4c85-8af6-d75e13054dab"
+              }
+            ],
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>CHEM</h3><table class=\"hl7__eu__lab__report\"><thead><tr><th>Test</th><th>17-OCT-2015</th><th>Reference&#xA0;Range</th><th>Unit</th></tr></thead><tbody><tr><td></td><td>97.2</td><td>95 - 100</td><td>%</td></tr></tbody></table></div>"
+            },
+            "title": "CHEM"
+          },
+          {
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>Annotation</h3><table class=\"hl7__eu__lab__report\"><tr><th>Conclusion and Recommendations based on this report and previous findings known to us:</th></tr><tr><td>Oxygen saturation is within the normal range, indicating adequate arterial oxygenation. No laboratory abnormalities detected in this result.</td></tr></table></div>"
+            },
+            "code": {
+              "coding": [
+                {
+                  "code": "48767-8",
+                  "system": "http://loinc.org",
+                  "display": "Annotation comment [Interpretation] Narrative"
+                }
+              ]
+            },
+            "title": "Annotation comment"
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "final",
+        "subject": {
+          "reference": "urn:uuid:049cf75d-9a1e-4bd1-99e0-586ddffe480c",
+          "display": "Ramona Pölitz"
+        },
+        "date": "2015-10-17T02:41:22Z",
+        "title": "Laboratory Report",
+        "confidentiality": "N"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:556a8f71-7828-4009-a316-275393a0ade2",
+      "resource": {
+        "resourceType": "DiagnosticReport",
+        "id": "556a8f71-7828-4009-a316-275393a0ade2",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/DiagnosticReport-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "617ae3c5-96e8-4bf1-a2d7-6c9e36f2b3b5"
+          },
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "ce7450c2-2d2a-4f0c-b05c-63590983cf85"
+          }
+        ],
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-DiagnosticReport.composition",
+            "valueReference": {
+              "reference": "urn:uuid:c72120fd-c602-4d3f-b563-db58ef48619b"
+            }
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:84985504-3002-43e9-8cb2-c9bc117a89a6"
+          }
+        ],
+        "result": [
+          {
+            "reference": "urn:uuid:189763ea-3734-4c85-8af6-d75e13054dab"
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "registered",
+        "code": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:049cf75d-9a1e-4bd1-99e0-586ddffe480c",
+          "display": "Ramona Pölitz"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:049cf75d-9a1e-4bd1-99e0-586ddffe480c",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "049cf75d-9a1e-4bd1-99e0-586ddffe480c",
+        "meta": {
+          "security": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "HTEST"
+            },
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "TRAIN"
+            }
+          ],
+          "tag": [
+            {
+              "system": "https://synderai.net/fhir/CodeSystem/tags",
+              "code": "synthetic",
+              "display": "SYNDERAI Synthetic data"
+            }
+          ],
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/patient-eu-core"
+          ]
+        },
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "JHN",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://ec.europa.eu/identifier/eci",
+            "value": "4201-824126-7"
+          },
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "MR",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://local.setting.eu/identifier",
+            "value": "8acbdbda-68a7-1584-7dc2-69478fb37791"
+          }
+        ],
+        "name": [
+          {
+            "given": [
+              "Ramona"
+            ],
+            "family": "Pölitz",
+            "text": "Ramona Pölitz"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Robin-Kostolzin-Weg 36"
+            ],
+            "use": "home",
+            "type": "physical",
+            "postalCode": "10115",
+            "city": "Berlin",
+            "country": "Germany"
+          }
+        ],
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "+49(0) 939127990"
+          }
+        ],
+        "extension": [
+          {
+            "extension": [
+              {
+                "url": "code",
+                "valueCodeableConcept": {
+                  "coding": [
+                    {
+                      "code": "DE",
+                      "system": "urn:iso:std:iso:3166"
+                    }
+                  ]
+                }
+              }
+            ],
+            "url": "http://hl7.org/fhir/StructureDefinition/patient-nationality"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__ips\"><tr><td>Ramona Pölitz</td><td>female</td><td>25-Jun-1979</td></tr></table></div>"
+        },
+        "gender": "female",
+        "birthDate": "1979-06-25"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:dcb6cbd5-ba00-4852-b684-cba1da9565c9",
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "dcb6cbd5-ba00-4852-b684-cba1da9565c9",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/ServiceRequest-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "system": "http://example.org",
+            "value": "03bc914b-18a5-45fc-9b38-8aac250efc52"
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:84985504-3002-43e9-8cb2-c9bc117a89a6"
+          }
+        ],
+        "reasonCode": [
+          {
+            "coding": [
+              {
+                "code": "237602007",
+                "system": "http://snomed.info/sct",
+                "display": "Metabolic syndrome X"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "78275009",
+                "system": "http://snomed.info/sct",
+                "display": "Obstructive sleep apnea syndrome"
+              }
+            ]
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "active",
+        "intent": "order",
+        "code": {
+          "coding": [
+            {
+              "code": "108252007",
+              "system": "http://snomed.info/sct",
+              "display": "Laboratory procedure"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:049cf75d-9a1e-4bd1-99e0-586ddffe480c",
+          "display": "Ramona Pölitz"
+        },
+        "requester": {
+          "reference": "urn:uuid:0d3c2f47-0621-4b09-bc08-73f1f24aedd3"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:0d3c2f47-0621-4b09-bc08-73f1f24aedd3",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "0d3c2f47-0621-4b09-bc08-73f1f24aedd3",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Role Id: 0d3c2f47-0621-4b09-bc08-73f1f24aedd3</div>"
+        },
+        "organization": {
+          "reference": "urn:uuid:a8f4fe53-69b9-4c0c-be49-fee47e3f5351"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:a8f4fe53-69b9-4c0c-be49-fee47e3f5351",
+      "resource": {
+        "resourceType": "Organization",
+        "id": "a8f4fe53-69b9-4c0c-be49-fee47e3f5351",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/organization-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "c84a493d-4f4a-460e-b062-15a74a21e615"
+          }
+        ],
+        "address": [
+          {
+            "city": "Berlin",
+            "postalCode": "13357",
+            "country": "Germany"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Organization: Lazarus-Kranken- und Diakonissenhaus</div>"
+        },
+        "name": "Lazarus-Kranken- und Diakonissenhaus"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:84985504-3002-43e9-8cb2-c9bc117a89a6",
+      "resource": {
+        "resourceType": "Specimen",
+        "id": "84985504-3002-43e9-8cb2-c9bc117a89a6",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Specimen-eu-lab"
+          ]
+        },
+        "collection": {
+          "collectedDateTime": "2015-10-17"
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Specimen</th><th>Collection Date</th></tr><tr><td>Arterial blood specimen</td><td><span class=\"nb\">17-Oct-2015</span></td></tr></table></div>"
+        },
+        "type": {
+          "coding": [
+            {
+              "code": "122552005",
+              "system": "http://snomed.info/sct",
+              "display": "Arterial blood specimen"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:189763ea-3734-4c85-8af6-d75e13054dab",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "189763ea-3734-4c85-8af6-d75e13054dab",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Observation-resultslab-eu-lab"
+          ]
+        },
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "laboratory",
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category"
+              }
+            ]
+          }
+        ],
+        "performer": [
+          {
+            "display": "The Central European Laboratory"
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "code": "2708-6",
+              "system": "http://loinc.org",
+              "display": "Oxygen saturation in Arterial blood"
+            }
+          ],
+          "text": "Oxygen saturation in Arterial blood"
+        },
+        "valueQuantity": {
+          "value": 97.2,
+          "unit": "%",
+          "code": "%",
+          "system": "http://unitsofmeasure.org"
+        },
+        "referenceRange": [
+          {
+            "low": {
+              "value": 95,
+              "code": "%",
+              "system": "http://unitsofmeasure.org"
+            },
+            "high": {
+              "value": 100,
+              "code": "%",
+              "system": "http://unitsofmeasure.org"
+            }
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Test</th><th>17-Oct-2015</th><th>Reference&#xA0;Range</th><th>Flag</th><th>Unit</th></tr><tr><td>Oxygen saturation in Arterial blood</td><td>97.2</td><td>95 - 100</td><td></td><td>%</td></tr></table></div>"
+        },
+        "status": "final",
+        "effectiveDateTime": "2015-10-17T00:41:22Z",
+        "subject": {
+          "reference": "urn:uuid:049cf75d-9a1e-4bd1-99e0-586ddffe480c",
+          "display": "Ramona Pölitz"
+        },
+        "specimen": {
+          "reference": "urn:uuid:84985504-3002-43e9-8cb2-c9bc117a89a6"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:19d96478-f78f-45ae-b30c-5ba628ac973c",
+      "resource": {
+        "resourceType": "Device",
+        "id": "19d96478-f78f-45ae-b30c-5ba628ac973c",
+        "deviceName": [
+          {
+            "name": "SYNDERAI Synthetic Generator",
+            "type": "manufacturer-name"
+          }
+        ],
+        "version": [
+          {
+            "value": "5.0"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">SYNDERAI Synthetic Generator v5.0</div>"
+        },
+        "status": "active",
+        "distinctIdentifier": "synderai-generator-50",
+        "manufacturer": "SYNDERAI Project"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:1c0f7d4e-3f82-42c8-9d9b-58ebd92f8a15",
+      "resource": {
+        "resourceType": "Provenance",
+        "id": "1c0f7d4e-3f82-42c8-9d9b-58ebd92f8a15",
+        "target": [
+          {
+            "reference": "urn:uuid:049cf75d-9a1e-4bd1-99e0-586ddffe480c"
+          },
+          {
+            "reference": "urn:uuid:c72120fd-c602-4d3f-b563-db58ef48619b"
+          },
+          {
+            "reference": "urn:uuid:11ede941-36c5-465c-95ae-dc20ecf2957f"
+          },
+          {
+            "reference": "urn:uuid:427b4a73-62ce-4d73-8bc8-6c6a3f6428d8"
+          },
+          {
+            "reference": "urn:uuid:0d3c2f47-0621-4b09-bc08-73f1f24aedd3"
+          },
+          {
+            "reference": "urn:uuid:a8f4fe53-69b9-4c0c-be49-fee47e3f5351"
+          }
+        ],
+        "activity": {
+          "coding": [
+            {
+              "code": "CREATE",
+              "system": "http://terminology.hl7.org/CodeSystem/v3-DataOperation",
+              "display": "create"
+            }
+          ],
+          "text": "Synthetic Example Data Generation"
+        },
+        "policy": [
+          "https://synderai.net/synderai-synthetic-data-policy"
+        ],
+        "agent": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "author",
+                  "system": "http://terminology.hl7.org/CodeSystem/provenance-participant-type",
+                  "display": "Author"
+                }
+              ],
+              "text": "author"
+            },
+            "who": {
+              "reference": "urn:uuid:19d96478-f78f-45ae-b30c-5ba628ac973c"
+            }
+          }
+        ],
+        "reason": [
+          {
+            "coding": [
+              {
+                "code": "TRAIN",
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+                "display": "training"
+              }
+            ],
+            "text": "Interoperability Testing and Training (non-clinical use)"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provenance for SYNDERAI Synthetic Example Data Resource</div>"
+        },
+        "recorded": "2015-10-17T04:41:22Z"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:11ede941-36c5-465c-95ae-dc20ecf2957f",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "11ede941-36c5-465c-95ae-dc20ecf2957f",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory Role Id: 11ede941-36c5-465c-95ae-dc20ecf2957f</div>"
+        },
+        "practitioner": {
+          "reference": "urn:uuid:427b4a73-62ce-4d73-8bc8-6c6a3f6428d8"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:427b4a73-62ce-4d73-8bc8-6c6a3f6428d8",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "427b4a73-62ce-4d73-8bc8-6c6a3f6428d8",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitioner-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "424f6eb8-f1fb-411d-8222-6ba3b971f752"
+          }
+        ],
+        "name": [
+          {
+            "prefix": [
+              "dr"
+            ],
+            "given": [
+              "Ex"
+            ],
+            "family": "Ample"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Laboratoire Central Européenne",
+              "Boulevard du Jardin Botanique 32"
+            ],
+            "postalCode": "1000",
+            "city": "Brussels",
+            "country": "Belgium"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory: Laboratoire Central Européenne, 1000 Brussels, Belgium</div>"
+        }
+      }
+    }
+  ],
+  "type": "document",
+  "timestamp": "2015-10-17T04:41:22Z"
+}

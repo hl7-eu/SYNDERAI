@@ -1,0 +1,736 @@
+{
+  "resourceType": "Bundle",
+  "id": "85b390a0-c7eb-4ed0-a613-0a676cebbb80",
+  "meta": {
+    "profile": [
+      "http://hl7.eu/fhir/laboratory/StructureDefinition/Bundle-eu-lab"
+    ]
+  },
+  "identifier": {
+    "assigner": {
+      "display": "HL7 Europe"
+    },
+    "system": "urn:oid:2.16.840.1.113883.2.51.999",
+    "value": "a4445fe0-2c6b-461b-8b19-c1228dca175f"
+  },
+  "entry": [
+    {
+      "fullUrl": "urn:uuid:f8e904a2-632d-4f6b-94e7-eccd90d4f05e",
+      "resource": {
+        "resourceType": "Composition",
+        "id": "f8e904a2-632d-4f6b-94e7-eccd90d4f05e",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Composition-eu-lab"
+          ]
+        },
+        "extension": [
+          {
+            "url": "http://hl7.eu/fhir/extensions/StructureDefinition/composition-diagnosticReportReference",
+            "valueReference": {
+              "reference": "urn:uuid:e725ff5c-8264-49f1-8018-d5e8996daaa3"
+            }
+          }
+        ],
+        "identifier": {
+          "assigner": {
+            "display": "HL7 Europe"
+          },
+          "system": "urn:oid:2.16.840.1.113883.2.51.999",
+          "value": "6420f4f2-4673-47eb-b94a-8d896b70e36b"
+        },
+        "author": [
+          {
+            "reference": "urn:uuid:bac4ae4e-4518-448e-9312-c33e63a585e9"
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "type": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ],
+          "text": "Laboratory Report"
+        },
+        "section": [
+          {
+            "code": {
+              "coding": [
+                {
+                  "code": "18719-5",
+                  "system": "http://loinc.org",
+                  "display": "Chemistry studies (set)"
+                }
+              ],
+              "text": "CHEM"
+            },
+            "entry": [
+              {
+                "reference": "urn:uuid:ce45fd58-0445-4a04-ba31-a482a9ce382b"
+              }
+            ],
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>CHEM</h3><table class=\"hl7__eu__lab__report\"><thead><tr><th>Test</th><th>20-APR-2005</th><th>Reference&#xA0;Range</th><th>Unit</th></tr></thead><tbody><tr><td></td><td><strong>31.0 H</strong></td><td>0 - 4</td><td>ng/mL</td></tr></tbody></table></div>"
+            },
+            "title": "CHEM"
+          },
+          {
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>Annotation</h3><table class=\"hl7__eu__lab__report\"><tr><th>Conclusion and Recommendations based on this report and previous findings known to us:</th></tr><tr><td>Markedly elevated PSA (31.0 ng/mL, ref. 0–4 ng/mL) suggests a high likelihood of significant prostatic pathology, such as prostate cancer or severe prostatitis. Correlation with clinical findings and further urological evaluation are strongly recommended.</td></tr></table></div>"
+            },
+            "code": {
+              "coding": [
+                {
+                  "code": "48767-8",
+                  "system": "http://loinc.org",
+                  "display": "Annotation comment [Interpretation] Narrative"
+                }
+              ]
+            },
+            "title": "Annotation comment"
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "final",
+        "subject": {
+          "reference": "urn:uuid:ead3d4b8-3116-4f4f-82f3-975ca18dd456",
+          "display": "Ádám Fehér"
+        },
+        "date": "2005-04-20T00:36:10Z",
+        "title": "Laboratory Report",
+        "confidentiality": "N"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:e725ff5c-8264-49f1-8018-d5e8996daaa3",
+      "resource": {
+        "resourceType": "DiagnosticReport",
+        "id": "e725ff5c-8264-49f1-8018-d5e8996daaa3",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/DiagnosticReport-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "6420f4f2-4673-47eb-b94a-8d896b70e36b"
+          },
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "996c226a-8634-4e69-ae46-be6383a145ad"
+          }
+        ],
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-DiagnosticReport.composition",
+            "valueReference": {
+              "reference": "urn:uuid:f8e904a2-632d-4f6b-94e7-eccd90d4f05e"
+            }
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:4682419f-1048-4da4-8535-1af092f0a42e"
+          }
+        ],
+        "result": [
+          {
+            "reference": "urn:uuid:ce45fd58-0445-4a04-ba31-a482a9ce382b"
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "registered",
+        "code": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:ead3d4b8-3116-4f4f-82f3-975ca18dd456",
+          "display": "Ádám Fehér"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:ead3d4b8-3116-4f4f-82f3-975ca18dd456",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "ead3d4b8-3116-4f4f-82f3-975ca18dd456",
+        "meta": {
+          "security": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "HTEST"
+            },
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "TRAIN"
+            }
+          ],
+          "tag": [
+            {
+              "system": "https://synderai.net/fhir/CodeSystem/tags",
+              "code": "synthetic",
+              "display": "SYNDERAI Synthetic data"
+            }
+          ],
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/patient-eu-core"
+          ]
+        },
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "JHN",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://ec.europa.eu/identifier/eci",
+            "value": "3931-421733-0"
+          },
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "MR",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://local.setting.eu/identifier",
+            "value": "1dcdda8d-bd4f-f445-5801-eee1e9e3d399"
+          }
+        ],
+        "name": [
+          {
+            "given": [
+              "Ádám"
+            ],
+            "family": "Fehér",
+            "text": "Ádám Fehér"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Ady endre utca 60."
+            ],
+            "use": "home",
+            "type": "physical",
+            "postalCode": "8300",
+            "city": "Tapolcakövesd",
+            "country": "Hungary"
+          }
+        ],
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "36/088-5465"
+          }
+        ],
+        "extension": [
+          {
+            "extension": [
+              {
+                "url": "code",
+                "valueCodeableConcept": {
+                  "coding": [
+                    {
+                      "code": "HU",
+                      "system": "urn:iso:std:iso:3166"
+                    }
+                  ]
+                }
+              }
+            ],
+            "url": "http://hl7.org/fhir/StructureDefinition/patient-nationality"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__ips\"><tr><td>Ádám Fehér</td><td>male</td><td>27-Jun-1945</td></tr></table></div>"
+        },
+        "gender": "male",
+        "birthDate": "1945-06-27"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:40d13213-ecae-44ab-b4d0-166717d8abbc",
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "40d13213-ecae-44ab-b4d0-166717d8abbc",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/ServiceRequest-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "system": "http://example.org",
+            "value": "835c2f1b-aae8-40ef-ab63-a138e07f610d"
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:4682419f-1048-4da4-8535-1af092f0a42e"
+          }
+        ],
+        "reasonCode": [
+          {
+            "coding": [
+              {
+                "code": "59621000",
+                "system": "http://snomed.info/sct",
+                "display": "Essential hypertension"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "85005007",
+                "system": "http://snomed.info/sct",
+                "display": "Cannabis dependence"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "13645005",
+                "system": "http://snomed.info/sct",
+                "display": "Chronic obstructive pulmonary disease"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "414545008",
+                "system": "http://snomed.info/sct",
+                "display": "Ischemic heart disease"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "1755008",
+                "system": "http://snomed.info/sct",
+                "display": "Old myocardial infarction"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "201834006",
+                "system": "http://snomed.info/sct",
+                "display": "Localized, primary osteoarthritis of the hand"
+              }
+            ]
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "active",
+        "intent": "order",
+        "code": {
+          "coding": [
+            {
+              "code": "108252007",
+              "system": "http://snomed.info/sct",
+              "display": "Laboratory procedure"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:ead3d4b8-3116-4f4f-82f3-975ca18dd456",
+          "display": "Ádám Fehér"
+        },
+        "requester": {
+          "reference": "urn:uuid:586cfa23-7946-4d7b-b17d-e28902f65126"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:586cfa23-7946-4d7b-b17d-e28902f65126",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "586cfa23-7946-4d7b-b17d-e28902f65126",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Role Id: 586cfa23-7946-4d7b-b17d-e28902f65126</div>"
+        },
+        "organization": {
+          "reference": "urn:uuid:26a84abb-77c0-4330-b11d-3ea28b9f5012"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:26a84abb-77c0-4330-b11d-3ea28b9f5012",
+      "resource": {
+        "resourceType": "Organization",
+        "id": "26a84abb-77c0-4330-b11d-3ea28b9f5012",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/organization-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "e67f1e07-bc05-4881-92da-cf5787e185c5"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Ady Endre utca 1-3"
+            ],
+            "city": "Tapolca",
+            "postalCode": "8300",
+            "country": "Hungary"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Organization: Deák Jenő Kórház</div>"
+        },
+        "name": "Deák Jenő Kórház"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:4682419f-1048-4da4-8535-1af092f0a42e",
+      "resource": {
+        "resourceType": "Specimen",
+        "id": "4682419f-1048-4da4-8535-1af092f0a42e",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Specimen-eu-lab"
+          ]
+        },
+        "collection": {
+          "collectedDateTime": "2005-04-19"
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Specimen</th><th>Collection Date</th></tr><tr><td>Acellular blood (serum or plasma) specimen</td><td><span class=\"nb\">19-Apr-2005</span></td></tr></table></div>"
+        },
+        "type": {
+          "coding": [
+            {
+              "code": "122592007",
+              "system": "http://snomed.info/sct",
+              "display": "Acellular blood (serum or plasma) specimen"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:ce45fd58-0445-4a04-ba31-a482a9ce382b",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "ce45fd58-0445-4a04-ba31-a482a9ce382b",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Observation-resultslab-eu-lab"
+          ]
+        },
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "laboratory",
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category"
+              }
+            ]
+          }
+        ],
+        "performer": [
+          {
+            "display": "The Central European Laboratory"
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "code": "2857-1",
+              "system": "http://loinc.org",
+              "display": "Prostate specific Ag [Mass/volume] in Serum or Plasma"
+            }
+          ],
+          "text": "Prostate specific Ag [Mass/volume] in Serum or Plasma"
+        },
+        "valueQuantity": {
+          "value": 31,
+          "unit": "ng/mL",
+          "code": "ng/mL",
+          "system": "http://unitsofmeasure.org"
+        },
+        "referenceRange": [
+          {
+            "low": {
+              "value": 0,
+              "code": "ng/mL",
+              "system": "http://unitsofmeasure.org"
+            },
+            "high": {
+              "value": 4,
+              "code": "ng/mL",
+              "system": "http://unitsofmeasure.org"
+            }
+          }
+        ],
+        "interpretation": [
+          {
+            "coding": [
+              {
+                "code": "H",
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                "display": "High"
+              }
+            ]
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Test</th><th>20-Apr-2005</th><th>Reference&#xA0;Range</th><th>Flag</th><th>Unit</th></tr><tr><td>Prostate specific Ag [Mass/volume] in Serum or Plasma</td><td>31.0</td><td>0 - 4</td><td>H</td><td>ng/mL</td></tr></table></div>"
+        },
+        "status": "final",
+        "effectiveDateTime": "2005-04-19T22:36:10Z",
+        "subject": {
+          "reference": "urn:uuid:ead3d4b8-3116-4f4f-82f3-975ca18dd456",
+          "display": "Ádám Fehér"
+        },
+        "specimen": {
+          "reference": "urn:uuid:4682419f-1048-4da4-8535-1af092f0a42e"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:645e1c27-64b2-4b18-b263-6d20127a6b01",
+      "resource": {
+        "resourceType": "Device",
+        "id": "645e1c27-64b2-4b18-b263-6d20127a6b01",
+        "deviceName": [
+          {
+            "name": "SYNDERAI Synthetic Generator",
+            "type": "manufacturer-name"
+          }
+        ],
+        "version": [
+          {
+            "value": "5.0"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">SYNDERAI Synthetic Generator v5.0</div>"
+        },
+        "status": "active",
+        "distinctIdentifier": "synderai-generator-50",
+        "manufacturer": "SYNDERAI Project"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:a8f412b9-0362-4c16-ac5c-31f1c0eac504",
+      "resource": {
+        "resourceType": "Provenance",
+        "id": "a8f412b9-0362-4c16-ac5c-31f1c0eac504",
+        "target": [
+          {
+            "reference": "urn:uuid:ead3d4b8-3116-4f4f-82f3-975ca18dd456"
+          },
+          {
+            "reference": "urn:uuid:f8e904a2-632d-4f6b-94e7-eccd90d4f05e"
+          },
+          {
+            "reference": "urn:uuid:bac4ae4e-4518-448e-9312-c33e63a585e9"
+          },
+          {
+            "reference": "urn:uuid:4bcd27c7-ab75-446b-ae61-b0a8e0cef9b1"
+          },
+          {
+            "reference": "urn:uuid:586cfa23-7946-4d7b-b17d-e28902f65126"
+          },
+          {
+            "reference": "urn:uuid:26a84abb-77c0-4330-b11d-3ea28b9f5012"
+          }
+        ],
+        "activity": {
+          "coding": [
+            {
+              "code": "CREATE",
+              "system": "http://terminology.hl7.org/CodeSystem/v3-DataOperation",
+              "display": "create"
+            }
+          ],
+          "text": "Synthetic Example Data Generation"
+        },
+        "policy": [
+          "https://synderai.net/synderai-synthetic-data-policy"
+        ],
+        "agent": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "author",
+                  "system": "http://terminology.hl7.org/CodeSystem/provenance-participant-type",
+                  "display": "Author"
+                }
+              ],
+              "text": "author"
+            },
+            "who": {
+              "reference": "urn:uuid:645e1c27-64b2-4b18-b263-6d20127a6b01"
+            }
+          }
+        ],
+        "reason": [
+          {
+            "coding": [
+              {
+                "code": "TRAIN",
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+                "display": "training"
+              }
+            ],
+            "text": "Interoperability Testing and Training (non-clinical use)"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provenance for SYNDERAI Synthetic Example Data Resource</div>"
+        },
+        "recorded": "2005-04-20T02:36:10Z"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:bac4ae4e-4518-448e-9312-c33e63a585e9",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "bac4ae4e-4518-448e-9312-c33e63a585e9",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory Role Id: bac4ae4e-4518-448e-9312-c33e63a585e9</div>"
+        },
+        "practitioner": {
+          "reference": "urn:uuid:4bcd27c7-ab75-446b-ae61-b0a8e0cef9b1"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:4bcd27c7-ab75-446b-ae61-b0a8e0cef9b1",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "4bcd27c7-ab75-446b-ae61-b0a8e0cef9b1",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitioner-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "d6a8a9cc-cccc-4e26-b7fc-8bb37c7b7ea6"
+          }
+        ],
+        "name": [
+          {
+            "prefix": [
+              "dr"
+            ],
+            "given": [
+              "Ex"
+            ],
+            "family": "Ample"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Laboratoire Central Européenne",
+              "Boulevard du Jardin Botanique 32"
+            ],
+            "postalCode": "1000",
+            "city": "Brussels",
+            "country": "Belgium"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory: Laboratoire Central Européenne, 1000 Brussels, Belgium</div>"
+        }
+      }
+    }
+  ],
+  "type": "document",
+  "timestamp": "2005-04-20T02:36:10Z"
+}

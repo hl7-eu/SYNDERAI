@@ -1,0 +1,698 @@
+{
+  "resourceType": "Bundle",
+  "id": "bcfd5e08-8fb0-4b7a-bb56-070510d5ef51",
+  "meta": {
+    "profile": [
+      "http://hl7.eu/fhir/laboratory/StructureDefinition/Bundle-eu-lab"
+    ]
+  },
+  "identifier": {
+    "assigner": {
+      "display": "HL7 Europe"
+    },
+    "system": "urn:oid:2.16.840.1.113883.2.51.999",
+    "value": "aa7f7f6e-79af-439d-9bb6-e36e7e54f6b0"
+  },
+  "entry": [
+    {
+      "fullUrl": "urn:uuid:2f86ea58-b19a-474d-80ca-6cf9ad5435f5",
+      "resource": {
+        "resourceType": "Composition",
+        "id": "2f86ea58-b19a-474d-80ca-6cf9ad5435f5",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Composition-eu-lab"
+          ]
+        },
+        "extension": [
+          {
+            "url": "http://hl7.eu/fhir/extensions/StructureDefinition/composition-diagnosticReportReference",
+            "valueReference": {
+              "reference": "urn:uuid:28ac7d96-7f69-43c1-bd71-c3f47bd97be3"
+            }
+          }
+        ],
+        "identifier": {
+          "assigner": {
+            "display": "HL7 Europe"
+          },
+          "system": "urn:oid:2.16.840.1.113883.2.51.999",
+          "value": "148e6bbf-4aa9-48ba-b8b2-087fa61338de"
+        },
+        "author": [
+          {
+            "reference": "urn:uuid:c0471974-1ab7-49b9-8629-1de5d6c9f805"
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "type": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ],
+          "text": "Laboratory Report"
+        },
+        "section": [
+          {
+            "code": {
+              "coding": [
+                {
+                  "code": "18719-5",
+                  "system": "http://loinc.org",
+                  "display": "Chemistry studies (set)"
+                }
+              ],
+              "text": "CHEM"
+            },
+            "entry": [
+              {
+                "reference": "urn:uuid:01307c47-96c5-4721-a855-05eccfd1193b"
+              }
+            ],
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>CHEM</h3><table class=\"hl7__eu__lab__report\"><thead><tr><th>Test</th><th>10-MAY-2020</th><th>Reference&#xA0;Range</th><th>Unit</th></tr></thead><tbody><tr><td></td><td>99.9</td><td>95 - 100</td><td>%</td></tr></tbody></table></div>"
+            },
+            "title": "CHEM"
+          },
+          {
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>Annotation</h3><table class=\"hl7__eu__lab__report\"><tr><th>Conclusion and Recommendations based on this report and previous findings known to us:</th></tr><tr><td>Oxygen saturation is within the normal range, indicating adequate arterial oxygenation. No laboratory abnormalities detected in this result. No acute concerns from a clinical laboratory perspective.</td></tr></table></div>"
+            },
+            "code": {
+              "coding": [
+                {
+                  "code": "48767-8",
+                  "system": "http://loinc.org",
+                  "display": "Annotation comment [Interpretation] Narrative"
+                }
+              ]
+            },
+            "title": "Annotation comment"
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "final",
+        "subject": {
+          "reference": "urn:uuid:58db0846-a56c-450a-a6e8-df97c10944a8",
+          "display": "Glenn Jones"
+        },
+        "date": "2020-05-10T13:19:45Z",
+        "title": "Laboratory Report",
+        "confidentiality": "N"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:28ac7d96-7f69-43c1-bd71-c3f47bd97be3",
+      "resource": {
+        "resourceType": "DiagnosticReport",
+        "id": "28ac7d96-7f69-43c1-bd71-c3f47bd97be3",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/DiagnosticReport-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "148e6bbf-4aa9-48ba-b8b2-087fa61338de"
+          },
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "3f1babe1-1c4a-4e9c-8c97-cab30e5d5a4f"
+          }
+        ],
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-DiagnosticReport.composition",
+            "valueReference": {
+              "reference": "urn:uuid:2f86ea58-b19a-474d-80ca-6cf9ad5435f5"
+            }
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:f15f933e-f077-429f-b584-2e60bef9884d"
+          }
+        ],
+        "result": [
+          {
+            "reference": "urn:uuid:01307c47-96c5-4721-a855-05eccfd1193b"
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "registered",
+        "code": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:58db0846-a56c-450a-a6e8-df97c10944a8",
+          "display": "Glenn Jones"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:58db0846-a56c-450a-a6e8-df97c10944a8",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "58db0846-a56c-450a-a6e8-df97c10944a8",
+        "meta": {
+          "security": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "HTEST"
+            },
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "TRAIN"
+            }
+          ],
+          "tag": [
+            {
+              "system": "https://synderai.net/fhir/CodeSystem/tags",
+              "code": "synthetic",
+              "display": "SYNDERAI Synthetic data"
+            }
+          ],
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/patient-eu-core"
+          ]
+        },
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "JHN",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://ec.europa.eu/identifier/eci",
+            "value": "4702-744321-8"
+          },
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "MR",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://local.setting.eu/identifier",
+            "value": "a0b06917-0795-7968-27bb-a9e8d38ddc76"
+          }
+        ],
+        "name": [
+          {
+            "given": [
+              "Glenn"
+            ],
+            "family": "Jones",
+            "text": "Glenn Jones"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "65 Gill terrace"
+            ],
+            "use": "home",
+            "type": "physical",
+            "postalCode": "M1",
+            "city": "West Meganchester",
+            "country": "United Kingdom"
+          }
+        ],
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "+44(0)115 4960213"
+          }
+        ],
+        "extension": [
+          {
+            "extension": [
+              {
+                "url": "code",
+                "valueCodeableConcept": {
+                  "coding": [
+                    {
+                      "code": "GB",
+                      "system": "urn:iso:std:iso:3166"
+                    }
+                  ]
+                }
+              }
+            ],
+            "url": "http://hl7.org/fhir/StructureDefinition/patient-nationality"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__ips\"><tr><td>Glenn Jones</td><td>male</td><td>05-Jul-1952</td></tr></table></div>"
+        },
+        "gender": "male",
+        "birthDate": "1952-07-05"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:522f5b91-b60f-4fc0-a8d0-e1b19b7835a2",
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "522f5b91-b60f-4fc0-a8d0-e1b19b7835a2",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/ServiceRequest-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "system": "http://example.org",
+            "value": "39ed8adf-bfc3-46cc-bfb4-05d288e8e252"
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:f15f933e-f077-429f-b584-2e60bef9884d"
+          }
+        ],
+        "reasonCode": [
+          {
+            "coding": [
+              {
+                "code": "78275009",
+                "system": "http://snomed.info/sct",
+                "display": "Obstructive sleep apnea syndrome"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "239873007",
+                "system": "http://snomed.info/sct",
+                "display": "Osteoarthritis of knee"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "55822004",
+                "system": "http://snomed.info/sct",
+                "display": "Hyperlipidemia"
+              }
+            ]
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "active",
+        "intent": "order",
+        "code": {
+          "coding": [
+            {
+              "code": "108252007",
+              "system": "http://snomed.info/sct",
+              "display": "Laboratory procedure"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:58db0846-a56c-450a-a6e8-df97c10944a8",
+          "display": "Glenn Jones"
+        },
+        "requester": {
+          "reference": "urn:uuid:31fd8398-b608-4835-91f6-f67b7daefc24"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:31fd8398-b608-4835-91f6-f67b7daefc24",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "31fd8398-b608-4835-91f6-f67b7daefc24",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Role Id: 31fd8398-b608-4835-91f6-f67b7daefc24</div>"
+        },
+        "organization": {
+          "reference": "urn:uuid:5f026d8e-0311-405d-bcec-8a5c66f7c858"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:5f026d8e-0311-405d-bcec-8a5c66f7c858",
+      "resource": {
+        "resourceType": "Organization",
+        "id": "5f026d8e-0311-405d-bcec-8a5c66f7c858",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/organization-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "d54080ba-eac0-4183-92af-5445889a9879"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "City Road 204"
+            ],
+            "city": "Manchester",
+            "postalCode": "M3 3",
+            "country": "United Kingdom"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Organization: Cornbrook Medical Practice</div>"
+        },
+        "name": "Cornbrook Medical Practice"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:f15f933e-f077-429f-b584-2e60bef9884d",
+      "resource": {
+        "resourceType": "Specimen",
+        "id": "f15f933e-f077-429f-b584-2e60bef9884d",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Specimen-eu-lab"
+          ]
+        },
+        "collection": {
+          "collectedDateTime": "2020-05-10"
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Specimen</th><th>Collection Date</th></tr><tr><td>Arterial blood specimen</td><td><span class=\"nb\">10-May-2020</span></td></tr></table></div>"
+        },
+        "type": {
+          "coding": [
+            {
+              "code": "122552005",
+              "system": "http://snomed.info/sct",
+              "display": "Arterial blood specimen"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:01307c47-96c5-4721-a855-05eccfd1193b",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "01307c47-96c5-4721-a855-05eccfd1193b",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Observation-resultslab-eu-lab"
+          ]
+        },
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "laboratory",
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category"
+              }
+            ]
+          }
+        ],
+        "performer": [
+          {
+            "display": "The Central European Laboratory"
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "code": "2708-6",
+              "system": "http://loinc.org",
+              "display": "Oxygen saturation in Arterial blood"
+            }
+          ],
+          "text": "Oxygen saturation in Arterial blood"
+        },
+        "valueQuantity": {
+          "value": 99.9,
+          "unit": "%",
+          "code": "%",
+          "system": "http://unitsofmeasure.org"
+        },
+        "referenceRange": [
+          {
+            "low": {
+              "value": 95,
+              "code": "%",
+              "system": "http://unitsofmeasure.org"
+            },
+            "high": {
+              "value": 100,
+              "code": "%",
+              "system": "http://unitsofmeasure.org"
+            }
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Test</th><th>10-May-2020</th><th>Reference&#xA0;Range</th><th>Flag</th><th>Unit</th></tr><tr><td>Oxygen saturation in Arterial blood</td><td>99.9</td><td>95 - 100</td><td></td><td>%</td></tr></table></div>"
+        },
+        "status": "final",
+        "effectiveDateTime": "2020-05-10T11:19:45Z",
+        "subject": {
+          "reference": "urn:uuid:58db0846-a56c-450a-a6e8-df97c10944a8",
+          "display": "Glenn Jones"
+        },
+        "specimen": {
+          "reference": "urn:uuid:f15f933e-f077-429f-b584-2e60bef9884d"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:33cdb79a-9b3f-4507-a966-aedd120e0434",
+      "resource": {
+        "resourceType": "Device",
+        "id": "33cdb79a-9b3f-4507-a966-aedd120e0434",
+        "deviceName": [
+          {
+            "name": "SYNDERAI Synthetic Generator",
+            "type": "manufacturer-name"
+          }
+        ],
+        "version": [
+          {
+            "value": "5.0"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">SYNDERAI Synthetic Generator v5.0</div>"
+        },
+        "status": "active",
+        "distinctIdentifier": "synderai-generator-50",
+        "manufacturer": "SYNDERAI Project"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:2cb91563-7134-4967-84e1-bab78bf7d6be",
+      "resource": {
+        "resourceType": "Provenance",
+        "id": "2cb91563-7134-4967-84e1-bab78bf7d6be",
+        "target": [
+          {
+            "reference": "urn:uuid:58db0846-a56c-450a-a6e8-df97c10944a8"
+          },
+          {
+            "reference": "urn:uuid:2f86ea58-b19a-474d-80ca-6cf9ad5435f5"
+          },
+          {
+            "reference": "urn:uuid:c0471974-1ab7-49b9-8629-1de5d6c9f805"
+          },
+          {
+            "reference": "urn:uuid:1d6f3540-fb5f-454d-ba8d-6582b065dc14"
+          },
+          {
+            "reference": "urn:uuid:31fd8398-b608-4835-91f6-f67b7daefc24"
+          },
+          {
+            "reference": "urn:uuid:5f026d8e-0311-405d-bcec-8a5c66f7c858"
+          }
+        ],
+        "activity": {
+          "coding": [
+            {
+              "code": "CREATE",
+              "system": "http://terminology.hl7.org/CodeSystem/v3-DataOperation",
+              "display": "create"
+            }
+          ],
+          "text": "Synthetic Example Data Generation"
+        },
+        "policy": [
+          "https://synderai.net/synderai-synthetic-data-policy"
+        ],
+        "agent": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "author",
+                  "system": "http://terminology.hl7.org/CodeSystem/provenance-participant-type",
+                  "display": "Author"
+                }
+              ],
+              "text": "author"
+            },
+            "who": {
+              "reference": "urn:uuid:33cdb79a-9b3f-4507-a966-aedd120e0434"
+            }
+          }
+        ],
+        "reason": [
+          {
+            "coding": [
+              {
+                "code": "TRAIN",
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+                "display": "training"
+              }
+            ],
+            "text": "Interoperability Testing and Training (non-clinical use)"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provenance for SYNDERAI Synthetic Example Data Resource</div>"
+        },
+        "recorded": "2020-05-10T15:19:45Z"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:c0471974-1ab7-49b9-8629-1de5d6c9f805",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "c0471974-1ab7-49b9-8629-1de5d6c9f805",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory Role Id: c0471974-1ab7-49b9-8629-1de5d6c9f805</div>"
+        },
+        "practitioner": {
+          "reference": "urn:uuid:1d6f3540-fb5f-454d-ba8d-6582b065dc14"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:1d6f3540-fb5f-454d-ba8d-6582b065dc14",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "1d6f3540-fb5f-454d-ba8d-6582b065dc14",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitioner-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "c9514b08-96bd-46c5-9e5f-ba3f5f08ffee"
+          }
+        ],
+        "name": [
+          {
+            "prefix": [
+              "dr"
+            ],
+            "given": [
+              "Ex"
+            ],
+            "family": "Ample"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Laboratoire Central Européenne",
+              "Boulevard du Jardin Botanique 32"
+            ],
+            "postalCode": "1000",
+            "city": "Brussels",
+            "country": "Belgium"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory: Laboratoire Central Européenne, 1000 Brussels, Belgium</div>"
+        }
+      }
+    }
+  ],
+  "type": "document",
+  "timestamp": "2020-05-10T15:19:45Z"
+}

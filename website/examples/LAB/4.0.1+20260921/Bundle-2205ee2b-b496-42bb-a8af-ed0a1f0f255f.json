@@ -1,0 +1,742 @@
+{
+  "resourceType": "Bundle",
+  "id": "2205ee2b-b496-42bb-a8af-ed0a1f0f255f",
+  "meta": {
+    "profile": [
+      "http://hl7.eu/fhir/laboratory/StructureDefinition/Bundle-eu-lab"
+    ]
+  },
+  "identifier": {
+    "assigner": {
+      "display": "HL7 Europe"
+    },
+    "system": "urn:oid:2.16.840.1.113883.2.51.999",
+    "value": "457d7253-848e-4f5a-93db-0141ea6e1dab"
+  },
+  "entry": [
+    {
+      "fullUrl": "urn:uuid:e19ba9c6-ccba-443f-9f0c-5a43fc745db4",
+      "resource": {
+        "resourceType": "Composition",
+        "id": "e19ba9c6-ccba-443f-9f0c-5a43fc745db4",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Composition-eu-lab"
+          ]
+        },
+        "extension": [
+          {
+            "url": "http://hl7.eu/fhir/extensions/StructureDefinition/composition-diagnosticReportReference",
+            "valueReference": {
+              "reference": "urn:uuid:64a24ef9-6bd6-40e9-b9c4-5020bd6890cb"
+            }
+          }
+        ],
+        "identifier": {
+          "assigner": {
+            "display": "HL7 Europe"
+          },
+          "system": "urn:oid:2.16.840.1.113883.2.51.999",
+          "value": "e70b555f-df1b-464c-a0a0-d9b76c7a84c8"
+        },
+        "author": [
+          {
+            "reference": "urn:uuid:37758305-7538-4b01-b00a-53bac0df82dd"
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "type": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ],
+          "text": "Laboratory Report"
+        },
+        "section": [
+          {
+            "code": {
+              "coding": [
+                {
+                  "code": "18719-5",
+                  "system": "http://loinc.org",
+                  "display": "Chemistry studies (set)"
+                }
+              ],
+              "text": "CHEM"
+            },
+            "entry": [
+              {
+                "reference": "urn:uuid:516087f7-3160-4606-b6c9-31cabcedafb5"
+              }
+            ],
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>CHEM</h3><table class=\"hl7__eu__lab__report\"><thead><tr><th>Test</th><th>15-NOV-2023</th><th>Reference&#xA0;Range</th><th>Unit</th></tr></thead><tbody><tr><td></td><td><strong>65.8 H</strong></td><td>20 - 42</td><td>mmol/mol</td></tr></tbody></table></div>"
+            },
+            "title": "CHEM"
+          },
+          {
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>Annotation</h3><table class=\"hl7__eu__lab__report\"><tr><th>Conclusion and Recommendations based on this report and previous findings known to us:</th></tr><tr><td>The patient’s HbA1c is significantly elevated, indicating poor long-term glycemic control and consistent with uncontrolled diabetes mellitus. Clinical correlation and prompt intervention to optimize blood glucose management are recommended to reduce the risk of diabetes-related complications.</td></tr></table></div>"
+            },
+            "code": {
+              "coding": [
+                {
+                  "code": "48767-8",
+                  "system": "http://loinc.org",
+                  "display": "Annotation comment [Interpretation] Narrative"
+                }
+              ]
+            },
+            "title": "Annotation comment"
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "final",
+        "subject": {
+          "reference": "urn:uuid:42abc5b1-bfc7-4d50-b6e4-f7a92e80dac4",
+          "display": "Hans Drewes"
+        },
+        "date": "2023-11-15T23:36:36Z",
+        "title": "Laboratory Report",
+        "confidentiality": "N"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:64a24ef9-6bd6-40e9-b9c4-5020bd6890cb",
+      "resource": {
+        "resourceType": "DiagnosticReport",
+        "id": "64a24ef9-6bd6-40e9-b9c4-5020bd6890cb",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/DiagnosticReport-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "e70b555f-df1b-464c-a0a0-d9b76c7a84c8"
+          },
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "a6698911-4c05-4a9f-8ac9-a18c8c20a114"
+          }
+        ],
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-DiagnosticReport.composition",
+            "valueReference": {
+              "reference": "urn:uuid:e19ba9c6-ccba-443f-9f0c-5a43fc745db4"
+            }
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "26436-6",
+                "system": "http://loinc.org",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:22d44da7-ef9c-46fd-ad7d-6856366d316f"
+          }
+        ],
+        "result": [
+          {
+            "reference": "urn:uuid:516087f7-3160-4606-b6c9-31cabcedafb5"
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "registered",
+        "code": {
+          "coding": [
+            {
+              "code": "11502-2",
+              "system": "http://loinc.org",
+              "display": "Laboratory report"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:42abc5b1-bfc7-4d50-b6e4-f7a92e80dac4",
+          "display": "Hans Drewes"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:42abc5b1-bfc7-4d50-b6e4-f7a92e80dac4",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "42abc5b1-bfc7-4d50-b6e4-f7a92e80dac4",
+        "meta": {
+          "security": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "HTEST"
+            },
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "code": "TRAIN"
+            }
+          ],
+          "tag": [
+            {
+              "system": "https://synderai.net/fhir/CodeSystem/tags",
+              "code": "synthetic",
+              "display": "SYNDERAI Synthetic data"
+            }
+          ],
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/patient-eu-core"
+          ]
+        },
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "JHN",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://ec.europa.eu/identifier/eci",
+            "value": "6432-222917-6"
+          },
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "MR",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://local.setting.eu/identifier",
+            "value": "729a0222-5293-187a-11a7-9b7f312209dd"
+          }
+        ],
+        "name": [
+          {
+            "given": [
+              "Hans"
+            ],
+            "family": "Drewes",
+            "text": "Hans Drewes"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Hesseallee 44/14"
+            ],
+            "use": "home",
+            "type": "physical",
+            "postalCode": "47533",
+            "city": "Kleve",
+            "country": "Germany"
+          }
+        ],
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "05045 27610"
+          }
+        ],
+        "extension": [
+          {
+            "extension": [
+              {
+                "url": "code",
+                "valueCodeableConcept": {
+                  "coding": [
+                    {
+                      "code": "DE",
+                      "system": "urn:iso:std:iso:3166"
+                    }
+                  ]
+                }
+              }
+            ],
+            "url": "http://hl7.org/fhir/StructureDefinition/patient-nationality"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__ips\"><tr><td>Hans Drewes</td><td>male</td><td>20-Dec-1971</td></tr></table></div>"
+        },
+        "gender": "male",
+        "birthDate": "1971-12-20"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:b9daa99b-6538-495c-8b8f-e9ab0fce89c1",
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "b9daa99b-6538-495c-8b8f-e9ab0fce89c1",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/ServiceRequest-eu-lab"
+          ]
+        },
+        "identifier": [
+          {
+            "system": "http://example.org",
+            "value": "caa3fec9-1097-402b-8a58-8bfc085e1649"
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:22d44da7-ef9c-46fd-ad7d-6856366d316f"
+          }
+        ],
+        "reasonCode": [
+          {
+            "coding": [
+              {
+                "code": "7200002",
+                "system": "http://snomed.info/sct",
+                "display": "Alcoholism"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "59621000",
+                "system": "http://snomed.info/sct",
+                "display": "Essential hypertension"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "237602007",
+                "system": "http://snomed.info/sct",
+                "display": "Metabolic syndrome X"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "44054006",
+                "system": "http://snomed.info/sct",
+                "display": "Type 2 diabetes mellitus"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "239873007",
+                "system": "http://snomed.info/sct",
+                "display": "Osteoarthritis of knee"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "55822004",
+                "system": "http://snomed.info/sct",
+                "display": "Hyperlipidemia"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "230572002",
+                "system": "http://snomed.info/sct",
+                "display": "Neuropathy due to diabetes mellitus"
+              }
+            ]
+          }
+        ],
+        "text": {
+          "status": "empty",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">intentionally left empty / not meaningful</div>"
+        },
+        "status": "active",
+        "intent": "order",
+        "code": {
+          "coding": [
+            {
+              "code": "108252007",
+              "system": "http://snomed.info/sct",
+              "display": "Laboratory procedure"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:42abc5b1-bfc7-4d50-b6e4-f7a92e80dac4",
+          "display": "Hans Drewes"
+        },
+        "requester": {
+          "reference": "urn:uuid:35bf92b6-b52c-445e-bd64-9ef226371c03"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:35bf92b6-b52c-445e-bd64-9ef226371c03",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "35bf92b6-b52c-445e-bd64-9ef226371c03",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Role Id: 35bf92b6-b52c-445e-bd64-9ef226371c03</div>"
+        },
+        "organization": {
+          "reference": "urn:uuid:5b4bfd2d-e4d7-493a-b9b9-e01e7458df26"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:5b4bfd2d-e4d7-493a-b9b9-e01e7458df26",
+      "resource": {
+        "resourceType": "Organization",
+        "id": "5b4bfd2d-e4d7-493a-b9b9-e01e7458df26",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/organization-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "4d42cbd0-4e47-40b3-94a3-6675cca41be6"
+          }
+        ],
+        "address": [
+          {
+            "city": "Kleve",
+            "postalCode": "47533",
+            "country": "Germany"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provider Organization: Sankt Antonius Hospital</div>"
+        },
+        "name": "Sankt Antonius Hospital"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:22d44da7-ef9c-46fd-ad7d-6856366d316f",
+      "resource": {
+        "resourceType": "Specimen",
+        "id": "22d44da7-ef9c-46fd-ad7d-6856366d316f",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Specimen-eu-lab"
+          ]
+        },
+        "collection": {
+          "collectedDateTime": "2023-11-15"
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Specimen</th><th>Collection Date</th></tr><tr><td>Blood specimen</td><td><span class=\"nb\">15-Nov-2023</span></td></tr></table></div>"
+        },
+        "type": {
+          "coding": [
+            {
+              "code": "119297000",
+              "system": "http://snomed.info/sct",
+              "display": "Blood specimen"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:516087f7-3160-4606-b6c9-31cabcedafb5",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "516087f7-3160-4606-b6c9-31cabcedafb5",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Observation-resultslab-eu-lab"
+          ]
+        },
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "laboratory",
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category"
+              }
+            ]
+          }
+        ],
+        "performer": [
+          {
+            "display": "The Central European Laboratory"
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "code": "59261-8",
+              "system": "http://loinc.org",
+              "display": "Hemoglobin A1c/Hemoglobin.total standardized per IFCC-RMP for CDT in Blood"
+            }
+          ],
+          "text": "Hemoglobin A1c/Hemoglobin.total standardized per IFCC-RMP for CDT in Blood"
+        },
+        "valueQuantity": {
+          "value": 65.8,
+          "unit": "mmol/mol",
+          "code": "mmol/mol",
+          "system": "http://unitsofmeasure.org"
+        },
+        "referenceRange": [
+          {
+            "low": {
+              "value": 20,
+              "code": "mmol/mol",
+              "system": "http://unitsofmeasure.org"
+            },
+            "high": {
+              "value": 42,
+              "code": "mmol/mol",
+              "system": "http://unitsofmeasure.org"
+            }
+          }
+        ],
+        "interpretation": [
+          {
+            "coding": [
+              {
+                "code": "H",
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                "display": "High"
+              }
+            ]
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"hl7__eu__lab__report\"><tr><th>Test</th><th>15-Nov-2023</th><th>Reference&#xA0;Range</th><th>Flag</th><th>Unit</th></tr><tr><td>Hemoglobin A1c/Hemoglobin.total standardized per IFCC-RMP for CDT in Blood</td><td>65.8</td><td>20 - 42</td><td>H</td><td>mmol/mol</td></tr></table></div>"
+        },
+        "status": "final",
+        "effectiveDateTime": "2023-11-15T22:36:36Z",
+        "subject": {
+          "reference": "urn:uuid:42abc5b1-bfc7-4d50-b6e4-f7a92e80dac4",
+          "display": "Hans Drewes"
+        },
+        "specimen": {
+          "reference": "urn:uuid:22d44da7-ef9c-46fd-ad7d-6856366d316f"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:a96722f4-cb38-48bc-acf4-daa21bdddbb6",
+      "resource": {
+        "resourceType": "Device",
+        "id": "a96722f4-cb38-48bc-acf4-daa21bdddbb6",
+        "deviceName": [
+          {
+            "name": "SYNDERAI Synthetic Generator",
+            "type": "manufacturer-name"
+          }
+        ],
+        "version": [
+          {
+            "value": "5.0"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">SYNDERAI Synthetic Generator v5.0</div>"
+        },
+        "status": "active",
+        "distinctIdentifier": "synderai-generator-50",
+        "manufacturer": "SYNDERAI Project"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:7944b96f-3c63-4825-8be8-140d12a2c934",
+      "resource": {
+        "resourceType": "Provenance",
+        "id": "7944b96f-3c63-4825-8be8-140d12a2c934",
+        "target": [
+          {
+            "reference": "urn:uuid:42abc5b1-bfc7-4d50-b6e4-f7a92e80dac4"
+          },
+          {
+            "reference": "urn:uuid:e19ba9c6-ccba-443f-9f0c-5a43fc745db4"
+          },
+          {
+            "reference": "urn:uuid:37758305-7538-4b01-b00a-53bac0df82dd"
+          },
+          {
+            "reference": "urn:uuid:18f1f09d-0c84-499a-abf8-fee539fc6487"
+          },
+          {
+            "reference": "urn:uuid:35bf92b6-b52c-445e-bd64-9ef226371c03"
+          },
+          {
+            "reference": "urn:uuid:5b4bfd2d-e4d7-493a-b9b9-e01e7458df26"
+          }
+        ],
+        "activity": {
+          "coding": [
+            {
+              "code": "CREATE",
+              "system": "http://terminology.hl7.org/CodeSystem/v3-DataOperation",
+              "display": "create"
+            }
+          ],
+          "text": "Synthetic Example Data Generation"
+        },
+        "policy": [
+          "https://synderai.net/synderai-synthetic-data-policy"
+        ],
+        "agent": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "author",
+                  "system": "http://terminology.hl7.org/CodeSystem/provenance-participant-type",
+                  "display": "Author"
+                }
+              ],
+              "text": "author"
+            },
+            "who": {
+              "reference": "urn:uuid:a96722f4-cb38-48bc-acf4-daa21bdddbb6"
+            }
+          }
+        ],
+        "reason": [
+          {
+            "coding": [
+              {
+                "code": "TRAIN",
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+                "display": "training"
+              }
+            ],
+            "text": "Interoperability Testing and Training (non-clinical use)"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Provenance for SYNDERAI Synthetic Example Data Resource</div>"
+        },
+        "recorded": "2023-11-16T00:36:36Z"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:37758305-7538-4b01-b00a-53bac0df82dd",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "37758305-7538-4b01-b00a-53bac0df82dd",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory Role Id: 37758305-7538-4b01-b00a-53bac0df82dd</div>"
+        },
+        "practitioner": {
+          "reference": "urn:uuid:18f1f09d-0c84-499a-abf8-fee539fc6487"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:18f1f09d-0c84-499a-abf8-fee539fc6487",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "18f1f09d-0c84-499a-abf8-fee539fc6487",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitioner-eu"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "display": "HL7 Europe"
+            },
+            "system": "urn:oid:2.16.840.1.113883.2.51.999",
+            "value": "d99d4b74-b854-4376-b674-4928598acbd7"
+          }
+        ],
+        "name": [
+          {
+            "prefix": [
+              "dr"
+            ],
+            "given": [
+              "Ex"
+            ],
+            "family": "Ample"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Laboratoire Central Européenne",
+              "Boulevard du Jardin Botanique 32"
+            ],
+            "postalCode": "1000",
+            "city": "Brussels",
+            "country": "Belgium"
+          }
+        ],
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Laboratory: Laboratoire Central Européenne, 1000 Brussels, Belgium</div>"
+        }
+      }
+    }
+  ],
+  "type": "document",
+  "timestamp": "2023-11-16T00:36:36Z"
+}
