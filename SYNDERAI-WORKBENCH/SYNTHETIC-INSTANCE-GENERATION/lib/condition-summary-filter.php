@@ -195,12 +195,37 @@ final class ConditionSummaryFilter
      * surgical group is dropped rather than restated.
      */
     public const RESTATE_AS_HISTORY = [
+        /*
+         * SNOMED verification 2026-09-30 against SNOMED CT International 20260901.
+         * Four of the six target concepts in this table were defective:
+         *   161765003 was "Past pregnancy history of premature delivery", NOT
+         *             pre-eclampsia (associated finding 282020008 Premature
+         *             delivery). Corrected to 105651000119100.
+         *   429740004 was "Family history of breast cancer" - a family history,
+         *             not the patient's own. Corrected to 429087003, which is
+         *             exactly the display string this table already carried.
+         *   161511005 did not exist in SNOMED CT at all. Corrected to 161508001
+         *             "History of deep vein thrombosis".
+         *   161512003 did not exist either. No plain pre-coordinated "History of
+         *             pulmonary embolism" concept exists in the International
+         *             release; the only candidate adds an unwarranted claim about
+         *             long-term anticoagulation. The substitution has therefore
+         *             been REMOVED: 706870000 is kept and its past status is
+         *             carried by clinicalStatus, as below.
+         * 275526006 and 161744009 were verified correct.
+         *
+         * NOTE ON THE DESIGN: every Condition produced through this table already
+         * carries clinicalStatus = inactive, which is the FHIR-native way to say
+         * "no longer active". Substituting a "history of" situation concept on top
+         * of that is redundant double-encoding, and it is what let these four
+         * errors through unnoticed. Consider dropping the substitution entirely
+         * and relying on clinicalStatus alone.
+         */
         '422504002' => ['275526006', 'History of cerebrovascular accident (situation)'],
         '230690007' => ['275526006', 'History of cerebrovascular accident (situation)'],
-        '254837009' => ['429740004', 'History of malignant neoplasm of breast (situation)'],
-        '398254007' => ['161765003', 'History of pre-eclampsia (situation)'],
-        '706870000' => ['161512003', 'History of pulmonary embolism (situation)'],
-        '132281000119108' => ['161511005', 'History of deep vein thrombosis (situation)'],
+        '254837009' => ['429087003', 'History of malignant neoplasm of breast (situation)'],
+        '398254007' => ['105651000119100', 'Past pregnancy history of pre-eclampsia (situation)'],
+        '132281000119108' => ['161508001', 'History of deep vein thrombosis (situation)'],
         '19169002'  => ['161744009', 'Past pregnancy history of miscarriage (situation)'],
         '85116003'  => ['161744009', 'Past pregnancy history of miscarriage (situation)'],
         '156073000' => ['161744009', 'Past pregnancy history of miscarriage (situation)'],

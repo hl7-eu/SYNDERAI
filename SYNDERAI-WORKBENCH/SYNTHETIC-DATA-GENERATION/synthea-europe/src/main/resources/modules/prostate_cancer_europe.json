@@ -6,7 +6,23 @@
     "EAU guidelines 2023: PSA screening, active surveillance for low-risk,",
     "radical prostatectomy or radiotherapy for intermediate/high-risk.",
     "ADT (LHRH agonist) for advanced disease.",
-    "EU 5-year survival: ~89% all stages combined."
+    "EU 5-year survival: ~89% all stages combined.",
+    "R5 (2026-09-30): recalibrated against ECIS EU-27 complete prevalence, index year",
+    "2020, male denominator - the endpoint this module actually produces. R4 ran +78% at",
+    "55-64, +37% at 65-74 and +49% at 75+ against it. Rates fitted with a life table of",
+    "this module's own loop (2% annual disease-specific death, 3% remission, and note that",
+    "remission does NOT reduce the measure: ECIS counts every living man with a past",
+    "diagnosis, cured or not). The life table reproduced the measured run to a mean ratio",
+    "of 1.007 before being used to fit, so the fit rests on validated arithmetic.",
+    "THE 75+ HAZARD IS LOWER THAN THE 65-74 HAZARD, by a factor of about three, and this",
+    "is deliberate. Three reasons, in decreasing order of weight. First, this module",
+    "models DETECTED incidence - the path is PSA_Screening -> PSA_Test -> Diagnose - and",
+    "European guidelines discourage PSA screening above 70 to 75, so detected incidence",
+    "genuinely falls even though underlying incidence does not. Second, saturation: 6.2%",
+    "is already prevalent on entering 75, so less new incidence is needed to hold a 10.7%",
+    "band mean. Third, the life table omits background mortality, which in reality removes",
+    "prevalent cases from the oldest band. A monotone-constrained fit was tested and costs",
+    "-22% at 65-74, which is worse than a documented decline."
   ],
   "states": {
     "Initial": {
@@ -53,24 +69,21 @@
     },
     "Prostate_Age_Check": {
       "type": "Simple",
+      "remarks": [
+        "Bands realigned to the ECIS reference (0-54 / 55-64 / 65-74 / 75+) in R5.",
+        "R4 used 50-59 / 60-69 / 70-74 / 75+, which straddles the reference boundaries and",
+        "makes a band-by-band fit underdetermined: the reference's 55-64 band draws on two",
+        "module bands at once."
+      ],
       "conditional_transition": [
         {
           "condition": {
             "condition_type": "Age",
             "operator": "<",
-            "quantity": 60,
+            "quantity": 65,
             "unit": "years"
           },
-          "transition": "Prostate_Prob_50_59"
-        },
-        {
-          "condition": {
-            "condition_type": "Age",
-            "operator": "<",
-            "quantity": 70,
-            "unit": "years"
-          },
-          "transition": "Prostate_Prob_60_69"
+          "transition": "Prostate_Prob_50_64"
         },
         {
           "condition": {
@@ -79,74 +92,10 @@
             "quantity": 75,
             "unit": "years"
           },
-          "transition": "Prostate_Prob_70_74"
+          "transition": "Prostate_Prob_65_74"
         },
         {
           "transition": "Prostate_Prob_75_plus"
-        }
-      ]
-    },
-    "Prostate_Prob_50_59": {
-      "type": "Simple",
-      "remarks": [
-        "ECIS 2022: ~0.08%/year incidence in men 50-59."
-      ],
-      "distributed_transition": [
-        {
-          "distribution": 0.0016,
-          "transition": "PSA_Screening"
-        },
-        {
-          "distribution": 0.9984,
-          "transition": "Annual_PSA_Delay"
-        }
-      ]
-    },
-    "Prostate_Prob_60_69": {
-      "type": "Simple",
-      "remarks": [
-        "ECIS 2022: ~0.35%/year in men 60-69 \u2014 major peak."
-      ],
-      "distributed_transition": [
-        {
-          "distribution": 0.007,
-          "transition": "PSA_Screening"
-        },
-        {
-          "distribution": 0.993,
-          "transition": "Annual_PSA_Delay"
-        }
-      ]
-    },
-    "Prostate_Prob_70_74": {
-      "type": "Simple",
-      "remarks": [
-        "ECIS 2022: ~0.55%/year in men 70-74."
-      ],
-      "distributed_transition": [
-        {
-          "distribution": 0.011,
-          "transition": "PSA_Screening"
-        },
-        {
-          "distribution": 0.989,
-          "transition": "Annual_PSA_Delay"
-        }
-      ]
-    },
-    "Prostate_Prob_75_plus": {
-      "type": "Simple",
-      "remarks": [
-        "ECIS 2022: ~0.45%/year in men 75+ (competing mortality reduces detection)."
-      ],
-      "distributed_transition": [
-        {
-          "distribution": 0.009,
-          "transition": "PSA_Screening"
-        },
-        {
-          "distribution": 0.991,
-          "transition": "Annual_PSA_Delay"
         }
       ]
     },
@@ -350,7 +299,7 @@
     "Prostate_Remission": {
       "type": "ConditionEnd",
       "remarks": [
-        "PSA undetectable \u2014 clinical remission."
+        "PSA undetectable — clinical remission."
       ],
       "condition_onset": "Diagnose_Prostate_Cancer",
       "direct_transition": "Terminal"
@@ -361,6 +310,54 @@
     },
     "Terminal": {
       "type": "Terminal"
+    },
+    "Prostate_Prob_50_64": {
+      "type": "Simple",
+      "remarks": [
+        "0.167% per year, fitted to ECIS EU-27 complete prevalence."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.00167,
+          "transition": "PSA_Screening"
+        },
+        {
+          "distribution": 0.99833,
+          "transition": "Annual_PSA_Delay"
+        }
+      ]
+    },
+    "Prostate_Prob_65_74": {
+      "type": "Simple",
+      "remarks": [
+        "0.792% per year, fitted to ECIS EU-27 complete prevalence."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.00792,
+          "transition": "PSA_Screening"
+        },
+        {
+          "distribution": 0.99208,
+          "transition": "Annual_PSA_Delay"
+        }
+      ]
+    },
+    "Prostate_Prob_75_plus": {
+      "type": "Simple",
+      "remarks": [
+        "0.270% per year, fitted to ECIS EU-27 complete prevalence."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.0027,
+          "transition": "PSA_Screening"
+        },
+        {
+          "distribution": 0.9973,
+          "transition": "Annual_PSA_Delay"
+        }
+      ]
     }
   }
 }

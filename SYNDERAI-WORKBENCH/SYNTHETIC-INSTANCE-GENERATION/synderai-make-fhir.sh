@@ -61,7 +61,7 @@ rm -rf _validate_${ARTIFACT}_done.txt
 cd $SIC
 # this batch will log to a file named _validate_${ARTIFACT}_log.txt as a semaphore
 # when finished the batch renames the file to _validate_${ARTIFACT}_done.txt to indicate finish
-nohup sh synderai-validate.sh ${ARTIFACT} > _validate_${ARTIFACT}_log.txt 2>&1 &
+nohup sh synderai-validate-fjv.sh ${ARTIFACT} > _validate_${ARTIFACT}_log.txt 2>&1 &
 
 # now wait for all semphore files to appear until finish and exit
 V=""

@@ -572,29 +572,43 @@
           "distributions": [
             {
               "transition": "Death",
-              "distribution": 0.8
+              "distribution": 0.00904
             },
             {
               "transition": "Inpatient Discharge decision",
-              "distribution": 0.2
+              "distribution": 0.99096
             }
           ]
         },
         {
           "distributions": [
             {
-              "distribution": 0.03,
+              "distribution": 0.00441,
               "transition": "Death"
             },
             {
               "transition": "Inpatient Discharge decision",
-              "distribution": 0.97
+              "distribution": 0.99559
             }
           ]
         }
       ],
       "remarks": [
-        "A high number of previous inpatient encounters increases the likelihood of death."
+        "In-hospital mortality for an acute heart failure admission. THIS STATE IS REACHED",
+        "EVERY 12 HOURS of the stay, via Inpatient Daily Transition, so the value here is a",
+        "per-check hazard and not a per-admission probability. Mean length of stay is 5.8",
+        "days (Inpatient LOS, exponential), which is 11.6 checks.",
+        "R4 carried 0.03 per check, i.e. 5.9% per DAY and roughly a third of patients dead",
+        "per admission, and 0.80 per check for patients with four or more prior admissions,",
+        "which is certain death on the first day. 83.5% of all heart failure patients in the",
+        "R4 run were dead against 3.6% cohort mortality; cutting the repeat arm to 0.10 per",
+        "check in the first R5 pass moved that only to 81.2%, because the daily application",
+        "was the real sink.",
+        "Now calibrated to 5% in-hospital mortality (base) and 10% (repeat admissions):",
+        "p = 1 - (1-M)^(1/11.6).",
+        "The exponential LOS means longer stays receive more checks, so mortality correlates",
+        "with length of stay - clinically the right direction, and the reason these are mean",
+        "based approximations rather than exact per-admission figures."
       ]
     },
     "Maintaining CHF with Telemedicine": {
@@ -1652,18 +1666,33 @@
     },
     "Check Outcome": {
       "type": "Simple",
-      "distributed_transition": [
+      "remarks": [
+        "Post-discharge mortality, now split between a patient's FIRST heart failure",
+        "admission and every later one. R5 applied one per-admission figure to all of",
+        "them, and that is the structural error: 5% at 30 days and 20% at one year are",
+        "per-EPISODE figures, so applying them to each admission compounds a risk that",
+        "does not compound in reality - a patient admitted twice in a year does not face",
+        "twice the published one-year mortality.",
+        "Measured over four pooled runs, 167,989 patients, 2026-10-01: the module",
+        "reproduced one-year survival almost exactly (0.773 against 0.759) and then ran",
+        "20-21% a year where the published curve runs 12%, giving 0.301 at five years",
+        "against 0.455 and 0.099 at ten against 0.245.",
+        "Reference: Taylor CJ et al., BMJ 2019;364:l223, UK primary care, n=55,959 -",
+        "survival 75.9% at one year, 45.5% at five, 24.5% at ten. A primary-care cohort is",
+        "the right denominator for a population model; hospitalised-only series are worse."
+      ],
+      "conditional_transition": [
         {
-          "transition": "Dead within 28 days",
-          "distribution": 0.1
+          "condition": {
+            "condition_type": "Attribute",
+            "attribute": "chf_prior_admission",
+            "operator": "==",
+            "value": true
+          },
+          "transition": "CHF Outcome Later"
         },
         {
-          "transition": "Dead within 1 year",
-          "distribution": 0.3
-        },
-        {
-          "transition": "End Inpatient Encounter",
-          "distribution": 0.6
+          "transition": "CHF Outcome First"
         }
       ]
     },
@@ -1934,64 +1963,64 @@
     "CHF_Prob_HighRisk_55_64": {
       "type": "Simple",
       "remarks": [
-        "0.25% annual incidence, HighRisk tier, age band 55-64."
+        "0.2462% per year, fitted 2026-10-01 against Bleumink et al. 2004."
       ],
       "distributed_transition": [
         {
-          "distribution": 0.0025,
-          "transition": "Determine Type"
+          "transition": "Determine Type",
+          "distribution": 0.002462
         },
         {
-          "distribution": 0.9975,
-          "transition": "Annual_CHF_Delay"
+          "transition": "Annual_CHF_Delay",
+          "distribution": 0.997538
         }
       ]
     },
     "CHF_Prob_HighRisk_65_74": {
       "type": "Simple",
       "remarks": [
-        "0.60% annual incidence, HighRisk tier, age band 65-74."
+        "1.0273% per year, fitted 2026-10-01 against Bleumink et al. 2004."
       ],
       "distributed_transition": [
         {
-          "distribution": 0.006,
-          "transition": "Determine Type"
+          "transition": "Determine Type",
+          "distribution": 0.010273
         },
         {
-          "distribution": 0.994,
-          "transition": "Annual_CHF_Delay"
+          "transition": "Annual_CHF_Delay",
+          "distribution": 0.989727
         }
       ]
     },
     "CHF_Prob_HighRisk_75_84": {
       "type": "Simple",
       "remarks": [
-        "1.40% annual incidence, HighRisk tier, age band 75-84."
+        "1.9521% per year, fitted 2026-10-01 against Bleumink et al. 2004."
       ],
       "distributed_transition": [
         {
-          "distribution": 0.014,
-          "transition": "Determine Type"
+          "transition": "Determine Type",
+          "distribution": 0.019521
         },
         {
-          "distribution": 0.986,
-          "transition": "Annual_CHF_Delay"
+          "transition": "Annual_CHF_Delay",
+          "distribution": 0.980479
         }
       ]
     },
     "CHF_Prob_HighRisk_85_plus": {
       "type": "Simple",
       "remarks": [
-        "2.20% annual incidence, HighRisk tier, age band 85-plus."
+        "2.6970% per year, fitted 2026-10-01 against Bleumink et al. 2004."
       ],
       "distributed_transition": [
         {
-          "distribution": 0.022,
-          "transition": "Determine Type"
+          "transition": "Determine Type",
+          "distribution": 0.02697
         },
         {
-          "distribution": 0.978,
-          "transition": "Annual_CHF_Delay"
+          "transition": "Annual_CHF_Delay",
+          "distribution": 0.97303
         }
       ]
     },
@@ -2014,64 +2043,128 @@
     "CHF_Prob_LowRisk_55_64": {
       "type": "Simple",
       "remarks": [
-        "0.06% annual incidence, LowRisk tier, age band 55-64."
+        "0.0591% per year, fitted 2026-10-01 against Bleumink et al. 2004."
       ],
       "distributed_transition": [
         {
-          "distribution": 0.0006,
-          "transition": "Determine Type"
+          "transition": "Determine Type",
+          "distribution": 0.000591
         },
         {
-          "distribution": 0.9994,
-          "transition": "Annual_CHF_Delay"
+          "transition": "Annual_CHF_Delay",
+          "distribution": 0.999409
         }
       ]
     },
     "CHF_Prob_LowRisk_65_74": {
       "type": "Simple",
       "remarks": [
-        "0.15% annual incidence, LowRisk tier, age band 65-74."
+        "0.2568% per year, fitted 2026-10-01 against Bleumink et al. 2004."
       ],
       "distributed_transition": [
         {
-          "distribution": 0.0015,
-          "transition": "Determine Type"
+          "transition": "Determine Type",
+          "distribution": 0.002568
         },
         {
-          "distribution": 0.9985,
-          "transition": "Annual_CHF_Delay"
+          "transition": "Annual_CHF_Delay",
+          "distribution": 0.997432
         }
       ]
     },
     "CHF_Prob_LowRisk_75_84": {
       "type": "Simple",
       "remarks": [
-        "0.40% annual incidence, LowRisk tier, age band 75-84."
+        "0.5577% per year, fitted 2026-10-01 against Bleumink et al. 2004."
       ],
       "distributed_transition": [
         {
-          "distribution": 0.004,
-          "transition": "Determine Type"
+          "transition": "Determine Type",
+          "distribution": 0.005577
         },
         {
-          "distribution": 0.996,
-          "transition": "Annual_CHF_Delay"
+          "transition": "Annual_CHF_Delay",
+          "distribution": 0.994423
         }
       ]
     },
     "CHF_Prob_LowRisk_85_plus": {
       "type": "Simple",
       "remarks": [
-        "0.70% annual incidence, LowRisk tier, age band 85-plus."
+        "0.8581% per year, fitted 2026-10-01 against Bleumink et al. 2004."
       ],
       "distributed_transition": [
         {
-          "distribution": 0.007,
-          "transition": "Determine Type"
+          "transition": "Determine Type",
+          "distribution": 0.008581
         },
         {
-          "distribution": 0.993,
-          "transition": "Annual_CHF_Delay"
+          "transition": "Annual_CHF_Delay",
+          "distribution": 0.991419
+        }
+      ]
+    },
+    "CHF Outcome First": {
+      "type": "Simple",
+      "remarks": [
+        "First admission: the published per-episode figures, unchanged from R5.",
+        "They already reproduce one-year survival."
+      ],
+      "distributed_transition": [
+        {
+          "transition": "Dead within 28 days",
+          "distribution": 0.05
+        },
+        {
+          "transition": "Dead within 1 year",
+          "distribution": 0.18
+        },
+        {
+          "transition": "CHF Mark Prior Admission",
+          "distribution": 0.77
+        }
+      ]
+    },
+    "CHF Mark Prior Admission": {
+      "type": "SetAttribute",
+      "attribute": "chf_prior_admission",
+      "value": true,
+      "direct_transition": "End Inpatient Encounter"
+    },
+    "CHF Outcome Later": {
+      "type": "Simple",
+      "remarks": [
+        "Later admissions, re-derived 2026-10-01 after lifecycle.death_by_natural_causes",
+        "was switched on. EVERY MORTALITY FIGURE IN A MODULE IS NOW AN EXCESS OVER",
+        "BACKGROUND, not an all-cause rate - that is the general consequence of the switch,",
+        "and this module is where it bites hardest.",
+        "The published anchors are all-cause: ESC's 5% in-hospital and 20% one-year, and",
+        "Taylor's 12% a year after year one, all include deaths from other causes. With no",
+        "background mortality in the cohort the module had to supply all of it; with",
+        "background on, supplying it again double-counts.",
+        "Measured over four pooled R9 runs: background over the follow-up is 7.26%/yr (the",
+        "cohort is diagnosed at a median of 72 and ages into the eighties), so the 11.81%/yr",
+        "target leaves only 4.91%/yr for heart failure itself. The 12-hourly inpatient checks",
+        "and the hospice path already supply 4.95%/yr between them - the whole budget. This",
+        "state is therefore set to a token 0.010 per later admission rather than the 0.054 of",
+        "R7, which lands all-cause mortality at 12.33%/yr.",
+        "Predicted survival 0.767 / 0.453 / 0.233 at one, five and ten years against published",
+        "0.759 / 0.455 / 0.245. The first year is already right and is left alone.",
+        "If this module ever needs more room, the next lever is the inpatient and hospice",
+        "paths, whose own figures are likewise all-cause and likewise now overstated."
+      ],
+      "distributed_transition": [
+        {
+          "transition": "Dead within 28 days",
+          "distribution": 0.00217
+        },
+        {
+          "transition": "Dead within 1 year",
+          "distribution": 0.00783
+        },
+        {
+          "transition": "End Inpatient Encounter",
+          "distribution": 0.99
         }
       ]
     }
@@ -2114,7 +2207,83 @@
     "EU v2: entry probabilities recalibrated. All clinical states preserved.",
     "EU first-line HF medications (ESC 2021): ACE-I/ARB, beta-blocker, MRA, SGLT2-i.",
     "Existing meds (furosemide, metoprolol, etc.) are all EU-available.",
-    "R4 (2026-08-29): entry rewritten from one-shot lottery to annual age-stratified hazard."
+    "R4 (2026-08-29): entry rewritten from one-shot lottery to annual age-stratified hazard.",
+    "that the effect of this change alone is measurable. Measured against the Rotterdam",
+    "point-prevalence series (Bleumink et al. 2004) once deceased patients were excluded",
+    "from the measurement, R4 ran 35-62% BELOW the reference in every age band while the",
+    "aggregate read +40% - the aggregate was wrong because measure3.py counted patients",
+    "who had died years earlier as prevalent cases, 723 of 937 for this condition.",
+    "still UNCHANGED. Pass one cut the per-check repeat-admission arm from 0.80 to 0.10",
+    "and Check Outcome from 0.10/0.30 to 0.05/0.18; measured effect was small (mortality",
+    "83.5% -> 81.2%, band deviations -62% -> -58%). Pass two found why: the death check",
+    "runs every 12 hours of the stay, so even the 0.03 base arm was 5.9% per day. Both",
+    "arms are now per-check hazards derived from in-hospital mortality. Against the",
+    "Rotterdam point-prevalence series the module ran -9% at 55-64 but -49 to -59% above",
+    "65, so the age gradient of the ENTRY hazard is the next thing to examine if this",
+    "does not close the gap.",
+    "Mortality: R4 killed 83.5% of heart failure patients against 3.6% cohort mortality.",
+    "Inpatient Death decision gave 0.80 per check for patients with four or more prior",
+    "admissions, and that state is reached EVERY 12 HOURS of the stay, so even the 0.03",
+    "base arm was 5.9% per day. Both arms are now per-check hazards derived from 5% and",
+    "10% in-hospital mortality over a 5.8-day mean stay. Check Outcome went from",
+    "0.10/0.30 to 0.05/0.18.",
+    "Entry hazard: with mortality corrected the module still ran -26% at 55-64, -44% at",
+    "65-74, -48% at 75-84 and -21% at 85+ against the Rotterdam point-prevalence series,",
+    "so the age gradient was too shallow in the middle rather than the level being wrong.",
+    "The 55-64 and 65-74 hazards are raised 1.5x and 75-84 1.25x on both risk arms; 85+ is",
+    "unchanged because it was already within tolerance and inherits the lift below it.",
+    "R5 (2026-09-30): two mortality passes plus one entry-hazard pass. Inpatient Death",
+    "decision gave 0.80 per check for repeat admissions, and that state is reached every",
+    "12 hours of the stay, so even the 0.03 base arm was 5.9% per day; both are now",
+    "per-check hazards from 5% and 10% in-hospital mortality. Entry hazards raised 1.5x",
+    "at 55-74 and 1.25x at 75-84.",
+    "survival curve rather than its level. THE ENTRY HAZARD IS AGAIN UNCHANGED.",
+    "Pooled over four runs the module read -1% at 55-64 against the Rotterdam series and",
+    "then -34%, -36% and -40% above 65, which looks like an incidence problem and is not:",
+    "realised incidence sits at the coded high-risk value in every band, while five-year",
+    "survival was 0.301 against a published 0.455. Mean duration with a corrected curve",
+    "rises from about 4.7 to about 7.3 years, a factor of 1.55, which takes those three",
+    "bands to roughly +2%, 0% and -7% without touching incidence.",
+    "R7 (2026-10-01): mortality after the first admission cut, to fix the SHAPE of the",
+    "survival curve rather than its level. THE ENTRY HAZARD IS AGAIN UNCHANGED.",
+    "Pooled over four runs the module read -1% at 55-64 against the Rotterdam series and",
+    "then -34%, -36% and -40% above 65, which looks like an incidence problem and is not:",
+    "realised incidence sits at the coded high-risk value in every band, while five-year",
+    "survival was 0.301 against a published 0.455 and ten-year 0.099 against 0.245.",
+    "One-year survival was already right at 0.773 against 0.759, so the defect is purely",
+    "that the module applies a per-EPISODE mortality to every admission, and heart failure",
+    "mortality is front-loaded.",
+    "Noted while deriving this, and NOT a heart failure problem: the generated cohort's",
+    "own background mortality is well below European rates - 0.99%/yr at 65-74 against",
+    "about 1.6%, 2.01% at 75-84 against about 4.5%, and 2.54% at 85-94 against about 14%,",
+    "ratios of 0.62, 0.45 and 0.18. That is a Synthea lifecycle matter, it inflates the",
+    "elderly denominator for every module, and it is why the excess mortality fitted here",
+    "has to carry deaths that reality attributes to other causes.",
+    "R8 (2026-10-01): entry hazard refitted, now that the duration is right.",
+    "R7 fixed the survival curve and that alone moved the bands from -1%, -34%, -36% and",
+    "-40% to +35%, -10%, -13% and +1%. Working backwards, R7 acted as a uniform duration",
+    "multiplier of about 1.36 on every band - which is exactly why it could NOT fix a",
+    "gradient. It lifted the whole curve, and the band that had been right became the one",
+    "that was wrong. The real gradient error only became visible once the duration was",
+    "no longer confounding it.",
+    "Fitted with fit_band_rates at an excess mortality of 0.111/yr, which is the value",
+    "that makes the model reproduce the measured R7 run (1.28 against 1.21 at 55-64, 3.92",
+    "against 3.60, 8.79 against 8.48, 14.76 against 17.55). The 40-54 band is held at its",
+    "measured value because the Rotterdam series starts at 55 and fitting it would drive",
+    "it to zero. Factors: x0.66 at 55-64, x1.14 at 65-74, x1.12 at 75-84, x1.23 at 85+;",
+    "the 4:1 ratio between the high-risk and low-risk arms is preserved.",
+    "Expected: all four Rotterdam bands on target. Carry this caveat forward - the survival",
+    "curve is itself slightly over-corrected, 0.287 at ten years against a published 0.245,",
+    "because R7's admission rate rose from 0.629 to 0.696 per patient-year once patients",
+    "lived longer, a feedback the derivation did not anticipate.",
+    "R10 (2026-10-01): later-admission mortality cut from 0.054 to 0.010 because the",
+    "cohort now has background mortality. R9 measured survival 0.767 / 0.399 / 0.187",
+    "against published 0.759 / 0.455 / 0.245 - the module was killing patients twice.",
+    "This is the predicted consequence of the lifecycle switch and it was flagged before",
+    "the run: an excess mortality fitted against an OBSERVED all-cause curve in a world",
+    "without background mortality absorbs that background, and has to give it back when",
+    "the background arrives. Lung and colorectal cancer needed no such correction because",
+    "both were fitted from published RELATIVE survival, which already nets it out."
   ],
   "gmf_version": 1
 }

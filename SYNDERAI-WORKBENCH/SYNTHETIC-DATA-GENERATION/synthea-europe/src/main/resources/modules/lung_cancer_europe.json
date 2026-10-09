@@ -28,7 +28,13 @@
     "  70-74 years : ~185",
     "  75-79 years : ~200",
     "R4 (2026-08-29): LC_CT_Scan was malformed and crashed patient generation.",
-    "The module itself was always loaded and correct."
+    "The module itself was always loaded and correct.",
+    "R5 (2026-09-30): the module had NO Death state. Stage-specific excess mortality",
+    "added; survivors no longer accumulate for ever. Predicted against ECIS EU-27",
+    "complete prevalence: 55-64 -19%, 65-74 -9%, 75+ +19%, where R4 measured +123%,",
+    "+184% and +588%. Also note the European reference figure for this module: ECIS",
+    "gives 0.1797% of the total population for all ages, not the 0.5% carried in the",
+    "R4 verification table, which was a 5-year prevalence quoted as a complete one."
   ],
   "states": {
     "Initial": {
@@ -369,7 +375,7 @@
         "unit": "hours"
       },
       "reason": "lung_cancer",
-      "direct_transition": "End_LC_Encounter"
+      "direct_transition": "LC_Set_Stage_I"
     },
     "LC_Stage_II_Treatment": {
       "type": "Procedure",
@@ -386,7 +392,7 @@
         "unit": "hours"
       },
       "reason": "lung_cancer",
-      "direct_transition": "End_LC_Encounter"
+      "direct_transition": "LC_Set_Stage_II"
     },
     "LC_Stage_III_Treatment": {
       "type": "MedicationOrder",
@@ -408,7 +414,7 @@
         "as_needed": false,
         "instructions": "IV infusion per oncology protocol"
       },
-      "direct_transition": "End_LC_Encounter"
+      "direct_transition": "LC_Set_Stage_III"
     },
     "LC_Stage_IV_Treatment": {
       "type": "MedicationOrder",
@@ -430,7 +436,7 @@
         "as_needed": false,
         "instructions": "200mg IV q3w per immunotherapy protocol"
       },
-      "direct_transition": "End_LC_Encounter"
+      "direct_transition": "LC_Set_Stage_IV"
     },
     "End_LC_Encounter": {
       "type": "EncounterEnd",
@@ -461,26 +467,156 @@
     "LC_Outcomes_Check": {
       "type": "Simple",
       "remarks": [
-        "5-year survival (Eurocare-5 / ECIS 2020):",
-        "  Stage I:   ~60%",
-        "  Stage II:  ~35%",
-        "  Stage III: ~15%",
-        "  Stage IV:   ~5%",
-        "Overall European 5-year survival: ~15% (ECIS 2020)"
+        "5-year survival (Eurocare-5 / ECIS 2020): stage I ~60%, II ~35%, III ~15%,",
+        "IV ~5%; overall European ~15%. Converted to a per-cycle death probability",
+        "p = 1 - S5^(1/(5*4)) at 4 follow-up cycles a year.",
+        "R4 sent 8% per cycle to Terminal. Terminal ends the MODULE, it does not kill",
+        "the patient, so lung cancer survivors accumulated without limit: measured",
+        "+588% against ECIS complete prevalence at 75+ while the 0-54 band, where few",
+        "survivors have accumulated yet, was correct to +3%. A constant hazard is a",
+        "simplification - real survival curves flatten after about five years - but a",
+        "3%/yr residual after year five was tested and overshot 75+ by +70%."
       ],
-      "distributed_transition": [
+      "conditional_transition": [
         {
-          "distribution": 0.08,
-          "transition": "Terminal"
+          "condition": {
+            "condition_type": "Attribute",
+            "attribute": "lc_stage",
+            "operator": "==",
+            "value": "I"
+          },
+          "transition": "LC_Mortality_I"
         },
         {
-          "distribution": 0.92,
-          "transition": "LC_Followup_Delay"
+          "condition": {
+            "condition_type": "Attribute",
+            "attribute": "lc_stage",
+            "operator": "==",
+            "value": "II"
+          },
+          "transition": "LC_Mortality_II"
+        },
+        {
+          "condition": {
+            "condition_type": "Attribute",
+            "attribute": "lc_stage",
+            "operator": "==",
+            "value": "III"
+          },
+          "transition": "LC_Mortality_III"
+        },
+        {
+          "condition": {
+            "condition_type": "Attribute",
+            "attribute": "lc_stage",
+            "operator": "==",
+            "value": "IV"
+          },
+          "transition": "LC_Mortality_IV"
+        },
+        {
+          "transition": "LC_Mortality_III"
         }
       ]
     },
     "Terminal": {
       "type": "Terminal"
+    },
+    "LC_Set_Stage_I": {
+      "type": "SetAttribute",
+      "attribute": "lc_stage",
+      "value": "I",
+      "direct_transition": "End_LC_Encounter"
+    },
+    "LC_Set_Stage_II": {
+      "type": "SetAttribute",
+      "attribute": "lc_stage",
+      "value": "II",
+      "direct_transition": "End_LC_Encounter"
+    },
+    "LC_Set_Stage_III": {
+      "type": "SetAttribute",
+      "attribute": "lc_stage",
+      "value": "III",
+      "direct_transition": "End_LC_Encounter"
+    },
+    "LC_Set_Stage_IV": {
+      "type": "SetAttribute",
+      "attribute": "lc_stage",
+      "value": "IV",
+      "direct_transition": "End_LC_Encounter"
+    },
+    "LC_Mortality_I": {
+      "type": "Simple",
+      "remarks": [
+        "Stage I: 5-year survival 60% -> 0.02522 per cycle."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.02522,
+          "transition": "LC_Death"
+        },
+        {
+          "distribution": 0.97478,
+          "transition": "LC_Followup_Delay"
+        }
+      ]
+    },
+    "LC_Mortality_II": {
+      "type": "Simple",
+      "remarks": [
+        "Stage II: 5-year survival 35% -> 0.05114 per cycle."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.05114,
+          "transition": "LC_Death"
+        },
+        {
+          "distribution": 0.94886,
+          "transition": "LC_Followup_Delay"
+        }
+      ]
+    },
+    "LC_Mortality_III": {
+      "type": "Simple",
+      "remarks": [
+        "Stage III: 5-year survival 15% -> 0.09050 per cycle."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.0905,
+          "transition": "LC_Death"
+        },
+        {
+          "distribution": 0.9095,
+          "transition": "LC_Followup_Delay"
+        }
+      ]
+    },
+    "LC_Mortality_IV": {
+      "type": "Simple",
+      "remarks": [
+        "Stage IV: 5-year survival 5% -> 0.13911 per cycle."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.13911,
+          "transition": "LC_Death"
+        },
+        {
+          "distribution": 0.86089,
+          "transition": "LC_Followup_Delay"
+        }
+      ]
+    },
+    "LC_Death": {
+      "type": "Death",
+      "remarks": [
+        "Excess mortality attributable to the lung cancer itself."
+      ],
+      "referenced_by_attribute": "lung_cancer",
+      "direct_transition": "Terminal"
     }
   }
 }

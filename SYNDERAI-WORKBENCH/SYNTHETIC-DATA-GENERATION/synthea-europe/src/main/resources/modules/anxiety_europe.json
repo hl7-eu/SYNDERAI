@@ -26,7 +26,20 @@
     "  50-64 years : ~6.0%",
     "  65-74 years : ~4.5%",
     "  75+  years  : ~3.5%",
-    "R4 (2026-08-29): comorbid depression episodes now end."
+    "R4 (2026-08-29): comorbid depression episodes now end.",
+    "patient carries. Three of the four subtype codes previously never resolved, which",
+    "skewed the prevalent pool away from GAD and towards panic disorder, social anxiety",
+    "and specific phobia. The subtype split at Anxiety_Type_Branch is unchanged.",
+    "R5 (2026-09-30): Anxiety_Remission ended only GAD; it now ends whichever subtype the",
+    "patient carries, and Anxiety_Response_Check drops from 0.60 to 0.435 to hold the",
+    "group at its reference while three more codes became resolvable.",
+    "KNOWN ARCHITECTURAL LIMIT, not a calibration gap: the module applies ONE onset hazard",
+    "and splits it four ways at a fixed ratio, so every subtype necessarily has the same",
+    "age shape as the group. Panic disorder's reference (DEGS1-MH) peaks at 2.9% in 35-49",
+    "and falls to 0.8% at 65-79 while the group rises with age, so no choice of rates can",
+    "fit both. A cohort fit of this state machine against the panic bands runs into its",
+    "search boundary at a 12x onset multiplier and still misses the middle bands by 50%.",
+    "Fixing it needs subtype-specific onset hazards, i.e. a redesign of the type branch."
   ],
   "states": {
     "Initial": {
@@ -447,26 +460,45 @@
     "Anxiety_Response_Check": {
       "type": "Simple",
       "remarks": [
-        "SSRI/SNRI response rate at 12 weeks: ~60% (NICE NG198 meta-analysis)."
+        "R4 used 0.60 here, cited as the SSRI/SNRI RESPONSE rate at 12 weeks (NICE NG198).",
+        "Response is symptom reduction, not remission, and certainly not the end of a",
+        "diagnosis - using a response rate to drive a ConditionEnd is a category error.",
+        "Remission rates in anxiety trials run nearer 30-45%.",
+        "The value also had to change for a mechanical reason. While Anxiety_Remission was",
+        "wired to Onset_GAD only, this 0.60 ended the condition for just the 40% of patients",
+        "who had GAD, so 24% of onsets remitted. Fixing the wiring in R5 made it 60%, and the",
+        "group fell from +17% to -29% against its 6.5% reference. 0.435 restores the group to",
+        "roughly 6.5% while keeping the corrected wiring; the chronic arms keep their 25:15",
+        "ratio within the remaining 0.565."
       ],
       "distributed_transition": [
         {
-          "distribution": 0.6,
+          "distribution": 0.435,
           "transition": "Anxiety_Remission"
         },
         {
-          "distribution": 0.25,
+          "distribution": 0.353,
           "transition": "Anxiety_Chronic_Management"
         },
         {
-          "distribution": 0.15,
+          "distribution": 0.212,
           "transition": "Anxiety_Augment_Therapy"
         }
       ]
     },
     "Anxiety_Remission": {
       "type": "ConditionEnd",
-      "condition_onset": "Onset_GAD",
+      "remarks": [
+        "R4 bound this to condition_onset Onset_GAD, so it ended ONLY generalised anxiety",
+        "disorder. Panic disorder, social anxiety and specific phobia never remitted, even",
+        "though 60% of patients reach this state. All four onsets assign to the attribute",
+        "'anxiety', so referenced_by_attribute ends whichever subtype the patient has.",
+        "Effect on panic disorder, measured against the DEGS1-MH 12-month series: the",
+        "reference peaks at 2.9% (35-49) and falls to 0.8% (65-79) while the model rose",
+        "monotonically to 4.34%, +442% in the oldest band. Without a remission path no",
+        "model of a 12-month period prevalence can fall."
+      ],
+      "referenced_by_attribute": "anxiety",
       "direct_transition": "End_Anxiety_Review"
     },
     "Anxiety_Chronic_Management": {

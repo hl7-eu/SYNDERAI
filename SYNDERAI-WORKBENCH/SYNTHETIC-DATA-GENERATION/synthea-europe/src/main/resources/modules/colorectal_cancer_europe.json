@@ -2,17 +2,17 @@
   "name": "Colorectal Cancer (European Calibration)",
   "remarks": [
     "=======================================================================",
-    "SYNTHEA MODULE: Colorectal Cancer \u2014 European Epidemiology Edition",
+    "SYNTHEA MODULE: Colorectal Cancer — European Epidemiology Edition",
     "=======================================================================",
     "Calibrated against:",
     "  - ECIS / IARC GLOBOCAN 2020: Europe-specific incidence and survival",
     "  - ECDC Cancer Burden report 2022",
     "  - ESMO Clinical Practice Guidelines: Colorectal Cancer 2023",
     "  - EU Council Recommendation on cancer screening (2022)",
-    "  - GBD 2019: Colon and rectum cancer \u2014 Europe",
+    "  - GBD 2019: Colon and rectum cancer — Europe",
     "  - Eurocare-6 survival study",
     "",
-    "Key calibration data (ECIS/GLOBOCAN 2020 \u2014 Europe):",
+    "Key calibration data (ECIS/GLOBOCAN 2020 — Europe):",
     "  Colorectal cancer is the 2nd most common cancer in Europe by incidence",
     "  Age-standardised incidence: ~33 per 100,000 (both sexes)",
     "  Male ASR: ~42/100,000; Female ASR: ~26/100,000",
@@ -27,7 +27,38 @@
     "  60-64 years : ~108",
     "  65-69 years : ~155",
     "  70-74 years : ~195",
-    "  75-79 years : ~225"
+    "  75-79 years : ~225",
+    "R6 (2026-09-30): the module had NO Death state; End_CRC_Surveillance sent 5% per",
+    "cycle to Terminal, which ends the module without killing anyone. Stage-specific",
+    "excess mortality added from Eurocare-6, using the stage split already in the module.",
+    "THE INCIDENCE IS DELIBERATELY UNCHANGED. It is ECIS age-specific incidence, listed",
+    "band by band in the header above, and the generated data reproduce it (realised",
+    "against coded: 0.98, 0.73, 0.96, 0.89, 0.91, 0.93, 1.01, 1.02). Changing mortality",
+    "and incidence in one step would make the effect unattributable, and a life-table",
+    "prediction of the pair is not trustworthy here: ECIS incidence combined with",
+    "Eurocare survival under-produces ECIS prevalence by 24-31% in that model, so one of",
+    "the three published quantities does not fit the other two. Measure first.",
+    "Also corrected in the header's calibration notes: '5-year prevalence: ~0.7% of total",
+    "population' is wrong. ECIS gives 0.635% COMPLETE prevalence for EU-27, and a",
+    "five-year figure cannot exceed a complete one. The 0.7% in the verification table is",
+    "within 10% of the complete prevalence, so that row survives - by coincidence, not by",
+    "provenance. See R4-verification/sources/ecis-colorectal-2020.json.",
+    "R6 pass two (2026-10-01): incidence adjusted, after the mortality from pass one was",
+    "measured. Pass one alone moved 65-74 from +36% to -18% and 75+ from +29% to -34%",
+    "against ECIS, so the survival was right in direction and the pair needed rebalancing.",
+    "The published ECIS age gradient is kept INSIDE each coarse band and scaled by a",
+    "factor fitted per band: x1.07 below 55, x0.88 at 55-64, x1.37 at 65-74, x1.72 at 75+.",
+    "The 1.72 at 75+ has a clinical explanation rather than being a fudge: the header's",
+    "incidence table stops at 75-79 with ~225 per 100,000 and R5 applied that flat to age",
+    "100, while colorectal incidence keeps rising into the late eighties.",
+    "Confidence differs by band. The model-to-data calibration factor was checked against",
+    "two independent measurements - four pooled runs without mortality and the R6 run with",
+    "it - and agrees to within 6% at 65-74 and 75+, the bands that carried the overshoot.",
+    "It does NOT agree in the young bands (1.76 against 1.32 at 0-54), which hold 7 and 31",
+    "cases, so the rates below 55 are the least certain part of this calibration.",
+    "Expected after this change: 0-54 -40%, 55-64 -11%, 65-74 -4%, 75+ +1%. The residual",
+    "at 0-54 is structural - ECIS counts from birth and this module starts at 40 - and is",
+    "0.024 percentage points in absolute terms."
   ],
   "states": {
     "Initial": {
@@ -39,10 +70,15 @@
       "allow": {
         "condition_type": "Age",
         "operator": ">=",
-        "quantity": 45,
+        "quantity": 40,
         "unit": "years"
       },
-      "direct_transition": "Screening_Check"
+      "direct_transition": "Screening_Check",
+      "remarks": [
+        "Onset from 40, lowered from 45 in R6. Early-onset colorectal cancer is a real and",
+        "rising share of the disease, and ECIS's 0-54 reference band contains cases a module",
+        "starting at 45 cannot produce."
+      ]
     },
     "Screening_Check": {
       "type": "Simple",
@@ -65,7 +101,7 @@
     "CRC_Screening_Pathway": {
       "type": "Procedure",
       "remarks": [
-        "FIT (faecal immunochemical test) \u2014 primary screening tool in most EU countries."
+        "FIT (faecal immunochemical test) — primary screening tool in most EU countries."
       ],
       "codes": [
         {
@@ -84,6 +120,15 @@
     "CRC_Annual_Check": {
       "type": "Simple",
       "conditional_transition": [
+        {
+          "condition": {
+            "condition_type": "Age",
+            "operator": "<",
+            "quantity": 45,
+            "unit": "years"
+          },
+          "transition": "CRC_Prob_40_44"
+        },
         {
           "condition": {
             "condition_type": "Age",
@@ -140,97 +185,6 @@
         },
         {
           "transition": "CRC_Prob_75_plus"
-        }
-      ]
-    },
-    "CRC_Prob_45_49": {
-      "type": "Simple",
-      "distributed_transition": [
-        {
-          "distribution": 0.00018,
-          "transition": "CRC_Subsite_Branch"
-        },
-        {
-          "distribution": 0.99982,
-          "transition": "CRC_Annual_Delay"
-        }
-      ]
-    },
-    "CRC_Prob_50_54": {
-      "type": "Simple",
-      "distributed_transition": [
-        {
-          "distribution": 0.00038,
-          "transition": "CRC_Subsite_Branch"
-        },
-        {
-          "distribution": 0.99962,
-          "transition": "CRC_Annual_Delay"
-        }
-      ]
-    },
-    "CRC_Prob_55_59": {
-      "type": "Simple",
-      "distributed_transition": [
-        {
-          "distribution": 0.00068,
-          "transition": "CRC_Subsite_Branch"
-        },
-        {
-          "distribution": 0.99932,
-          "transition": "CRC_Annual_Delay"
-        }
-      ]
-    },
-    "CRC_Prob_60_64": {
-      "type": "Simple",
-      "distributed_transition": [
-        {
-          "distribution": 0.00108,
-          "transition": "CRC_Subsite_Branch"
-        },
-        {
-          "distribution": 0.99892,
-          "transition": "CRC_Annual_Delay"
-        }
-      ]
-    },
-    "CRC_Prob_65_69": {
-      "type": "Simple",
-      "distributed_transition": [
-        {
-          "distribution": 0.00155,
-          "transition": "CRC_Subsite_Branch"
-        },
-        {
-          "distribution": 0.99845,
-          "transition": "CRC_Annual_Delay"
-        }
-      ]
-    },
-    "CRC_Prob_70_74": {
-      "type": "Simple",
-      "distributed_transition": [
-        {
-          "distribution": 0.00195,
-          "transition": "CRC_Subsite_Branch"
-        },
-        {
-          "distribution": 0.99805,
-          "transition": "CRC_Annual_Delay"
-        }
-      ]
-    },
-    "CRC_Prob_75_plus": {
-      "type": "Simple",
-      "distributed_transition": [
-        {
-          "distribution": 0.00225,
-          "transition": "CRC_Subsite_Branch"
-        },
-        {
-          "distribution": 0.99775,
-          "transition": "CRC_Annual_Delay"
         }
       ]
     },
@@ -317,7 +271,7 @@
     "CRC_Colonoscopy": {
       "type": "Procedure",
       "remarks": [
-        "Total colonoscopy \u2014 mandatory staging procedure per ESMO 2023."
+        "Total colonoscopy — mandatory staging procedure per ESMO 2023."
       ],
       "codes": [
         {
@@ -380,7 +334,7 @@
         "unit": "hours"
       },
       "reason": "colorectal_cancer",
-      "direct_transition": "End_CRC_Encounter"
+      "direct_transition": "CRC_Set_Stage_I"
     },
     "CRC_Surgery_Adjuvant": {
       "type": "Procedure",
@@ -400,7 +354,7 @@
         "unit": "hours"
       },
       "reason": "colorectal_cancer",
-      "direct_transition": "End_CRC_Encounter"
+      "direct_transition": "CRC_Set_Stage_II"
     },
     "CRC_Surgery_Chemo": {
       "type": "MedicationOrder",
@@ -421,7 +375,7 @@
         "as_needed": false,
         "instructions": "IV infusion per FOLFOX oncology protocol"
       },
-      "direct_transition": "End_CRC_Encounter"
+      "direct_transition": "CRC_Set_Stage_III"
     },
     "CRC_Palliative_Chemo": {
       "type": "MedicationOrder",
@@ -443,7 +397,7 @@
         "as_needed": false,
         "instructions": "IV infusion per oncology protocol"
       },
-      "direct_transition": "End_CRC_Encounter"
+      "direct_transition": "CRC_Set_Stage_IV"
     },
     "End_CRC_Encounter": {
       "type": "EncounterEnd",
@@ -474,7 +428,7 @@
     "CEA_Measurement": {
       "type": "Observation",
       "remarks": [
-        "Carcinoembryonic antigen (CEA) \u2014 standard follow-up marker in European CRC surveillance."
+        "Carcinoembryonic antigen (CEA) — standard follow-up marker in European CRC surveillance."
       ],
       "category": "laboratory",
       "unit": "ng/mL",
@@ -493,19 +447,300 @@
     },
     "End_CRC_Surveillance": {
       "type": "EncounterEnd",
-      "distributed_transition": [
+      "remarks": [
+        "R5 sent 5% per cycle to Terminal. Terminal ends the MODULE; it does not kill the",
+        "patient, so every colorectal cancer patient survived indefinitely and kept the",
+        "diagnosis. This is the same defect found in lung_cancer_europe.json, and the",
+        "module's own remarks cite the survival it never applied.",
+        "Measured against ECIS EU-27 complete prevalence, index 2020, retrieved 2026-09-30:",
+        "-31% at 0-54, +4% at 55-64, +36% at 65-74, +29% at 75+. The error grows with age,",
+        "which is the signature of missing excess mortality, and the realised incidence",
+        "matches the coded probability across every band (ratios 0.73-1.02), so it is not",
+        "an incidence error."
+      ],
+      "direct_transition": "CRC_Outcome_Check"
+    },
+    "Terminal": {
+      "type": "Terminal"
+    },
+    "CRC_Set_Stage_I": {
+      "type": "SetAttribute",
+      "attribute": "crc_stage",
+      "value": "I",
+      "direct_transition": "End_CRC_Encounter"
+    },
+    "CRC_Set_Stage_II": {
+      "type": "SetAttribute",
+      "attribute": "crc_stage",
+      "value": "II",
+      "direct_transition": "End_CRC_Encounter"
+    },
+    "CRC_Set_Stage_III": {
+      "type": "SetAttribute",
+      "attribute": "crc_stage",
+      "value": "III",
+      "direct_transition": "End_CRC_Encounter"
+    },
+    "CRC_Set_Stage_IV": {
+      "type": "SetAttribute",
+      "attribute": "crc_stage",
+      "value": "IV",
+      "direct_transition": "End_CRC_Encounter"
+    },
+    "CRC_Outcome_Check": {
+      "type": "Simple",
+      "remarks": [
+        "Stage-specific excess mortality. Eurocare-6 five-year relative survival: stage I",
+        "~90%, II ~80%, III ~70%, IV ~13%. Weighted by this module's own stage split",
+        "(20/25/30/25) that is 62.3%, which is the ~62% the module header cites - the",
+        "stage distribution and the survival figures were always mutually consistent, only",
+        "unapplied.",
+        "Relative survival already nets out background mortality, so it is exactly the",
+        "excess term a prevalence model needs.",
+        "Converted to a per-cycle probability at 2.667 follow-up cycles a year",
+        "(CRC_Followup_Delay is 3-6 months): p = 1 - S5^(1/(5*cycles))."
+      ],
+      "conditional_transition": [
         {
-          "distribution": 0.05,
-          "transition": "Terminal"
+          "condition": {
+            "condition_type": "Attribute",
+            "attribute": "crc_stage",
+            "operator": "==",
+            "value": "I"
+          },
+          "transition": "CRC_Mortality_I"
         },
         {
-          "distribution": 0.95,
+          "condition": {
+            "condition_type": "Attribute",
+            "attribute": "crc_stage",
+            "operator": "==",
+            "value": "II"
+          },
+          "transition": "CRC_Mortality_II"
+        },
+        {
+          "condition": {
+            "condition_type": "Attribute",
+            "attribute": "crc_stage",
+            "operator": "==",
+            "value": "III"
+          },
+          "transition": "CRC_Mortality_III"
+        },
+        {
+          "condition": {
+            "condition_type": "Attribute",
+            "attribute": "crc_stage",
+            "operator": "==",
+            "value": "IV"
+          },
+          "transition": "CRC_Mortality_IV"
+        },
+        {
+          "transition": "CRC_Mortality_III"
+        }
+      ]
+    },
+    "CRC_Mortality_I": {
+      "type": "Simple",
+      "remarks": [
+        "Stage I: five-year relative survival 90% -> 0.00787 per cycle."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.00787,
+          "transition": "CRC_Death"
+        },
+        {
+          "distribution": 0.99213,
           "transition": "CRC_Followup_Delay"
         }
       ]
     },
-    "Terminal": {
-      "type": "Terminal"
+    "CRC_Mortality_II": {
+      "type": "Simple",
+      "remarks": [
+        "Stage II: five-year relative survival 80% -> 0.01660 per cycle."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.0166,
+          "transition": "CRC_Death"
+        },
+        {
+          "distribution": 0.9834,
+          "transition": "CRC_Followup_Delay"
+        }
+      ]
+    },
+    "CRC_Mortality_III": {
+      "type": "Simple",
+      "remarks": [
+        "Stage III: five-year relative survival 70% -> 0.02640 per cycle."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.0264,
+          "transition": "CRC_Death"
+        },
+        {
+          "distribution": 0.9736,
+          "transition": "CRC_Followup_Delay"
+        }
+      ]
+    },
+    "CRC_Mortality_IV": {
+      "type": "Simple",
+      "remarks": [
+        "Stage IV: five-year relative survival 13% -> 0.14188 per cycle."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.14188,
+          "transition": "CRC_Death"
+        },
+        {
+          "distribution": 0.85812,
+          "transition": "CRC_Followup_Delay"
+        }
+      ]
+    },
+    "CRC_Death": {
+      "type": "Death",
+      "remarks": [
+        "Excess mortality attributable to the colorectal cancer itself."
+      ],
+      "referenced_by_attribute": "colorectal_cancer",
+      "direct_transition": "Terminal"
+    },
+    "CRC_Prob_40_44": {
+      "type": "Simple",
+      "remarks": [
+        "0.0096% per year at 40-44."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 9.6e-05,
+          "transition": "CRC_Subsite_Branch"
+        },
+        {
+          "distribution": 0.999904,
+          "transition": "CRC_Annual_Delay"
+        }
+      ]
+    },
+    "CRC_Prob_45_49": {
+      "type": "Simple",
+      "remarks": [
+        "0.0193% per year at 45-49."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.000193,
+          "transition": "CRC_Subsite_Branch"
+        },
+        {
+          "distribution": 0.999807,
+          "transition": "CRC_Annual_Delay"
+        }
+      ]
+    },
+    "CRC_Prob_50_54": {
+      "type": "Simple",
+      "remarks": [
+        "0.0407% per year at 50-54."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.000407,
+          "transition": "CRC_Subsite_Branch"
+        },
+        {
+          "distribution": 0.999593,
+          "transition": "CRC_Annual_Delay"
+        }
+      ]
+    },
+    "CRC_Prob_55_59": {
+      "type": "Simple",
+      "remarks": [
+        "0.0598% per year at 55-59."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.000598,
+          "transition": "CRC_Subsite_Branch"
+        },
+        {
+          "distribution": 0.999402,
+          "transition": "CRC_Annual_Delay"
+        }
+      ]
+    },
+    "CRC_Prob_60_64": {
+      "type": "Simple",
+      "remarks": [
+        "0.0950% per year at 60-64."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.00095,
+          "transition": "CRC_Subsite_Branch"
+        },
+        {
+          "distribution": 0.99905,
+          "transition": "CRC_Annual_Delay"
+        }
+      ]
+    },
+    "CRC_Prob_65_69": {
+      "type": "Simple",
+      "remarks": [
+        "0.2123% per year at 65-69."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.002123,
+          "transition": "CRC_Subsite_Branch"
+        },
+        {
+          "distribution": 0.997877,
+          "transition": "CRC_Annual_Delay"
+        }
+      ]
+    },
+    "CRC_Prob_70_74": {
+      "type": "Simple",
+      "remarks": [
+        "0.2672% per year at 70-74."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.002672,
+          "transition": "CRC_Subsite_Branch"
+        },
+        {
+          "distribution": 0.997328,
+          "transition": "CRC_Annual_Delay"
+        }
+      ]
+    },
+    "CRC_Prob_75_plus": {
+      "type": "Simple",
+      "remarks": [
+        "0.3870% per year at 75+."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.00387,
+          "transition": "CRC_Subsite_Branch"
+        },
+        {
+          "distribution": 0.99613,
+          "transition": "CRC_Annual_Delay"
+        }
+      ]
     }
   }
 }

@@ -33,7 +33,36 @@
     "  ~18% cohort prevalence; target ~12-13% (BOLD Europe).",
     "  Smoker path: 40-49: 0.5→0.35 | 50-59: 1.0→0.7 | 60-69: 1.5→1.05 |",
     "  70-79: 1.2→0.84 | 80+: 0.8→0.56 (all %/yr)",
-    "R4 verification round 2 (2026-08-29): rates x3.2. The R4 run measured 2.01% period prevalence against a 6.5% ERS/BOLD reference (-69%). Note this module was edited 2026-07-29, two days after the R3 output was generated, so R3's COPD figure never reflected this code."
+    "R4 verification round 2 (2026-08-29): rates x3.2. The R4 run measured 2.01% period prevalence against a 6.5% ERS/BOLD reference (-69%). Note this module was edited 2026-07-29, two days after the R3 output was generated, so R3's COPD figure never reflected this code.",
+    "",
+    "RECALIBRATION 2026-09-30 — rates derived from this module's own band targets.",
+    "",
+    "The x3.2 applied in R4 verification round 2 was fitted against CRUDE cohort",
+    "prevalence, which understates age-dependent conditions on a cohort whose mean",
+    "age is 41. Age-standardised to the EU27 adult structure the module measured",
+    "7.6% against the 6.5% row reference (+18%), and +35% against the 2.5/6/10.5/",
+    "14/15% band targets in the remarks above.",
+    "",
+    "Both tiers are now fitted so that the 25/75 mixture, averaged over each band's",
+    "age range, equals that band's BOLD Europe target. The base-risk loop was",
+    "re-banded from three bands to the high-risk loop's five so a common fit was",
+    "possible; base risk is held at high risk / 10.",
+    "Predicted EU27-adult standardised prevalence: 5.7% (was 7.7%).",
+    "",
+    "KNOWN ARTEFACT: the fitted rates are NOT monotonic in age (1.455 / 0.985 /",
+    "2.354 / 0.794 / 0.095 %/yr). Real COPD incidence does not fall after 70. The",
+    "cause is that this module has no disease-specific excess mortality - measured,",
+    "COPD carries 10.2% mortality against an 8.8% cohort baseline, while real COPD",
+    "carries substantial excess mortality. Real prevalence plateaus in old age",
+    "because affected people die sooner; a model that keeps them alive can only hold",
+    "the plateau by almost ceasing to generate new cases. Adding excess mortality",
+    "would let incidence stay plausible AND hold the prevalence curve - the better",
+    "fix, deferred because it is a structural change.",
+    "",
+    "NOTE ON THE REFERENCES: the band targets imply 5.7% EU27-adult standardised,",
+    "the validation table's row says 6.5% - a 12% disagreement between two figures",
+    "that both cite BOLD Europe. The bands are the more specific source and were",
+    "followed."
   ],
   "states": {
     "Initial": {
@@ -120,15 +149,17 @@
     "COPD_HR_40_49": {
       "type": "Simple",
       "remarks": [
-        "Annual incidence ~0.5% for smokers in this band. BOLD Europe."
+        "1.455%/year, high-risk (smoking) tier. Fitted so the two-tier mixture",
+        "averaged over this band equals the BOLD Europe reference of ~2.5%.",
+        "Was 1.120%/year."
       ],
       "distributed_transition": [
         {
-          "distribution": 0.0112,
+          "distribution": 0.014552,
           "transition": "Diagnose_COPD_Gold1"
         },
         {
-          "distribution": 0.9888,
+          "distribution": 0.985448,
           "transition": "COPD_Annual_Delay"
         }
       ]
@@ -136,15 +167,17 @@
     "COPD_HR_50_59": {
       "type": "Simple",
       "remarks": [
-        "Annual incidence ~1.0% for smokers. BOLD / TORCH."
+        "0.985%/year, high-risk (smoking) tier. Fitted so the two-tier mixture",
+        "averaged over this band equals the BOLD Europe reference of ~6.0%.",
+        "Was 2.240%/year."
       ],
       "distributed_transition": [
         {
-          "distribution": 0.0224,
+          "distribution": 0.009851,
           "transition": "Diagnose_COPD_Gold1"
         },
         {
-          "distribution": 0.9776,
+          "distribution": 0.990149,
           "transition": "COPD_Annual_Delay"
         }
       ]
@@ -152,15 +185,17 @@
     "COPD_HR_60_69": {
       "type": "Simple",
       "remarks": [
-        "Annual incidence ~1.5% for smokers."
+        "2.354%/year, high-risk (smoking) tier. Fitted so the two-tier mixture",
+        "averaged over this band equals the BOLD Europe reference of ~10.5%.",
+        "Was 3.360%/year."
       ],
       "distributed_transition": [
         {
-          "distribution": 0.0336,
+          "distribution": 0.023536,
           "transition": "Diagnose_COPD_Gold2"
         },
         {
-          "distribution": 0.9664,
+          "distribution": 0.976464,
           "transition": "COPD_Annual_Delay"
         }
       ]
@@ -169,31 +204,56 @@
       "type": "Simple",
       "distributed_transition": [
         {
-          "distribution": 0.02688,
+          "distribution": 0.007936,
           "transition": "Diagnose_COPD_Gold2"
         },
         {
-          "distribution": 0.97312,
+          "distribution": 0.992064,
           "transition": "COPD_Annual_Delay"
         }
+      ],
+      "remarks": [
+        "0.794%/year, high-risk (smoking) tier. Fitted so the two-tier mixture",
+        "averaged over this band equals the BOLD Europe reference of ~14.0%.",
+        "Was 2.688%/year."
       ]
     },
     "COPD_HR_80_plus": {
       "type": "Simple",
       "distributed_transition": [
         {
-          "distribution": 0.01792,
+          "distribution": 0.00095,
           "transition": "Diagnose_COPD_Gold3"
         },
         {
-          "distribution": 0.98208,
+          "distribution": 0.99905,
           "transition": "COPD_Annual_Delay"
         }
+      ],
+      "remarks": [
+        "0.095%/year, high-risk (smoking) tier. Fitted so the two-tier mixture",
+        "averaged over this band equals the BOLD Europe reference of ~15.0%.",
+        "Was 1.792%/year."
       ]
     },
     "COPD_Base_Risk_Loop": {
       "type": "Simple",
+      "remarks": [
+        "Re-banded 2026-09-30 to the same age bands as the high-risk loop.",
+        "It used to have three bands (<60, 60-74, 75+) against the high-risk",
+        "loop's five, so the two tiers could not be fitted against a common",
+        "set of band targets."
+      ],
       "conditional_transition": [
+        {
+          "condition": {
+            "condition_type": "Age",
+            "operator": "<",
+            "quantity": 50,
+            "unit": "years"
+          },
+          "transition": "COPD_BR_40_49"
+        },
         {
           "condition": {
             "condition_type": "Age",
@@ -201,58 +261,28 @@
             "quantity": 60,
             "unit": "years"
           },
-          "transition": "COPD_BR_Under60"
+          "transition": "COPD_BR_50_59"
         },
         {
           "condition": {
             "condition_type": "Age",
             "operator": "<",
-            "quantity": 75,
+            "quantity": 70,
             "unit": "years"
           },
-          "transition": "COPD_BR_60_74"
+          "transition": "COPD_BR_60_69"
         },
         {
-          "transition": "COPD_BR_75_plus"
-        }
-      ]
-    },
-    "COPD_BR_Under60": {
-      "type": "Simple",
-      "distributed_transition": [
-        {
-          "distribution": 0.00112,
-          "transition": "Diagnose_COPD_Gold1"
+          "condition": {
+            "condition_type": "Age",
+            "operator": "<",
+            "quantity": 80,
+            "unit": "years"
+          },
+          "transition": "COPD_BR_70_79"
         },
         {
-          "distribution": 0.99888,
-          "transition": "COPD_Annual_Delay"
-        }
-      ]
-    },
-    "COPD_BR_60_74": {
-      "type": "Simple",
-      "distributed_transition": [
-        {
-          "distribution": 0.00448,
-          "transition": "Diagnose_COPD_Gold1"
-        },
-        {
-          "distribution": 0.99552,
-          "transition": "COPD_Annual_Delay"
-        }
-      ]
-    },
-    "COPD_BR_75_plus": {
-      "type": "Simple",
-      "distributed_transition": [
-        {
-          "distribution": 0.00672,
-          "transition": "Diagnose_COPD_Gold2"
-        },
-        {
-          "distribution": 0.99328,
-          "transition": "COPD_Annual_Delay"
+          "transition": "COPD_BR_80_plus"
         }
       ]
     },
@@ -567,6 +597,91 @@
         },
         {
           "transition": "COPD_Base_Risk_Loop"
+        }
+      ]
+    },
+    "COPD_BR_40_49": {
+      "type": "Simple",
+      "remarks": [
+        "0.145%/year, base-risk (non-smoking) tier = high-risk / 10,",
+        "the ~10x relative risk this module's remarks already assume."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.001455,
+          "transition": "Diagnose_COPD_Gold1"
+        },
+        {
+          "distribution": 0.998545,
+          "transition": "COPD_Annual_Delay"
+        }
+      ]
+    },
+    "COPD_BR_50_59": {
+      "type": "Simple",
+      "remarks": [
+        "0.099%/year, base-risk (non-smoking) tier = high-risk / 10,",
+        "the ~10x relative risk this module's remarks already assume."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.000985,
+          "transition": "Diagnose_COPD_Gold1"
+        },
+        {
+          "distribution": 0.999015,
+          "transition": "COPD_Annual_Delay"
+        }
+      ]
+    },
+    "COPD_BR_60_69": {
+      "type": "Simple",
+      "remarks": [
+        "0.235%/year, base-risk (non-smoking) tier = high-risk / 10,",
+        "the ~10x relative risk this module's remarks already assume."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.002354,
+          "transition": "Diagnose_COPD_Gold2"
+        },
+        {
+          "distribution": 0.997646,
+          "transition": "COPD_Annual_Delay"
+        }
+      ]
+    },
+    "COPD_BR_70_79": {
+      "type": "Simple",
+      "remarks": [
+        "0.079%/year, base-risk (non-smoking) tier = high-risk / 10,",
+        "the ~10x relative risk this module's remarks already assume."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 0.000794,
+          "transition": "Diagnose_COPD_Gold2"
+        },
+        {
+          "distribution": 0.999206,
+          "transition": "COPD_Annual_Delay"
+        }
+      ]
+    },
+    "COPD_BR_80_plus": {
+      "type": "Simple",
+      "remarks": [
+        "0.009%/year, base-risk (non-smoking) tier = high-risk / 10,",
+        "the ~10x relative risk this module's remarks already assume."
+      ],
+      "distributed_transition": [
+        {
+          "distribution": 9.5e-05,
+          "transition": "Diagnose_COPD_Gold3"
+        },
+        {
+          "distribution": 0.999905,
+          "transition": "COPD_Annual_Delay"
         }
       ]
     }

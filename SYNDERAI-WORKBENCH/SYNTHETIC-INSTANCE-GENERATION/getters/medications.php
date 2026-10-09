@@ -27,6 +27,8 @@ while (!feof($medicationshandle)) {
       if ($themap !== NULL) {
         $snomedproperties = get_SNOMED_properties($themap["code"], trim($item[6]));
         if ($snomedproperties["code"] !== $themap["code"]) $themap["code"] = $snomedproperties["code"]; // this is a replacement
+        if ($snomedproperties["preferredTerm"] === "")
+          $snomedproperties["preferredTerm"] = $themap["sourceDisplay"];  // fall back rx norm name
         $routecode = map_concept($themap["code"], "cm-medication-to-route-of-administration");  // get route code for this medication
         $cfound = [
           "rxnorm" => [

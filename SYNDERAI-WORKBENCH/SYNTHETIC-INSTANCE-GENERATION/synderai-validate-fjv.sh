@@ -1,4 +1,4 @@
-# manual validation
+# manual validation using the FHIR JAVA validator
 # java -jar validator_cli.jar -version 4.0 ./validation/*.json -ig hl7.fhir.eu.hdr#dev -profile http://hl7.eu/fhir/hdr/StructureDefinition/bundle-eu-hdr -html-output ./validation/validation.html
 # KH 20250512 20250901 20260309
 

@@ -1,28 +1,8 @@
 <?php
 
-$EXTRADISCHARGE["History of artificial joint (situation)"] = [ "text" => "Artificial joint complication assessed, revision surgery performed if indicated|Z96.6|Presence of orthopedic joint implants"];
-$EXTRADISCHARGE["Injury of anterior cruciate ligament"] = [ "text" => "ACL reconstruction performed, post-operative recovery uneventful|S83.5|Sprain and strain of anterior cruciate ligament of knee"];
-$EXTRADISCHARGE["Injury of medial collateral ligament of knee"] = [ "text" => "MCL repair performed, post-operative recovery uneventful|S83.4|Sprain and strain of medial collateral ligament of knee"];
-$EXTRADISCHARGE["Injury of tendon of the rotator cuff of shoulder"] = [ "text" => "Rotator cuff repair performed, post-operative recovery uneventful|M75.1|Rotator cuff syndrome"];
-$EXTRADISCHARGE["Rupture of patellar tendon"] = [ "text" => "Patellar tendon repair performed, post-operative recovery uneventful|S76.1|Injury of quadriceps muscle and tendon"];
-$EXTRADISCHARGE["Malignant neoplasm of breast (disorder)"] = [ "text" => "Breast cancer, surgical treatment performed and oncology plan established|C50.9|Malignant neoplasm of breast, unspecified"];
-$EXTRADISCHARGE["Neuropathy due to type 2 diabetes mellitus (disorder)"] = [ "text" => "Diabetic peripheral neuropathy, assessed and pain management optimised|E11.40|Type 2 diabetes mellitus with diabetic neuropathy, unspecified"];
-$EXTRADISCHARGE["Non-small cell carcinoma of lung TNM stage 1 (disorder)"] = [ "text" => "NSCLC stage 1, surgical resection performed and oncology plan established|C34.10|Malignant neoplasm of upper lobe, bronchus or lung, unspecified"];
-$EXTRADISCHARGE["Non-small cell carcinoma of lung  TNM stage 1 (disorder)"] = [ "text" => "NSCLC stage 1, surgical resection performed and oncology plan established|C34.10|Malignant neoplasm of upper lobe, bronchus or lung, unspecified"];
-$EXTRADISCHARGE["Overlapping malignant neoplasm of colon"] = [ "text" => "Overlapping colon malignancy, surgical resection performed and oncology plan established|C18.8|Malignant neoplasm of overlapping lesion of colon"];
-$EXTRADISCHARGE["Primary small cell malignant neoplasm of lung TNM stage 1 (disorder)"] = [ "text" => "Small cell lung cancer stage 1, chemotherapy initiated and oncology plan established|C34.10|Malignant neoplasm of upper lobe, bronchus or lung, unspecified"];
-$EXTRADISCHARGE["Primary small cell malignant neoplasm of lung  TNM stage 1 (disorder)"] = [ "text" => "Small cell lung cancer stage 1, chemotherapy initiated and oncology plan established|C34.10|Malignant neoplasm of upper lobe, bronchus or lung, unspecified"];
-$EXTRADISCHARGE["Sleep disorder (disorder)"] = [ "text" => "Sleep disorder, investigated and managed|G47.9|Sleep disorder, unspecified"];
-$EXTRADISCHARGE["History of aortic valve repair (situation)"] = [ "text" => "Post aortic valve repair follow-up, cardiac status and anticoagulation reviewed|Z95.4|Presence of other heart-valve replacement"];
-$EXTRADISCHARGE["History of aortic valve replacement (situation)"] = [ "text" => "Post aortic valve replacement follow-up, anticoagulation and cardiac status reviewed|Z95.2|Presence of prosthetic heart valve"];
-$EXTRADISCHARGE["History of coronary artery bypass grafting (situation)"] = [ "text" => "Post-CABG follow-up, cardiac status reviewed and stable|Z95.1|Presence of aortocoronary bypass graft"];
-$EXTRADISCHARGE["Sterilization requested (situation)"] = [ "text" => "Voluntary surgical sterilization, procedure completed|Z30.2|Sterilization admitted"];
-$EXTRADISCHARGE["Awaiting transplantation of kidney (situation)"] = [ "text" => "Pre-renal transplant workup completed, patient listed|Z49.0|Preparatory care for dialysis"];
-$EXTRADISCHARGE["Abnormal findings diagnostic imaging heart+coronary circulation (finding)"] =  [ "text" => "Coronary artery disease confirmed on imaging, management plan established|R93.1|Abnormal findings on diagnostic imaging of heart and coronary circulation"];
-$EXTRADISCHARGE["Abnormal findings diagnostic imaging heart+coronary circulat (finding)"] =  [ "text" => "Coronary artery disease confirmed on imaging, management plan established|R93.1|Abnormal findings on diagnostic imaging of heart and coronary circulation"];
-$EXTRADISCHARGE["Meningomyelocele (disorder)"] =  [ "text" => "Meningomyelocele, surgical repair performed and neurological status assessed|Q05.9|Spina bifida, unspecified"];
-$EXTRADISCHARGE["Preinfarction syndrome (disorder)"] = ["text" => "Unstable angina, medically stabilised and coronary intervention performed|I20.0|Unstable angina"];
-$EXTRADISCHARGE["Leukemia  disease (disorder)"] = ["text" => "Leukemia disease, chemotherapy planned|C95|Leukemia of unspecified cell type"];
+/* $EXTRADISCHARGE and the MAPPINGS loader now live in lib/discharge-criterion.php,
+ * so that this getter and the pre-processing cache apply the same criterion. */
+include_once("lib/discharge-criterion.php");
 
 /*
  * first get all typical-inpatient-adm+discharge-diagnoses (in MAPPINGS) 
@@ -32,28 +12,9 @@ $EXTRADISCHARGE["Leukemia  disease (disorder)"] = ["text" => "Leukemia disease, 
  * 431857002;Chronic kidney disease stage 4 (disorder);Chronic kidney disease, stage 4;N18.4;Chronic kidney disease, stage 4
  */
 lognl(1, "... load typical inpatient admission and discharge diagnoses\n");
-$handle = fopen(MAPPINGS . "/typical-inpatient-adm+discharge-diagnoses.csv","r");
-$APPROPRIATEREASONS = [];
-while (($buffer = fgetcsv($handle, 10000, ";", '"', '\\')) !== FALSE) {
-  $reasoncode = trim($buffer[0]);
-  $synthesistext = trim($buffer[2]);
-  if (strlen($reasoncode) > 0 and strlen($synthesistext) > 0) {
-    $APPROPRIATEREASONS[$reasoncode] = [
-      "reason" => [
-        "code" => $reasoncode,          // snomed code
-        "display" => trim($buffer[1])   // snomed display
-      ],
-      "discharge" => [
-        "text" => $synthesistext,       // short synthesis text
-        "code" => trim($buffer[3]),     // icd10 code
-        "display" => trim($buffer[4]),  // icd10 display
-      ]
-    ];
-  } else {
-    if (strlen($reasoncode) > 0)
-      lognlsev(3, WARN, "Admission/Discharge code $reasoncode has no synthesis.");
-  }
-}
+$APPROPRIATEREASONS = loadAppropriateReasons();
+lognl(2, "...... " . count($APPROPRIATEREASONS) . " admission reasons with a discharge synthesis, plus "
+        . count($EXTRADISCHARGE) . " additional ones\n");
 
 /* 
   PRE-REQUISITES
@@ -98,35 +59,19 @@ if (!$ok) {
       $reasoncode = trim($buffer[13]);
       $reasondisplay = trim($buffer[14]);
 
-      // if the appropriate reason code is empty for this reason display
-      // then try to use a matching discharge info from the extra in $EXTRADISCHARGE
-      $extraappropriatereason = NULL;
-      if (!isset($APPROPRIATEREASONS[$reasoncode])) {
-        // echo "**R**" . $reasoncode . " - " . $reasondisplay . "\n";
-        if (isset($EXTRADISCHARGE[$reasondisplay])) {
-          $tmp = explode('|', $EXTRADISCHARGE[$reasondisplay]["text"]);
-          $extraappropriatereason = [
-            "reason" => [
-              "code" => $reasoncode,
-              "display" => $reasondisplay
-            ],
-            "discharge" => [
-              "text" => trim($tmp[0]),
-              "code" => trim($tmp[1]),   // icd10 code
-              "display" => trim($tmp[2]),
-            ]
-          ];
-          // var_dump($EXTRADISCHARGE[$reasondisplay]);
-        }
-      }
-
-      $dischargeextrainfo = NULL;
-      if (isset($APPROPRIATEREASONS[$reasoncode]["discharge"])) {
-        $dischargeextrainfo = $APPROPRIATEREASONS[$reasoncode]["discharge"];
-        if (isset($extraappropriatereason["discharge"])) {
-          $dischargeextrainfo = $extraappropriatereason["discharge"];
-        }
-      }
+      /*
+       * FIX 2026-09-30. This used to read:
+       *     if (isset($APPROPRIATEREASONS[$reasoncode]["discharge"])) {
+       *         $dischargeextrainfo = $APPROPRIATEREASONS[...];
+       *         if (isset($extraappropriatereason["discharge"])) { ...override... }
+       *     }
+       * where $extraappropriatereason was built only when $APPROPRIATEREASONS had
+       * NO entry for the reason code, so the inner branch could never run: all 23
+       * $EXTRADISCHARGE entries were dead code. Measured against the 2026-09-13
+       * population, that halved the HDR-capable pool - 12.9% of living patients
+       * instead of 25.1%.
+       */
+      $dischargeextrainfo = dischargeInfoFor($reasoncode, $reasondisplay);
       $INPATIENTENCOUNTERS[] = array_merge([
         "encounterid" => $eid,
         "candid" => trim($buffer[3]),

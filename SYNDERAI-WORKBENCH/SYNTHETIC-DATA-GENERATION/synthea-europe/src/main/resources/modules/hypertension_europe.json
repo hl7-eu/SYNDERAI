@@ -28,7 +28,30 @@
     "  75+  years   : ~75%",
     "R4 (2026-08-29): complication arms removed, see Complication_Check.",
     "R4: the Terminal state was only reachable through the removed complication arms.",
-    "The module now loops on Annual_Followup_Delay, as chronic modules here do."
+    "The module now loops on Annual_Followup_Delay, as chronic modules here do.",
+    "",
+    "RECALIBRATION 2026-09-30 — onset rates re-derived from the band targets above.",
+    "",
+    "The rates in use until now were 2.5x the values this remarks block documents",
+    "(1.125/2.750/3.750/4.250/3.750/2.500 against 0.45/1.10/1.50/1.70/1.50/1.00).",
+    "Neither set is right. Measured in the 2026-09-13 population of 41,644 patients:",
+    "  band 30-44 23.7% | 45-59 51.6% | 60-74 73.1% | 75+ 82.8%",
+    "against band targets of ~18% | ~33-50% | ~57-65% | ~75%. Standardised to the",
+    "EU27 adult age structure that is ~47%, not ~35%. The crude cohort figure of",
+    "34.75% only looked on target because the generated cohort is young (mean age",
+    "41); the over-shoot is in the bands, not in the total.",
+    "The documented rates, by contrast, UNDER-produce: they integrate to ~25%",
+    "EU27-standardised, because they are too low from age 45 upward.",
+    "",
+    "The rates now in place were fitted per band so that the modelled prevalence",
+    "AVERAGED OVER each band's age range equals that band's EHIS reference (EHIS",
+    "reports prevalence within an age group, not at its upper edge). The fit",
+    "reproduces all six band targets exactly and integrates to 36.3% on the EU27",
+    "adult structure. Note the 75+ rate falls: by that age most susceptible people",
+    "are already diagnosed, so little incidence is needed to hold 75%.",
+    "",
+    "Predicted cohort bands after this change: 30-44 15.8% | 45-59 37.4% |",
+    "60-74 61.3% | 75+ 75.0%. NOT YET VERIFIED BY A GENERATION RUN."
   ],
   "states": {
     "Initial": {
@@ -122,17 +145,17 @@
     "Onset_Probability_18_34": {
       "type": "Simple",
       "remarks": [
-        "Cumulative prevalence ~7% by age 34.",
-        "Annual incidence approximated at 0.45% per year over this band.",
-        "Source: EHIS 2019; WHO Europe 2023 Hypertension Fact Sheet."
+        "0.815%/year. Fitted so that the modelled prevalence averaged over",
+        "this age band equals the EHIS 2019 / WHO Europe 2023 reference of ~7%.",
+        "Was 1.125%/year."
       ],
       "distributed_transition": [
         {
-          "distribution": 0.01125,
+          "distribution": 0.00815,
           "transition": "Diagnose_Hypertension"
         },
         {
-          "distribution": 0.98875,
+          "distribution": 0.99185,
           "transition": "Delay_Loop"
         }
       ]
@@ -140,17 +163,17 @@
     "Onset_Probability_35_44": {
       "type": "Simple",
       "remarks": [
-        "Cumulative prevalence rises from ~7% to ~18% across this band.",
-        "Annual incidence approximated at 1.1% per year.",
-        "Source: EHIS 2019."
+        "1.098%/year. Fitted so that the modelled prevalence averaged over",
+        "this age band equals the EHIS 2019 / WHO Europe 2023 reference of ~18%.",
+        "Was 2.750%/year."
       ],
       "distributed_transition": [
         {
-          "distribution": 0.027499999999999997,
+          "distribution": 0.01098,
           "transition": "Diagnose_Hypertension"
         },
         {
-          "distribution": 0.9725,
+          "distribution": 0.98902,
           "transition": "Delay_Loop"
         }
       ]
@@ -158,17 +181,17 @@
     "Onset_Probability_45_54": {
       "type": "Simple",
       "remarks": [
-        "Cumulative prevalence rises from ~18% to ~33% across this band.",
-        "Annual incidence approximated at 1.5% per year.",
-        "Source: EHIS 2019; GBD 2019 Europe."
+        "2.826%/year. Fitted so that the modelled prevalence averaged over",
+        "this age band equals the EHIS 2019 / WHO Europe 2023 reference of ~33%.",
+        "Was 3.750%/year."
       ],
       "distributed_transition": [
         {
-          "distribution": 0.0375,
+          "distribution": 0.02826,
           "transition": "Diagnose_Hypertension"
         },
         {
-          "distribution": 0.9625,
+          "distribution": 0.97174,
           "transition": "Delay_Loop"
         }
       ]
@@ -176,17 +199,17 @@
     "Onset_Probability_55_64": {
       "type": "Simple",
       "remarks": [
-        "Cumulative prevalence rises from ~33% to ~50% across this band.",
-        "Annual incidence approximated at 1.7% per year.",
-        "Source: EHIS 2019; ESC/ESH 2018 Guidelines."
+        "3.017%/year. Fitted so that the modelled prevalence averaged over",
+        "this age band equals the EHIS 2019 / WHO Europe 2023 reference of ~50%.",
+        "Was 4.250%/year."
       ],
       "distributed_transition": [
         {
-          "distribution": 0.0425,
+          "distribution": 0.03017,
           "transition": "Diagnose_Hypertension"
         },
         {
-          "distribution": 0.9575,
+          "distribution": 0.96983,
           "transition": "Delay_Loop"
         }
       ]
@@ -194,17 +217,17 @@
     "Onset_Probability_65_74": {
       "type": "Simple",
       "remarks": [
-        "Cumulative prevalence rises from ~50% to ~65% across this band.",
-        "Annual incidence approximated at 1.5% per year.",
-        "Source: EHIS 2019."
+        "4.072%/year. Fitted so that the modelled prevalence averaged over",
+        "this age band equals the EHIS 2019 / WHO Europe 2023 reference of ~65%.",
+        "Was 3.750%/year."
       ],
       "distributed_transition": [
         {
-          "distribution": 0.0375,
+          "distribution": 0.04072,
           "transition": "Diagnose_Hypertension"
         },
         {
-          "distribution": 0.9625,
+          "distribution": 0.95928,
           "transition": "Delay_Loop"
         }
       ]
@@ -212,17 +235,17 @@
     "Onset_Probability_75_plus": {
       "type": "Simple",
       "remarks": [
-        "Cumulative prevalence ~75%+ in this band.",
-        "Annual incidence approximated at 1.0% per year (most susceptible already affected).",
-        "Source: EHIS 2019; Eurostat Health Statistics 2022."
+        "1.871%/year. Fitted so that the modelled prevalence averaged over",
+        "this age band equals the EHIS 2019 / WHO Europe 2023 reference of ~75%.",
+        "Was 2.500%/year."
       ],
       "distributed_transition": [
         {
-          "distribution": 0.025,
+          "distribution": 0.01871,
           "transition": "Diagnose_Hypertension"
         },
         {
-          "distribution": 0.975,
+          "distribution": 0.98129,
           "transition": "Delay_Loop"
         }
       ]

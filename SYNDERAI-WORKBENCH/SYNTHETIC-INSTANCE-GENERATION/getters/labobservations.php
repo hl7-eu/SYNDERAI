@@ -82,6 +82,26 @@ while (($item = fgetcsv($observationhandle, 10000, ",", '"', '\\')) !== FALSE) {
           $thisdisplay = "";
         }
       }
+      /* some last-minute corrections of false UCUM units created by Synthea
+         this is also promoted to the reference range in lab sections, so 
+         corrected here valueQuantity.code means also corrected here
+         referenceRange.low.code, referenceRange.high.code
+           pH    => [pH]    	
+           mIU/L => m[IU]/L
+           /HPF  => /[HPF]
+           iU/L  => [iU]/L
+
+           see github https://github.com/hl7-eu/SYNDERAI/issues/128
+       */
+      if ($thisunit === "pH")
+        $thisunit = "[pH] ";
+      if ($thisunit === "mIU/L")
+        $thisunit = "m[IU]/L";
+      if ($thisunit === "/HPF")
+        $thisunit = "/[HPF]";
+      if ($thisunit === "iU/L")
+        $thisunit = "[iU]/L";
+
       // echo "***** $thistype $resultvalue $thiscode $thisdisplay\n";
       $hislabobs = [
         "code" => [

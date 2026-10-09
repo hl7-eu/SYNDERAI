@@ -6,7 +6,15 @@
     "Knee OA most prevalent; hip and hand OA modelled separately.",
     "Risk factors: age >50, obesity (BMI>30), female sex.",
     "Treatment per EULAR 2019: exercise, weight loss, NSAIDs, joint replacement.",
-    "R4 (2026-08-29): knee OA code order fixed; see Diagnose_Knee_OA."
+    "R4 (2026-08-29): knee OA code order fixed; see Diagnose_Knee_OA.",
+    "R5 (2026-09-30): recalibrated against Andrianakos et al. 2006 (ESORDIG, symptomatic",
+    "OA per ACR criteria) - the first reference for this module with a stated case",
+    "definition. Onset lowered from 45 to 30; four age bands; hazards refitted; site",
+    "split corrected to knee 69.3 / hip 9.5 / hand 21.2. The three site prevalences",
+    "summed over the EU27 age structure give 9.79% of the total population, which is",
+    "what the 9.5% European reference figure describes. One site per patient remains a",
+    "simplification: the source allows several, so total OA PERSONS is slightly",
+    "overstated while each individual code lands on its own reference."
   ],
   "states": {
     "Initial": {
@@ -18,7 +26,7 @@
       "allow": {
         "condition_type": "Age",
         "operator": ">=",
-        "quantity": 45,
+        "quantity": 30,
         "unit": "years"
       },
       "direct_transition": "OA_Naive_Guard"
@@ -67,6 +75,15 @@
           "condition": {
             "condition_type": "Age",
             "operator": "<",
+            "quantity": 45,
+            "unit": "years"
+          },
+          "transition": "OA_Prob_Obese_30_44"
+        },
+        {
+          "condition": {
+            "condition_type": "Age",
+            "operator": "<",
             "quantity": 60,
             "unit": "years"
           },
@@ -89,6 +106,15 @@
     "OA_Normal_Age_Check": {
       "type": "Simple",
       "conditional_transition": [
+        {
+          "condition": {
+            "condition_type": "Age",
+            "operator": "<",
+            "quantity": 45,
+            "unit": "years"
+          },
+          "transition": "OA_Prob_Normal_30_44"
+        },
         {
           "condition": {
             "condition_type": "Age",
@@ -116,11 +142,11 @@
       "type": "Simple",
       "distributed_transition": [
         {
-          "distribution": 0.03,
+          "distribution": 0.02172,
           "transition": "OA_Type_Branch"
         },
         {
-          "distribution": 0.97,
+          "distribution": 0.97828,
           "transition": "Annual_OA_Delay"
         }
       ]
@@ -129,11 +155,11 @@
       "type": "Simple",
       "distributed_transition": [
         {
-          "distribution": 0.055,
+          "distribution": 0.02758,
           "transition": "OA_Type_Branch"
         },
         {
-          "distribution": 0.945,
+          "distribution": 0.97242,
           "transition": "Annual_OA_Delay"
         }
       ]
@@ -142,11 +168,11 @@
       "type": "Simple",
       "distributed_transition": [
         {
-          "distribution": 0.07,
+          "distribution": 0.01835,
           "transition": "OA_Type_Branch"
         },
         {
-          "distribution": 0.93,
+          "distribution": 0.98165,
           "transition": "Annual_OA_Delay"
         }
       ]
@@ -155,11 +181,11 @@
       "type": "Simple",
       "distributed_transition": [
         {
-          "distribution": 0.012,
+          "distribution": 0.00869,
           "transition": "OA_Type_Branch"
         },
         {
-          "distribution": 0.988,
+          "distribution": 0.99131,
           "transition": "Annual_OA_Delay"
         }
       ]
@@ -168,11 +194,11 @@
       "type": "Simple",
       "distributed_transition": [
         {
-          "distribution": 0.025,
+          "distribution": 0.01103,
           "transition": "OA_Type_Branch"
         },
         {
-          "distribution": 0.975,
+          "distribution": 0.98897,
           "transition": "Annual_OA_Delay"
         }
       ]
@@ -181,11 +207,11 @@
       "type": "Simple",
       "distributed_transition": [
         {
-          "distribution": 0.035,
+          "distribution": 0.00734,
           "transition": "OA_Type_Branch"
         },
         {
-          "distribution": 0.965,
+          "distribution": 0.99266,
           "transition": "Annual_OA_Delay"
         }
       ]
@@ -193,19 +219,22 @@
     "OA_Type_Branch": {
       "type": "Simple",
       "remarks": [
-        "EULAR: knee 55%, hip 25%, hand 20% of OA cases."
+        "Site split derived from Andrianakos et al. 2006 (ESORDIG) table 3, weighted by the",
+        "EU27 age structure: knee 69.3%, hip 9.5%, hand 21.2% of symptomatic OA diagnoses.",
+        "R4 carried knee 55 / hip 25 / hand 20, attributed to EULAR without a locator. The",
+        "hip share was 2.6x too high and produced +209% at 65-69 and +728% at 80+."
       ],
       "distributed_transition": [
         {
-          "distribution": 0.55,
+          "distribution": 0.693,
           "transition": "Diagnose_Knee_OA"
         },
         {
-          "distribution": 0.25,
+          "distribution": 0.095,
           "transition": "Diagnose_Hip_OA"
         },
         {
-          "distribution": 0.2,
+          "distribution": 0.212,
           "transition": "Diagnose_Hand_OA"
         }
       ]
@@ -384,6 +413,32 @@
     },
     "Terminal": {
       "type": "Terminal"
+    },
+    "OA_Prob_Normal_30_44": {
+      "type": "Simple",
+      "distributed_transition": [
+        {
+          "distribution": 0.00052,
+          "transition": "OA_Type_Branch"
+        },
+        {
+          "distribution": 0.99948,
+          "transition": "Annual_OA_Delay"
+        }
+      ]
+    },
+    "OA_Prob_Obese_30_44": {
+      "type": "Simple",
+      "distributed_transition": [
+        {
+          "distribution": 0.0013,
+          "transition": "OA_Type_Branch"
+        },
+        {
+          "distribution": 0.9987,
+          "transition": "Annual_OA_Delay"
+        }
+      ]
     }
   }
 }

@@ -2,13 +2,13 @@
 
 /* __ input files from synthea and check __ */
 define("SYNTHETICDATA",            "../SYNTHETIC-DATA");
-define("SYNTHEADIR",               SYNTHETICDATA . "/synthea_sample_data_generated202609");
-define("SYNTHEAINTL",              SYNTHETICDATA . "/synthea-international-202509");
+define("SYNTHEADIR",               SYNTHETICDATA . "/synthea_sample_data_generated202610");
+define("SYNTHEAINTL",              SYNTHETICDATA . "/synthea-international-202610");
 define("MAPPINGS",                 "../MAPPINGS");
 
-define("EUROPEDEMOGRAPHICS",       SYNTHETICDATA . "/25_tipster_eu_demographics_nuts2_v12.tsv");
+define("EUROPEDEMOGRAPHICS",       SYNTHETICDATA . "/25_tipster_eu_demographics_nuts2_v50.tsv");
 
-define("SYNTHEAPATIENTSTRATA",     SYNTHETICDATA . "/25_tipster_clinicalcandidates_40k_202609.csv");
+define("SYNTHEAPATIENTSTRATA",     SYNTHETICDATA . "/25_tipster_clinicalcandidates_40k_202610.csv");
 
 /** Severity constants used by lognlsev(). */
 define("FATAL",   -1);   // display error and die()

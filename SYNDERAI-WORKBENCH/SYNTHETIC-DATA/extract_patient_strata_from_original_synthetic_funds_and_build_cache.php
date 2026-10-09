@@ -23,6 +23,7 @@ date_default_timezone_set('Europe/Berlin');
 include_once("../CONSTANTS/constants.php");
 include_once("../SYNTHETIC-INSTANCE-GENERATION/lib/common-utils.php");
 include_once("../SYNTHETIC-INSTANCE-GENERATION/config.php");
+include_once("../SYNTHETIC-INSTANCE-GENERATION/lib/discharge-criterion.php");
 
 /** Record script start time for elapsed-time logging via logmeterinit(). */
 $STARTTIMER = time();
@@ -63,10 +64,9 @@ while (($data = fgetcsv($pah, 10000, ",", "\"", "\\")) !== FALSE) {
     // ONLY register patients that are ethnicity white or non-hispanic and alive. 
     if (strlen($deathdate) === 0) { // only alive in our set
         $alive++;
-        if ($eth1 == "white" && $eth2 == "nonhispanic") {  // only white and nonhispanic in our set
-            $clinicalpatients[] = $uid . $DELIMITER . $age . $DELIMITER . $gender;
-            $patientidentifiers[$uid] = TRUE;
-        }
+        // only white and nonhispanic in our set, no longer needed in European set: if ($eth1 == "white" && $eth2 == "nonhispanic") {}
+        $clinicalpatients[] = $uid . $DELIMITER . $age . $DELIMITER . $gender;
+        $patientidentifiers[$uid] = TRUE;
     } else {
         $dead++;
     }
@@ -78,7 +78,8 @@ $inset = count($clinicalpatients);
 
 lognl(1, sprintf("    registered  %7d %11d %11d %11d", $count, $alive, $dead, $inset));
 
-$kcount = floor($count / 1024);
+$kcount = (int) round($inset / 1000);
+
 $cdate = date('Ym');
 
 $lines = "uuid" . $DELIMITER . "age" . $DELIMITER . "gender" . "\n"; // headline
@@ -91,6 +92,10 @@ $STRATUMFILENAME = SYNTHETICDATA . "/25_tipster_clinicalcandidates_" . $kcount  
 file_put_contents($STRATUMFILENAME, $lines);
 
 lognlsev(1, SUCCESS, "*** written to $STRATUMFILENAME");
+
+$APPROPRIATEREASONS = loadAppropriateReasons();
+lognl(1, sprintf("    discharge criterion: %d mapped admission reasons + %d additional",
+                 count($APPROPRIATEREASONS), count($EXTRADISCHARGE)));
 
 lognlsev(1, INFO, "*** Caching " . SYNTHEADIR);
 
@@ -114,13 +119,23 @@ lognonl(1, "      caching...");
 while (($data = fgetcsv($pah, 10000, ",", "\"", "\\")) !== FALSE) {
     $lines++;
     $id = $data[3];
-    if (trim($data[7]) === "inpatient" && isset($patientidentifiers[$id])) {  // only if is inpatient and is in set) {
+    /*
+     * Register a patient only if the encounter can actually carry a Hospital
+     * Discharge Report, i.e. its admission reason has a discharge synthesis.
+     * Until 2026-09-30 this tested the encounter class alone, so the cache
+     * offered patients the HDR getter then rejected: 25.1% of living patients
+     * were registered while only 12.9% could produce an HDR. The criterion now
+     * comes from lib/discharge-criterion.php, the same source the getter uses.
+     */
+    if (trim($data[7]) === "inpatient" && isset($patientidentifiers[$id])) {
         if (strlen($id) < 35) {  // must be something like a57c0587-63ff-96dc-c3fc-1bc6ae38e4e3
             lognl(1, "... a problem occured");
             lognlsev(1, FATAL, "+++ misconfigured pool config, check position index of patient id...");
         }
-        $found[$id] = $id;  // patient ix
-        $count++;
+        if (dischargeInfoFor(trim($data[13]), trim($data[14])) !== NULL) {
+            $found[$id] = $id;  // patient ix
+            $count++;
+        }
     }
     if ($lines % floor($totalLines / 5) === 0 && $lines > 0) {
         echo " " . number_format(($lines / $totalLines * 100), 0) . "%";

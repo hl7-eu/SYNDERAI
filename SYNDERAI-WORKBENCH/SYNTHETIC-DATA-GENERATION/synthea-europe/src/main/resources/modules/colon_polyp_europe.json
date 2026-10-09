@@ -5,7 +5,20 @@
     "NEW in R4. No module emitted 68496003. R2 modelled it at 1.156%; R3 dropped it,",
     "giving 0% against a 2.5% European reference.",
     "Calibrated against: ESGE Guidelines 2022, EU colorectal screening programmes.",
-    "Detection-driven: onset from age 50, when European screening programmes start."
+    "Detection-driven: onset from age 50, when European screening programmes start.",
+    "R6 (2026-09-30): the polyp diagnosis now ends at polypectomy.",
+    "NOT RECALIBRATED, deliberately. The 2.5% reference row cannot support it. It has no",
+    "recorded provenance beyond 'ESGE Guidelines 2022, EU colorectal screening",
+    "programmes', no age structure, and an ambiguous endpoint - a detected-polyp",
+    "prevalence depends almost entirely on screening participation, which runs roughly",
+    "30-50% across the EU and differs several-fold between member states. The measured",
+    "figures are 3.50% at 55-64, 8.19% at 65-74 and 13.14% at 75+ for ever-detected.",
+    "For orientation only, and not a calibration target: with EU screening participation",
+    "near 40% and an adenoma detection rate near 30% at first colonoscopy, roughly 12% of",
+    "65-74 year olds would have had a polyp found, against the module's 8.19%. That is",
+    "the right order of magnitude and if anything suggests the module is low, not the",
+    "+24% high that the 2.5% row implies. Settling it needs a source reporting detected",
+    "polyp prevalence by age for a defined screening programme."
   ],
   "states": {
     "Initial": {
@@ -171,7 +184,7 @@
         "high": 25,
         "unit": "minutes"
       },
-      "direct_transition": "End_Polyp_Encounter"
+      "direct_transition": "Polyp_Resolved"
     },
     "End_Polyp_Encounter": {
       "type": "EncounterEnd",
@@ -205,6 +218,20 @@
     "End_Polyp_Surveillance": {
       "type": "EncounterEnd",
       "direct_transition": "Polyp_Surveillance_Delay"
+    },
+    "Polyp_Resolved": {
+      "type": "ConditionEnd",
+      "remarks": [
+        "A resected polyp is no longer a current condition. R4 and R5 left 68496003 open",
+        "for ever, so a record showed an active colonic polyp decades after the",
+        "polypectomy that removed it. Surveillance continues, which is correct - ESGE",
+        "recommends follow-up colonoscopy at 3-5 years - but the finding itself is gone.",
+        "This does NOT change the verification figure, which measures 'ever diagnosed' and",
+        "counts a patient whether or not the condition was closed. It is a record-quality",
+        "fix, not a calibration change."
+      ],
+      "condition_onset": "Diagnose_Colon_Polyp",
+      "direct_transition": "End_Polyp_Encounter"
     }
   }
 }

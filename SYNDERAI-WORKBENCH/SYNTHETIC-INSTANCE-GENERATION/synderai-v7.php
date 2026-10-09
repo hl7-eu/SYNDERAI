@@ -837,13 +837,28 @@ foreach ($PATIENTS as $pdat) {
         " (ECI: " . $pdat->eci . ")...\n");
 
     /*
-     * HDR always requires an inpatient encounter.
-     * Mark the patient's preselection accordingly so the clinical story
-     * matcher will only return candidates that have inpatient encounters.
+     * REMOVED 2026-09-30 — the blanket inpatient preselection.
+     *
+     * This used to read:
+     *     if (in_array("HDR", $ARTIFACTS)) {
+     *         $pdat->preselected->inpatient = TRUE;
+     *     }
+     * It tested the artifact set of the WHOLE RUN, not the artifact being
+     * emitted, and it sat inside the per-patient loop. So "--artifacts EPS,LAB,HDR"
+     * restricted EVERY patient to one with an inpatient episode, and EPS, LAB and
+     * MPD inherited a filter that only HDR needs.
+     *
+     * Measured on EPS 4.0.1: 100% of its 250 patients had an inpatient encounter
+     * against 23% of the living population, which alone lifted apparent COPD
+     * prevalence from 5.5% to 24.8%. The cohort is now drawn for EPS, the
+     * flagship, and HDR is emitted for the patients whose data supports one -
+     * which the code below already handles, logging and continuing when it does
+     * not. The three artifacts still share one patient list.
+     *
+     * Consequence for run sizing: HDR yield is ~37% of the citizen-record list
+     * (measured 2026-09-30), so ~410 patients give ~150 HDR bundles alongside
+     * ~410 EPS and ~330 LAB.
      */
-    if (in_array("HDR", $ARTIFACTS)) {
-        $pdat->preselected->inpatient = TRUE;
-    }
 
     $findacandidaterounds = 10;  // maximum attempts to find a matching clinical story
     $matchcount           = 0;

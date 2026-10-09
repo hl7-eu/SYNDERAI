@@ -57,12 +57,24 @@ fi
 # claims.csv and claims_transactions.csv are ~81% of the CSV volume and are not
 # used for prevalence work. Measured with exporter.years_of_history = 0:
 #   with    claims: ~680 KB/patient  -> 40,000 patients needs ~62 GB peak
-#   without claims: ~130 KB/patient  -> 40,000 patients needs ~11 GB peak
+#   without claims: ~139 KB/patient  -> 40,000 patients needs ~15 GB peak
 # ("peak" = region output plus the merged copy, which coexist.)
 # Set CSV_EXCLUDE="" to keep everything, or override with your own list.
 CSV_EXCLUDE="${CSV_EXCLUDE-patient_expenses.csv,claims.csv,claims_transactions.csv}"
-# Per-patient CSV footprint in KB, used only for the disk precheck.
-KB_PER_PATIENT="${KB_PER_PATIENT-$([ -n "${CSV_EXCLUDE}" ] && echo 135 || echo 700)}"
+#
+# -p N ASKS FOR N LIVING PATIENTS, AND THE FILE HOLDS MORE THAN THAT.
+# Synthea replaces anyone who dies before the reference date, so the deceased are
+# written out on top of the N living. Since lifecycle.death_by_natural_causes was
+# switched on (2026-10-01) that overhead is no longer negligible:
+#
+#              records written   living   ratio   merged CSV at -p 40000
+#   before            41,830     39,466    1.06        4.9 GB
+#   after             52,460     40,097    1.31        7.0 GB
+#
+# The precheck below multiplies the REQUESTED count, so the per-patient figure has
+# to carry that ratio: 139 KB per record x 1.31 records per requested patient.
+# Getting this wrong is how a 40,000 run fills a disk three hours in.
+KB_PER_PATIENT="${KB_PER_PATIENT-$([ -n "${CSV_EXCLUDE}" ] && echo 182 || echo 920)}"
 
 echo "Generating ${TOTAL} patients across ${REGION_COUNT} EU regions..."
 echo "CSV exclusions: ${CSV_EXCLUDE:-<none>}"

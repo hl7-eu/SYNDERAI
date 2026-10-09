@@ -23,21 +23,33 @@ Output: `output/regions/<Region>/csv/` per region, merged into `output/merged/cs
 | Regions | 291, all backed by `zipcodes_europe.csv` and `demographics_europe.csv` |
 | Fixed cost | ~4 s per region (JVM + Synthea init) → ~20 min for 291 regions |
 | Generation | ~66 patients/s |
-| **40,000 patients** | **~30 min total** |
-| Disk, claims excluded | ~130 KB/patient → ~12 GB peak (regions + merged) |
-| Disk, full CSV | ~680 KB/patient → ~62 GB peak |
+| **40,000 patients** | **~35 min total** |
+| Records written per living patient | **1.31** (see below) |
+| Disk, claims excluded | ~139 KB/record → **~15 GB peak** (regions + merged) |
+| Disk, full CSV | ~700 KB/record → ~78 GB peak |
 
-Validated end-to-end 2026-08-29 at `TOTAL=1500`: 291 regions OK, 0 failed, 0 skipped, 1,531 patients merged in 1,093 s.
+Validated end-to-end 2026-08-29 at `TOTAL=1500`: 291 regions OK, 0 failed, 0 skipped, 1,531 patients merged in 1,093 s. Re-measured 2026-10-02 over four runs at `TOTAL=40000`: 291/291 regions, 52,322 to 53,501 records each, about 40,000 of them living.
+
+### `-p N` asks for N LIVING patients, and the file holds more
+
+Synthea replaces anyone who dies before the reference date, so the deceased are written out on top of the N living. Since `lifecycle.death_by_natural_causes` was switched on (2026-10-01) that overhead stopped being negligible:
+
+| | records written | living | ratio | merged CSV at `-p 40000` |
+| --- | --- | --- | --- | --- |
+| before | 41,830 | 39,466 | 1.06 | 4.9 GB |
+| after | 52,460 | 40,097 | **1.31** | **7.0 GB** |
+
+Two consequences. **Budget disk against the record count, not the requested count** — the precheck now carries the ratio, and the figures in the table above already include it. And **consumers that need living patients only** (European Patient Summary, Hospital Discharge Report, laboratory reports, medication) must filter on an empty `DEATHDATE`: that filter now removes 24 % of the records rather than 6 %, so a consumer that quietly omitted it would have gone unnoticed before and will not now.
 
 ## Tunables
 
 | Variable | Default | Effect |
 | -------- | ------- | ------ |
-| `CSV_EXCLUDE` | `patient_expenses.csv,claims.csv,claims_transactions.csv` | `claims*` is 81 % of CSV volume and unused for prevalence work. Set to `""` to keep everything — then budget 62 GB for 40,000. |
-| `KB_PER_PATIENT` | 135 (or 700 with no exclusions) | Only used by the disk precheck. |
+| `CSV_EXCLUDE` | `patient_expenses.csv,claims.csv,claims_transactions.csv` | `claims*` is 81 % of CSV volume and unused for prevalence work. Set to `""` to keep everything — then budget 78 GB for 40,000. |
+| `KB_PER_PATIENT` | 182 (or 920 with no exclusions) | Only used by the disk precheck. It is per REQUESTED patient, so it carries the 1.31 record-to-living ratio: 139 KB per record x 1.31. |
 
 ```bash
-CSV_EXCLUDE="" ./make_synthea_europe_filtered.sh 40000     # full CSV, needs ~62 GB
+CSV_EXCLUDE="" ./make_synthea_europe_filtered.sh 40000     # full CSV, needs ~78 GB
 ```
 
 ## Three things that were wrong before 2026-08-29
@@ -46,7 +58,7 @@ CSV_EXCLUDE="" ./make_synthea_europe_filtered.sh 40000     # full CSV, needs ~62
 
 **`./run_synthea` starts a Gradle build per region.** 291 Gradle+JVM startups per run, roughly 20 s each. The script builds the shadow jar once and now invokes it directly — about 80 minutes saved.
 
-**No disk guard.** A 40,000-patient run with the full CSV export needs ~62 GB across `output/regions` and `output/merged`, which coexist. The precheck aborts with a clear message instead of filling the disk after hours of work.
+**No disk guard.** A 40,000-patient run with the full CSV export needs ~78 GB across `output/regions` and `output/merged`, which coexist. The precheck aborts with a clear message instead of filling the disk after hours of work.
 
 ## Deceased patients are included — deliberately
 

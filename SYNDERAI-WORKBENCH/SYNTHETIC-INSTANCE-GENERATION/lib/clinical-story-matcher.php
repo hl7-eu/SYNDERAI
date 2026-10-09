@@ -51,10 +51,17 @@ function getClinicalStoryCandidatesWithMatchingPreselections($preselarr) {
     // ------------------------------------------------------------------
     if ($preselarr->inpatient === TRUE) {
         lognl(2, "......... Finding clinical stories that have encounters with 'appropriate' admission reasons and discharge information");
+        /*
+         * 2026-09-30: require discharge information, the same test the HDR getter
+         * applies. This loop used to accept every inpatient encounter, so the log
+         * line above was not true of what it returned and 38% of the candidates it
+         * offered could not produce an HDR.
+         */
         foreach ($INPATIENTENCOUNTERS as $c) {
-            $founde[$c["candid"]] = $c["candid"];
+            if (isset($c["discharge"]["text"]) and strlen($c["discharge"]["text"]) > 0)
+                $founde[$c["candid"]] = $c["candid"];
         }
-        lognl(2, "............ Candidates with matching conditions: " . count($founde) . "\n");
+        lognl(2, "............ Candidates with a usable inpatient episode: " . count($founde) . "\n");
     }
 
     // ------------------------------------------------------------------

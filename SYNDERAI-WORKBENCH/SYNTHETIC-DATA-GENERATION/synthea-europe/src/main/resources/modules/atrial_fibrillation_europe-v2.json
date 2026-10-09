@@ -28,7 +28,22 @@
     "  Target cohort prevalence (mean age 52.6): ~3-5%.",
     "  Age-stratified annual incidence (ESC 2020):",
     "    55-64: 0.5%/year | 65-74: 1.2%/year | 75+: 2.5%/year",
-    "R4 verification round 3 (2026-08-29): rates x0.617. Measured at 4.06% against a 2.5% ESC/EHRA reference (+62%). Note this row grew between rounds 1 and 2 without being touched, because the module is risk-tiered on IHD and COPD and round 2 enlarged both of those populations."
+    "R4 verification round 3 (2026-08-29): rates x0.617. Measured at 4.06% against a 2.5% ESC/EHRA reference (+62%). Note this row grew between rounds 1 and 2 without being touched, because the module is risk-tiered on IHD and COPD and round 2 enlarged both of those populations.",
+    "R5 (2026-09-30): incidence refitted against Heeringa et al. 2006 (Rotterdam) table 2,",
+    "which supplies all seven age bands from 55-59 to 85+. R4 ran +41% at 60-64 rising to",
+    "+112% at 85+ because a single 75+ hazard of 0.0154 ran unbounded to age 100. The 75+",
+    "rate halves; all seven reference bands now land within 20%, median 3%.",
+    "Two things were established while fitting and belong on the record.",
+    "AF_ANNUAL_DELAY PRECEDES THE FIRST ROLL, so exposure starts at 56 and not at 55.",
+    "Ignoring that predicts the 55-59 band 38% too high. With it, the closed form",
+    "1-exp(-H) reproduces the measured run across all seven bands at a mean ratio of 1.015.",
+    "EXCESS MORTALITY IS NOT IDENTIFIABLE from a cross-sectional prevalence reference.",
+    "Fits at 0, 2, 3, 4, 5 and 6% annual excess mortality all reach the same median",
+    "deviation of 3%, because a higher death rate is absorbed by a higher incidence. This",
+    "module still has no Death state, and the flat-ish top hazard stands in for the excess",
+    "mortality atrial fibrillation really carries. Adding it would need an INDEPENDENT",
+    "incidence reference to pin the pair down; calibrating it against prevalence alone",
+    "would be fitting one unknown with zero information."
   ],
   "states": {
     "Initial": {
@@ -100,15 +115,15 @@
     "AF_Prob_55_64": {
       "type": "Simple",
       "remarks": [
-        "ESC: ~0.5%/year incidence in 55-64 age group."
+        "0.2683% per year, fitted to Heeringa et al. 2006 (Rotterdam) table 2."
       ],
       "distributed_transition": [
         {
-          "distribution": 0.003085,
+          "distribution": 0.002683,
           "transition": "Diagnose_AF"
         },
         {
-          "distribution": 0.996915,
+          "distribution": 0.997317,
           "transition": "AF_Annual_Delay"
         }
       ]
@@ -116,15 +131,15 @@
     "AF_Prob_65_74": {
       "type": "Simple",
       "remarks": [
-        "ESC: ~1.2%/year incidence in 65-74 age group."
+        "0.4468% per year, fitted to Heeringa et al. 2006 (Rotterdam) table 2."
       ],
       "distributed_transition": [
         {
-          "distribution": 0.007404,
+          "distribution": 0.004468,
           "transition": "Diagnose_AF"
         },
         {
-          "distribution": 0.992596,
+          "distribution": 0.995532,
           "transition": "AF_Annual_Delay"
         }
       ]
@@ -132,15 +147,15 @@
     "AF_Prob_75_plus": {
       "type": "Simple",
       "remarks": [
-        "ESC: ~2.5%/year incidence in 75+ age group."
+        "0.7710% per year, fitted to Heeringa et al. 2006 (Rotterdam) table 2."
       ],
       "distributed_transition": [
         {
-          "distribution": 0.015425,
+          "distribution": 0.00771,
           "transition": "Diagnose_AF"
         },
         {
-          "distribution": 0.984575,
+          "distribution": 0.99229,
           "transition": "AF_Annual_Delay"
         }
       ]
@@ -316,15 +331,15 @@
     "AF_Prob_Alco_55_64": {
       "type": "Simple",
       "remarks": [
-        "Alcohol-boosted AF incidence: 1.0%/year."
+        "0.5367% per year, fitted to Heeringa et al. 2006 (Rotterdam) table 2."
       ],
       "distributed_transition": [
         {
-          "distribution": 0.00617,
+          "distribution": 0.005367,
           "transition": "Diagnose_AF"
         },
         {
-          "distribution": 0.99383,
+          "distribution": 0.994633,
           "transition": "AF_Annual_Delay"
         }
       ]
@@ -332,15 +347,15 @@
     "AF_Prob_Alco_65_74": {
       "type": "Simple",
       "remarks": [
-        "Alcohol-boosted AF incidence: 2.4%/year."
+        "0.8935% per year, fitted to Heeringa et al. 2006 (Rotterdam) table 2."
       ],
       "distributed_transition": [
         {
-          "distribution": 0.014808,
+          "distribution": 0.008935,
           "transition": "Diagnose_AF"
         },
         {
-          "distribution": 0.985192,
+          "distribution": 0.991065,
           "transition": "AF_Annual_Delay"
         }
       ]
@@ -348,15 +363,15 @@
     "AF_Prob_Alco_75_plus": {
       "type": "Simple",
       "remarks": [
-        "Alcohol-boosted AF incidence: 5.0%/year."
+        "1.5420% per year, fitted to Heeringa et al. 2006 (Rotterdam) table 2."
       ],
       "distributed_transition": [
         {
-          "distribution": 0.03085,
+          "distribution": 0.01542,
           "transition": "Diagnose_AF"
         },
         {
-          "distribution": 0.96915,
+          "distribution": 0.98458,
           "transition": "AF_Annual_Delay"
         }
       ]

@@ -1,5 +1,8 @@
 <?php
 
+// package version - must be set manually for now
+$THISSYNDERAIVERSION = "5.0.0";
+
 // PHP init sets
 // available memory shall be sufficient
 ini_set('memory_limit','2048M');
@@ -13,7 +16,6 @@ $PYTHON = "python3";
 
 $starttimer = time();   // for emiting teh elapsed time register the start time
 
-$THISSYNDERAIVERSION = "4.0.1";
 $SYNTHETICDATAURL = "http://hl7.eu/fhir/syntheticdata";
 $SUPPORTEDARTIFACTS = [
     [
