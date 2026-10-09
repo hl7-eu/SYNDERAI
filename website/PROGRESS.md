@@ -1,7 +1,7 @@
 # Progress
 **Synthetic Data: Examples – Realistic – using AI (SYNDERAI)**, pronounced **/ˈsɪn.də.raɪ/**
 
-© [HL7 Europe](https://hl7europe.org) | Main Contributor: Dr. Kai U. Heitmann | [Privacy Policy](https://hl7europe.eu/privacy-policy-for-hl7-europe/) • LGPL-3.0 license
+© [HL7 Europe](https://hl7europe.org) | Main Contributor: Dr. Kai U. Heitmann | [Privacy Policy](https://hl7europe.eu/privacy-policy-for-hl7-europe/) • AGPL-3.0 license
 
 - 2024-11-19: first set of 26 HL7 European Laboratory Report Example Instances in JSON and XML format, located in `examples/eulab`; can be viewed visiting [Visualize HL7 Example and Test Instances (vi7eti)](https://vi7eti.net/?focus=eulab)
 - 2024-12-04: More textual information on SYNDERAI
@@ -32,3 +32,9 @@
    – published as **package 2.1.0+20260514** for EPS
 - 2026-05-23 finalized adaptation to EU population set of diseases, results and therapies: **39 new EU modules** added, **53 US modules removed** (including the entire veteran block, the opioid pipeline, SNF, homelessness, and SDOH modules), and **~110 modules** present in both sets were modified; prepared for publication package 3.* series.
 - 20260529 added synthetic Study Information for `ResearchSubject` and `ResearchStudy` data to be interspersed randomly into EPS records; prepared for publication package within the 3.* series.
+- 20260812 recreated 50 synthetic patients / 50 HL7 FHIR example instance of the European European Patient Summary (EPS), Hopsital Discharge Report (HDR) and Laboratory Results (LAB)
+   – published as **package 3.0.0+20260812** for EPS, HDR and LAB
+- 20260919 recreated 250 synthetic patients / 50 HL7 FHIR example instance with heavily tuned disease prevalences towards European expectations. Examples of the European European Patient Summary (EPS), Hopsital Discharge Report (HDR) and Laboratory Results (LAB)
+   – published as **package 4.0.0+20260919** for EPS, HDR and LAB
+- 20260921 250 synthetic patients as of Release 4.0.0, patched with minor errors
+   – published as **package 4.0.1+20260921** for EPS, HDR and LAB

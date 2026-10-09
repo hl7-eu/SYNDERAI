@@ -1,7 +1,7 @@
 # SYNDERAI – the Story
 **Synthetic Data: Examples – Realistic – using AI (SYNDERAI)**, pronounced **/ˈsɪn.də.raɪ/**
 
-© [HL7 Europe](https://hl7europe.org) | Main Contributor: Dr. Kai U. Heitmann | [Privacy Policy](https://hl7europe.eu/privacy-policy-for-hl7-europe/) • LGPL-3.0 license
+© [HL7 Europe](https://hl7europe.org) | Main Contributor: Dr. Kai U. Heitmann | [Privacy Policy](https://hl7europe.eu/privacy-policy-for-hl7-europe/) • AGPL-3.0 license
 
 ## Synthetic Example Data
 
@@ -17,7 +17,7 @@ HL7 Europe started this effort with a focus on Synthetic Example Data with a “
 | ------------------------------------------------------------ |
 | *Figure 1: Geo-Localization of “patients” and  “providers” of Synthetic Example Realistic Data. The  example data is a randomized amalgamation of synthetic sources, bringing  stratification and other statistical methods into play.* |
 
-The **Synthetic Example Realistic Data and AI (SYNERDAI)** methodology emitted the first 200 HL7 Europe Laboratory Report (EU-Lab) in October 2024, based on the HL7 Europe Laboratory Report FHIR Implementation Guide [[2](#_ftn2)] which is the implementation specification of the eHN Laboratory Result Guidelines [[3](#_ftn3)]. The other areas of specification will be submitted as a follow-up covering the Hospital Discharge Report, the European Patient Summary and others. The instances are available publicly.
+The **Synthetic Data: Examples – Realistic – using AI (SYNDERAI)** methodology emitted the first 200 HL7 Europe Laboratory Report (EU-Lab) in October 2024, based on the HL7 Europe Laboratory Report FHIR Implementation Guide [[2](#_ftn2)] which is the implementation specification of the eHN Laboratory Result Guidelines [[3](#_ftn3)]. The other areas of specification will be submitted as a follow-up covering the Hospital Discharge Report, the European Patient Summary and others. The instances are available publicly.
 
 The generation of Synthetic Example Data was also combined with a reference implementation of **Visualization** of the Synthetic Example Instances. For more information on this activity, refer to vi7eti website [[4](#_ftn4)] and the GitHub repository [[5](#_ftn5)].
 

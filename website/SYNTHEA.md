@@ -1,7 +1,7 @@
 # Using Synthea
 **Synthetic Data: Examples – Realistic – using AI (SYNDERAI)**, pronounced **/ˈsɪn.də.raɪ/**
 
-© [HL7 Europe](https://hl7europe.org) | Main Contributor: Dr. Kai U. Heitmann | [Privacy Policy](https://hl7europe.eu/privacy-policy-for-hl7-europe/) • LGPL-3.0 license
+© [HL7 Europe](https://hl7europe.org) | Main Contributor: Dr. Kai U. Heitmann | [Privacy Policy](https://hl7europe.eu/privacy-policy-for-hl7-europe/) • AGPL-3.0 license
 
 **Synthea** is an open-source simulator that generates realistic—but entirely fictional—longitudinal patient populations and electronic health records. It models life courses, diseases, care pathways, and treatments using configurable, evidence-informed modules, then exports records in formats such as FHIR, C-CDA, and CSV for privacy-safe research, education, and health-IT testing. See Synthea's [GitHub](https://github.com/synthetichealth/synthea) for more information
 
