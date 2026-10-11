@@ -5,6 +5,8 @@
 # validates all Bundle*json in the corresponding directory, we move to that source otherwise the validator fails
 # output to HTML in HOME directory
 
+exit # no validator_cli for now
+
 case "$1" in
     LAB)
         ARTIFACT=LAB

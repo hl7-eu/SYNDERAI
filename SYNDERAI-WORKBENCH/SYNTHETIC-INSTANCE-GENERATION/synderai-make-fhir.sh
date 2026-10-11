@@ -35,6 +35,7 @@ cp pex/${ARTIFACT}/*.fsh ../FSH-FHIR-GENERATOR/${MASTERCOPY}/input/fsh/examples/
 cd ../FSH-FHIR-GENERATOR/${MASTERCOPY}/
 pwd
 # run sushi compiler
+export NODE_OPTIONS="--max-old-space-size=10000"
 sushi
 
 echo "Post-processing II: Copying Bundles to results for artifact type ${ARTIFACT}"
