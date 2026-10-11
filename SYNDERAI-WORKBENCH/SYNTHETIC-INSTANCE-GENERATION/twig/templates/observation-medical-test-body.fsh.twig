@@ -297,8 +297,18 @@
   them to a code system is what produced "$$sct#{#/area}" in run 1.
 
   The interpretation flag is derived only where a numeric comparison is
-  meaningful.
+  meaningful AND where the range is a population interval. Release 5 set
+  referenceRange.type on none of its 1643 reference ranges, so every range read
+  as a healthy-population interval and every value outside it got an H or an L.
+  That is the same statement only for a normal or a recommended range. On a
+  treatment or therapeutic range the opposite holds - an INR of 2.5 under a
+  vitamin K antagonist is on target and lies outside 0.9 to 1.2 - and pre and
+  post are collection-time qualifiers that say nothing about the value. The
+  type comes from the FHIR referencerange-meaning code system and is validated
+  in the two section scripts before it reaches this template.
 #}
+{% set rrtype = labresult.reference.type|default(null) %}
+{% set rrcomparable = (rrtype is empty) or rrtype == "normal" or rrtype == "recommended" %}
 {% set rsysraw = labresult.reference.system|default('ucum') %}
 {% set rsys = (':' in rsysraw or rsysraw starts with '$') ? rsysraw : '$' ~ rsysraw %}
 
@@ -308,6 +318,10 @@
 {% if vtype == "Quantity" %}
 * referenceRange[+].low = {{ labresult.reference.low + 0 }} {{ rsys }}#{{ labresult.reference.unit }}
 * referenceRange[=].high = {{ labresult.reference.high + 0 }} {{ rsys }}#{{ labresult.reference.unit }}
+{% if rrtype is not empty %}
+* referenceRange[=].type = $referencerange-meaning#{{ rrtype }}
+{% endif %}
+{% if rrcomparable %}
 {% if vnum < labresult.reference.low %}
 * interpretation = $v3-ObservationInterpretation#L "Low"
 {% set tdFlag = "L" %}
@@ -315,15 +329,22 @@
 * interpretation = $v3-ObservationInterpretation#H "High"
 {% set tdFlag = "H" %}
 {% endif %}
+{% endif %}
 {% else %}
 {% set rtext = labresult.reference.low ~ ' - ' ~ labresult.reference.high %}
 {% if labresult.reference.unit is not empty %}{% set rtext = rtext ~ ' ' ~ labresult.reference.unit %}{% endif %}
 * referenceRange[+].text = "{{ rtext|replace(FSHQ)|raw }}"
+{% if rrtype is not empty %}
+* referenceRange[=].type = $referencerange-meaning#{{ rrtype }}
+{% endif %}
 {% endif %}
 
 {% elseif labresult.reference.text is not empty %}
 {# Text-only reference range — no numeric bounds available #}
 * referenceRange[+].text = "{{ labresult.reference.text|replace(FSHQ)|raw }}"
+{% if rrtype is not empty %}
+* referenceRange[=].type = $referencerange-meaning#{{ rrtype }}
+{% endif %}
 {% set tdRange = labresult.reference.text|e('html') %}
 {% endif %} {# reference range #}
 

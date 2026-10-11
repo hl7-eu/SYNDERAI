@@ -8,7 +8,7 @@ define("MAPPINGS",                 "../MAPPINGS");
 
 define("EUROPEDEMOGRAPHICS",       SYNTHETICDATA . "/25_tipster_eu_demographics_nuts2_v50.tsv");
 
-define("SYNTHEAPATIENTSTRATA",     SYNTHETICDATA . "/25_tipster_clinicalcandidates_40k_202610.csv");
+define("SYNTHEAPATIENTSTRATA",     SYNTHETICDATA . "/25_tipster_clinicalcandidates_45k_202610.csv");
 
 /** Severity constants used by lognlsev(). */
 define("FATAL",   -1);   // display error and die()

@@ -86,10 +86,33 @@ foreach ($pdat->labobservations as $ldate => $lbspd) {
         'display' => $labi["valuedisplay"]
       ];
       if (USE_AI) {
-        $labtestai = $labi["code"]["display"] . " " . $labi["value"] . " " . $labi["valueunit"];
-        $labtestmd5 = $pdat->age . $pdat->gender . $labi["code"]["display"] . $labi["valueunit"];
-        // reference range in cache?
-        $md5 = md5($pdat->age . $pdat->gender . $labtestmd5);
+        /*
+         * What goes to the model and what identifies the answer.
+         *
+         * $labtestai used to be "<display> <value> <unit>", so the model saw
+         * the measured result while being asked for the interval that result
+         * is judged against, while the cache key did NOT contain the value.
+         * The range of the first patient of a given age and sex was therefore
+         * reused for everyone else - a reference interval derived from one
+         * arbitrary result. The value is gone from the prompt; the unit is
+         * stated instead of being left to the model, which used to answer in a
+         * different unit than the value in 206 of 1053 numeric ranges of
+         * release 5.
+         *
+         * The key comes from refRangeCacheKey() in lib/cache.php now. It is
+         * shared with sections/labobservation.php so that the LAB and the EPS
+         * branch hit the same entry, it carries the LOINC code (the old key
+         * had only the display text, so two codes sharing a display collided),
+         * it bands the age instead of keying on the exact year, and it carries
+         * a generation number, REFRANGE_CACHE_VERSION, so that a change to
+         * this prompt actually retires the old answers rather than leaving
+         * 4066 cached files answering the previous question.
+         */
+        $labtestai = $labi["code"]["display"];
+        $md5 = refRangeCacheKey(
+          $labi["code"]["code"], $labi["code"]["display"], $labi["valueunit"],
+          $pdat->age, $pdat->gender
+        );
         $fai = inCACHE('referencerange', $md5);
         if ($fai !== FALSE) {
           // reference range is in cache
@@ -97,7 +120,8 @@ foreach ($pdat->labobservations as $ldate => $lbspd) {
           $rr1 = json_decode($fai, TRUE);  // use json reference range from cache
         } else {
           // not in cache, ask AI
-          $AI = getAIReferenceRange ($pdat->age, $pdat->gender, $labtestai);
+          $AI = getAIReferenceRange ($pdat->age, $pdat->gender, $labtestai,
+            $labi["valueunit"], refRangeAgeBand($pdat->age));
           /*
            * AI should return either JSON with low, high, unit and display upon Quantities reference ranges
            * or "text" upon Qualitative reference ranges, such as "Pale yellow - Yellow to amber"
@@ -125,7 +149,8 @@ foreach ($pdat->labobservations as $ldate => $lbspd) {
             "high" => NULL,
             "unit" => $labi["valueunit"],
             "display" => NULL,
-            "text" => NULL
+            "text" => NULL,
+            "type" => NULL
           ];
         }
         $rawlow  = isset($rr1["low"])  ? $rr1["low"]  : NULL;
@@ -166,6 +191,52 @@ foreach ($pdat->labobservations as $ldate => $lbspd) {
         }
         $rr1["isNumeric"] = $isnumeric;
 
+        /*
+         * UNIT GUARD, same rule as in sections/recentlabobservationEPS.php.
+         * A numeric range is only a range for this value when it carries the
+         * same unit. The model chose the unit itself until 2026-10-11 and
+         * chose a different one from the value in 206 of the 1053 numeric
+         * ranges of release 5. The bounds move into .text with the unit named,
+         * low and high are cleared, and nothing downstream can compare them.
+         */
+        if (isset($rr1["low"]) and isset($rr1["high"])
+            and $rr1["low"] !== NULL and $rr1["high"] !== NULL) {
+          $wantunit = (string) $labi["valueunit"];
+          $gotunit  = isset($rr1["unit"]) ? (string) $rr1["unit"] : $wantunit;
+          if ($gotunit !== $wantunit) {
+            lognlsev(3, WARNING, "......... ~~~ Reference range of '"
+              . $labi["code"]["display"] . "' came back in '$gotunit' while the "
+              . "value is in '$wantunit', range kept as text, not compared\n");
+            $rr1 = [
+              "low" => NULL,
+              "high" => NULL,
+              "unit" => $wantunit,
+              "display" => isset($rr1["display"]) ? $rr1["display"] : NULL,
+              "text" => $rr1["low"] . " - " . $rr1["high"] . " " . $gotunit,
+              "type" => isset($rr1["type"]) ? $rr1["type"] : NULL,
+              "isNumeric" => FALSE
+            ];
+          }
+        }
+
+        /*
+         * referenceRange.type, restricted to the six codes of the FHIR
+         * referencerange-meaning code system. Anything else the model invents
+         * is dropped rather than published.
+         */
+        if (isset($rr1["type"])) {
+          $RRTYPES = ["normal", "recommended", "treatment", "therapeutic", "pre", "post"];
+          $t = strtolower(trim((string) $rr1["type"]));
+          if (in_array($t, $RRTYPES)) {
+            $rr1["type"] = $t;
+          } else {
+            if ($t !== "")
+              lognlsev(3, WARNING, "......... ~~~ Reference range type '$t' is not in "
+                . "referencerange-meaning, dropped\n");
+            $rr1["type"] = NULL;
+          }
+        }
+
         // A numeric range next to a non-quantitative value is a data smell
         // worth seeing, but it is not a reason to change the value type.
         if ($isnumeric and $value['type'] !== "Quantity")
@@ -180,6 +251,7 @@ foreach ($pdat->labobservations as $ldate => $lbspd) {
           "unit" => $labi["valueunit"],
           "display" => NULL,
           "text" => NULL,
+          "type" => NULL,
           "isNumeric" => NULL
         ];
       }

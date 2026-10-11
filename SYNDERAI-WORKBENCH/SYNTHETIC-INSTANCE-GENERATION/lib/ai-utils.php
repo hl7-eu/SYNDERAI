@@ -154,6 +154,7 @@ function aiRequest(string $url, array $headers, array $payload, string $what): a
         $response = curl_exec($ch);
         $code     = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
         $error    = (string) curl_error($ch);
+        curl_close($ch);
 
         $retryable = ($code === 429 || $code >= 500 || ($response === FALSE && $error !== ""));
         if (!$retryable || $attempt === AI_MAX_ATTEMPTS) {
@@ -273,25 +274,95 @@ function testAIavailability(): bool
  *
  * The 'rr' field is the raw string from the model; callers json_decode() it.
  *
+ * Three things about this prompt were measured against the release 5 EPS
+ * package (313 bundles, 1643 referenceRange elements) and changed on
+ * 2026-10-11. All three produced ranges that looked plausible one at a time
+ * and were inconsistent across the corpus.
+ *
+ * 1. THE MEASURED VALUE IS NO LONGER SENT. $labtest used to be built as
+ *    "<display> <value> <unit>", so the model saw the result it was supposed
+ *    to supply a reference interval for. The cache key never contained the
+ *    value (correctly - a reference range may not depend on the result), so
+ *    the range that the FIRST patient of a given age and sex happened to
+ *    produce was then applied to every other patient with that test. A
+ *    reference interval that is a function of one arbitrary patient's result
+ *    is not a reference interval. The display name and the unit are enough.
+ *
+ * 2. THE UNIT IS GIVEN, NOT ASKED FOR. The model used to choose the unit, and
+ *    chose a different one from the measured value in 206 of 1053 numeric
+ *    ranges: leukocytes in urine sediment reported in /[HPF] against a range
+ *    in {#/area}, [iU]/L against iU/L, and 14 ranges in {[#/area]}, which is
+ *    not valid UCUM at all. 72 of the 449 bold H/L flags in the EPS narratives
+ *    sit on such a range, i.e. the narrative compares two numbers in different
+ *    units and prints the verdict in bold. The caller now states the unit and
+ *    rejects an answer in any other unit; see the unit guard in
+ *    sections/recentlabobservationEPS.php.
+ *
+ * 3. AGE ENTERS AS A BAND, NOT AS A YEAR. $patage used to be the exact age, so
+ *    a 66-year-old and a 67-year-old each triggered their own call and their
+ *    own answer. 40 of the 83 LOINC codes with a reference range carry more
+ *    than one interval across the corpus: thyrotropin came back with an upper
+ *    bound of 0.5, 0.8, 0.9, 1.4, 1.9 and 2.1 mIU/L for the same test (the
+ *    adult reference interval is roughly 0.4 to 4.0), eGFR with 44-130,
+ *    45-90, 59-144, 60-89, 60-120 and 90-120. The band makes the answer
+ *    reproducible within the band and reduces the cache from 4066 entries to
+ *    the number of tests times eight bands times two sexes.
+ *
+ * $ageband, when given, replaces the exact age in the prompt. Pass the same
+ * band that went into refRangeCacheKey(), otherwise the cached answer belongs
+ * to a different question than the one that was asked.
+ *
+ * NOTE on what this function cannot fix. The model is asked for a POPULATION
+ * reference interval, and that is all a reference interval is. It is not a
+ * therapeutic target: an INR of 2.5 under vitamin K antagonist therapy is on
+ * target and still outside 0.9 to 1.2, and a PSA below 4 does not rule out an
+ * active prostate neoplasm. Whether a value is to be read against a population
+ * interval or against a therapeutic target is what Observation.referenceRange
+ * .type expresses, and the caller sets it; see the referencerange-meaning code
+ * system. The model is asked for a type here only so that an obviously
+ * therapeutic range is not silently labelled normal.
+ *
+ * @param  int|string $patage    Patient age in years (used only when $ageband is NULL).
+ * @param  string     $patgender Patient gender as Synthea reports it.
+ * @param  string     $labtest   Display name of the test. NO measured value.
+ * @param  string     $unit      Required unit of the range, the unit of the value.
+ * @param  string     $ageband   Age band label, e.g. "65 years and older".
+ *
  * @return array{rr:string,code:int,error:string}|null  NULL on a non-200 answer.
  */
-function getAIReferenceRange($patage, $patgender, $labtest)
+function getAIReferenceRange($patage, $patgender, $labtest, $unit = NULL, $ageband = NULL)
 {
+    $agephrase = $ageband !== NULL ? "$ageband $patgender patient"
+                                   : "$patage-year-old $patgender patient";
+    $unitclause = $unit !== NULL
+        ? "The unit of the reference range MUST be exactly \"$unit\" (UCUM). "
+          . "Do not convert to another unit and do not choose a different one. "
+          . "If you cannot give the range in that unit, return the \"text\" form below instead."
+        : "";
+
     $prompt = <<<AIP
-You are a laboratory doctor. Get reference ranges the following lab test results for an $patage-year-old $patgender patient.
-Lab Test Results: $labtest
+You are a laboratory doctor. Get the population reference range of the following lab test for a $agephrase.
+Lab Test: $labtest
+$unitclause
 
 Return reference ranges that are Quantities as plain JSON with
 "high": {high value quantity without the units},
 "low": {low value quantity without the units},
 "unit": {value quantity unit}
 Also add the the reference range as a string in JSON "display".
+Add "type" with exactly one of the codes "normal", "recommended", "treatment",
+"therapeutic", "pre" or "post" from the FHIR referencerange-meaning code system,
+describing what kind of range this is. Use "normal" for a population reference
+interval. Use "treatment" or "therapeutic" only for a range that is a therapy
+target rather than a healthy-population interval, such as INR under vitamin K
+antagonist therapy.
 Example:
 {
     "low": "200",
     "high" : "250",
-    "unit" : "mg/dL,
-    "display: "200-250 mg/dL"
+    "unit" : "mg/dL",
+    "display": "200-250 mg/dL",
+    "type": "normal"
 }
 Please add no extra text here, just this JSON.
 

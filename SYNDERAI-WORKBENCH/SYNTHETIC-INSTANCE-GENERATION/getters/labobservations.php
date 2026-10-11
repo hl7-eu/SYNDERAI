@@ -90,6 +90,7 @@ while (($item = fgetcsv($observationhandle, 10000, ",", '"', '\\')) !== FALSE) {
            mIU/L => m[IU]/L
            /HPF  => /[HPF]
            iU/L  => [iU]/L
+           {[#/area]} => {#/area}
 
            see github https://github.com/hl7-eu/SYNDERAI/issues/128
        */
@@ -101,6 +102,8 @@ while (($item = fgetcsv($observationhandle, 10000, ",", '"', '\\')) !== FALSE) {
         $thisunit = "/[HPF]";
       if ($thisunit === "iU/L")
         $thisunit = "[iU]/L";
+      if ($thisunit === "{[#/area]}")
+        $thisunit = "{#/area}";
 
       // echo "***** $thistype $resultvalue $thiscode $thisdisplay\n";
       $hislabobs = [
