@@ -156,6 +156,8 @@ if ($PROCESSISH) {
     $pdat->procedures = $found;
   }
 
+  lognl(1, "......... " . count($found) . " procedures for this patient\n");
+
   // if ($pdat->eci === "1298-659206-6") {var_dump($found);exit;}
 }
 

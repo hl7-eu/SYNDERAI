@@ -124,6 +124,7 @@ if ($PROCESSISH) {
     // make $pdat->conditions the new $filteredConditions for proper EPS condition emission
     $pdat->conditions = filterAndAdaptConditions($pdat->allconditions);
   }
+  lognl(1, "......... " . count($pdat->conditions) . " conditions found for this patient");
 }
 
 

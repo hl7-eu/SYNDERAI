@@ -6,7 +6,7 @@
 $found = array();
 $labobs = array();
 $labcategories = array();
-lognl(1, "...... List of lab observations for this patient\n");
+lognl(1, "...... List of lab observations for this patient");
 // open observations
 $pdat->labobservations = NULL;
 $observationhandle = fopen(
@@ -291,7 +291,6 @@ if (DEBUGLEVEL >= 3) {
 $tmp = array();
 foreach ($pdat->specimen as $s) foreach ($s as $m) $tmp[$m["code"]] = TRUE;
 $overallspecimencount = count($tmp );
-if (in_array("LAB", $ARTIFACTS)) // only if LAB is emitted say something about the findings
-  lognl(3, "......... Set with $labobservationcount lab tests and overall $overallspecimencount types of specimen found...\n");
-
+$labreports = count($labobs);
+lognl(1, "......... $labobservationcount lab tests in $labreports lab reports and overall $overallspecimencount types of specimen found for this patient");
 ?>

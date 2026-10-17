@@ -168,4 +168,6 @@ if (count($found) === 0) {
   $pdat->medications = $found;
 }
 
+lognl(1, "......... " . count($found) . " of medications for this patient\n");
+
 ?>
