@@ -1184,7 +1184,7 @@ foreach ($PATIENTS as $pdat) {
         if (!isset($pdat->procedures) or $pdat->procedures === NULL)
                 lognlsev(2, WARNING, "...... +++ Patient's clinical story candidate has missing procedures for a proper HDR, continuing anyway\n");
         if (!isset($pdat->inpatientencounters) or $pdat->inpatientencounters === NULL)
-                lognlsev(2, ERROR, "...... +++ Patient's clinical story candidate has missing inpatient encounters for a proper HDR, which is undesireable\n");
+                lognlsev(2, WARNING, "...... +++ Patient's clinical story candidate has missing inpatient encounters for a proper HDR, which is undesireable\n");
     }
     
     if ($pdat->match === NULL)
@@ -1654,7 +1654,7 @@ function emitFSH($pdat, $thisartifact) {
                 file_put_contents($fn, $OUTFSH);
             }
         } else
-            lognlsev(2, ERROR, "............ No hospital stay detectable, skipping HDR for this patient.");
+            lognlsev(2, WARNING, "............ No hospital stay detectable, skipping HDR for this patient.");
     }
 
     // =========================================================================
