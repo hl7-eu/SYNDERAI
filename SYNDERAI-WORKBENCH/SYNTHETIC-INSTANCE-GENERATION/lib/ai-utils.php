@@ -154,7 +154,6 @@ function aiRequest(string $url, array $headers, array $payload, string $what): a
         $response = curl_exec($ch);
         $code     = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
         $error    = (string) curl_error($ch);
-        curl_close($ch);
 
         $retryable = ($code === 429 || $code >= 500 || ($response === FALSE && $error !== ""));
         if (!$retryable || $attempt === AI_MAX_ATTEMPTS) {
