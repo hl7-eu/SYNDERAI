@@ -29,10 +29,6 @@ What that means in practice:
 - Force pushes to `master` and deletion of `master` are blocked for everyone.
 - The maintainers can merge and, where it is warranted, push to `master` directly. That exception exists so a release or a one-line fix is not blocked on availability, not as a way around review.
 
-### Automated accounts
-
-**@ai4kai** is an AI agent account, not a maintainer. Its remit is issues: filing them, commenting on them, keeping them current. It does not review, does not approve, does not merge, and is not a code owner.
-
 ## What a good pull request looks like
 
 This project has learned the hard way that a change described in intent rather than in evidence costs more than it saves. Four rounds of calibration work were based on a priority list that the next measurement contradicted, each time because a number had not been re-measured. So:
