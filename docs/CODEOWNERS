@@ -1,0 +1,42 @@
+# Code owners for hl7-eu/SYNDERAI
+#
+# Place this file at docs/CODEOWNERS.
+#
+# GitHub honours CODEOWNERS in .github/, the repository root, and docs/, and
+# uses the first one it finds in that order. docs/ is last, so a copy that
+# later turns up in .github/ or in the root silently takes precedence over
+# this one. Keep exactly one.
+#
+# Every pull request that touches a matching path needs an approving review
+# from one of the listed owners. Combined with the "Require review from Code
+# Owners" rule on master, this is what makes a merge impossible without one of
+# the two maintainers.
+#
+# A handle that does not exist, or that has no write access to this
+# repository, is silently ignored by GitHub and the rule then protects
+# nothing. Both handles below were checked against the GitHub user API on
+# 23 October 2026. Write access has to be verified separately -- GitHub
+# requires explicit write access for a code owner, and silently assigns
+# no owner otherwise. After committing, open this file on github.com:
+# GitHub reports CODEOWNERS errors directly in the file view.
+#
+# @ai4kai is deliberately NOT listed. It is an AI agent account whose remit is
+# issues only. A code owner can approve the review that unblocks a merge, so
+# listing it here would hand it the one power the policy withholds.
+
+# Both maintainers own everything.
+*   @kheitmann @gcangioli
+
+# Nothing else belongs here while the owners are the same everywhere.
+#
+# CODEOWNERS applies the LAST matching rule, so a further line naming the same
+# two owners for a subdirectory changes nothing -- the pattern above already
+# assigns them. Such a line only looks like policy, and it goes stale without
+# anyone noticing: an earlier draft of this file carried a rule for /.github/,
+# which does not exist in this repository, and rules for two scripts that are
+# not in it either.
+#
+# Add a path only when its owners genuinely differ from the line above, for
+# example if one implementation guide gets a dedicated reviewer:
+#
+#   /SYNDERAI-WORKBENCH/FSH-FHIR-GENERATOR/   @kheitmann @gcangioli @someone
